@@ -1,11 +1,14 @@
 ---
 import {Image} from "astro:assets"
 
+import { ModeToggle } from '@/components/ModeToggle';
+
 import LogoHorizontal from "../assets/logos/LogoHorizontal.png"
 ---
 
-<nav class="flex justify-center p-1 border-b border-white">
+<nav class="flex justify-center items-center p-1 border-b border-white">
   <div class="w-7xl">
     <Image src={LogoHorizontal} alt="Logo Horizontal" width={300}/>
   </div>
+  <ModeToggle client:load />
 </nav>
