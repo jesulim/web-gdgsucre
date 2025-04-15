@@ -1,13 +1,6 @@
 import { useState, useEffect } from "react"
 import { Moon, Sun } from "lucide-react"
-
 import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 
 // Animation constants
 const STYLE_ID = 'astro-theme-toggle-temporary-styles'
@@ -79,48 +72,39 @@ async function startCircleAnimation(
   )
 }
 
+// Export with the name ModeToggle to match what Astro is expecting
 export function ModeToggle() {
-  const [theme, setThemeState] = useState<"theme-light" | "dark" | "system">("theme-light")
+  const [isDark, setIsDark] = useState(false)
 
+  // Initialize theme based on document class on mount
   useEffect(() => {
     const isDarkMode = document.documentElement.classList.contains("dark")
-    setThemeState(isDarkMode ? "dark" : "theme-light")
+    setIsDark(isDarkMode)
   }, [])
 
+  // Update document class when theme changes
   useEffect(() => {
-    const isDark =
-      theme === "dark" ||
-      (theme === "system" &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches)
     document.documentElement.classList[isDark ? "add" : "remove"]("dark")
-  }, [theme])
+  }, [isDark])
 
-  const handleThemeChange = (newTheme: "theme-light" | "dark" | "system", event: React.MouseEvent) => {
+  const toggleTheme = (event: React.MouseEvent) => {
     startCircleAnimation(() => {
-      setThemeState(newTheme)
+      setIsDark(prevDark => !prevDark)
     }, event.clientX, event.clientY)
   }
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
-          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={(e) => handleThemeChange("theme-light", e)}>
-          Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={(e) => handleThemeChange("dark", e)}>
-          Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={(e) => handleThemeChange("system", e)}>
-          System
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <Button 
+      variant="outline" 
+      size="icon" 
+      onClick={toggleTheme}
+      aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
+    >
+      <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+      <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+    </Button>
   )
 }
+
+// También exportamos como ThemeToggle por si acaso se requiere en el futuro
+export const ThemeToggle = ModeToggle;
