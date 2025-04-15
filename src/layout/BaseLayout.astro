@@ -1,37 +1,14 @@
 ---
 import "../styles/global.css";
+import ThemeScript from '../components/ThemeScript.astro';
 ---
-
-<script is:inline>
-  const getThemePreference = () => {
-    if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
-      return localStorage.getItem("theme");
-    }
-    return window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
-  };
-  const isDark = getThemePreference() === "dark";
-
-  document.documentElement.classList[isDark ? "add" : "remove"]("dark");
-
-  if (typeof localStorage !== "undefined") {
-    const observer = new MutationObserver(() => {
-      const isDark = document.documentElement.classList.contains("dark");
-      localStorage.setItem("theme", isDark ? "dark" : "light");
-    });
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-  }
-</script>
-
 <html lang="es">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
+
+    <ThemeScript />
 
     <title>Google Developer Group Sucre</title>
     <meta name="description" content="Google Developer Group Sucre" />

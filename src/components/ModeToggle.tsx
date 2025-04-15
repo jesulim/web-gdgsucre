@@ -72,7 +72,6 @@ async function startCircleAnimation(
   )
 }
 
-// Export with the name ModeToggle to match what Astro is expecting
 export function ModeToggle() {
   const [isDark, setIsDark] = useState(false)
 
@@ -82,14 +81,10 @@ export function ModeToggle() {
     setIsDark(isDarkMode)
   }, [])
 
-  // Update document class when theme changes
-  useEffect(() => {
-    document.documentElement.classList[isDark ? "add" : "remove"]("dark")
-  }, [isDark])
-
   const toggleTheme = (event: React.MouseEvent) => {
     startCircleAnimation(() => {
       setIsDark(prevDark => !prevDark)
+      document.documentElement.classList.toggle("dark")
     }, event.clientX, event.clientY)
   }
 
