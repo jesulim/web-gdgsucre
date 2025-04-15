@@ -2,6 +2,7 @@
 import {Image} from "astro:assets"
 
 import { ModeToggle } from '@/components/ModeToggle';
+import { Toggle } from 'astro-theme-toggle'
 
 import LogoHorizontal from "../assets/logos/LogoHorizontal.png"
 ---
@@ -10,5 +11,6 @@ import LogoHorizontal from "../assets/logos/LogoHorizontal.png"
   <div class="w-7xl">
     <Image src={LogoHorizontal} alt="Logo Horizontal" width={300}/>
   </div>
-  <ModeToggle client:load />
+  <!-- <ModeToggle client:load /> -->
+  <Toggle style="width: 32px; height: 32px;" />
 </nav>
