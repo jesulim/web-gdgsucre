@@ -21,6 +21,8 @@
 
   --color-black: #1e1e1e;
   --color-white: #f0f0f0;
+
+  --font-google: "Google Sans Display", sans-serif;
 }
 
 @theme inline {

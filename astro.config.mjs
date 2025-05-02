@@ -1,11 +1,31 @@
+import react from "@astrojs/react"
+import tailwindcss from "@tailwindcss/vite"
 // @ts-check
 import { defineConfig } from "astro/config"
-import tailwindcss from "@tailwindcss/vite"
-
-import react from "@astrojs/react";
 
 // https://astro.build/config
 export default defineConfig({
+  experimental: {
+    fonts: [
+      {
+        provider: "local",
+        name: "Google Sans Display",
+        cssVariable: "--font-google",
+        variants: [
+          {
+            weight: "400",
+            style: "normal",
+            src: ["./src/assets/fonts/GoogleSansDisplay-Regular.ttf"],
+          },
+          {
+            weight: "700",
+            style: "normal",
+            src: ["./src/assets/fonts/GoogleSansDisplay-Bold.ttf"],
+          },
+        ],
+      },
+    ],
+  },
   vite: {
     plugins: [tailwindcss()],
   },
