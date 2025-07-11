@@ -3,11 +3,16 @@ import { Image } from "astro:assets"
 
 import LogoHorizontal from "@/assets/logos/LogoHorizontal.png"
 import { ModeToggle } from "@/components/ModeToggle"
+import Login from "./Login.astro"
 ---
 
 <nav class="flex justify-center items-center p-1 border-b border-white">
   <div class="w-7xl">
-    <Image src={LogoHorizontal} alt="Logo Horizontal" width={300}/>
+    <Image src={LogoHorizontal} alt="Logo Horizontal" width={300} />
   </div>
-  <ModeToggle client:load />
+
+  <div class="flex gap-4">
+    <Login />
+    <ModeToggle client:load />
+  </div>
 </nav>

@@ -1,0 +1,27 @@
+---
+
+import { Button } from "@/components/ui/button"
+import { getProfile } from "@/lib/services/profile"
+
+const { cookies } = Astro
+const accessToken = cookies.get("sb-access-token")
+
+const profile = accessToken ? await getProfile() : null
+---
+
+<div class="flex gap-2 items-center">
+  {
+    accessToken && profile ? (
+      <span class="text-nowrap">Hola, {profile.first_name}</span>
+      <form action="/api/auth/signout" method="post">
+        <Button type="submit" variant="destructive">Logout</Button>
+      </form>
+    ) : (
+      <form action="/api/auth/signin" method="post">
+        <Button type="submit">
+          Login
+        </Button>
+      </form>
+    )
+  }
+</div>
