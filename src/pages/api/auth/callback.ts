@@ -5,7 +5,7 @@ const sevenDays = 60 * 60 * 24 * 7
 
 export const GET: APIRoute = async ({ url, cookies, redirect }) => {
   const authCode = url.searchParams.get("code")
-  const redirectTo = url.searchParams.get("redirectTo") ?? "/"
+  const next = url.searchParams.get("next") ?? "/"
 
   if (!authCode) {
     return new Response("No code provided", { status: 400 })
@@ -30,8 +30,8 @@ export const GET: APIRoute = async ({ url, cookies, redirect }) => {
     path: "/",
     httpOnly: true,
     secure: import.meta.env.PROD,
-    maxAge: expires_at - Math.floor(Date.now() / 1000),
+    maxAge: Number(expires_at) - Math.floor(Date.now() / 1000),
   })
 
-  return redirect(redirectTo)
+  return redirect(next)
 }

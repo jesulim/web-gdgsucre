@@ -1,16 +1,16 @@
 import { supabase } from "@/lib/supabase"
 import type { APIRoute } from "astro"
 
-export const POST: APIRoute = async ({ request, redirect }) => {
-  const requestUrl = new URL(request.url)
-  const origin = requestUrl.origin
-
+export const POST: APIRoute = async ({ url, redirect }) => {
+  const origin = url.origin
   const callbackRedirectUrl = new URL(`${origin}/api/auth/callback`)
 
-  const redirectTo = requestUrl.searchParams?.get("redirectTo")
-  if (redirectTo) {
-    callbackRedirectUrl.searchParams.set("redirectTo", redirectTo)
+  const next = url.searchParams?.get("next")
+  if (next) {
+    callbackRedirectUrl.searchParams.set("next", next)
   }
+
+  console.info(`callbackRedirectUrl: ${callbackRedirectUrl}`)
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
@@ -20,9 +20,10 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   })
 
   if (error) {
-    console.error(error)
+    console.error(`Error signing in: ${error.message}`)
     return new Response(error.message, { status: 500 })
   }
 
+  console.info(`Redirecting to data.url ${data.url}`)
   return redirect(data.url)
 }

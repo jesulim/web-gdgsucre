@@ -33,6 +33,9 @@ export async function getProfile() {
 
 export async function createProfile(first_name: string, last_name: string) {
   const user = await getCurrentUser()
+  if (!user) {
+    return null
+  }
 
   const { error: profileError } = await supabase.from("profiles").insert([
     {
