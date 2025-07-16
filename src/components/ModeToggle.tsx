@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react"
-import { Moon, Sun } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { Moon, Sun } from "lucide-react"
+import { useEffect, useState } from "react"
 
 // Animation constants
-const STYLE_ID = 'astro-theme-toggle-temporary-styles'
+const STYLE_ID = "astro-theme-toggle-temporary-styles"
 const STYLE_CONTENT =
-  '::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }'
+  "::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }"
 
 function removeTemporaryStyles() {
   const style = document.getElementById(STYLE_ID)
@@ -14,7 +14,7 @@ function removeTemporaryStyles() {
 
 function injectTemporaryStyles() {
   removeTemporaryStyles()
-  const style = document.createElement('style')
+  const style = document.createElement("style")
   style.id = STYLE_ID
   style.textContent = STYLE_CONTENT
   document.head.appendChild(style)
@@ -23,7 +23,7 @@ function injectTemporaryStyles() {
 async function startCircleAnimation(
   callback: () => void,
   x: number,
-  y: number,
+  y: number
 ) {
   const doc = document as unknown as {
     startViewTransition?: (updateCallback?: () => unknown) => {
@@ -32,7 +32,7 @@ async function startCircleAnimation(
     }
   }
 
-  if (typeof doc.startViewTransition !== 'function') {
+  if (typeof doc.startViewTransition !== "function") {
     callback()
     return
   }
@@ -54,21 +54,21 @@ async function startCircleAnimation(
   const h = window.innerHeight
 
   const maxRadius = Math.ceil(
-    Math.hypot(Math.max(x, w - x), Math.max(y, h - y)) / gradientOffset,
+    Math.hypot(Math.max(x, w - x), Math.max(y, h - y)) / gradientOffset
   )
 
   document.documentElement.animate(
     {
       maskImage: [`url('${maskUrl}')`, `url('${maskUrl}')`],
-      maskRepeat: ['no-repeat', 'no-repeat'],
+      maskRepeat: ["no-repeat", "no-repeat"],
       maskPosition: [`${x}px ${y}px`, `${x - maxRadius}px ${y - maxRadius}px`],
-      maskSize: ['0', `${2 * maxRadius}px`],
+      maskSize: ["0", `${2 * maxRadius}px`],
     },
     {
       duration: 500,
-      easing: 'ease-in',
-      pseudoElement: '::view-transition-new(root)',
-    },
+      easing: "ease-in",
+      pseudoElement: "::view-transition-new(root)",
+    }
   )
 }
 
@@ -82,16 +82,20 @@ export function ModeToggle() {
   }, [])
 
   const toggleTheme = (event: React.MouseEvent) => {
-    startCircleAnimation(() => {
-      setIsDark(prevDark => !prevDark)
-      document.documentElement.classList.toggle("dark")
-    }, event.clientX, event.clientY)
+    startCircleAnimation(
+      () => {
+        setIsDark(prevDark => !prevDark)
+        document.documentElement.classList.toggle("dark")
+      },
+      event.clientX,
+      event.clientY
+    )
   }
 
   return (
-    <Button 
-      variant="outline" 
-      size="icon" 
+    <Button
+      variant="outline"
+      size="icon"
       onClick={toggleTheme}
       aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
     >
@@ -102,4 +106,4 @@ export function ModeToggle() {
 }
 
 // También exportamos como ThemeToggle por si acaso se requiere en el futuro
-export const ThemeToggle = ModeToggle;
+export const ThemeToggle = ModeToggle

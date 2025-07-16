@@ -1,0 +1,17 @@
+---
+import { Button } from "@/components/ui/button"
+import { getCurrentUser } from "@/lib/services/profileService"
+
+const { cookies } = Astro
+const accessToken = cookies.get("sb-access-token")?.value ?? null
+const user = accessToken ? await getCurrentUser() : null
+
+const redirectHref = user
+  ? "/registro/io-extended-25"
+  : "/api/auth/signin?redirectTo=/registro/io-extended-25"
+---
+
+<h1>Google I/O Extended Sucre 2025</h1>
+<form action={redirectHref} method="post">
+  <Button type="submit"> Regístrate </Button>
+</form>

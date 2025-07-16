@@ -6,7 +6,8 @@
     "useIgnoreFile": true
   },
   "files": {
-    "ignoreUnknown": true
+    "ignoreUnknown": true,
+    "ignore": [".astro", "dist", "node_modules", "public"]
   },
   "formatter": {
     "enabled": true,

@@ -1,0 +1,35 @@
+---
+import Header from "@/components/Header.astro"
+import { RegisterForm } from "@/components/registration/RegisterForm"
+import BaseLayout from "@/layout/BaseLayout.astro"
+
+import { getEvent } from "@/lib/services/eventService"
+import { getFormFieldsByEvent } from "@/lib/services/formService"
+import { getProfile } from "@/lib/services/profileService"
+import { getEventRegistration } from "@/lib/services/registrationService"
+
+const { slug = "" } = Astro.params
+const event = await getEvent(slug)
+if (!event) {
+  return Astro.redirect("/")
+}
+
+const profile = await getProfile()
+const registration = await getEventRegistration(profile?.id, slug)
+
+if (registration?.status === "pending") {
+  return Astro.redirect("/registro/pendiente")
+}
+
+const formFields = await getFormFieldsByEvent(slug)
+---
+
+<BaseLayout>
+  <Header />
+  <main class="pt-12 flex">
+    <div class="mx-auto">
+      <h1 class="text-xl mb-4">Regístrate al {event?.name}</h1>
+      <RegisterForm formFields={formFields} profile={profile} event={event} client:load />
+    </div>
+  </main>
+</BaseLayout>
