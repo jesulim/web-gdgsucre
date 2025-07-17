@@ -16,7 +16,6 @@ const registration = await getEventRegistration(
   profile?.id,
   Astro.params.slug || ""
 )
-console.log(registration)
 
 if (!registration?.status === "pending") return Astro.redirect("/")
 ---
@@ -32,7 +31,7 @@ if (!registration?.status === "pending") return Astro.redirect("/")
         Mientras esperas, te invitamos a nuestra
         <a
           href="https://chat.whatsapp.com/EHtkjWuuhPh8cPDY8U9A7O"
-          class="bg-green-500 px-2 py-1 rounded-full text-white font-medium">Comunidad en WhatsApp</a
+          class="text-green-500 font-medium underline">Comunidad en WhatsApp</a
         >
       </p>
     </div>
