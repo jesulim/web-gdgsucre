@@ -10,7 +10,7 @@ export const POST: APIRoute = async ({ request, url, redirect }) => {
     callbackRedirectUrl.searchParams.set("next", next)
   }
 
-  console.info(`callbackRedirectUrl: ${callbackRedirectUrl}`)
+  console.info(`callbackRedirectUrl: ${callbackRedirectUrl.toString()}`)
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
@@ -24,6 +24,6 @@ export const POST: APIRoute = async ({ request, url, redirect }) => {
     return new Response(error.message, { status: 500 })
   }
 
-  console.info(`Redirecting to data.url ${data.url}`)
+  console.info(`Redirecting to data.url ${data.url.toString()}`)
   return redirect(data.url)
 }

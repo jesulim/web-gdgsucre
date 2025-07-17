@@ -6,11 +6,21 @@ import { submitRegistration } from "@/lib/services/registrationService"
 export const POST: APIRoute = async ({ request }) => {
   const formData = await request.formData()
 
-  const { event_id, event_slug, first_name, last_name, ...fields } =
-    Object.fromEntries(formData)
-  if (first_name && last_name) {
+  const {
+    event_id,
+    event_slug,
+    first_name,
+    last_name,
+    phone_number,
+    ...fields
+  } = Object.fromEntries(formData)
+  if (first_name && last_name && phone_number) {
     try {
-      await createProfile(String(first_name), String(last_name))
+      await createProfile(
+        String(first_name),
+        String(last_name),
+        String(phone_number)
+      )
     } catch (error) {
       return new Response(`Error al crear el perfil: ${error}`, { status: 500 })
     }

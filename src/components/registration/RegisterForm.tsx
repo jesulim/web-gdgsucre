@@ -48,15 +48,16 @@ export function RegisterForm({
     formSchema = formSchema.extend({
       first_name: z.string().trim().min(1, "El nombre es requerido"),
       last_name: z.string().trim().min(1, "El apellido es requerido"),
-      // phone_number: z
-      //   .string()
-      //   .trim()
-      //   .min(1, "El número de teléfono es requerido"),
+      phone_number: z
+        .string()
+        .trim()
+        .min(1, "El número de teléfono es requerido"),
     })
 
     defaultValues = {
       first_name: "",
       last_name: "",
+      phone_number: "",
       ...defaultValues,
     }
   }
@@ -67,8 +68,6 @@ export function RegisterForm({
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
-
     const formData = new FormData()
     formData.append("event_id", event.id)
     formData.append("event_slug", event.slug)
@@ -122,6 +121,19 @@ export function RegisterForm({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Apellido(s)</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="phone_number"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Número de teléfono</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>

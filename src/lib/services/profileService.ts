@@ -31,7 +31,11 @@ export async function getProfile() {
   }
 }
 
-export async function createProfile(first_name: string, last_name: string) {
+export async function createProfile(
+  first_name: string,
+  last_name: string,
+  phone_number: string
+) {
   const user = await getCurrentUser()
   if (!user) {
     return null
@@ -41,6 +45,7 @@ export async function createProfile(first_name: string, last_name: string) {
     {
       first_name: first_name,
       last_name: last_name,
+      phone_number: phone_number,
       email: user.user_metadata.email,
       avatar_url: user.user_metadata.avatar_url,
     },
