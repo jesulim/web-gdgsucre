@@ -17,20 +17,20 @@ export const GET: APIRoute = async ({ url, cookies, redirect }) => {
     return new Response(error.message, { status: 500 })
   }
 
-  const { access_token, refresh_token, expires_at } = data.session
+  const { access_token, refresh_token, expires_in } = data.session
 
   cookies.set("sb-access-token", access_token, {
     path: "/",
     httpOnly: true,
     secure: import.meta.env.PROD,
-    maxAge: sevenDays,
+    maxAge: expires_in,
   })
 
   cookies.set("sb-refresh-token", refresh_token, {
     path: "/",
     httpOnly: true,
     secure: import.meta.env.PROD,
-    maxAge: Number(expires_at) - Math.floor(Date.now() / 1000),
+    maxAge: sevenDays,
   })
 
   return redirect(next)
