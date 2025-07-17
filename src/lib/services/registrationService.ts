@@ -1,6 +1,7 @@
-import { supabase } from "@/lib/supabase"
+import type SupabaseClient from "@supabase/supabase-js/dist/module/SupabaseClient"
 
 async function uploadFile(
+  supabase: SupabaseClient,
   event_slug: string,
   key: string,
   file: File,
@@ -29,7 +30,11 @@ interface Registration {
   fields: { [k: string]: string | File }
 }
 
-export async function getEventRegistration(user_id: string, eventSlug: string) {
+export async function getEventRegistration(
+  supabase: SupabaseClient,
+  user_id: string,
+  eventSlug: string
+) {
   if (!user_id) {
     return null
   }
@@ -49,11 +54,10 @@ export async function getEventRegistration(user_id: string, eventSlug: string) {
   return data
 }
 
-export async function submitRegistration({
-  event_id,
-  event_slug,
-  fields,
-}: Registration) {
+export async function submitRegistration(
+  supabase: SupabaseClient,
+  { event_id, event_slug, fields }: Registration
+) {
   const {
     data: { user },
   } = await supabase.auth.getUser()
@@ -63,7 +67,13 @@ export async function submitRegistration({
 
   for (const [key, value] of Object.entries(fields)) {
     if (value instanceof File) {
-      const filePath = await uploadFile(String(event_slug), key, value, user.id)
+      const filePath = await uploadFile(
+        supabase,
+        String(event_slug),
+        key,
+        value,
+        user.id
+      )
       fields[key] = filePath
     }
   }

@@ -83,7 +83,7 @@ export function RegisterForm({
         body: formData,
       })
       if (res.ok) {
-        window.location.href = "/registro/pendiente"
+        window.location.href = `/registro/${event.slug}/pendiente`
       }
     } catch (error) {
       console.error(error)

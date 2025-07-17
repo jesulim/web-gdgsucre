@@ -1,11 +1,11 @@
 ---
 import { Button } from "@/components/ui/button"
-import { getCurrentUser } from "@/lib/services/profileService"
+import { createUserClient } from "@/lib/supabase"
 
-const { cookies } = Astro
-const accessToken = cookies.get("sb-access-token")
-
-const user = accessToken ? await getCurrentUser() : null
+const supabase = await createUserClient(Astro.cookies)
+const {
+  data: { user },
+} = await supabase.auth.getUser()
 ---
 
 <div class="flex gap-2 items-center">
@@ -18,7 +18,9 @@ const user = accessToken ? await getCurrentUser() : null
       </a>
     ) : (
       <a href="/api/auth/signin">
-        <Button type="submit" className="bg-[#6096e7]">Iniciar sesión</Button>
+        <Button type="submit" className="bg-[#6096e7]">
+          Iniciar sesión
+        </Button>
       </a>
     )
   }

@@ -1,6 +1,6 @@
-import { supabase } from "@/lib/supabase"
+import type { SupabaseClient } from "@supabase/supabase-js"
 
-export async function getEvent(slug: string) {
+export async function getEvent(supabase: SupabaseClient, slug: string) {
   const { data: event, error } = await supabase
     .from("events")
     .select("id, name, date, slug, image_url")
@@ -8,7 +8,7 @@ export async function getEvent(slug: string) {
     .single()
 
   if (error) {
-    console.error(error)
+    console.error(`error getting event: ${error.message}`)
     return null
   }
 

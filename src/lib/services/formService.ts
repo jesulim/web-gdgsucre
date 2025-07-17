@@ -1,10 +1,11 @@
-import { supabase } from "@/lib/supabase.ts"
 import {
   type FormFieldSchema,
   formFieldSchema,
 } from "@/lib/validators/formFields.ts"
+import type { SupabaseClient } from "@supabase/supabase-js"
 
 export async function getFormFieldsByEvent(
+  supabase: SupabaseClient,
   eventSlug: string
 ): Promise<FormFieldSchema[]> {
   const { data, error } = await supabase

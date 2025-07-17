@@ -1,6 +1,6 @@
-import { supabase } from "@/lib/supabase"
+import type { SupabaseClient } from "@supabase/supabase-js"
 
-export async function getCurrentUser() {
+export async function getUser(supabase: SupabaseClient) {
   const {
     data: { user },
   } = await supabase.auth.getUser()
@@ -8,12 +8,9 @@ export async function getCurrentUser() {
   return user
 }
 
-export async function getProfile() {
-  const user = await getCurrentUser()
-
-  if (!user) {
-    return null
-  }
+export async function getProfile(supabase: SupabaseClient) {
+  const user = await getUser(supabase)
+  if (!user) return null
 
   const { data: profile, error } = await supabase
     .from("profiles")
@@ -32,13 +29,14 @@ export async function getProfile() {
 }
 
 export async function createProfile(
+  supabase: SupabaseClient,
   first_name: string,
   last_name: string,
   phone_number: string
 ) {
-  const user = await getCurrentUser()
+  const user = await getUser(supabase)
   if (!user) {
-    return null
+    throw new Error("No se pudo crear el perfil: No se pudo obtener el usuario")
   }
 
   const { error: profileError } = await supabase.from("profiles").insert([
