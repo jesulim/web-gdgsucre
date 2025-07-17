@@ -1,7 +1,7 @@
 import { supabase } from "@/lib/supabase"
 import type { APIRoute } from "astro"
 
-export const POST: APIRoute = async ({ request, url, redirect }) => {
+export const GET: APIRoute = async ({ request, url, redirect }) => {
   const origin = request.headers.get("origin") ?? url.origin
   const callbackRedirectUrl = new URL(`${origin}/api/auth/callback`)
 

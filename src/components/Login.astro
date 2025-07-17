@@ -11,15 +11,15 @@ const user = accessToken ? await getCurrentUser() : null
 <div class="flex gap-2 items-center">
   {
     user ? (
-      <form action="/api/auth/signout" method="post">
+      <a href="/api/auth/signout">
         <Button type="submit" variant="destructive">
           Cerrar sesión
         </Button>
-      </form>
+      </a>
     ) : (
-      <form action="/api/auth/signin" method="post">
+      <a href="/api/auth/signin">
         <Button type="submit">Iniciar sesión</Button>
-      </form>
+      </a>
     )
   }
 </div>
