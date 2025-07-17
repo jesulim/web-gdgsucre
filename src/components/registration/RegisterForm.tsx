@@ -170,7 +170,7 @@ export function RegisterForm({
           />
         ))}
 
-        <Button className="w-full" type="submit">
+        <Button className="w-full bg-[#35a852]" type="submit">
           {loading && <Loader2Icon className="animate-spin" />}
           Regístrate
         </Button>
