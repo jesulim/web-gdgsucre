@@ -48,10 +48,10 @@ export function RegisterForm({
     formSchema = formSchema.extend({
       first_name: z.string().trim().min(1, "El nombre es requerido"),
       last_name: z.string().trim().min(1, "El apellido es requerido"),
-      phone_number: z
-        .string()
-        .trim()
-        .min(1, "El número de teléfono es requerido"),
+      // phone_number: z
+      //   .string()
+      //   .trim()
+      //   .min(1, "El número de teléfono es requerido"),
     })
 
     defaultValues = {
@@ -95,7 +95,12 @@ export function RegisterForm({
 
   return (
     <Form {...form}>
-      <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+      <form
+        className="space-y-4"
+        onSubmit={form.handleSubmit(onSubmit, errors => {
+          console.error("Errores de validacion:", errors)
+        })}
+      >
         {!profile && (
           <>
             <FormField
