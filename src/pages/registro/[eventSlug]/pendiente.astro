@@ -14,7 +14,7 @@ if (!profile) return Astro.redirect("/")
 const registration = await getEventRegistration(
   supabase,
   profile?.id,
-  Astro.params.slug || ""
+  Astro.params.eventSlug || ""
 )
 
 if (!registration?.status === "pending") return Astro.redirect("/")

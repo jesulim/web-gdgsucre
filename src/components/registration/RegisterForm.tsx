@@ -107,7 +107,9 @@ export function RegisterForm({
               name="first_name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nombre(s)</FormLabel>
+                  <FormLabel>
+                    Nombre(s) <span className="text-destructive">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -120,7 +122,9 @@ export function RegisterForm({
               name="last_name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Apellido(s)</FormLabel>
+                  <FormLabel>
+                    Apellido(s)<span className="text-destructive">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -133,7 +137,10 @@ export function RegisterForm({
               name="phone_number"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Número de teléfono</FormLabel>
+                  <FormLabel>
+                    Número de teléfono{" "}
+                    <span className="text-destructive">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -150,7 +157,16 @@ export function RegisterForm({
             name={formField.name}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{formField.label}</FormLabel>
+                <FormLabel>
+                  {formField.required ? (
+                    <>
+                      {formField.label}{" "}
+                      <span className="text-destructive">*</span>
+                    </>
+                  ) : (
+                    `(Opcional) ${formField.label}`
+                  )}
+                </FormLabel>
                 <FormControl>
                   {formField.type === "select" && formField.options ? (
                     <FormSelect

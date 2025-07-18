@@ -12,13 +12,11 @@ import { createUserClient } from "@/lib/supabase"
 
 const supabase = await createUserClient(Astro.cookies)
 
-const eventSlug = Astro.params.slug || ""
+const eventSlug = Astro.params.eventSlug || ""
 const event = await getEvent(supabase, eventSlug)
 if (!event) return Astro.redirect("/")
 
 const profile = await getProfile(supabase)
-if (!profile) return Astro.redirect("/")
-
 const registration = await getEventRegistration(
   supabase,
   profile?.id,
@@ -36,7 +34,7 @@ const formFields = await getFormFieldsByEvent(supabase, eventSlug)
   <Header />
   <main class="pt-12 flex">
     <div class="mx-auto">
-      <h1 class="text-xl mb-4">Regístrate al {event.name}</h1>
+      <h1 class="text-xl mb-4 font-medium">Regístrate al {event.name}</h1>
       <RegisterForm formFields={formFields} profile={profile} event={event} client:load />
     </div>
   </main>

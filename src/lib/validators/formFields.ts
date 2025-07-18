@@ -11,6 +11,7 @@ export const formFieldSchema = z.object({
   name: z.string(),
   label: z.string(),
   type: z.enum(SUPPORTED_TYPES),
+  required: z.boolean(),
   options: z.array(z.string()).nullish(),
 })
 

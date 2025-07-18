@@ -17,7 +17,8 @@ export async function getFormFieldsByEvent(
       form_fields (
         name,
         label,
-        type
+        type,
+        required
       ),
       events (slug)
     `
