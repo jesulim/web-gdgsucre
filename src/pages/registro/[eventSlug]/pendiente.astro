@@ -17,7 +17,8 @@ const registration = await getEventRegistration(
   Astro.params.eventSlug || ""
 )
 
-if (!registration?.status === "pending") return Astro.redirect("/")
+if (!registration || registration?.status === "pending")
+  return Astro.redirect("/")
 ---
 
 <BaseLayout>

@@ -14,6 +14,7 @@ export async function getFormFieldsByEvent(
       `
       id,
       options,
+      image_url,
       form_fields (
         name,
         label,
@@ -32,6 +33,7 @@ export async function getFormFieldsByEvent(
     formFieldSchema.parse({
       id: row.id,
       options: row.options,
+      image_url: row.image_url,
       ...row.form_fields,
     })
   )

@@ -167,6 +167,14 @@ export function RegisterForm({
                     `(Opcional) ${formField.label}`
                   )}
                 </FormLabel>
+                {formField.image_url && (
+                  <img
+                    src={formField.image_url}
+                    width="400"
+                    alt={formField.label}
+                    className="mx-auto"
+                  />
+                )}
                 <FormControl>
                   {formField.type === "select" && formField.options ? (
                     <FormSelect
@@ -185,8 +193,7 @@ export function RegisterForm({
             )}
           />
         ))}
-
-        <Button className="w-full bg-[#35a852]" type="submit">
+        <Button className="w-full bg-green-500" type="submit">
           {loading && <Loader2Icon className="animate-spin" />}
           Regístrate
         </Button>

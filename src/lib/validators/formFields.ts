@@ -13,6 +13,7 @@ export const formFieldSchema = z.object({
   type: z.enum(SUPPORTED_TYPES),
   required: z.boolean(),
   options: z.array(z.string()).nullish(),
+  image_url: z.string().nullish(),
 })
 
 export type FormFieldSchema = z.infer<typeof formFieldSchema>

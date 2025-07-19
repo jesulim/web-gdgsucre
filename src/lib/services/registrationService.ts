@@ -47,7 +47,6 @@ export async function getEventRegistration(
     .single()
 
   if (error) {
-    console.error(error)
     return null
   }
 
