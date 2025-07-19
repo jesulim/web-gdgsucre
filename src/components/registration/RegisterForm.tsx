@@ -22,6 +22,7 @@ import {
 
 import { FormFileInput } from "./FormFileInput"
 import { FormSelect } from "./FormSelect"
+import ProfileFormFields from "./ProfileFormFields"
 
 interface RegisterFormProps {
   event: { id: string; slug: string }
@@ -100,56 +101,8 @@ export function RegisterForm({
           console.error("Errores de validacion:", errors)
         })}
       >
-        {!profile && (
-          <>
-            <FormField
-              control={form.control}
-              name="first_name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Nombre(s) <span className="text-destructive">*</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="last_name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Apellido(s)<span className="text-destructive">*</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="phone_number"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Número de teléfono{" "}
-                    <span className="text-destructive">*</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </>
-        )}
+        {!profile && <ProfileFormFields form={form} />}
+
         {formFields.map(formField => (
           <FormField
             key={formField.id}
