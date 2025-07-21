@@ -72,6 +72,7 @@ export function RegisterForm({
     const formData = new FormData()
     formData.append("event_id", event.id)
     formData.append("event_slug", event.slug)
+    formData.append("event_name", event.name)
 
     for (const [key, value] of Object.entries(values)) {
       formData.append(key, value)
