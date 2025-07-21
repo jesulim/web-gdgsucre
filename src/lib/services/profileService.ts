@@ -39,17 +39,22 @@ export async function createProfile(
     throw new Error("No se pudo crear el perfil: No se pudo obtener el usuario")
   }
 
-  const { error: profileError } = await supabase.from("profiles").insert([
-    {
-      first_name: first_name,
-      last_name: last_name,
-      phone_number: phone_number,
-      email: user.user_metadata.email,
-      avatar_url: user.user_metadata.avatar_url,
-    },
-  ])
+  const { data, error: profileError } = await supabase
+    .from("profiles")
+    .insert([
+      {
+        first_name: first_name,
+        last_name: last_name,
+        phone_number: phone_number,
+        email: user.user_metadata.email,
+        avatar_url: user.user_metadata.avatar_url,
+      },
+    ])
+    .select("id, first_name, last_name, email")
 
   if (profileError) {
     throw new Error(`No se pudo crear el perfil: ${profileError.message}`)
   }
+
+  return data
 }
