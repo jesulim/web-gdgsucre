@@ -3,12 +3,12 @@ import { join } from "node:path"
 import { createTransport } from "nodemailer"
 
 const transporter = createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
+  host: import.meta.env.EMAIL_HOST,
+  port: import.meta.env.EMAIL_PORT,
   secure: false,
   auth: {
-    user: "gdgsucre@gmail.com",
-    pass: "pdly sixy axis zohc",
+    user: import.meta.env.EMAIL_USER,
+    pass: import.meta.env.EMAIL_PASSWORD,
   },
 })
 
