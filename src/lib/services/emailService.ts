@@ -1,8 +1,8 @@
 import { readFile } from "node:fs/promises"
 import { join } from "node:path"
-import * as nodemailer from "nodemailer"
+import { createTransport } from "nodemailer"
 
-const transporter = nodemailer.createTransport({
+const transporter = createTransport({
   host: import.meta.env.EMAIL_HOST,
   port: Number(import.meta.env.EMAIL_PORT),
   secure: false,

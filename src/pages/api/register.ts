@@ -36,7 +36,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     await submitRegistration(supabase, { event_id, event_slug, fields })
     if (!profile) profile = await getProfile(supabase)
 
-    sendRegistrationConfirmationEmail({
+    await sendRegistrationConfirmationEmail({
       userEmail: profile?.email,
       userName: profile?.first_name,
       eventName: String(event_name),
