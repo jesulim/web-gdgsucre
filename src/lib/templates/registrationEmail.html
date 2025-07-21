@@ -5,14 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>¡Registro recibido! - {{eventName}}</title>
   </head>
-  <body
-    style="
-      margin: 0;
-      padding: 0;
-      background-color: #f5f5f5;
-      font-family: Arial, sans-serif;
-    "
-  >
+  <body style="margin: 0; padding: 0; background-color: #f5f5f5; font-family: Arial, sans-serif">
     <div
       style="
         max-width: 600px;
@@ -21,17 +14,19 @@
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       "
     >
+      <div style="background: white; display: grid; place-items: center; padding-bottom: 12px">
+        <img src="./io-25.png" alt="logo I/O Extended Sucre 2025" width="360" />
+      </div>
+
       <div
         style="
           background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);
-          padding: 40px 20px;
+          padding: 20px;
           text-align: center;
         "
       >
-        <h1
-          style="color: #ffffff; margin: 0; font-size: 28px; font-weight: bold"
-        >
-          ¡Hola {{userName}}! 👋
+        <h1 style="color: #ffffff; margin: 0; font-size: 28px; font-weight: bold">
+          ¡Hola, {{userName}}! 👋
         </h1>
         <h2
           style="
@@ -42,79 +37,28 @@
             opacity: 0.9;
           "
         >
-          Tu registro fue recibido exitosamente
+          Recibimos tu registro exitosamente.
         </h2>
       </div>
 
-      <div style="padding: 30px 20px">
-        <div style="text-align: center; margin-bottom: 30px">
-          <div
-            style="
-              background-color: #e8f5e8;
-              border-left: 4px solid #34a853;
-              padding: 20px;
-              border-radius: 0 8px 8px 0;
-              margin: 20px 0;
-            "
-          >
-            <p
-              style="
-                margin: 0;
-                font-size: 16px;
-                color: #2d5a2d;
-                font-weight: bold;
-              "
-            >
-              📋 ¡Registro confirmado exitosamente!
-            </p>
-          </div>
-        </div>
-
+      <div style="padding: 20px">
         <div
           style="
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 8px;
+            background: #f8f9ff;
+            border-left: 4px solid #4285f4;
+            padding: 20px;
             margin: 25px 0;
-            border: 1px solid #e9ecef;
+            border-radius: 0 8px 8px 0;
           "
         >
-          <h3
-            style="
-              color: #333;
-              margin-top: 0;
-              margin-bottom: 15px;
-              font-size: 18px;
-              border-bottom: 2px solid #4285f4;
-              padding-bottom: 8px;
-            "
-          >
-            🎟️ Detalles del evento
-          </h3>
           <div style="margin: 15px 0">
-            <p
-              style="
-                font-size: 16px;
-                color: #555;
-                margin: 8px 0;
-                line-height: 1.5;
-              "
-            >
-              <strong style="color: #333">Evento:</strong>
-              <span style="color: #4285f4; font-weight: 600"
-                >{{eventName}}</span
-              >
+            <p style="font-size: 16px; color: #555; margin: 8px 0; border-radius: 0 8px 8px 0">
+              <strong style="color: #333">🎟️ Evento:</strong>
+              <span style="font-weight: 600">{{eventName}}</span>
             </p>
-            <p
-              style="
-                font-size: 14px;
-                color: #666;
-                margin: 15px 0 0 0;
-                line-height: 1.6;
-              "
-            >
-              Hemos recibido tu información de registro. Ahora necesitamos
-              validar tu pago para confirmar tu participación.
+            <p style="font-size: 14px; color: #666">
+              Recibimos tu información de registro. Validaremos tu pago para confirmar tu
+              participación.
             </p>
           </div>
         </div>
@@ -122,23 +66,19 @@
         <div
           style="
             background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            border-radius: 8px;
+            border-left: 4px solid #f9ab00;
             padding: 20px;
             margin: 25px 0;
+            border-radius: 0 8px 8px 0;
           "
         >
-          <div style="display: flex; align-items: center">
-            <div style="margin-right: 15px; font-size: 24px">💳</div>
-            <div>
-              <h4 style="margin: 0 0 5px 0; color: #856404; font-size: 16px">
-                Estado del pago: Pendiente de validación
-              </h4>
-              <p style="margin: 0; color: #856404; font-size: 14px">
-                Nuestro equipo está verificando tu pago. Te notificaremos cuando
-                sea confirmado.
-              </p>
-            </div>
+          <div>
+            <h4 style="margin: 0 0 5px 0; color: #856404; font-size: 16px">
+              💳 Estado del pago: Pendiente de validación
+            </h4>
+            <p style="margin: 0; color: #856404; font-size: 14px">
+              Nuestro equipo está verificando tu pago. Te notificaremos cuando sea confirmado.
+            </p>
           </div>
         </div>
 
@@ -155,42 +95,9 @@
             ⏱️ Tiempo de validación
           </h4>
           <p style="margin: 0; color: #555; font-size: 14px; line-height: 1.6">
-            La validación de pagos normalmente toma
-            <strong>48-72 horas hábiles</strong>. Te enviaremos un correo de
-            confirmación una vez que tu pago sea verificado.
-          </p>
-        </div>
-
-        <div style="text-align: center; margin: 35px 0">
-          <p style="color: #555; margin-bottom: 20px; font-size: 16px">
-            Mientras esperas, ¡únete a nuestra comunidad!
-          </p>
-          <a
-            href="https://chat.whatsapp.com/EHtkjWuuhPh8cPDY8U9A7O"
-            style="
-              background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
-              color: white;
-              padding: 15px 30px;
-              text-decoration: none;
-              border-radius: 25px;
-              display: inline-block;
-              font-weight: bold;
-              font-size: 16px;
-              box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
-              transition: transform 0.2s ease;
-            "
-          >
-            💬 Únete a WhatsApp
-          </a>
-          <p
-            style="
-              color: #666;
-              font-size: 12px;
-              margin-top: 15px;
-              font-style: italic;
-            "
-          >
-            Conecta con otros participantes y mantente informado
+            La validación de pagos toma de
+            <strong>4 a 5 días hábiles</strong>. Te enviaremos un correo de confirmación cuando tu
+            pago sea verificado.
           </p>
         </div>
 
@@ -199,92 +106,56 @@
             background: #fff5f5;
             border-left: 4px solid #dc3545;
             padding: 20px;
-            margin: 25px 0;
             border-radius: 0 8px 8px 0;
           "
         >
-          <h4 style="margin: 0 0 10px 0; color: #dc3545; font-size: 16px">
-            ❗ Importante
-          </h4>
-          <ul
-            style="
-              margin: 0;
-              padding-left: 20px;
-              color: #555;
-              font-size: 14px;
-              line-height: 1.6;
-            "
-          >
+          <h4 style="margin: 0 0 10px 0; color: #dc3545; font-size: 16px">❗ Importante</h4>
+          <ul style="margin: 0; padding-left: 20px; color: #555; font-size: 14px; line-height: 1.6">
             <li>Guarda este correo como comprobante de tu registro</li>
-            <li>Recibirás confirmación una vez validado el pago</li>
-            <li>Para dudas, contáctanos por WhatsApp</li>
+            <li>Recibirás una confirmación cuando validemos tu pago</li>
           </ul>
         </div>
       </div>
 
+      <div style="padding-left: 20px; padding-right: 20px; padding-bottom: 20px">
+        <p style="color: #555; margin-bottom: 20px; font-size: 16px">
+          Mientras esperas, conecta con otros participantes y mantente informado mediante nuestra
+          comunidad en WhatsApp:
+        </p>
+        <a
+          href="https://chat.whatsapp.com/EHtkjWuuhPh8cPDY8U9A7O"
+          style="
+            background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            display: inline-block;
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            transition: transform 0.2s ease;
+          "
+        >
+          💬 Comunidad en WhatsApp
+        </a>
+      </div>
+
       <div
         style="
-          background-color: #f8f9fa;
+          display: flex;
+          gap: 12px;
+          align-items: center;
+          background: #f8f9fa;
           padding: 25px 20px;
           border-top: 1px solid #e9ecef;
-          text-align: center;
         "
       >
-        <div style="margin-bottom: 15px">
-          <div
-            style="
-              display: inline-flex;
-              align-items: center;
-              justify-content: center;
-            "
-          >
-            <div
-              style="
-                width: 8px;
-                height: 8px;
-                background: #4285f4;
-                border-radius: 50%;
-                margin: 0 3px;
-              "
-            ></div>
-            <div
-              style="
-                width: 8px;
-                height: 8px;
-                background: #ea4335;
-                border-radius: 50%;
-                margin: 0 3px;
-              "
-            ></div>
-            <div
-              style="
-                width: 8px;
-                height: 8px;
-                background: #fbbc05;
-                border-radius: 50%;
-                margin: 0 3px;
-              "
-            ></div>
-            <div
-              style="
-                width: 8px;
-                height: 8px;
-                background: #34a853;
-                border-radius: 50%;
-                margin: 0 3px;
-              "
-            ></div>
-          </div>
+        <img src="./GDGLogo.png" alt="GDGLogo" width="64" />
+        <div>
+          <h4 style="color: #333; margin: 0; font-size: 16px">Google Developer Group</h4>
+          <span style="color: #333; font-size: 15px">Sucre</span>
         </div>
-        <h4 style="color: #333; margin: 0 0 5px 0; font-size: 16px">
-          GDG Sucre
-        </h4>
-        <p style="color: #666; margin: 0; font-size: 14px">
-          Google Developer Group
-        </p>
-        <p style="color: #999; margin: 10px 0 0 0; font-size: 12px">
-          Si tienes alguna pregunta sobre tu pago o registro, contáctanos.
-        </p>
       </div>
     </div>
   </body>
