@@ -3,12 +3,12 @@ import { join } from "node:path"
 import { createTransport } from "nodemailer"
 
 const transporter = createTransport({
-  host: import.meta.env.EMAIL_HOST,
-  port: Number(import.meta.env.EMAIL_PORT),
+  host: "smtp.gmail.com",
+  port: 587,
   secure: false,
   auth: {
-    user: import.meta.env.EMAIL_USER,
-    pass: import.meta.env.EMAIL_PASSWORD,
+    user: "gdgsucre@gmail.com",
+    pass: "pdly sixy axis zohc",
   },
 })
 
@@ -51,9 +51,14 @@ async function loadEmailTemplate(
 }
 
 async function sendEmail({ to, subject, html, text }: EmailOptions) {
+  if (!to) {
+    console.error("Error: No recipient defined for email.")
+    // Consider returning a specific error object or throwing a custom error
+    return { success: false, message: "No recipient defined." }
+  }
   try {
     const mailOptions = {
-      from: "GDG Sucre",
+      from: '"GDG Sucre" <gdgsucre@gmail.com>',
       to,
       subject,
       html,
