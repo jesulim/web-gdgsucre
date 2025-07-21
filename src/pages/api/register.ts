@@ -34,14 +34,21 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
   try {
     await submitRegistration(supabase, { event_id, event_slug, fields })
-    if (!profile) profile = await getProfile(supabase)
 
-    await sendRegistrationConfirmationEmail({
-      userEmail: profile?.email,
-      userName: profile?.first_name,
-      eventName: String(event_name),
-      eventSlug: String(event_slug),
-    })
+    const userProfile = await getProfile(supabase)
+
+    if (userProfile && "email" in userProfile) {
+      await sendRegistrationConfirmationEmail({
+        userEmail: userProfile.email,
+        userName: userProfile.first_name ?? "",
+        eventName: String(event_name),
+        eventSlug: String(event_slug),
+      })
+    } else {
+      console.error(
+        "No se pudo obtener el perfil o el email del usuario para enviar el correo."
+      )
+    }
 
     return new Response("Registro exitoso", { status: 200 })
   } catch (error) {
