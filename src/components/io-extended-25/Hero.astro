@@ -1,8 +1,8 @@
 ---
-import { Image } from "astro:assets"
-import IOE25Banner from "@/assets/logos/IOE25Banner.jpg"
-import { Button } from "@/components/ui/button"
-
+import CalendarIcon from "@/assets/logos/calendar-month.svg"
+import LocationIcon from "@/assets/logos/distance.svg"
+import GoogleIoLogo from "@/assets/logos/google-io-extended-2025-logo.png"
+import IoHomeBottom from "@/assets/logos/io25-home-bottom.png"
 import { createUserClient } from "@/lib/supabase"
 
 const supabase = await createUserClient(Astro.cookies)
@@ -15,15 +15,143 @@ const redirectHref = user
   : "/api/auth/signin?next=/registro/io-extended-25"
 ---
 
-<div class="flex flex-col items-center justify-center">
-  <Image
-    class="h-64 w-full object-cover object-center md:h-auto"
-    src={IOE25Banner}
-    alt="Google I/O Extended Sucre 2025 Banner"
-    width={2048}
-    height={1152}
-  />
-  <a href={redirectHref} class="-mt-12">
-    <Button type="button" className="bg-[#35a852]"> Regístrate </Button>
-  </a>
+<div class="bg-white relative w-full min-h-screen">
+  <!-- Background Image -->
+  <div 
+    class="absolute bg-center bg-cover bg-no-repeat h-[400px] md:h-[821px] left-0 top-[250px] md:top-[314px] w-full"
+    style={`background-image: url('${IoHomeBottom.src}')`}
+  >
+  </div>
+  
+  <!-- Main Content -->
+  <div class="absolute left-1/2 transform -translate-x-1/2 top-8 md:top-[57px] flex flex-col gap-6 md:gap-10 items-center justify-center px-4 md:px-0">
+    <!-- Header Section -->
+    <div class="flex flex-col gap-4 md:gap-8 items-center w-full">
+      <!-- Logo -->
+      <div 
+        class="bg-center bg-no-repeat h-[80px] w-[300px] md:h-[191px] md:w-[717px] shrink-0"
+        style={`background-image: url('${GoogleIoLogo.src}'); background-size: contain`}
+      >
+      </div>
+      
+      <!-- Text Content and Button -->
+      <div class="flex flex-col gap-4 md:gap-6 items-center w-full">
+        <!-- Text Section -->
+        <div class="flex flex-col gap-2 items-center text-center px-4 md:px-[76px] text-black">
+          <!-- Main Heading -->
+          <div class="flex flex-col justify-center leading-[1.2] text-[24px] md:text-[40px] font-bold min-w-full">
+            <p class="block mb-0">Aprende de los mejores.</p>
+            <p class="block">Conecta con tu futuro.</p>
+          </div>
+          
+          <!-- Subtitle -->
+          <div class="flex flex-col justify-center text-[14px] md:text-[18px] tracking-[0.72px] max-w-[320px] md:w-[496px] font-normal">
+            <p class="block leading-[1.2]">
+              Descubre lo nuevo en Web, Cloud, AI, UX/UI y más, junto a expertos de la región.
+            </p>
+          </div>
+        </div>
+        
+        <!-- Registration Button -->
+        <div class="flex items-center justify-center">
+          <a 
+            href={redirectHref}
+            class="bg-[#4285f4] flex items-center justify-center px-8 md:px-14 py-3 md:py-3.5 rounded-[50px] text-white font-semibold text-[16px] md:text-[20px] tracking-[-0.1px] leading-[24px] md:leading-[28px] hover:bg-[#3367d6] transition-colors"
+          >
+            Regístrate ahora
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Event Details -->
+    <div class="flex flex-col md:flex-row items-center md:items-start justify-center gap-4 md:gap-6">
+      <!-- Date Section -->
+      <div class="flex items-center gap-2 md:gap-3">
+        <div class="w-8 h-8 md:w-12 md:h-12 shrink-0">
+          <img 
+            src={CalendarIcon.src} 
+            alt="Calendar" 
+            class="w-full h-full"
+          />
+        </div>
+        <div class="flex flex-col justify-center leading-[1.2] text-[#1e1e1e] text-[16px] md:text-[24px] text-center md:whitespace-pre font-medium">
+          <p class="block mb-0">Sábado 9 de Agosto</p>
+          <p class="block">8:00 Hrs</p>
+        </div>
+      </div>
+      
+      <!-- Separator -->
+      <div class="hidden md:flex justify-center items-center h-10 w-[9px] text-[#1e1e1e] text-[24px] font-semibold">
+        <p class="leading-[1.2]">|</p>
+      </div>
+      
+      <!-- Location Section -->
+      <div class="flex items-center gap-2 md:gap-3">
+        <div class="w-8 h-8 md:w-12 md:h-12 shrink-0">
+          <img 
+            src={LocationIcon.src} 
+            alt="Location" 
+            class="w-full h-full"
+          />
+        </div>
+        <div class="flex flex-col justify-center leading-[1.2] text-[#1e1e1e] text-[16px] md:text-[24px] text-center md:whitespace-pre font-medium">
+          <p class="block mb-0">Facultad de Ciencias</p>
+          <p class="block">y Tecnología</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+<style>
+  /* Ensure Google Sans fonts are available */
+  @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap');
+  
+  .font-bold {
+    font-family: 'Google Sans', sans-serif;
+    font-weight: 700;
+  }
+  
+  .font-normal {
+    font-family: 'Google Sans', sans-serif;
+    font-weight: 400;
+  }
+  
+  .font-medium {
+    font-family: 'Google Sans', sans-serif;
+    font-weight: 500;
+  }
+  
+  .font-semibold {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+  }
+  
+  /* Mobile optimizations */
+  @media (max-width: 768px) {
+    /* Ensure proper mobile viewport handling */
+    .bg-white {
+      overflow-x: hidden;
+    }
+    
+    /* Better text readability on mobile */
+    p {
+      word-wrap: break-word;
+      hyphens: auto;
+    }
+    
+    /* Improve touch targets for mobile */
+    a {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  }
+  
+  /* Ensure background image scales properly */
+  @media (max-width: 640px) {
+    [style*="background-image"] {
+      background-attachment: scroll;
+    }
+  }
+</style>
