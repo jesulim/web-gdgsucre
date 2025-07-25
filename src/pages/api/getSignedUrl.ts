@@ -14,7 +14,6 @@ export const GET: APIRoute = async ({ url, cookies, redirect }) => {
   }
 
   const supabase = await createUserClient(cookies)
-  console.log("Generating signed URL for file:", bucket, fileUrl)
 
   const { data, error } = await supabase.storage
     .from(bucket)
