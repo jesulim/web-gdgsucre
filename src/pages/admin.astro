@@ -1,7 +1,20 @@
 ---
+import { RegistrationsTable } from "@/components/registration/RegistrationsTable"
 import BaseLayout from "@/layout/BaseLayout.astro"
+import { getProfile } from "@/lib/services/profileService"
+import { createUserClient } from "@/lib/supabase"
+
+const supabase = await createUserClient(Astro.cookies)
+const profile = await getProfile(supabase)
+
+if (!profile?.is_admin) {
+  Astro.redirect("/")
+}
 ---
 
 <BaseLayout>
-  <!-- TODO: Add admin panel -->
+  <main class="p-12">
+    <h2 class="text-xl mb-4 font-medium">Lista de participantes registrados</h2>
+    <RegistrationsTable client:visible />
+  </main>
 </BaseLayout>
