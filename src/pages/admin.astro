@@ -7,7 +7,7 @@ import { createUserClient } from "@/lib/supabase"
 const supabase = await createUserClient(Astro.cookies)
 const profile = await getProfile(supabase)
 
-if (!profile.is_admin) {
+if (!profile?.is_admin) {
   Astro.redirect("/")
 }
 ---
