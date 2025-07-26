@@ -1,0 +1,46 @@
+---
+import PackageCodeLab from "@/assets/packages/codelab-package.png"
+import PackageInnovators from "@/assets/packages/innovators-package.png"
+import PackageWebVerse from "@/assets/packages/webverse-package.png"
+import PackageCard from "./PackageCard.astro"
+---
+
+<div class="w-full py-16 md:py-24 relative z-10">
+  <div class="flex flex-col items-center gap-8 md:gap-12 w-full px-4 md:px-8 max-w-[1200px] mx-auto">
+    <!-- Cards Container - Staggered Layout -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 w-full items-end">
+      <!-- Left Card - Lower Position -->
+      <div class="md:translate-y-8">
+        <PackageCard
+          title="Paquete WebVerse"
+          benefits={["Refrigerio", "Almuerzo", "Stikers"]}
+          imageSrc={PackageWebVerse.src}
+          imageAlt="Paquete WebVerse"
+          price="Bs 35"
+        />
+      </div>
+      
+      <!-- Middle Card - Higher Position -->
+      <div class="md:-translate-y-8">
+        <PackageCard
+          title="Paquete Innovators"
+          benefits={["Refrigerio", "Almuerzo", "Stickers", "Mousepad", "Estuche", "Cubo"]}
+          imageSrc={PackageInnovators.src}
+          imageAlt="Paquete Innovators"
+          price="Bs 80"
+        />
+      </div>
+      
+      <!-- Right Card - Lower Position -->
+      <div class="md:translate-y-8">
+        <PackageCard
+          title="Paquete CodeLab"
+          benefits={["Refrigerio", "Almuerzo", "Stickers", "Mousepad"]}
+          imageSrc={PackageCodeLab.src}
+          imageAlt="Paquete CodeLab"
+          price="Bs 50"
+        />
+      </div>
+    </div>
+  </div>
+</div> 
