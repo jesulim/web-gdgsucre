@@ -129,3 +129,40 @@ export async function submitRegistration(
 
   return { success: true }
 }
+
+export async function updateRegistrationStatus(
+  supabase: SupabaseClient,
+  userEmail: string,
+  eventSlug: string,
+  status: string
+) {
+  const { data: registration, error: findError } = await supabase
+    .from("registrations")
+    .select(`
+      id,
+      profiles!inner(email),
+      events!inner(slug)
+    `)
+    .eq("profiles.email", userEmail)
+    .eq("events.slug", eventSlug)
+    .single()
+
+  if (findError || !registration) {
+    throw new Error(
+      `No se encontró el registro: ${findError?.message || "No existe registro"}`
+    )
+  }
+
+  const { error: updateError } = await supabase
+    .from("registrations")
+    .update({ status })
+    .eq("id", registration.id)
+
+  if (updateError) {
+    throw new Error(
+      `Error actualizando estado del registro: ${updateError.message}`
+    )
+  }
+
+  return { success: true }
+}
