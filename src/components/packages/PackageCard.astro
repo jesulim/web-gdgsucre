@@ -14,7 +14,7 @@ const { title, benefits, imageSrc, imageAlt, price } = Astro.props
 <div class="bg-gradient-to-br from-white via-gray-50 to-gray-100 rounded-[2.5rem] shadow-2xl p-8 flex flex-col justify-between h-96 w-80 mx-auto border border-gray-200/50 backdrop-blur-sm">
   <!-- Card Title -->
   <div class="text-center mb-6">
-    <h3 class="text-[26px] font-black text-[#1e1e1e] font-opensans tracking-tight leading-tight">
+    <h3 class="text-[26px] font-black text-[#1e1e1e] tracking-tight leading-tight">
       {title}
     </h3>
   </div>
@@ -28,7 +28,7 @@ const { title, benefits, imageSrc, imageAlt, price } = Astro.props
           {benefits.map((benefit) => (
             <li class="flex items-center gap-3 group">
               <div class="w-2 h-2 bg-black rounded-full flex-shrink-0 group-hover:scale-125 group-hover:bg-[#4285f4] transition-all duration-200"></div>
-              <span class="text-[16px] font-bold text-[#1e1e1e] font-opensans leading-tight group-hover:text-[#4285f4] transition-colors duration-200">
+              <span class="text-[16px] font-bold text-[#1e1e1e] leading-tight group-hover:text-[#4285f4] transition-colors duration-200">
                 {benefit}
               </span>
             </li>
@@ -51,14 +51,8 @@ const { title, benefits, imageSrc, imageAlt, price } = Astro.props
   
   <!-- Price Button -->
   <div class="text-center mt-6">
-    <div class="bg-[#1e1e1e] text-white px-8 py-3 rounded-full font-bold text-[20px] inline-block font-opensans shadow-lg hover:bg-gray-800 hover:shadow-xl hover:scale-105 transition-all duration-300">
+    <div class="bg-[#1e1e1e] text-white px-8 py-3 rounded-full font-bold text-[20px] inline-block shadow-lg hover:bg-gray-800 hover:shadow-xl hover:scale-105 transition-all duration-300">
       {price}
     </div>
   </div>
 </div>
-
-<style>
-  .font-opensans {
-    font-family: 'Open Sans', sans-serif;
-  }
-</style>
