@@ -3,8 +3,8 @@ import CalendarIcon from "@/assets/logos/calendar-month.svg"
 import LocationIcon from "@/assets/logos/distance.svg"
 import GoogleIoLogo from "@/assets/logos/google-io-extended-2025-logo.png"
 import IoHomeBottom from "@/assets/logos/io25-home-bottom.png"
-import PackageSection from "@/components/packages/PackageSection.astro"
 import { createUserClient } from "@/lib/supabase"
+import PackageSection from "./PackageSection.astro"
 
 const supabase = await createUserClient(Astro.cookies)
 const {
