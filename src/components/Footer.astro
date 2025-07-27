@@ -1,12 +1,19 @@
 ---
-import GdgSucreLogo from "../assets/logos/GDGSucreLogo.astro"
+import GdgSucreLogo from "@/assets/logos/GDGSucreLogo.svg"
 import SocialIcons from "./SocialIcons.astro"
 ---
 
-<footer class='w-full border-t-2 bg-gray dark:bg-black lg:mt-12'>
-  <div class='mx-auto max-w-screen-2xl p-4 pt-6 lg:py-8'>
-    <div class='flex flex-col space-y-4 font-medium lg:flex-row lg:space-y-0 justify-between'>
-      <GdgSucreLogo />
+<footer class="w-full border-t-2 bg-gray dark:bg-black lg:mt-12">
+  <div class="mx-auto max-w-screen-2xl p-4 pt-6 lg:py-8">
+    <div class="flex flex-col space-y-4 font-medium lg:flex-row lg:space-y-0 justify-between">
+      <a
+        href="https://gdg.community.dev/gdg-sucre/"
+        class="flex items-center space-x-2 lg:space-x-4 hover:text-blue"
+        target="_blank"
+      >
+        <GdgSucreLogo />
+        <span> Google Developer Group Sucre</span>
+      </a>
       <SocialIcons />
     </div>
   </div>
