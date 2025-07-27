@@ -1,0 +1,177 @@
+---
+import CalendarIcon from "@/assets/logos/calendar-month.svg"
+import LocationIcon from "@/assets/logos/distance.svg"
+---
+
+<section
+    class="w-full pt-16 md:pt-16 pb-16 md:pb-24"
+    style="background-color: #ffffff;"
+>
+    <div class="max-w-7xl mx-auto px-4 md:px-6">
+        <!-- Bento Grid Container -->
+        <div
+            class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 h-auto md:h-[500px]"
+        >
+            <!-- Left Box - Main Content -->
+            <div
+                class="info-box border border-gray-200 rounded-2xl p-6 md:p-8 flex flex-col justify-center min-h-[300px] md:min-h-full shadow-lg"
+                style="background-color: #ffffff;"
+            >
+                <div class="space-y-4">
+                    <h2
+                        class="text-2xl md:text-4xl font-bold text-gray-900 leading-tight"
+                    >
+                        Sobre el Evento
+                    </h2>
+                    <p
+                        class="text-gray-700 text-base md:text-lg leading-relaxed"
+                    >
+                        Google I/O Extended es una experiencia única donde
+                        desarrolladores, diseñadores y entusiastas de la
+                        tecnología se reúnen para explorar las últimas
+                        innovaciones de Google.
+                    </p>
+                    <p class="text-gray-600 text-sm md:text-base">
+                        Descubre las tendencias más recientes en inteligencia
+                        artificial, desarrollo web, cloud computing y mucho más
+                        en un ambiente colaborativo y de aprendizaje continuo.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Right Column - Two Stacked Boxes -->
+            <div class="flex flex-col gap-4 md:gap-6">
+                <!-- Upper Box - Map Location -->
+                <div
+                    class="map-box border border-gray-200 rounded-2xl p-4 flex-1 min-h-[200px] md:min-h-0 flex flex-col justify-center items-center shadow-lg"
+                    style="background-color: #ffffff;"
+                >
+                    <div
+                        class="w-full h-full rounded-xl overflow-hidden min-h-[180px]"
+                    >
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3771.5435822397576!2d-65.25954052382126!3d-19.039823482157306!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x93fbc8cb45fea465%3A0x9859ca07b2335e29!2sFacultad%20de%20Ciencias%20de%20la%20Tecnolog%C3%ADa%20-%20USFX!5e0!3m2!1ses-419!2sbo!4v1753590654654!5m2!1ses-419!2sbo"
+                            width="100%"
+                            height="100%"
+                            style="border:0; min-height: 180px;"
+                            allowfullscreen=""
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"
+                            title="Facultad de Ciencias y Tecnología - USFX"
+                        ></iframe>
+                    </div>
+                </div>
+
+                <!-- Lower Box - Date, Time and Location -->
+                <div
+                    class="date-box border border-gray-200 rounded-2xl p-6 flex-1 min-h-[120px] md:min-h-0 flex items-center justify-center shadow-lg"
+                    style="background-color: #ffffff;"
+                >
+                    <div
+                        class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 w-full"
+                    >
+                        <!-- Date and Time Section -->
+                        <div class="text-center space-y-3">
+                            <div class="w-10 h-10 md:w-12 md:h-12 mx-auto">
+                                <img
+                                    src={CalendarIcon.src}
+                                    alt="Calendar"
+                                    class="w-full h-full"
+                                />
+                            </div>
+                            <div class="space-y-1">
+                                <p
+                                    class="text-base md:text-lg font-semibold text-gray-900"
+                                >
+                                    Sábado 9 de Agosto
+                                </p>
+                                <p
+                                    class="text-base md:text-lg font-medium text-gray-700"
+                                >
+                                    8:00 Hrs
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Separator -->
+                        <div
+                            class="hidden md:flex justify-center items-center h-8 w-[2px] bg-gray-300"
+                        >
+                        </div>
+
+                        <!-- Location Section -->
+                        <div class="text-center space-y-3">
+                            <div class="w-10 h-10 md:w-12 md:h-12 mx-auto">
+                                <img
+                                    src={LocationIcon.src}
+                                    alt="Location"
+                                    class="w-full h-full"
+                                />
+                            </div>
+                            <div class="space-y-1">
+                                <p
+                                    class="text-base md:text-lg font-semibold text-gray-900"
+                                >
+                                    Facultad de Ciencias
+                                </p>
+                                <p
+                                    class="text-base md:text-lg font-medium text-gray-700"
+                                >
+                                    y Tecnología
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Ensure Google Sans fonts are available */
+    @import url("https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap");
+
+    h2 {
+        font-family: "Google Sans", sans-serif;
+    }
+
+    p {
+        font-family: "Google Sans", sans-serif;
+    }
+
+    /* Mobile optimizations */
+    @media (max-width: 768px) {
+        .grid {
+            grid-template-rows: auto auto;
+        }
+
+        /* Ensure proper spacing on mobile */
+        section {
+            overflow-x: hidden;
+        }
+
+        /* Better text readability on mobile */
+        p {
+            word-wrap: break-word;
+            hyphens: auto;
+        }
+    }
+
+    /* Smooth transitions for hover effects on boxes only */
+    .info-box,
+    .map-box,
+    .date-box {
+        transition: all 0.3s ease;
+    }
+
+    /* Hover effects for desktop - only on boxes */
+    @media (min-width: 768px) {
+        .info-box:hover,
+        .map-box:hover,
+        .date-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+    }
+</style>
