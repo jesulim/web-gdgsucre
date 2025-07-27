@@ -8,13 +8,12 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   try {
     const body = await request.json()
 
-    const { userEmail, userName, eventName, eventSlug } = body
+    const { registrationId, userEmail, userName, eventName } = body
 
-    if (!userEmail || !userName || !eventName || !eventSlug) {
+    if (!userEmail || !userName || !eventName) {
       return new Response(
         JSON.stringify({
-          error:
-            "Faltan campos requeridos: userEmail, userName, eventName, eventSlug",
+          error: "Faltan campos requeridos: userEmail, userName, eventName",
         }),
         {
           status: 400,
@@ -29,24 +28,11 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       userEmail,
       userName,
       eventName,
-      eventSlug,
-      qrCodeUrl: body.qrCodeUrl,
-      eventDate: body.eventDate,
-      eventLocation: body.eventLocation,
     }
 
     const result = await sendPaymentConfirmationEmail(emailData)
 
-    try {
-      await updateRegistrationStatus(
-        supabase,
-        userEmail,
-        eventSlug,
-        "confirmed"
-      )
-    } catch (updateError) {
-      console.error("Error:", updateError)
-    }
+    await updateRegistrationStatus(supabase, registrationId, "confirmed")
 
     return new Response(
       JSON.stringify({

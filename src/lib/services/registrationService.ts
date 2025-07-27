@@ -132,19 +132,13 @@ export async function submitRegistration(
 
 export async function updateRegistrationStatus(
   supabase: SupabaseClient,
-  userEmail: string,
-  eventSlug: string,
+  reqgistrationId: number,
   status: string
 ) {
   const { data: registration, error: findError } = await supabase
     .from("registrations")
-    .select(`
-      id,
-      profiles!inner(email),
-      events!inner(slug)
-    `)
-    .eq("profiles.email", userEmail)
-    .eq("events.slug", eventSlug)
+    .select("id, status")
+    .eq("id", reqgistrationId)
     .single()
 
   if (findError || !registration) {

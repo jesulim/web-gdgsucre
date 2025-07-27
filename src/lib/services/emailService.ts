@@ -97,10 +97,6 @@ export async function sendRegistrationConfirmationEmail(
 // 2. Email de confirmación de pago (con QR)
 interface PaymentConfirmationEmailData extends BaseEmailData {
   eventName: string
-  eventSlug: string
-  qrCodeUrl?: string
-  eventDate?: string
-  eventLocation?: string
 }
 
 export async function sendPaymentConfirmationEmail(
@@ -110,7 +106,7 @@ export async function sendPaymentConfirmationEmail(
 
   return await sendEmail({
     to: data.userEmail,
-    subject: `¡Pago confirmado para ${data.eventName}! 🎉 Tu entrada está lista`,
+    subject: `¡Pago confirmado para ${data.eventName}! 🎉`,
     html: htmlContent,
   })
 }
