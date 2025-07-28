@@ -19,12 +19,13 @@ const navLinks = [
 ]
 ---
 
-<nav class="w-full h-[100px] bg-white flex items-center justify-between px-6 border-b shadow-sm">
+<nav class="w-full h-[100px] bg-white flex items-center justify-between px-6 border-b shadow-sm relative z-50">
+  <!-- Logo -->
   <a href="/" class="flex items-center">
     <Image src={LogoHorizontalBlack} alt="GDG Logo" width={200} height={46} class="object-contain" />
   </a>
 
-  <!-- Navegación -->
+  <!-- Navegación desktop -->
   <ul class="hidden md:flex gap-[49px] h-[32px]">
     {navLinks.map(link => (
       <li>
@@ -35,14 +36,15 @@ const navLinks = [
     ))}
   </ul>
 
-  <!-- Botones / Sesión -->
+  <!-- Botones / sesión -->
   <div class="flex items-center gap-4 h-[42px]">
-    <a href="/api/auth/eventos" class="text-blue-500 border-2 border-blue-500 bg-white hover:bg-[#4285F4] hover:text-white font-medium text-base leading-6 px-6 py-[9px] rounded-full transition-colors duration-200">
+    <!-- Eventos Pasados (visible en desktop y móvil) -->
+    <a href="/api/auth/eventos" class="hidden md:inline text-blue-500 border-2 border-blue-500 bg-white hover:bg-[#4285F4] hover:text-white font-medium text-base leading-6 px-6 py-[9px] rounded-full transition-colors duration-200">
       Eventos Pasados
     </a>
 
+    <!-- Avatar o Login (siempre visible, también en móvil) -->
     {user ? (
-      <!-- menu desplegable del -->
       <div class="relative">
         <button 
           id="avatar-btn"
@@ -57,6 +59,7 @@ const navLinks = [
           />
         </button>
 
+        <!-- Dropdown personalizado -->
         <div id="user-menu" class="absolute right-0 mt-2 w-[176px] h-[93px] bg-white rounded-[8px] shadow-lg px-4 py-[10px] z-50 border border-gray-200 hidden opacity-0 transition-opacity duration-300 flex flex-col gap-4">
           <a 
             href="/credencial" 
@@ -65,7 +68,6 @@ const navLinks = [
             <CredentialIcon class="w-[21px] h-[17px] fill-current text-black" />
             <span class="text-[16px] font-medium leading-6">Ver Credencial</span>
           </a>
-
           <a 
             href="/api/auth/signout" 
             class="flex items-center w-[144px] h-[24px] gap-2 px-1 text-[#1E1E1E] text-base font-medium leading-6 hover:text-[#4285F4] transition-colors duration-200"
@@ -75,7 +77,6 @@ const navLinks = [
           </a>
         </div>
       </div>
-
     ) : (
       <a 
         href="/api/auth/signin" 
@@ -85,17 +86,16 @@ const navLinks = [
       </a>
     )}
 
-    <!-- Mobile toggle (ahora después del avatar) -->
+    <!-- Hamburguesa móvil -->
     <button id="menu-toggle" class="md:hidden p-2 border rounded">
       <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
           d="M4 6h16M4 12h16M4 18h16" />
       </svg>
     </button>
-
   </div>
 
-  <!-- Menú móvil hamburguesa -->
+  <!-- Menú hamburguesa móvil -->
   <div id="mobile-menu" class="absolute top-full left-0 w-full bg-white shadow-md py-4 px-6 flex-col gap-4 hidden md:hidden border-t border-gray-200">
     <ul class="flex flex-col gap-4">
       {navLinks.map(link => (
@@ -110,9 +110,9 @@ const navLinks = [
       Eventos Pasados
     </a>
   </div>
-
 </nav>
 
+<!-- Script funcional -->
 <script type="module" is:inline>
   const menuToggle = document.getElementById('menu-toggle');
   const mobileMenu = document.getElementById('mobile-menu');
