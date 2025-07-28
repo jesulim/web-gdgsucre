@@ -3,10 +3,7 @@ import CalendarIcon from "@/assets/logos/calendar-month.svg"
 import LocationIcon from "@/assets/logos/distance.svg"
 ---
 
-<section
-    class="w-full pt-16 md:pt-16 pb-16 md:pb-24"
-    style="background-color: #ffffff;"
->
+<section class="w-full pt-16 md:pt-16 pb-16 md:pb-24 bg-white">
     <div class="max-w-7xl mx-auto px-4 md:px-6">
         <!-- Bento Grid Container -->
         <div
@@ -14,24 +11,23 @@ import LocationIcon from "@/assets/logos/distance.svg"
         >
             <!-- Left Box - Main Content -->
             <div
-                class="info-box border border-gray-200 rounded-2xl p-6 md:p-8 flex flex-col justify-center min-h-[300px] md:min-h-full shadow-lg"
-                style="background-color: #ffffff;"
+                class="info-box border border-border rounded-2xl p-6 md:p-8 flex flex-col justify-center min-h-[300px] md:min-h-full shadow-lg bg-gradient-to-br from-white via-gray-50 to-gray-100"
             >
                 <div class="space-y-4">
                     <h2
-                        class="text-2xl md:text-4xl font-bold text-gray-900 leading-tight"
+                        class="text-2xl md:text-4xl font-bold text-black leading-tight"
                     >
                         Sobre el Evento
                     </h2>
                     <p
-                        class="text-gray-700 text-base md:text-lg leading-relaxed"
+                        class="text-foreground text-base md:text-lg leading-relaxed"
                     >
                         Google I/O Extended es una experiencia única donde
                         desarrolladores, diseñadores y entusiastas de la
                         tecnología se reúnen para explorar las últimas
                         innovaciones de Google.
                     </p>
-                    <p class="text-gray-600 text-sm md:text-base">
+                    <p class="text-muted-foreground text-sm md:text-base">
                         Descubre las tendencias más recientes en inteligencia
                         artificial, desarrollo web, cloud computing y mucho más
                         en un ambiente colaborativo y de aprendizaje continuo.
@@ -43,8 +39,7 @@ import LocationIcon from "@/assets/logos/distance.svg"
             <div class="flex flex-col gap-4 md:gap-6">
                 <!-- Upper Box - Map Location -->
                 <div
-                    class="map-box border border-gray-200 rounded-2xl p-4 flex-1 min-h-[200px] md:min-h-0 flex flex-col justify-center items-center shadow-lg"
-                    style="background-color: #ffffff;"
+                    class="map-box border border-border rounded-2xl p-4 flex-1 min-h-[200px] md:min-h-0 flex flex-col justify-center items-center shadow-lg bg-gradient-to-br from-white via-gray-50 to-gray-100"
                 >
                     <div
                         class="w-full h-full rounded-xl overflow-hidden min-h-[180px]"
@@ -64,11 +59,10 @@ import LocationIcon from "@/assets/logos/distance.svg"
 
                 <!-- Lower Box - Date, Time and Location -->
                 <div
-                    class="date-box border border-gray-200 rounded-2xl p-6 flex-1 min-h-[120px] md:min-h-0 flex items-center justify-center shadow-lg"
-                    style="background-color: #ffffff;"
+                    class="date-box border border-border rounded-2xl p-6 flex-1 min-h-[120px] md:min-h-0 flex items-center justify-center shadow-lg bg-gradient-to-br from-white via-gray-50 to-gray-100"
                 >
                     <div
-                        class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 w-full"
+                        class="flex flex-row items-center justify-center gap-4 md:gap-6 w-full"
                     >
                         <!-- Date and Time Section -->
                         <div class="text-center space-y-3">
@@ -81,12 +75,12 @@ import LocationIcon from "@/assets/logos/distance.svg"
                             </div>
                             <div class="space-y-1">
                                 <p
-                                    class="text-base md:text-lg font-semibold text-gray-900"
+                                    class="text-base md:text-lg font-semibold text-black"
                                 >
                                     Sábado 9 de Agosto
                                 </p>
                                 <p
-                                    class="text-base md:text-lg font-medium text-gray-700"
+                                    class="text-base md:text-lg font-medium text-foreground"
                                 >
                                     8:00 Hrs
                                 </p>
@@ -95,7 +89,7 @@ import LocationIcon from "@/assets/logos/distance.svg"
 
                         <!-- Separator -->
                         <div
-                            class="hidden md:flex justify-center items-center h-8 w-[2px] bg-gray-300"
+                            class="flex justify-center items-center h-8 w-[2px] bg-border"
                         >
                         </div>
 
@@ -110,12 +104,12 @@ import LocationIcon from "@/assets/logos/distance.svg"
                             </div>
                             <div class="space-y-1">
                                 <p
-                                    class="text-base md:text-lg font-semibold text-gray-900"
+                                    class="text-base md:text-lg font-semibold text-black"
                                 >
                                     Facultad de Ciencias
                                 </p>
                                 <p
-                                    class="text-base md:text-lg font-medium text-gray-700"
+                                    class="text-base md:text-lg font-medium text-foreground"
                                 >
                                     y Tecnología
                                 </p>
@@ -129,43 +123,12 @@ import LocationIcon from "@/assets/logos/distance.svg"
 </section>
 
 <style>
-    /* Ensure Google Sans fonts are available */
-    @import url("https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap");
-
-    h2 {
-        font-family: "Google Sans", sans-serif;
-    }
-
-    p {
-        font-family: "Google Sans", sans-serif;
-    }
-
-    /* Mobile optimizations */
-    @media (max-width: 768px) {
-        .grid {
-            grid-template-rows: auto auto;
-        }
-
-        /* Ensure proper spacing on mobile */
-        section {
-            overflow-x: hidden;
-        }
-
-        /* Better text readability on mobile */
-        p {
-            word-wrap: break-word;
-            hyphens: auto;
-        }
-    }
-
-    /* Smooth transitions for hover effects on boxes only */
     .info-box,
     .map-box,
     .date-box {
         transition: all 0.3s ease;
     }
 
-    /* Hover effects for desktop - only on boxes */
     @media (min-width: 768px) {
         .info-box:hover,
         .map-box:hover,
