@@ -3,6 +3,7 @@ import { toast } from "sonner"
 
 import {
   type ColumnDef,
+  type Row,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -22,6 +23,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
+import { Input } from "@/components/ui/input"
 import { Toaster } from "@/components/ui/sonner"
 import {
   Table,
@@ -43,8 +45,40 @@ interface Registrations {
   voucher: string
 }
 
+const STATUS_STYLES: {
+  [key: string]: { colors: string; label: string }
+} = {
+  pending: { colors: "bg-blue-100 text-blue-600", label: "Pendiente" },
+  confirmed: { colors: "bg-green-100 text-green-600", label: "Confirmado" },
+  cancelled: { colors: "bg-red-100 text-red-600", label: "Cancelado" },
+}
+
+function normalizeString(str: string) {
+  // biome-ignore lint/suspicious/noMisleadingCharacterClass:
+  return str
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+}
+
+const customFilterFn = (rows: Row<Registrations>, columnId: string, filterValue: string) => {
+  const rowValue = rows.getValue(columnId)
+  if (typeof rowValue !== "string" || typeof filterValue !== "string") return false
+  return normalizeString(rowValue).includes(normalizeString(filterValue))
+}
+
+function StatusBadge({ row }: { row: Row<Registrations> }) {
+  const status = String(row.getValue("status"))
+  const { colors, label } = STATUS_STYLES[status] || {
+    color: "bg-gray-100 text-gray-600",
+    label: "Desconocido",
+  }
+  return <span className={`rounded-sm py-1 px-2 ${colors}`}>{label}</span>
+}
+
 export function RegistrationsTable() {
   const [data, setData] = useState<Registrations[]>()
+  const [globalFilter, setGlobalFilter] = useState("")
 
   const fetchData = useCallback(async () => {
     const response = await fetch("/api/registrations?slug=io-extended-25")
@@ -56,11 +90,7 @@ export function RegistrationsTable() {
     fetchData()
   }, [fetchData])
 
-  const sendConfirmationEmail = async (
-    id: number,
-    email: string,
-    name: string
-  ) => {
+  const sendConfirmationEmail = async (id: number, email: string, name: string) => {
     toast.info(`Enviando email de confirmación a ${email}...`)
 
     const response = await fetch("/api/sendPaymentConfirmation", {
@@ -104,20 +134,19 @@ export function RegistrationsTable() {
     {
       accessorKey: "role",
       header: "Rol",
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("role")}</div>
-      ),
+      enableGlobalFilter: false,
+      cell: ({ row }) => <div className="capitalize">{row.getValue("role")}</div>,
     },
     {
       accessorKey: "status",
       header: "Estado",
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("status")}</div>
-      ),
+      enableGlobalFilter: false,
+      cell: ({ row }) => <StatusBadge row={row} />,
     },
     {
       accessorKey: "package",
       header: "Paquete",
+      enableGlobalFilter: false,
       cell: ({ row }) => {
         const packageName = String(row.getValue("package"))
         const packageParts = packageName.split(" (")
@@ -128,12 +157,13 @@ export function RegistrationsTable() {
     {
       accessorKey: "voucher",
       header: "Comprobante",
+      enableGlobalFilter: false,
       cell: ({ row }) => (
         <a
           href={`/api/getSignedUrl?bucket=event-uploads&url=${row.getValue("voucher")}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-blue-500 hover:underline text-center"
+          className="text-blue-500 hover:underline text-center w-full"
         >
           Ver
         </a>
@@ -143,6 +173,7 @@ export function RegistrationsTable() {
       id: "actions",
       header: "Acciones",
       enableHiding: false,
+      enableGlobalFilter: false,
       cell: ({ row }) => {
         const registration = row.original
 
@@ -184,11 +215,23 @@ export function RegistrationsTable() {
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    globalFilterFn: customFilterFn,
+    state: {
+      globalFilter,
+    },
+    onGlobalFilterChange: setGlobalFilter,
   })
 
   return (
     <div className="w-full">
       <Toaster position="top-right" />
+
+      <Input
+        placeholder="Buscar por nombre, apellido o correo electrónico..."
+        value={globalFilter ?? ""}
+        onChange={e => setGlobalFilter(e.target.value)}
+        className="mb-4 w-full"
+      />
       <div className="overflow-hidden rounded-md border">
         <Table>
           <TableHeader>
@@ -199,10 +242,7 @@ export function RegistrationsTable() {
                     <TableHead key={header.id}>
                       {header.isPlaceholder
                         ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                        : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   )
                 })}
@@ -212,27 +252,18 @@ export function RegistrationsTable() {
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map(row => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
+                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
                   {row.getVisibleCells().map(cell => (
                     <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
+                <TableCell colSpan={columns.length} className="h-24 text-center">
+                  Sin resultados.
                 </TableCell>
               </TableRow>
             )}

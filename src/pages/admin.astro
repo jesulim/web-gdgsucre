@@ -1,4 +1,5 @@
 ---
+import Header from "@/components/Header.astro"
 import { RegistrationsTable } from "@/components/registration/RegistrationsTable"
 import BaseLayout from "@/layout/BaseLayout.astro"
 import { getProfile } from "@/lib/services/profileService"
@@ -13,6 +14,7 @@ if (!profile?.is_admin) {
 ---
 
 <BaseLayout>
+  <Header />
   <main class="p-12">
     <h2 class="text-xl mb-4 font-medium">Lista de participantes registrados</h2>
     <RegistrationsTable client:visible />
