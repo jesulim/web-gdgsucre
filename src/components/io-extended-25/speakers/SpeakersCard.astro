@@ -1,0 +1,46 @@
+---
+interface Props {
+  imgUrl: string
+  titulo: string
+  subtitulo: string
+  ubicacion?: string
+}
+
+const { imgUrl, titulo, subtitulo, ubicacion } = Astro.props
+
+// Importar el SVG del marco
+import MarcoSvg from "./marcos/marco.svg"
+---
+
+<div class="flex flex-col items-center w-60 md:w-80">
+  <!-- Imagen circular del speaker con marco SVG -->
+  <div class="relative w-full aspect-square z-20">
+    <div class="absolute inset-0 z-10">
+      <img src={MarcoSvg.src} alt="Marco" class="w-full h-full z-10-" />
+    </div>
+
+    <!-- Imagen de fondo -->
+    <div class="w-full h-full rounded-full overflow-hidden">
+      <img src={imgUrl} alt={titulo} class="w-full h-full object-cover" />
+    </div>
+  </div>
+
+  <!-- Información del speaker -->
+  <div
+    class="flex flex-col items-center pb-6 md:pb-8 justify-end relative bg-[#202124] w-full h-55 md:h-75 -mt-30 md:-mt-40 rounded-b-[60px] md:rounded-b-[80px]"
+  >
+    <div class="flex flex-col items-center mt-16 md:mt-20">
+      <h3 class="text-white font-bold text-xl md:text-3xl">
+        {titulo}
+      </h3>
+
+      <div class="flex flex-col items-center gap-0">
+        <p class="text-[#4285F4] text-[13px] md:text-[17px] font-bold">
+          {subtitulo}
+        </p>
+
+        {ubicacion && <p class="text-white text-[8px] md:text-[10px]">{ubicacion}</p>}
+      </div>
+    </div>
+  </div>
+</div>

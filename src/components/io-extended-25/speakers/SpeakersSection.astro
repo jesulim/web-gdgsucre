@@ -1,0 +1,47 @@
+---
+import SpeakersCard from "./SpeakersCard.astro"
+---
+
+<div class="flex flex-col items-center gap-4 w-full px-4">
+  <h2
+    class="text-2xl md:text-4xl font-bold text-black leading-tight text-center"
+  >
+    SPEAKERS
+  </h2>
+
+  <section class="w-full max-w-5xl">
+    <!-- Cambié de max-w-7xl a max-w-5xl -->
+    <!-- Grid responsive que se adapta a cualquier pantalla -->
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10 place-items-center"
+    >
+      <SpeakersCard
+        imgUrl="https://definicion.com/wp-content/uploads/2022/09/imagen.jpg"
+        titulo="Rodrigo Torrico"
+        subtitulo="Desarrollo Web"
+        ubicacion="Cochabamba - BO"
+      />
+
+      <SpeakersCard
+        imgUrl="https://definicion.com/wp-content/uploads/2022/09/imagen.jpg"
+        titulo="Brian Castillo"
+        subtitulo="AI & Firebase"
+        ubicacion="Lima - Perú"
+      />
+
+      <SpeakersCard
+        imgUrl="https://definicion.com/wp-content/uploads/2022/09/imagen.jpg"
+        titulo="Sara Salazar"
+        subtitulo="AI & Cloud"
+        ubicacion="La Paz - BO"
+      />
+
+      <SpeakersCard
+        imgUrl="https://definicion.com/wp-content/uploads/2022/09/imagen.jpg"
+        titulo="Carlos Collazos"
+        subtitulo="UX/UI"
+        ubicacion="Cochabamba - BO"
+      />
+    </div>
+  </section>
+</div>
