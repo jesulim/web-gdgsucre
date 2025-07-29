@@ -4,6 +4,7 @@ import { toast } from "sonner"
 import {
   type ColumnDef,
   type Row,
+  type Table as TanstackTable,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -36,6 +37,7 @@ import {
 
 interface Registrations {
   id: number
+  created_at: string
   status: string
   role: string
   first_name: string
@@ -116,6 +118,22 @@ export function RegistrationsTable() {
   }
 
   const columns: ColumnDef<Registrations>[] = [
+    {
+      accessorKey: "created_at",
+      header: "Fecha de registro",
+      enableGlobalFilter: false,
+      cell: ({ row }) => {
+        const created_at = String(row.getValue("created_at"))
+        const date = new Date(created_at)
+        const formatter = new Intl.DateTimeFormat("es-BO", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "2-digit",
+        })
+
+        return <span>{formatter.format(date)}</span>
+      },
+    },
     {
       accessorKey: "first_name",
       header: "Nombre(s)",
@@ -216,6 +234,9 @@ export function RegistrationsTable() {
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     globalFilterFn: customFilterFn,
+    initialState: {
+      pagination: { pageSize: 12 },
+    },
     state: {
       globalFilter,
     },
@@ -232,6 +253,7 @@ export function RegistrationsTable() {
         onChange={e => setGlobalFilter(e.target.value)}
         className="mb-4 w-full"
       />
+
       <div className="overflow-hidden rounded-md border">
         <Table>
           <TableHeader>
@@ -271,25 +293,40 @@ export function RegistrationsTable() {
         </Table>
       </div>
 
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Anterior
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Siguiente
-          </Button>
-        </div>
+      <TablePagination table={table} />
+    </div>
+  )
+}
+
+function TablePagination({ table }: { table: TanstackTable<Registrations> }) {
+  const firstRow = table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1
+  const currentPageRows = table.getRowModel().rows.length
+  const lastRow = firstRow + currentPageRows - 1
+  const totalRows = table.getCoreRowModel().rows.length
+
+  return (
+    <div className="flex items-center justify-between space-x-2 py-4">
+      <p>
+        Mostrando {firstRow}-{lastRow} de {totalRows} registros.
+      </p>
+
+      <div className="space-x-2">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          Anterior
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          Siguiente
+        </Button>
       </div>
     </div>
   )
