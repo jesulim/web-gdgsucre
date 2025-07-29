@@ -1,45 +1,86 @@
 ---
 interface Props {
   imgUrl: string
-  titulo: string
-  subtitulo: string
+  nombre: string
+  googleExpert: boolean
+  topico: string
   ubicacion?: string
 }
 
-const { imgUrl, titulo, subtitulo, ubicacion } = Astro.props
+const { imgUrl, nombre, googleExpert, topico, ubicacion } = Astro.props
 
-// Importar el SVG del marco
+import MarcoSvgExpert from "./marcos/marco-expert.svg"
 import MarcoSvg from "./marcos/marco.svg"
+
+function getWordColor(palabra: string): string {
+  const texto = palabra.toLowerCase()
+
+  if (texto.includes("desarrollo") || texto.includes("web")) {
+    return "text-[#4285F4]"
+  }
+
+  if (texto.includes("ia") || texto.includes("ai")) {
+    return "text-red-500"
+  }
+
+  if (texto.includes("firebase") || texto.includes("cloud")) {
+    return "text-yellow-500"
+  }
+
+  if (texto.includes("ui") || texto.includes("ux")) {
+    return "text-green-500"
+  }
+
+  return "text-white"
+}
+
+function colorearPalabrasIndividuales(texto: string): string {
+  return texto
+    .split(" ")
+    .map(palabra => {
+      const color = getWordColor(palabra)
+      return `<span class="${color}">${palabra}</span>`
+    })
+    .join(" ")
+}
+
+const topicoColoreado = colorearPalabrasIndividuales(topico)
 ---
 
 <div class="flex flex-col items-center w-60 md:w-80">
-  <!-- Imagen circular del speaker con marco SVG -->
   <div class="relative w-full aspect-square z-20">
-    <div class="absolute inset-0 z-10">
-      <img src={MarcoSvg.src} alt="Marco" class="w-full h-full z-10-" />
+    <div class={`absolute inset-0 z-10 ${googleExpert ? "scale-113" : ""}`}>
+      <img
+        src={googleExpert ? MarcoSvgExpert.src : MarcoSvg.src}
+        alt={googleExpert ? "Marco Expert" : "Marco Normal"}
+        class="w-full h-full"
+      />
     </div>
 
-    <!-- Imagen de fondo -->
     <div class="w-full h-full rounded-full overflow-hidden">
-      <img src={imgUrl} alt={titulo} class="w-full h-full object-cover" />
+      <img src={imgUrl} alt={nombre} class="w-full h-full object-cover" />
     </div>
   </div>
 
-  <!-- Información del speaker -->
   <div
     class="flex flex-col items-center pb-6 md:pb-8 justify-end relative bg-[#202124] w-full h-55 md:h-75 -mt-30 md:-mt-40 rounded-b-[60px] md:rounded-b-[80px]"
   >
     <div class="flex flex-col items-center mt-16 md:mt-20">
       <h3 class="text-white font-bold text-xl md:text-3xl">
-        {titulo}
+        {nombre}
       </h3>
 
       <div class="flex flex-col items-center gap-0">
-        <p class="text-[#4285F4] text-[13px] md:text-[17px] font-bold">
-          {subtitulo}
-        </p>
+        <p
+          class="text-[13px] md:text-[17px] font-bold"
+          set:html={topicoColoreado}
+        />
 
-        {ubicacion && <p class="text-white text-[8px] md:text-[10px]">{ubicacion}</p>}
+        {
+          ubicacion && (
+            <p class="text-white text-[8px] md:text-[10px]">{ubicacion}</p>
+          )
+        }
       </div>
     </div>
   </div>
