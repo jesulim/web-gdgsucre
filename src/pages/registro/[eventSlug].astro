@@ -27,6 +27,10 @@ if (registration?.status === "pending") {
   return Astro.redirect(`/registro/${eventSlug}/pendiente`)
 }
 
+if (registration?.status === "confirmed") {
+  return Astro.redirect(`/registro/${eventSlug}/confirmado`)
+}
+
 const formFields = await getFormFieldsByEvent(supabase, eventSlug)
 ---
 
