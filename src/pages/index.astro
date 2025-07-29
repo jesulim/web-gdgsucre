@@ -1,15 +1,16 @@
 ---
 import BaseLayout from "../layout/BaseLayout.astro"
 
+import Header from "@/components/Header.astro"
+import About from "@/components/io-extended-25/About.astro"
+
+import Footer from "@/components/io-extended-25/Footer.astro"
 import Hero from "@/components/io-extended-25/Hero.astro"
-import Footer from "../components/Footer.astro"
-import Header from "../components/Header.astro"
 ---
 
 <BaseLayout>
   <Header />
-  <main class="h-32 grid place-items-center">
-    <Hero />
-    <Footer />
-  </main>
+  <Hero />
+  <About />
+  <Footer />
 </BaseLayout>

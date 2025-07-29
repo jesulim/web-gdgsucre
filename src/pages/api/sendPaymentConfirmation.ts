@@ -23,6 +23,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     }
 
     const supabase = await createUserClient(cookies)
+    await updateRegistrationStatus(supabase, registrationId, "confirmed")
 
     const emailData = {
       userEmail,
@@ -32,13 +33,10 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
     const result = await sendPaymentConfirmationEmail(emailData)
 
-    await updateRegistrationStatus(supabase, registrationId, "confirmed")
-
     return new Response(
       JSON.stringify({
         success: true,
-        message:
-          "Email de confirmación de pago enviado exitosamente y estado actualizado",
+        message: "Email de confirmación de pago enviado exitosamente y estado actualizado",
         messageId: result.messageId,
       }),
       {

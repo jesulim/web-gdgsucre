@@ -1,0 +1,27 @@
+---
+import { Image } from "astro:assets"
+import SocialIcons from "@/components/SocialIcons.astro"
+
+import IOExtendedSucreWhite from "@/assets/io-extended-sucre-white.webp"
+import IOFooter from "@/assets/io25-footer.webp"
+---
+
+<footer class="h-72 bg-black text-white flex md:items-center justify-between">
+  <div class="w-full flex flex-col lg:flex-row lg:justify-between lg:px-16 xl:px-28 lg:items-center">
+    <a href="#">
+      <Image src={IOExtendedSucreWhite} alt="I/O Extended Sucre 2025 white" width={370} />
+    </a>
+
+    <div class="px-4">
+      <p class="text-lg lg:text-xl font-bold lg:mb-4">Síguenos en</p>
+      <SocialIcons />
+    </div>
+  </div>
+
+  <Image
+    class="hidden sm:block h-full w-fit"
+    src={IOFooter}
+    alt="I/O Extended Sucre 2025 footer"
+    height={300}
+  />
+</footer>
