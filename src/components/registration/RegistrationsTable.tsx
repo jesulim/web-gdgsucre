@@ -120,9 +120,19 @@ export function RegistrationsTable() {
   const columns: ColumnDef<Registrations>[] = [
     {
       accessorKey: "created_at",
-      header: "Fecha  registro",
+      header: "Fecha de registro",
       enableGlobalFilter: false,
-      cell: ({ row }) => <span>{String(row.getValue("created_at")).split("T")[0]}</span>,
+      cell: ({ row }) => {
+        const created_at = String(row.getValue("created_at"))
+        const date = new Date(created_at)
+        const formatter = new Intl.DateTimeFormat("es-BO", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "2-digit",
+        })
+
+        return <span>{formatter.format(date)}</span>
+      },
     },
     {
       accessorKey: "first_name",
@@ -243,6 +253,7 @@ export function RegistrationsTable() {
         onChange={e => setGlobalFilter(e.target.value)}
         className="mb-4 w-full"
       />
+
       <div className="overflow-hidden rounded-md border">
         <Table>
           <TableHeader>
@@ -290,14 +301,13 @@ export function RegistrationsTable() {
 function TablePagination({ table }: { table: TanstackTable<Registrations> }) {
   const firstRow = table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1
   const currentPageRows = table.getRowModel().rows.length
-  const totalRows = table.getCoreRowModel().rows.length
-
   const lastRow = firstRow + currentPageRows - 1
+  const totalRows = table.getCoreRowModel().rows.length
 
   return (
     <div className="flex items-center justify-between space-x-2 py-4">
       <p>
-        Mostrando {firstRow}-{lastRow} de {totalRows} registros
+        Mostrando {firstRow}-{lastRow} de {totalRows} registros.
       </p>
 
       <div className="space-x-2">
