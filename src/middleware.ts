@@ -1,6 +1,7 @@
 import { defineMiddleware } from "astro:middleware"
+
 import { supabase } from "@/lib/supabase"
-import { setSupabaseCookies } from "./lib/utils"
+import { setSupabaseCookies } from "@/lib/utils"
 
 export const onRequest = defineMiddleware(async (context, next) => {
   const { cookies, url } = context
