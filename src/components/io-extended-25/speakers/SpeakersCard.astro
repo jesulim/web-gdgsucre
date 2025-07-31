@@ -1,6 +1,7 @@
 ---
+import { Image } from "astro:assets"
 interface Props {
-  imgUrl: string
+  imgUrl: ImageMetadata
   nombre: string
   googleExpert: boolean
   topico: string
@@ -16,7 +17,7 @@ function getWordColor(palabra: string): string {
   const texto = palabra.toLowerCase()
 
   if (texto.includes("desarrollo") || texto.includes("web")) {
-    return "text-[#4285F4]"
+    return "text-blue-500"
   }
 
   if (texto.includes("ia") || texto.includes("ai")) {
@@ -49,21 +50,27 @@ const topicoColoreado = colorearPalabrasIndividuales(topico)
 
 <div class="flex flex-col items-center w-60 md:w-80">
   <div class="relative w-full aspect-square z-20">
-    <div class={`absolute inset-0 z-10 ${googleExpert ? "scale-113" : ""}`}>
+    <div class={`absolute  z-10 ${googleExpert ? "inset-0 top-4 scale-113" : "inset-0"}`}>
       <img
         src={googleExpert ? MarcoSvgExpert.src : MarcoSvg.src}
         alt={googleExpert ? "Marco Expert" : "Marco Normal"}
+        width="360"
+        height="360"
         class="w-full h-full"
       />
     </div>
 
-    <div class="w-full h-full rounded-full overflow-hidden">
-      <img src={imgUrl} alt={nombre} class="w-full h-full object-cover" />
-    </div>
+    <Image
+      src={imgUrl}
+      alt={nombre}
+      class="rounded-full shadow-2xl shadow-black"
+      width="360"
+      height="360"
+    />
   </div>
 
   <div
-    class="flex flex-col items-center pb-6 md:pb-8 justify-end relative bg-[#202124] w-full h-55 md:h-75 -mt-30 md:-mt-40 rounded-b-[60px] md:rounded-b-[80px]"
+    class="flex flex-col items-center pb-6 md:pb-8 justify-end relative bg-black w-full h-55 md:h-75 -mt-30 md:-mt-36 rounded-b-[60px] md:rounded-b-[80px] shadow-gray-400 shadow-lg"
   >
     <div class="flex flex-col items-center mt-16 md:mt-20">
       <h3 class="text-white font-bold text-xl md:text-3xl">
@@ -71,16 +78,9 @@ const topicoColoreado = colorearPalabrasIndividuales(topico)
       </h3>
 
       <div class="flex flex-col items-center gap-0">
-        <p
-          class="text-[13px] md:text-[17px] font-bold"
-          set:html={topicoColoreado}
-        />
+        <p class="text-lg md:text-xl font-bold" set:html={topicoColoreado} />
 
-        {
-          ubicacion && (
-            <p class="text-white text-[8px] md:text-[10px]">{ubicacion}</p>
-          )
-        }
+        {ubicacion && <p class="text-white text-sm md:text-lg">{ubicacion}</p>}
       </div>
     </div>
   </div>
