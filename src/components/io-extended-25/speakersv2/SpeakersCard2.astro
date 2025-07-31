@@ -1,5 +1,7 @@
 ---
 import { Image } from "astro:assets"
+import type { ImageMetadata } from "astro"
+
 interface Props {
   imgUrl: ImageMetadata
   nombre: string
@@ -17,7 +19,7 @@ function getWordColor(palabra: string): string {
   const texto = palabra.toLowerCase()
 
   if (texto.includes("desarrollo") || texto.includes("web")) {
-    return "text-blue-500"
+    return "text-[#4285F4]"
   }
 
   if (texto.includes("ia") || texto.includes("ai")) {
@@ -70,7 +72,7 @@ const topicoColoreado = colorearPalabrasIndividuales(topico)
   </div>
 
   <div
-    class="flex flex-col items-center pb-6 md:pb-8 justify-end relative bg-black w-full h-55 md:h-75 -mt-30 md:-mt-36 rounded-b-[60px] md:rounded-b-[80px] shadow-gray-400 shadow-lg"
+    class="flex flex-col items-center pb-6 md:pb-8 justify-end relative bg-[#202124] w-full h-55 md:h-75 -mt-30 md:-mt-40 rounded-b-[60px] md:rounded-b-[80px] shadow-gray-400 shadow-lg"
   >
     <div class="flex flex-col items-center mt-16 md:mt-20">
       <h3 class="text-white font-bold text-xl md:text-3xl">
@@ -78,9 +80,16 @@ const topicoColoreado = colorearPalabrasIndividuales(topico)
       </h3>
 
       <div class="flex flex-col items-center gap-0">
-        <p class="text-lg md:text-xl font-bold" set:html={topicoColoreado} />
+        <p
+          class="text-sm md:text-lg font-bold"
+          set:html={topicoColoreado}
+        />
 
-        {ubicacion && <p class="text-white text-sm md:text-lg">{ubicacion}</p>}
+        {
+          ubicacion && (
+            <p class="text-white text-xs md:text-sm">{ubicacion}</p>
+          )
+        }
       </div>
     </div>
   </div>
