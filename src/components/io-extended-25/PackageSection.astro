@@ -10,7 +10,7 @@ import PackageCard from "./PackageCard.astro"
     <!-- Cards Container - Staggered Layout -->
     <div class="flex flex-col md:flex-row items-center md:items-end justify-center w-full gap-8 md:gap-0">
       <!-- Left Card - Lower Position -->
-      <div class="md:translate-y-8 md:ml-[96px]">
+      <div class="md:translate-y-8 md:ml-[96px] lg:ml-[96px] xl:ml-[96px] 2xl:ml-[96px] md:ml-[48px]">
         <PackageCard
           title="Paquete WebVerse"
           benefits={["Refrigerio", "Almuerzo", "Stickers"]}
@@ -21,7 +21,7 @@ import PackageCard from "./PackageCard.astro"
       </div>
       
       <!-- Middle Card - Higher Position -->
-      <div class="md:-translate-y-8 md:mx-[12px]">
+      <div class="md:-translate-y-8 md:mx-[12px] lg:mx-[12px] xl:mx-[12px] 2xl:mx-[12px] md:mx-[6px]">
         <PackageCard
           title="Paquete Innovators"
           benefits={["Refrigerio", "Almuerzo", "Stickers", "Mousepad", "Estuche", "Cubo"]}
@@ -32,7 +32,7 @@ import PackageCard from "./PackageCard.astro"
       </div>
       
       <!-- Right Card - Lower Position -->
-      <div class="md:translate-y-8 md:mr-[96px]">
+      <div class="md:translate-y-8 md:mr-[96px] lg:mr-[96px] xl:mr-[96px] 2xl:mr-[96px] md:mr-[48px]">
         <PackageCard
           title="Paquete CodeLab"
           benefits={["Refrigerio", "Almuerzo", "Stickers", "Mousepad"]}
@@ -43,4 +43,29 @@ import PackageCard from "./PackageCard.astro"
       </div>
     </div>
   </div>
-</div> 
+</div>
+
+<style>
+  /* Media queries específicas para tablets */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    #seccion-paquetes .flex.flex-col.md\\:flex-row {
+      gap: 1rem;
+    }
+    
+    #seccion-paquetes .flex.flex-col.md\\:flex-row > div {
+      transform: none !important;
+      margin: 0 !important;
+    }
+  }
+  
+  /* Media queries para pantallas medianas */
+  @media (min-width: 1024px) and (max-width: 1279px) {
+    #seccion-paquetes .flex.flex-col.md\\:flex-row > div:first-child {
+      margin-left: 2rem !important;
+    }
+    
+    #seccion-paquetes .flex.flex-col.md\\:flex-row > div:last-child {
+      margin-right: 2rem !important;
+    }
+  }
+</style> 

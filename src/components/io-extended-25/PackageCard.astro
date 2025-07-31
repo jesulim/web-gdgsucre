@@ -11,7 +11,7 @@ export interface Props {
 const { title, benefits, imageSrc, imageAlt, price } = Astro.props
 ---
 
-<div class="bg-gradient-to-br from-white via-gray-50 to-gray-100 rounded-[2.5rem] p-6 md:p-8 flex flex-col justify-between h-[320px] w-[280px] md:h-[400px] md:w-[400px] mx-auto border border-gray-200/50 backdrop-blur-sm" style="box-shadow: 4px 4px 12.1px 2px rgba(0, 0, 0, 0.25);">
+<div class="bg-gradient-to-br from-white via-gray-50 to-gray-100 rounded-[2.5rem] p-6 md:p-8 flex flex-col justify-between h-[320px] w-[280px] md:h-[400px] md:w-[400px] mx-auto border border-gray-200/50 backdrop-blur-sm package-card" style="box-shadow: 4px 4px 12.1px 2px rgba(0, 0, 0, 0.25);">
   <!-- Card Title -->
   <div class="text-center mb-3 md:mb-4">
     <h3 class="text-[24px] md:text-[32px] font-bold text-[#1e1e1e] tracking-tight leading-tight">
@@ -56,3 +56,56 @@ const { title, benefits, imageSrc, imageAlt, price } = Astro.props
     </div>
   </div>
 </div>
+
+<style>
+  /* Media queries específicas para tablets */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .package-card {
+      height: 360px !important;
+      width: 320px !important;
+      padding: 1.5rem !important;
+    }
+    
+    .package-card h3 {
+      font-size: 28px !important;
+    }
+    
+    .package-card span {
+      font-size: 18px !important;
+    }
+    
+    .package-card .w-24.h-24.md\\:w-\\[150px\\].md\\:h-\\[150px\\] {
+      width: 120px !important;
+      height: 120px !important;
+    }
+    
+    .package-card .text-\\[24px\\].md\\:text-\\[32px\\] {
+      font-size: 28px !important;
+    }
+  }
+  
+  /* Media queries para pantallas medianas */
+  @media (min-width: 1024px) and (max-width: 1279px) {
+    .package-card {
+      height: 380px !important;
+      width: 340px !important;
+    }
+    
+    .package-card h3 {
+      font-size: 30px !important;
+    }
+    
+    .package-card span {
+      font-size: 19px !important;
+    }
+    
+    .package-card .w-24.h-24.md\\:w-\\[150px\\].md\\:h-\\[150px\\] {
+      width: 130px !important;
+      height: 130px !important;
+    }
+    
+    .package-card .text-\\[24px\\].md\\:text-\\[32px\\] {
+      font-size: 30px !important;
+    }
+  }
+</style>
