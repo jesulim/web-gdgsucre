@@ -1,16 +1,16 @@
 ---
-import PackageCodeLab from "@/assets/packages/codelab-package.png"
-import PackageInnovators from "@/assets/packages/innovators-package.png"
-import PackageWebVerse from "@/assets/packages/webverse-package.png"
+import PackageCodeLab from "@/assets/packages/codelab-package.webp"
+import PackageInnovators from "@/assets/packages/innovators-package.webp"
+import PackageWebVerse from "@/assets/packages/webverse-package.webp"
 import PackageCard from "./PackageCard.astro"
 ---
 
-<div class="w-full py-16 md:py-24 relative z-10">
+<div id="seccion-paquetes" class="w-full py-12 md:py-10 relative z-10">
   <div class="flex flex-col items-center gap-8 md:gap-12 w-full px-4 md:px-8 max-w-[1200px] mx-auto">
     <!-- Cards Container - Staggered Layout -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 w-full items-end">
+    <div class="flex flex-col md:flex-row items-center md:items-end justify-center w-full gap-8 md:gap-0 md:max-lg:gap-4">
       <!-- Left Card - Lower Position -->
-      <div class="md:translate-y-8">
+      <div class="md:translate-y-8 md:max-lg:translate-y-0 md:max-lg:mx-0 md:ml-[96px] lg:ml-8 xl:ml-[96px] 2xl:ml-[96px]">
         <PackageCard
           title="Paquete WebVerse"
           benefits={["Refrigerio", "Almuerzo", "Stickers"]}
@@ -21,7 +21,7 @@ import PackageCard from "./PackageCard.astro"
       </div>
       
       <!-- Middle Card - Higher Position -->
-      <div class="md:-translate-y-8">
+      <div class="md:-translate-y-8 md:max-lg:translate-y-0 md:max-lg:mx-0 md:mx-[12px] lg:mx-[12px] xl:mx-[12px] 2xl:mx-[12px]">
         <PackageCard
           title="Paquete Innovators"
           benefits={["Refrigerio", "Almuerzo", "Stickers", "Mousepad", "Estuche", "Cubo"]}
@@ -32,7 +32,7 @@ import PackageCard from "./PackageCard.astro"
       </div>
       
       <!-- Right Card - Lower Position -->
-      <div class="md:translate-y-8">
+      <div class="md:translate-y-8 md:max-lg:translate-y-0 md:max-lg:mx-0 md:mr-[96px] lg:mr-8 xl:mr-[96px] 2xl:mr-[96px]">
         <PackageCard
           title="Paquete CodeLab"
           benefits={["Refrigerio", "Almuerzo", "Stickers", "Mousepad"]}
@@ -43,4 +43,6 @@ import PackageCard from "./PackageCard.astro"
       </div>
     </div>
   </div>
-</div> 
+</div>
+
+ 
