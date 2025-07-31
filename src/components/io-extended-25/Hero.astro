@@ -5,6 +5,7 @@ import GoogleIoLogo from "@/assets/logos/google-io-extended-2025-logo.png"
 import IoHomeBottom from "@/assets/logos/io25-home-bottom.webp"
 import { createUserClient } from "@/lib/supabase"
 import PackageSection from "./PackageSection.astro"
+import SpeakersSection from "./speakers/SpeakersSection.astro"
 
 const supabase = await createUserClient(Astro.cookies)
 const {
