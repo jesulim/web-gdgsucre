@@ -4,9 +4,40 @@ import brianImg from "./fotos/Brian-Castillo.webp"
 import carlosImg from "./fotos/Carlos-Collazos.webp"
 import rodrigoImg from "./fotos/Rodrigo-Torrico.webp"
 import saraImg from "./fotos/Sara-Salazar.webp"
+
+const speakers = [
+  {
+    imgUrl: rodrigoImg,
+    nombre: "Rodrigo Torrico",
+    googleExpert: false,
+    topico: "Desarrollo Web",
+    ubicacion: "Cochabamba - BO",
+  },
+  {
+    imgUrl: brianImg,
+    nombre: "Brian Castillo",
+    googleExpert: true,
+    topico: "AI & Firebase",
+    ubicacion: "Lima - Perú",
+  },
+  {
+    imgUrl: saraImg,
+    nombre: "Sara Salazar",
+    googleExpert: false,
+    topico: "AI & Cloud",
+    ubicacion: "La Paz - BO",
+  },
+  {
+    imgUrl: carlosImg,
+    nombre: "Carlos Collazos",
+    googleExpert: false,
+    topico: "UX/UI",
+    ubicacion: "Cochabamba - BO",
+  },
+]
 ---
 
-<div class="flex flex-col items-center gap-4 w-full px-4 pb-12">
+<section class="flex flex-col items-center gap-4 w-full px-4 pb-12">
   <h2
     class="text-2xl md:text-4xl font-bold text-black leading-tight text-center pb-4 md:pb-10"
   >
@@ -17,39 +48,17 @@ import saraImg from "./fotos/Sara-Salazar.webp"
     <div
       class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10 place-items-center"
     >
-      <SpeakersCard
-        imgUrl={rodrigoImg.src}
-        nombre="Rodrigo Torrico"
-        googleExpert={false}
-        topico="Desarrollo Web"
-        ubicacion="Cochabamba - BO"
-      />
-
-      <SpeakersCard
-        imgUrl={brianImg.src}
-        nombre="Brian Castillo"
-        googleExpert={true}
-        topico="AI & Firebase"
-        ubicacion="Lima - Perú"
-      />
-
-      <SpeakersCard
-        imgUrl={saraImg.src}
-        nombre="Sara Salazar"
-        googleExpert={false}
-        topico="AI & Cloud"
-        ubicacion="La Paz - BO"
-      />
-
-      <div class="lg:col-start-2">
-        <SpeakersCard
-          imgUrl={carlosImg.src}
-          nombre="Carlos Collazos"
-          googleExpert={false}
-          topico="UX/UI"
-          ubicacion="Cochabamba - BO"
-        />
-      </div>
+      {speakers.map((speaker, index) => (
+        <div class={index === 3 ? "lg:col-start-2" : ""}>
+          <SpeakersCard
+            imgUrl={speaker.imgUrl}
+            nombre={speaker.nombre}
+            googleExpert={speaker.googleExpert}
+            topico={speaker.topico}
+            ubicacion={speaker.ubicacion}
+          />
+        </div>
+      ))}
     </div>
   </section>
 </div>

@@ -1,6 +1,9 @@
 ---
+import { Image } from "astro:assets"
+import type { ImageMetadata } from "astro"
+
 interface Props {
-  imgUrl: string
+  imgUrl: ImageMetadata
   nombre: string
   googleExpert: boolean
   topico: string
@@ -50,15 +53,15 @@ const topicoColoreado = colorearPalabrasIndividuales(topico)
 <div class="flex flex-col items-center w-60 md:w-80">
   <div class="relative w-full aspect-square z-20">
     <div class={`absolute inset-0 z-10 ${googleExpert ? "scale-113" : ""}`}>
-      <img
-        src={googleExpert ? MarcoSvgExpert.src : MarcoSvg.src}
+      <Image
+        src={googleExpert ? MarcoSvgExpert : MarcoSvg}
         alt={googleExpert ? "Marco Expert" : "Marco Normal"}
         class="w-full h-full"
       />
     </div>
 
     <div class="w-full h-full rounded-full overflow-hidden">
-      <img src={imgUrl} alt={nombre} class="w-full h-full object-cover" />
+      <Image src={imgUrl} alt={nombre} class="w-full h-full object-cover" />
     </div>
   </div>
 
@@ -72,13 +75,13 @@ const topicoColoreado = colorearPalabrasIndividuales(topico)
 
       <div class="flex flex-col items-center gap-0">
         <p
-          class="text-[13px] md:text-[17px] font-bold"
+          class="text-sm md:text-lg font-bold"
           set:html={topicoColoreado}
         />
 
         {
           ubicacion && (
-            <p class="text-white text-[8px] md:text-[10px]">{ubicacion}</p>
+            <p class="text-white text-xs md:text-sm">{ubicacion}</p>
           )
         }
       </div>
