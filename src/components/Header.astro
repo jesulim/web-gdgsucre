@@ -1,8 +1,11 @@
 ---
 import { Image } from "astro:assets"
+import UserSignIn from "@/assets/icons/social/user-round-plus.svg"
+import LogoBlackIO from "@/assets/logos/IO_Extended_Black.png"
 import CredentialIcon from "@/assets/logos/credential.svg"
 import LogoHorizontalBlack from "@/assets/logos/google-io-extended-2025-logo.png"
 import LogoutIcon from "@/assets/logos/logout.svg"
+import Avatar from "@/components/Avatar.astro"
 import { createUserClient } from "@/lib/supabase"
 
 const supabase = await createUserClient(Astro.cookies)
@@ -19,10 +22,10 @@ const navLinks = [
 ]
 ---
 
-<nav class="w-full h-[100px] bg-white flex items-center justify-between px-6 border-b shadow-sm relative z-50">
+<nav class="w-full h-[100px] bg-white flex items-center justify-between px-6 border-b shadow-sm fixed top-0 left-0 z-50">
   <!-- Logo -->
-  <a href="/" class="flex items-center">
-    <Image src={LogoHorizontalBlack} alt="GDG Logo" width={140} height={40} class="object-contain md:w-[200px] md:h-[46px]" />
+  <a href="#Hero" class="flex items-center">
+    <Image src={LogoBlackIO} alt="GDG Logo" width={140} height={40} class="object-contain md:w-[200px] md:h-[46px]" />
   </a>
 
   <!-- Navegación desktop -->
@@ -39,25 +42,14 @@ const navLinks = [
   <!-- Botones / sesión -->
   <div class="flex items-center gap-4 h-[42px]">
     <!-- Eventos Pasados (visible en desktop y móvil) -->
-    <a href="/api/auth/eventos" class="hidden md:inline text-blue-500 border-2 border-blue-500 bg-white hover:bg-[#4285F4] hover:text-white font-medium text-base leading-6 px-6 py-[9px] rounded-full transition-colors duration-200">
+    <a href="https://devfest2024.gdgsucre.com/pastEvents/" class="hidden md:inline text-blue-500 border-2 border-blue-500 bg-white hover:bg-[#4285F4] hover:text-white font-medium text-sm lg:text-base leading-5 lg:leading-6 px-4 lg:px-6 py-[6px] lg:py-[9px] rounded-full transition-colors duration-200">
       Eventos Pasados
     </a>
 
     <!-- Avatar o Login (siempre visible, también en móvil) -->
     {user ? (
       <div class="relative">
-        <button 
-          id="avatar-btn"
-          class="w-11 h-11 md:w-[60px] md:h-[60px] rounded-full overflow-hidden border-2 border-gray-200 hover:border-blue-500 transition-all duration-300 ease-out"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
-          <img
-            src={user.user_metadata?.avatar_url || '/default-avatar.png'}
-            alt="User Avatar"
-            class="w-full h-full object-cover"
-          />
-        </button>
+        <Avatar size="lg" className="hover:border-blue-500 transition-all duration-300 ease-out" />
 
         <!-- Dropdown personalizado -->
         <div id="user-menu" class="absolute right-0 mt-2 w-[176px] h-[93px] bg-white rounded-[8px] shadow-lg px-4 py-[10px] z-50 border border-gray-200 hidden opacity-0 transition-opacity duration-300 flex flex-col gap-4">
@@ -78,11 +70,18 @@ const navLinks = [
         </div>
       </div>
     ) : (
+      <!-- desktop con con texto -->
+      <a href="/api/auth/signin" class="hidden md:inline bg-[#4285F4] text-white hover:bg-[#3367D6] font-medium text-sm lg:text-base leading-5 lg:leading-6 px-5 lg:px-8 py-[6px] lg:py-[9px] rounded-full transition-colors duration-200">
+        Iniciar Sesión
+      </a>
+
+      <!-- mobile cono icono svg -->
       <a 
         href="/api/auth/signin" 
-        class="bg-[#4285F4] text-white hover:bg-[#3367D6] font-medium text-sm md:text-base leading-5 md:leading-6 px-4 md:px-8 py-2 md:py-[9px] rounded-full transition-colors duration-200 whitespace-nowrap"
+        class="md:hidden flex items-center justify-center w-12 h-12 rounded-full border border-gray-300 hover:border-blue-500 transition"
+        aria-label="Iniciar sesión"
       >
-        Iniciar Sesión
+        <UserSignIn class="w-8 h-8 text-gray-800" />
       </a>
     )}
 
@@ -106,7 +105,7 @@ const navLinks = [
         </li>
       ))}
     </ul>
-    <a href="/api/auth/eventos" class="mt-4 block text-blue-500 border-2 border-blue-500 bg-white hover:bg-[#4285F4] hover:text-white text-center font-medium text-base leading-6 px-6 py-[9px] rounded-full transition-colors duration-200">
+    <a href="https://devfest2024.gdgsucre.com/pastEvents/" class="mt-4 block text-blue-500 border-2 border-blue-500 bg-white hover:bg-[#4285F4] hover:text-white text-center font-medium text-base leading-6 px-6 py-[9px] rounded-full transition-colors duration-200">
       Eventos Pasados
     </a>
   </div>
