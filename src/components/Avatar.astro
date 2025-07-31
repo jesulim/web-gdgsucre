@@ -1,0 +1,44 @@
+---
+import { createUserClient } from "@/lib/supabase"
+
+interface Props {
+  size?: "sm" | "md" | "lg"
+  className?: string
+}
+
+const { size = "md", className = "" } = Astro.props
+
+const sizeClasses = {
+  sm: "w-8 h-8",
+  md: "w-10 h-10",
+  lg: "w-12 h-12",
+}
+
+const supabase = await createUserClient(Astro.cookies)
+const {
+  data: { user },
+} = await supabase.auth.getUser()
+
+const avatarUrl = user?.user_metadata?.avatar_url || null
+const userName = user?.user_metadata?.full_name || user?.email || "Usuario"
+const userInitial = userName.charAt(0).toUpperCase()
+---
+
+{user ? (
+  <div id="avatar-btn" class={`cursor-pointer ${sizeClasses[size]} ${className}`}>
+    {avatarUrl ? (
+      <img 
+        src={avatarUrl} 
+        alt={`Avatar de ${userName}`} 
+        class={`rounded-full object-cover border border-gray-200 ${sizeClasses[size]}`}
+        width="32"
+        height="32"
+        loading="lazy"
+      />
+    ) : (
+      <div class={`rounded-full bg-gray-100 flex items-center justify-center border border-gray-300 text-xs font-medium text-gray-600 ${sizeClasses[size]}`}>
+        {userInitial}
+      </div>
+    )}
+  </div>
+) : null}
