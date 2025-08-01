@@ -11,23 +11,19 @@ const supabase = await createUserClient(Astro.cookies)
 const profile = await getProfile(supabase)
 if (!profile) return Astro.redirect("/")
 
-const registration = await getEventRegistration(
-  supabase,
-  profile?.id,
-  Astro.params.eventSlug || ""
-)
+const registration = await getEventRegistration(supabase, profile?.id, Astro.params.eventSlug || "")
 
-if (!registration || registration?.status !== "pending")
-  return Astro.redirect("/")
+if (!registration || registration?.status !== "pending") return Astro.redirect("/")
 ---
 
 <BaseLayout>
   <Header />
-  <main class="pt-12 flex">
+  <main class="mt-16 pt-12 flex">
     <div class="mx-auto px-4">
       <h1 class="text-xl mb-4">¡Hola, {profile?.first_name}!</h1>
       <p>
-        Estamos procesando tu registro, Revisa tu correo donde te informaremos cuando haya sido validado.
+        Estamos procesando tu registro, Revisa tu correo donde te informaremos cuando haya sido
+        validado.
         <br />
         Mientras esperas, te invitamos a nuestra
         <a
