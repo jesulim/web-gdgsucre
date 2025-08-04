@@ -123,6 +123,11 @@ export function RegistrationsTable() {
   }
 
   const deleteRegistration = async (id: number) => {
+    const confirmed = window.confirm(
+      "¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer."
+    )
+    if (!confirmed) return
+
     toast.info("Eliminando registro")
     const response = await fetch("/api/registrations", {
       method: "DELETE",
@@ -133,7 +138,7 @@ export function RegistrationsTable() {
       toast.success("Registro eliminado exitosamente")
       await fetchData()
     } else {
-      toast.error(body.details)
+      toast.error(body.message)
     }
   }
 
