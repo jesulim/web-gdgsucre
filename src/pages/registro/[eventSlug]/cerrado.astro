@@ -1,0 +1,37 @@
+---
+import Header from "@/components/Header.astro"
+import BaseLayout from "@/layout/BaseLayout.astro"
+import { getEvent } from "@/lib/services/eventService"
+
+import { getUser } from "@/lib/services/profileService"
+
+import { createUserClient } from "@/lib/supabase"
+
+const supabase = await createUserClient(Astro.cookies)
+
+const user = await getUser(supabase)
+if (!user) return Astro.redirect("/")
+
+const eventSlug = Astro.params.eventSlug || ""
+const event = await getEvent(supabase, eventSlug)
+if (event?.registration_open === true) return Astro.redirect(`/registro/${eventSlug}`)
+---
+
+<BaseLayout>
+  <Header />
+  <main class="mt-16 pt-12">
+    <div class="mx-auto px-4">
+      <h1 class="text-xl mb-4">¡Hola, {user?.user_metadata?.full_name.split(" ")[0]}!</h1>
+      <p>
+        Lo sentimos, el registro para el <b>{event.name}</b> ha finalizado. Te esperamos en una próxima
+        oportunidad.
+        <br />
+        Para no perderte nuestros futuros eventos, síguenos en redes y únete a nuestra:
+        <a
+          href="https://chat.whatsapp.com/EHtkjWuuhPh8cPDY8U9A7O"
+          class="text-green-500 font-medium underline">Comunidad en WhatsApp</a
+        >
+      </p>
+    </div>
+  </main>
+</BaseLayout>
