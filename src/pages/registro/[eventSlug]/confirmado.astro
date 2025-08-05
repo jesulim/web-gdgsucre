@@ -1,5 +1,6 @@
 ---
 import Header from "@/components/Header.astro"
+import ProfileCard from "@/components/io-extended-25/ProfileCard"
 import BaseLayout from "@/layout/BaseLayout.astro"
 import { getProfile } from "@/lib/services/profileService"
 import { getEventRegistration } from "@/lib/services/registrationService"
@@ -10,6 +11,14 @@ if (!profile) return Astro.redirect("/")
 
 const registration = await getEventRegistration(supabase, profile?.id, Astro.params.eventSlug || "")
 
+const {
+  data: { user },
+} = await supabase.auth.getUser()
+
+const avatarUrl = user?.user_metadata?.avatar_url || null
+const userName = user?.user_metadata?.full_name || user?.email || "Usuario"
+const userInitial = userName.charAt(0).toUpperCase()
+
 if (!registration || registration?.status !== "confirmed") return Astro.redirect("/")
 ---
 
@@ -17,7 +26,7 @@ if (!registration || registration?.status !== "confirmed") return Astro.redirect
   <Header />
   <main class="mt-16 pt-12 flex">
     <div class="mx-auto px-4">
-      <h1 class="text-xl mb-4">¡Hola, {profile?.first_name}!</h1>
+      <!-- <h1 class="text-xl mb-4">¡Hola, {profile?.first_name}!</h1>
       <p>
         ¡Felicidades! Tu registro ya fue validado, revisa tu correo electrónico.
         <br />
@@ -26,7 +35,24 @@ if (!registration || registration?.status !== "confirmed") return Astro.redirect
           href="https://chat.whatsapp.com/EHtkjWuuhPh8cPDY8U9A7O"
           class="text-green-500 font-medium underline">Comunidad en WhatsApp</a
         >
-      </p>
+      </p> -->
+      <!-- <div class="min-h-screen bg-black pt-20"> -->
+      <ProfileCard
+        client:load
+        name={userName}
+        title={`${profile?.id || "Participante"}`}
+        handle={`${profile?.email}`}
+        status=""
+        contactText="Contact"
+        miniAvatarUrl={avatarUrl}
+        avatarUrl={avatarUrl}
+        showUserInfo={true}
+        enableTilt={true}
+        enableMobileTilt={false}
+        grainUrl="/favicon.svg"
+        onContactClick={() => console.log("Contact clicked")}
+      />
+      <!-- </div> -->
     </div>
   </main>
 </BaseLayout>
