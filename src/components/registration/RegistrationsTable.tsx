@@ -13,7 +13,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 
-import { MoreHorizontal, SendHorizonal } from "lucide-react"
+import { Loader2Icon, MoreHorizontal, SendHorizonal, Trash2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -56,11 +56,13 @@ const STATUS_STYLES: {
 }
 
 function normalizeString(str: string) {
-  // biome-ignore lint/suspicious/noMisleadingCharacterClass:
-  return str
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
+  return (
+    str
+      .normalize("NFD")
+      // biome-ignore lint/suspicious/noMisleadingCharacterClass:
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+  )
 }
 
 const customFilterFn = (rows: Row<Registrations>, columnId: string, filterValue: string) => {
@@ -79,13 +81,16 @@ function StatusBadge({ row }: { row: Row<Registrations> }) {
 }
 
 export function RegistrationsTable() {
+  const [loading, setLoading] = useState(false)
   const [data, setData] = useState<Registrations[]>()
   const [globalFilter, setGlobalFilter] = useState("")
 
   const fetchData = useCallback(async () => {
+    setLoading(true)
     const response = await fetch("/api/registrations?slug=io-extended-25")
     const result = await response.json()
     setData(result)
+    setLoading(false)
   }, [])
 
   useEffect(() => {
@@ -114,6 +119,26 @@ export function RegistrationsTable() {
       await fetchData()
     } else {
       toast.error(body.details)
+    }
+  }
+
+  const deleteRegistration = async (id: number) => {
+    const confirmed = window.confirm(
+      "¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer."
+    )
+    if (!confirmed) return
+
+    toast.info("Eliminando registro")
+    const response = await fetch("/api/registrations", {
+      method: "DELETE",
+      body: JSON.stringify({ registrationId: id }),
+    })
+    const body = await response.json()
+    if (body.success) {
+      toast.success("Registro eliminado exitosamente")
+      await fetchData()
+    } else {
+      toast.error(body.message)
     }
   }
 
@@ -219,6 +244,13 @@ export function RegistrationsTable() {
                   Enviar confirmación de registro
                 </DropdownMenuItem>
               )}
+              <DropdownMenuItem
+                variant="destructive"
+                onClick={() => deleteRegistration(registration.id)}
+              >
+                <Trash2 />
+                Eliminar registro
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         )
@@ -247,12 +279,23 @@ export function RegistrationsTable() {
     <div className="w-full">
       <Toaster position="top-right" />
 
-      <Input
-        placeholder="Buscar por nombre, apellido o correo electrónico..."
-        value={globalFilter ?? ""}
-        onChange={e => setGlobalFilter(e.target.value)}
-        className="mb-4 w-full"
-      />
+      <div className="flex flex-col md:flex-row justify-between mb-4">
+        <h2 className="text-xl  font-medium">Lista de participantes registrados</h2>
+        <PackageCount rows={table.getFilteredRowModel().rows} />
+      </div>
+
+      <div className="flex gap-4">
+        <Input
+          placeholder="Buscar por nombre, apellido o correo electrónico..."
+          value={globalFilter ?? ""}
+          onChange={e => setGlobalFilter(e.target.value)}
+          className="mb-4 w-full"
+        />
+        <Button className="bg-blue-500 rounded-sm" onClick={() => fetchData()}>
+          {loading && <Loader2Icon className="animate-spin" />}
+          Actualizar
+        </Button>
+      </div>
 
       <div className="overflow-hidden rounded-md border">
         <Table>
@@ -285,7 +328,7 @@ export function RegistrationsTable() {
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                  Sin resultados.
+                  {loading ? "Obteniendo registros..." : "Sin resultados."}
                 </TableCell>
               </TableRow>
             )}
@@ -305,29 +348,54 @@ function TablePagination({ table }: { table: TanstackTable<Registrations> }) {
   const totalRows = table.getCoreRowModel().rows.length
 
   return (
-    <div className="flex items-center justify-between space-x-2 py-4">
-      <p>
-        Mostrando {firstRow}-{lastRow} de {totalRows} registros.
-      </p>
+    table && (
+      <div className="flex items-center justify-between space-x-2 py-4">
+        <p>
+          Mostrando {firstRow}-{lastRow} de {totalRows} registros.
+        </p>
 
-      <div className="space-x-2">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Anterior
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Siguiente
-        </Button>
+        <div className="flex flex-nowrap gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            Anterior
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            Siguiente
+          </Button>
+        </div>
       </div>
+    )
+  )
+}
+
+function PackageCount({ rows }: { rows: Row<Registrations>[] }) {
+  const packageCounts = {
+    "WebVerse (35Bs)": 0,
+    "CodeLab (50 Bs)": 0,
+    "Innovators (80 Bs)": 0,
+  } as Record<string, number>
+
+  for (const row of rows) {
+    const packageName = String(row.getValue("package"))
+    packageCounts[packageName] += 1
+  }
+
+  return (
+    <div className="flex flex-wrap text-nowrap gap-2 items-center">
+      {Object.entries(packageCounts).map(([name, count]) => (
+        <span key={name} className="rounded-md border p-2 text-sm font-medium text-black">
+          {name}: {count}
+        </span>
+      ))}
     </div>
   )
 }
