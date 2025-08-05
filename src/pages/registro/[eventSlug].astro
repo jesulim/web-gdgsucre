@@ -16,10 +16,11 @@ const eventSlug = Astro.params.eventSlug || ""
 const event = await getEvent(supabase, eventSlug)
 if (!event) return Astro.redirect("/")
 
-if (event.registration_open === false) return Astro.redirect(`/registro/${eventSlug}/cerrado`)
-
 const profile = await getProfile(supabase)
 const registration = await getEventRegistration(supabase, profile?.id, eventSlug)
+
+if (!registration && event.registration_open === false)
+  return Astro.redirect(`/registro/${eventSlug}/cerrado`)
 
 if (registration?.status === "pending") {
   return Astro.redirect(`/registro/${eventSlug}/pendiente`)
