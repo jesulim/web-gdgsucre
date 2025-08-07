@@ -121,13 +121,14 @@ const navLinks = [
   let isMenuOpen = false;
   let isUserMenuOpen = false;
 
-  menuToggle?.addEventListener('click', () => {
+  menuToggle.addEventListener('click', (e) => {
+    // Alternar menú hamburguesa
     isMenuOpen = !isMenuOpen;
     mobileMenu.classList.toggle('hidden', !isMenuOpen);
   });
 
   avatarBtn?.addEventListener('click', (e) => {
-    e.stopPropagation();
+    e.stopPropagation(); // sí evitar propagación para dropdown usuario
     isUserMenuOpen = !isUserMenuOpen;
     if (isUserMenuOpen) {
       userMenu.classList.remove('hidden');
@@ -144,12 +145,28 @@ const navLinks = [
   });
 
   document.addEventListener('click', (e) => {
-    if (!avatarBtn?.contains(e.target) && !userMenu?.contains(e.target)) {
+    // Cerrar menú hamburguesa si está abierto y el click no es en toggle ni menú
+    if (
+      isMenuOpen &&
+      !menuToggle.contains(e.target) &&
+      !mobileMenu.contains(e.target)
+    ) {
+      isMenuOpen = false;
+      mobileMenu.classList.add('hidden');
+    }
+
+    // Cerrar menú usuario si está abierto y el click no es en avatarBtn ni userMenu
+    if (
+      isUserMenuOpen &&
+      !avatarBtn?.contains(e.target) &&
+      !userMenu?.contains(e.target)
+    ) {
       isUserMenuOpen = false;
-      userMenu?.classList.remove('opacity-100');
-      userMenu?.classList.add('opacity-0');
-      setTimeout(() => userMenu?.classList.add('hidden'), 300);
+      userMenu.classList.remove('opacity-100');
+      userMenu.classList.add('opacity-0');
+      setTimeout(() => userMenu.classList.add('hidden'), 300);
       avatarBtn?.setAttribute('aria-expanded', false);
     }
   });
 </script>
+
