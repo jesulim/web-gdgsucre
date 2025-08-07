@@ -17,14 +17,17 @@ const event = await getEvent(supabase, eventSlug)
 if (!event) return Astro.redirect("/")
 
 const profile = await getProfile(supabase)
-const registration = await getEventRegistration(
-  supabase,
-  profile?.id,
-  eventSlug
-)
+const registration = await getEventRegistration(supabase, profile?.id, eventSlug)
+
+if (!registration && event.registration_open === false)
+  return Astro.redirect(`/registro/${eventSlug}/cerrado`)
 
 if (registration?.status === "pending") {
   return Astro.redirect(`/registro/${eventSlug}/pendiente`)
+}
+
+if (registration?.status === "confirmed") {
+  return Astro.redirect(`/registro/${eventSlug}/confirmado`)
 }
 
 const formFields = await getFormFieldsByEvent(supabase, eventSlug)
@@ -32,7 +35,7 @@ const formFields = await getFormFieldsByEvent(supabase, eventSlug)
 
 <BaseLayout>
   <Header />
-  <main class="pt-12 flex">
+  <main class="mt-16 pt-12 flex">
     <div class="mx-auto px-4 pb-16">
       <h1 class="text-xl mb-4 font-medium">Regístrate al {event.name}</h1>
       <RegisterForm formFields={formFields} profile={profile} event={event} client:load />

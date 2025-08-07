@@ -1,46 +1,43 @@
 ---
-import PackageCodeLab from "@/assets/packages/codelab-package.png"
-import PackageInnovators from "@/assets/packages/innovators-package.png"
-import PackageWebVerse from "@/assets/packages/webverse-package.png"
+import PackageCodeLab from "@/assets/io-extended-25/packages/codelab-soul-out.webp"
+import PackageInnovators from "@/assets/io-extended-25/packages/innovators-sold-out.webp"
+import PackageWebVerse from "@/assets/io-extended-25/packages/webverse-package.webp"
+
 import PackageCard from "./PackageCard.astro"
 ---
 
-<div class="w-full py-16 md:py-24 relative z-10">
-  <div class="flex flex-col items-center gap-8 md:gap-12 w-full px-4 md:px-8 max-w-[1200px] mx-auto">
-    <!-- Cards Container - Staggered Layout -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 w-full items-end">
-      <!-- Left Card - Lower Position -->
-      <div class="md:translate-y-8">
-        <PackageCard
-          title="Paquete WebVerse"
-          benefits={["Refrigerio", "Almuerzo", "Stickers"]}
-          imageSrc={PackageWebVerse.src}
-          imageAlt="Paquete WebVerse"
-          price="Bs 35"
-        />
-      </div>
-      
-      <!-- Middle Card - Higher Position -->
-      <div class="md:-translate-y-8">
-        <PackageCard
-          title="Paquete Innovators"
-          benefits={["Refrigerio", "Almuerzo", "Stickers", "Mousepad", "Estuche", "Cubo"]}
-          imageSrc={PackageInnovators.src}
-          imageAlt="Paquete Innovators"
-          price="Bs 80"
-        />
-      </div>
-      
-      <!-- Right Card - Lower Position -->
-      <div class="md:translate-y-8">
-        <PackageCard
-          title="Paquete CodeLab"
-          benefits={["Refrigerio", "Almuerzo", "Stickers", "Mousepad"]}
-          imageSrc={PackageCodeLab.src}
-          imageAlt="Paquete CodeLab"
-          price="Bs 50"
-        />
-      </div>
+<section id="seccion-paquetes" class="flex w-full lg:mt-28 lg:py-4 relative z-10">
+  <div class="flex flex-col lg:flex-row gap-4 lg:gap-12 mx-auto lg:items-end">
+    <div class="order-3 lg:order-first">
+      <PackageCard
+        title="Paquete WebVerse"
+        benefits={["Refrigerio", "Almuerzo", "Stickers"]}
+        imageSrc={PackageWebVerse}
+        imageAlt="Paquete WebVerse"
+        price="Bs 35"
+      />
+    </div>
+
+    <!-- Middle Card - Higher Position -->
+    <div class="order-1 lg:pb-16">
+      <PackageCard
+        title="Paquete Innovators"
+        benefits={["Refrigerio", "Almuerzo", "Stickers", "Mousepad", "Estuche", "Cubo"]}
+        imageSrc={PackageInnovators}
+        imageAlt="Paquete Innovators"
+        price="Bs 80"
+      />
+    </div>
+
+    <!-- Right Card - Lower Position -->
+    <div class="order-2 lg:order-last">
+      <PackageCard
+        title="Paquete CodeLab"
+        benefits={["Refrigerio", "Almuerzo", "Stickers", "Mousepad"]}
+        imageSrc={PackageCodeLab}
+        imageAlt="Paquete CodeLab"
+        price="Bs 50"
+      />
     </div>
   </div>
-</div> 
+</section>

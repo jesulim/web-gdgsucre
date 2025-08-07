@@ -1,25 +1,21 @@
 ---
+import { Image } from "astro:assets"
+
 import CalendarIcon from "@/assets/logos/calendar-month.svg"
 import LocationIcon from "@/assets/logos/distance.svg"
-import GoogleIoLogo from "@/assets/logos/google-io-extended-2025-logo.png"
-import IoHomeBottom from "@/assets/logos/io25-home-bottom.webp"
-import { createUserClient } from "@/lib/supabase"
-import PackageSection from "./PackageSection.astro"
+import GoogleIoLogo from "@/assets/logos/google-io-extended-2025-logo.webp"
 
-const supabase = await createUserClient(Astro.cookies)
-const {
-  data: { user },
-} = await supabase.auth.getUser()
-
-const redirectHref = user
+const redirectHref = Astro.cookies.has("sb-refresh-token")
   ? "/registro/io-extended-25"
   : "/api/auth/signin?next=/registro/io-extended-25"
 ---
 
-<div class="relative w-full h-[500px] sm:h-[700px]">
+<link rel="preload" href="/io25-home-bottom.avif" as="image" fetchpriority="high" />
+
+<div class="relative w-full h-[500px] sm:h-[700px] mt-20 lg:mt-12">
   <div
-    class="absolute bg-center bg-cover bg-no-repeat h-[400px] md:h-[821px] left-0 top-[250px] md:top-[314px] w-full"
-    style={`background-image: url('${IoHomeBottom.src}')`}
+    class="absolute bg-center bg-cover bg-no-repeat h-[400px] md:h-[821px] left-0 top-[250px] md:top-[314px] w-full mask-b-from-70%"
+    style="background-image: url('/io25-home-bottom.avif')"
   >
   </div>
 
@@ -27,10 +23,8 @@ const redirectHref = user
     class="absolute left-1/2 transform -translate-x-1/2 top-4 md:top-[57px] flex flex-col gap-6 md:gap-10 items-center justify-center px-4 md:px-0"
   >
     <div class="flex flex-col gap-4 md:gap-8 items-center w-full">
-      <div
-        class="bg-center bg-no-repeat h-[80px] w-[300px] md:h-[191px] md:w-[717px] shrink-0"
-        style={`background-image: url('${GoogleIoLogo.src}'); background-size: contain`}
-      >
+      <div class="min-w-72">
+        <Image src={GoogleIoLogo} alt="Google I/O Extended 2025 logo" width={600} />
       </div>
 
       <div class="flex flex-col gap-4 md:gap-6 items-center w-full">
@@ -65,7 +59,7 @@ const redirectHref = user
     <div class="flex flex-col md:flex-row items-center md:items-start justify-center gap-4 md:gap-6">
       <div class="flex items-center gap-2 md:gap-3">
         <div class="w-8 h-8 md:w-12 md:h-12 shrink-0">
-          <img src={CalendarIcon.src} alt="Calendar" class="w-full h-full" />
+          <CalendarIcon />
         </div>
         <div
           class="flex flex-col justify-center leading-[1.2] text-[#1e1e1e] text-[16px] md:text-[24px] text-center md:whitespace-pre font-medium"
@@ -83,7 +77,7 @@ const redirectHref = user
 
       <div class="flex items-center gap-2 md:gap-3">
         <div class="w-8 h-8 md:w-12 md:h-12 shrink-0">
-          <img src={LocationIcon.src} alt="Location" class="w-full h-full" />
+          <LocationIcon />
         </div>
         <div
           class="flex flex-col justify-center leading-[1.2] text-[#1e1e1e] text-[16px] md:text-[24px] text-center md:whitespace-pre font-medium"
@@ -95,22 +89,3 @@ const redirectHref = user
     </div>
   </div>
 </div>
-
-<PackageSection />
-
-<style>
-  /* Improve touch targets for mobile */
-  @media (max-width: 768px) {
-    a {
-      min-height: 44px;
-      min-width: 44px;
-    }
-  }
-
-  /* Ensure background image scales properly */
-  @media (max-width: 640px) {
-    [style*="background-image"] {
-      background-attachment: scroll;
-    }
-  }
-</style>

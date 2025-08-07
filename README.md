@@ -31,3 +31,5 @@ All commands are run from the root of the project, from a terminal:
 | `bun run preview`         | Preview your build locally, before deploying     |
 | `bun run astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `bun run astro -- --help` | Get help using the Astro CLI                     |
+
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/jesulim/web-gdgsucre?utm_source=oss&utm_medium=github&utm_campaign=jesulim%2Fweb-gdgsucre&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)

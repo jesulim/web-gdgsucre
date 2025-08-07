@@ -1,107 +1,105 @@
 ---
-import CalendarIcon from "@/assets/logos/calendar-month.svg"
-import LocationIcon from "@/assets/logos/distance.svg"
+import { Separator } from "@/components/ui/separator"
 ---
 
-<section class="w-full pt-16 md:pt-16 pb-16 md:pb-24 bg-white">
+<section id="about" class="w-full pt-16 md:pt-20 pb-16 md:pb-24 bg-white">
     <div class="max-w-7xl mx-auto px-4 md:px-6">
-        <div
-            class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 h-auto md:h-[500px]"
-        >
-            <div
-                class="info-box border border-border rounded-2xl p-6 md:p-8 flex flex-col justify-center min-h-[300px] md:min-h-full shadow-lg bg-gradient-to-br from-white via-gray-50 to-gray-100"
-            >
+        <div class="block md:hidden space-y-8">
+            <div class="space-y-6">
+                <h2 class="text-3xl font-bold text-black leading-tight">
+                    Sobre el Evento
+                </h2>
                 <div class="space-y-4">
-                    <h2
-                        class="text-2xl md:text-4xl font-bold text-black leading-tight"
-                    >
-                        Sobre el Evento
-                    </h2>
-                    <p
-                        class="text-foreground text-base md:text-lg leading-relaxed"
-                    >
+                    <p class="text-foreground text-lg leading-relaxed">
                         Google I/O Extended es una experiencia única donde
                         desarrolladores, diseñadores y entusiastas de la
                         tecnología se reúnen para explorar las últimas
                         innovaciones de Google.
                     </p>
-                    <p class="text-muted-foreground text-sm md:text-base">
+                    <p class="text-muted-foreground text-base">
                         Descubre las tendencias más recientes en inteligencia
                         artificial, desarrollo web, cloud computing y mucho más
                         en un ambiente colaborativo y de aprendizaje continuo.
                     </p>
                 </div>
             </div>
-            <div class="flex flex-col gap-4 md:gap-6">
+            <Separator className="my-8" />
+            <div class="space-y-4">
                 <div
-                    class="map-box border border-border rounded-2xl p-4 flex-1 min-h-[200px] md:min-h-0 flex flex-col justify-center items-center shadow-lg bg-gradient-to-br from-white via-gray-50 to-gray-100"
+                    class="w-full h-[300px] rounded-xl overflow-hidden border border-border shadow-lg"
                 >
-                    <div
-                        class="w-full h-full rounded-xl overflow-hidden min-h-[180px]"
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3771.5435822397576!2d-65.25954052382126!3d-19.039823482157306!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x93fbc8cb45fea465%3A0x9859ca07b2335e29!2sFacultad%20de%20Ciencias%20de%20la%20Tecnolog%C3%ADa%20-%20USFX!5e0!3m2!1ses-419!2sbo!4v1753590654654!5m2!1ses-419!2sbo"
+                        width="100%"
+                        height="100%"
+                        style="border:0;"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        title="Facultad de Ciencias y Tecnología - USFX"
+                    ></iframe>
+                </div>
+                <p class="text-sm text-muted-foreground text-center">
+                    Facultad de Ciencias y Tecnología - USFX
+                </p>
+            </div>
+        </div>
+        <div class="hidden md:block">
+            <div
+                class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center min-h-[500px] relative"
+            >
+                <div class="space-y-8 lg:pr-8 flex flex-col justify-center">
+                    <h2
+                        class="text-4xl lg:text-5xl font-bold text-black leading-tight"
                     >
-                        <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3771.5435822397576!2d-65.25954052382126!3d-19.039823482157306!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x93fbc8cb45fea465%3A0x9859ca07b2335e29!2sFacultad%20de%20Ciencias%20de%20la%20Tecnolog%C3%ADa%20-%20USFX!5e0!3m2!1ses-419!2sbo!4v1753590654654!5m2!1ses-419!2sbo"
-                            width="100%"
-                            height="100%"
-                            style="border:0; min-height: 180px;"
-                            allowfullscreen=""
-                            loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade"
-                            title="Facultad de Ciencias y Tecnología - USFX"
-                        ></iframe>
+                        ¿Qué es Google I/O Extended Sucre?
+                    </h2>
+                    <div class="space-y-6">
+                        <p class="text-foreground text-xl leading-relaxed">
+                            Google I/O Extended Sucre 2025 es el evento oficial
+                            que reúne a desarrolladores, diseñadores,
+                            estudiantes y entusiastas de la tecnología en un
+                            solo lugar.
+                        </p>
+                        <p
+                            class="text-muted-foreground text-lg leading-relaxed"
+                        >
+                            Durante una jornada llena de charlas, demos en vivo,
+                            talleres y networking, exploramos las últimas
+                            novedades del universo Google: Web, Cloud, AI,
+                            Mobile, UX/UI y más.
+                        </p>
                     </div>
                 </div>
                 <div
-                    class="date-box border border-border rounded-2xl p-6 flex-1 min-h-[120px] md:min-h-0 flex items-center justify-center shadow-lg bg-gradient-to-br from-white via-gray-50 to-gray-100"
+                    class="hidden lg:block absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 h-3/4"
                 >
-                    <div
-                        class="flex flex-row items-center justify-center gap-4 md:gap-6 w-full"
-                    >
-                        <div class="text-center space-y-3">
-                            <div class="w-10 h-10 md:w-12 md:h-12 mx-auto">
-                                <img
-                                    src={CalendarIcon.src}
-                                    alt="Calendar"
-                                    class="w-full h-full"
-                                />
-                            </div>
-                            <div class="space-y-1">
-                                <p
-                                    class="text-base md:text-lg font-semibold text-black"
-                                >
-                                    Sábado 9 de Agosto
-                                </p>
-                                <p
-                                    class="text-base md:text-lg font-medium text-foreground"
-                                >
-                                    8:00 Hrs
-                                </p>
-                            </div>
+                    <Separator orientation="vertical" className="h-full" />
+                </div>
+                <div class="space-y-6 lg:pl-8">
+                    <div class="relative">
+                        <div
+                            class="w-full h-[400px] lg:h-[450px] rounded-2xl overflow-hidden border border-border shadow-xl transition-all duration-300 hover:shadow-2xl hover:scale-[1.02]"
+                        >
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3771.5435822397576!2d-65.25954052382126!3d-19.039823482157306!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x93fbc8cb45fea465%3A0x9859ca07b2335e29!2sFacultad%20de%20Ciencias%20de%20la%20Tecnolog%C3%ADa%20-%20USFX!5e0!3m2!1ses-419!2sbo!4v1753590654654!5m2!1ses-419!2sbo"
+                                width="100%"
+                                height="100%"
+                                style="border:0;"
+                                allowfullscreen=""
+                                loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"
+                                title="Facultad de Ciencias y Tecnología - USFX"
+                            ></iframe>
                         </div>
                         <div
-                            class="flex justify-center items-center h-8 w-[2px] bg-border"
+                            class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-white border border-border rounded-full px-6 py-2 shadow-lg"
                         >
-                        </div>
-                        <div class="text-center space-y-3">
-                            <div class="w-10 h-10 md:w-12 md:h-12 mx-auto">
-                                <img
-                                    src={LocationIcon.src}
-                                    alt="Location"
-                                    class="w-full h-full"
-                                />
-                            </div>
-                            <div class="space-y-1">
-                                <p
-                                    class="text-base md:text-lg font-semibold text-black"
-                                >
-                                    Facultad de Ciencias
-                                </p>
-                                <p
-                                    class="text-base md:text-lg font-semibold text-foreground"
-                                >
-                                    y Tecnología
-                                </p>
-                            </div>
+                            <p
+                                class="text-sm font-medium text-black whitespace-nowrap"
+                            >
+                                Facultad de Ciencias y Tecnología - USFX
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -111,18 +109,14 @@ import LocationIcon from "@/assets/logos/distance.svg"
 </section>
 
 <style>
-    .info-box,
-    .map-box,
-    .date-box {
-        transition: all 0.3s ease;
+    .map-container {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-
-    @media (min-width: 768px) {
-        .info-box:hover,
-        .map-box:hover,
-        .date-box:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-        }
+    iframe:focus {
+        outline-offset: 2px;
+    }
+    iframe {
+        will-change: transform;
+        backface-visibility: hidden;
     }
 </style>

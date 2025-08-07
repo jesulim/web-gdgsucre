@@ -1,19 +1,16 @@
 ---
 import Header from "@/components/Header.astro"
 import BaseLayout from "@/layout/BaseLayout.astro"
-
 import { getProfile } from "@/lib/services/profileService"
 import { getEventRegistration } from "@/lib/services/registrationService"
 import { createUserClient } from "@/lib/supabase"
-
 const supabase = await createUserClient(Astro.cookies)
-
 const profile = await getProfile(supabase)
 if (!profile) return Astro.redirect("/")
 
 const registration = await getEventRegistration(supabase, profile?.id, Astro.params.eventSlug || "")
 
-if (!registration || registration?.status !== "pending") return Astro.redirect("/")
+if (!registration || registration?.status !== "confirmed") return Astro.redirect("/")
 ---
 
 <BaseLayout>
@@ -22,8 +19,7 @@ if (!registration || registration?.status !== "pending") return Astro.redirect("
     <div class="mx-auto px-4">
       <h1 class="text-xl mb-4">¡Hola, {profile?.first_name}!</h1>
       <p>
-        Estamos procesando tu registro, Revisa tu correo donde te informaremos cuando haya sido
-        validado.
+        ¡Felicidades! Tu registro ya fue validado, revisa tu correo electrónico.
         <br />
         Mientras esperas, te invitamos a nuestra
         <a

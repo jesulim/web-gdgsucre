@@ -1,18 +1,7 @@
 ---
+import { Image } from "astro:assets"
+
 import { createUserClient } from "@/lib/supabase"
-
-interface Props {
-  size?: "sm" | "md" | "lg"
-  className?: string
-}
-
-const { size = "md", className = "" } = Astro.props
-
-const sizeClasses = {
-  sm: "w-8 h-8",
-  md: "w-10 h-10",
-  lg: "w-12 h-12",
-}
 
 const supabase = await createUserClient(Astro.cookies)
 const {
@@ -24,21 +13,26 @@ const userName = user?.user_metadata?.full_name || user?.email || "Usuario"
 const userInitial = userName.charAt(0).toUpperCase()
 ---
 
-{user ? (
-  <div id="avatar-btn" class={`cursor-pointer ${sizeClasses[size]} ${className}`}>
-    {avatarUrl ? (
-      <img 
-        src={avatarUrl} 
-        alt={`Avatar de ${userName}`} 
-        class={`rounded-full object-cover border border-gray-200 ${sizeClasses[size]}`}
-        width="32"
-        height="32"
-        loading="lazy"
-      />
-    ) : (
-      <div class={`rounded-full bg-gray-100 flex items-center justify-center border border-gray-300 text-xs font-medium text-gray-600 ${sizeClasses[size]}`}>
-        {userInitial}
-      </div>
-    )}
-  </div>
-) : null}
+{
+  user && (
+    <div
+      id="avatar-btn"
+      class="rounded-full cursor-pointer border-2 border-transparent hover:border-blue-500 transition-all duration-300 ease-out"
+    >
+      {avatarUrl ? (
+        <Image
+          src={avatarUrl}
+          alt={`Avatar de ${userName}`}
+          class="rounded-full object-cover border border-gray-200"
+          width="48"
+          height="48"
+          loading="lazy"
+        />
+      ) : (
+        <div class="rounded-full w-full bg-gray-100 flex items-center justify-center border border-gray-300 text-xs font-medium text-gray-600">
+          {userInitial}
+        </div>
+      )}
+    </div>
+  )
+}
