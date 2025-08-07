@@ -1,6 +1,5 @@
 ---
 import { Image } from "astro:assets"
-
 import UserSignIn from "@/assets/icons/social/user-round-plus.svg"
 import LogoBlackIO from "@/assets/logos/IO_Extended_Black.png"
 import CredentialIcon from "@/assets/logos/credential.svg"
@@ -12,7 +11,7 @@ const refreshToken = Astro.cookies.has("sb-refresh-token")
 
 const navLinks = [
   { name: "Paquetes", href: "/#seccion-paquetes" },
-  { name: "About Us", href: "/#about" },
+  { name: "Sobre el evento", href: "/#about" },
   { name: "Speakers", href: "/#speakers" },
   // { name: "Sponsors", href: "#sponsors" },
   // { name: "Agenda", href: "#agenda" },
@@ -69,12 +68,10 @@ const navLinks = [
         </div>
       </div>
     ) : (
-      <!-- desktop con con texto -->
       <a href="/api/auth/signin" class="hidden md:inline bg-blue-500 text-white hover:bg-[#3367D6] font-medium text-sm lg:text-base leading-5 lg:leading-6 px-5 lg:px-8 py-[6px] lg:py-[9px] rounded-full transition-colors duration-200">
         Iniciar Sesión
       </a>
 
-      <!-- mobile cono icono svg -->
       <a
         href="/api/auth/signin"
         class="md:hidden flex items-center justify-center w-12 h-12 rounded-full border border-gray-300 hover:border-blue-500 transition"
@@ -143,11 +140,26 @@ const navLinks = [
   });
 
   document.addEventListener('click', (e) => {
-    if (!avatarBtn?.contains(e.target) && !userMenu?.contains(e.target)) {
+    // Cerrar menú hamburguesa si está abierto y el click no es en toggle ni menú
+    if (
+      isMenuOpen &&
+      !menuToggle.contains(e.target) &&
+      !mobileMenu.contains(e.target)
+    ) {
+      isMenuOpen = false;
+      mobileMenu.classList.add('hidden');
+    }
+
+    // Cerrar menú usuario si está abierto y el click no es en avatarBtn ni userMenu
+    if (
+      isUserMenuOpen &&
+      !avatarBtn?.contains(e.target) &&
+      !userMenu?.contains(e.target)
+    ) {
       isUserMenuOpen = false;
-      userMenu?.classList.remove('opacity-100');
-      userMenu?.classList.add('opacity-0');
-      setTimeout(() => userMenu?.classList.add('hidden'), 300);
+      userMenu.classList.remove('opacity-100');
+      userMenu.classList.add('opacity-0');
+      setTimeout(() => userMenu.classList.add('hidden'), 300);
       avatarBtn?.setAttribute('aria-expanded', false);
     }
   });
