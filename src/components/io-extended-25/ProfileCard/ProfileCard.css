@@ -236,16 +236,16 @@
 }
 
 .pc-avatar-content {
-  mix-blend-mode: screen;
   overflow: hidden;
 }
 
 .pc-avatar-content .avatar {
-  width: 100%;
+  width: 55%;
+  border-radius: 50%;
   position: absolute;
   left: 50%;
   transform: translateX(-50%) scale(1);
-  bottom: 2px;
+  top: 40%;
   opacity: calc(1.75 - var(--pointer-from-center));
 }
 
@@ -271,9 +271,8 @@
   left: 20px;
   right: 20px;
   z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: grid;
+  place-items: center;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(30px);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -282,37 +281,9 @@
   pointer-events: auto;
 }
 
-.pc-user-details {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.pc-mini-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  flex-shrink: 0;
-}
-
-.pc-mini-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
-.pc-user-text {
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  gap: 6px;
-}
-
 .pc-handle {
-  font-size: 14px;
+  font-size: 24px;
+  text-align: center;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.9);
   line-height: 1;
@@ -353,7 +324,6 @@
     0.1px
   ) !important;
   z-index: 5;
-  mix-blend-mode: luminosity;
 }
 
 .pc-details {
@@ -367,7 +337,7 @@
 .pc-details h3 {
   font-weight: 600;
   margin: 0;
-  font-size: min(5svh, 3em);
+  font-size: min(4svh, 2.5em);
   margin: 0;
   background-image: linear-gradient(to bottom, #fff, #6f6fbe);
   background-size: 1em 1.5em;
@@ -436,17 +406,8 @@
     padding: 10px 12px;
   }
 
-  .pc-mini-avatar {
-    width: 28px;
-    height: 28px;
-  }
-
-  .pc-user-details {
-    gap: 10px;
-  }
-
   .pc-handle {
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .pc-status {
@@ -486,17 +447,8 @@
     border-radius: 50px;
   }
 
-  .pc-mini-avatar {
-    width: 24px;
-    height: 24px;
-  }
-
-  .pc-user-details {
-    gap: 8px;
-  }
-
   .pc-handle {
-    font-size: 12px;
+    font-size: 1.25rem;
   }
 
   .pc-status {
@@ -527,15 +479,6 @@
   .pc-user-info {
     padding: 6px 8px;
     border-radius: 50px;
-  }
-
-  .pc-mini-avatar {
-    width: 20px;
-    height: 20px;
-  }
-
-  .pc-user-details {
-    gap: 6px;
   }
 
   .pc-handle {
