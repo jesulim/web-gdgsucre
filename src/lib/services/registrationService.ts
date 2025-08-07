@@ -53,39 +53,6 @@ export async function getEventRegistration(
   return data
 }
 
-export async function getRegistrationsByEvent(
-  supabase: SupabaseClient,
-  eventSlug: string,
-  role: string | null = null,
-  orderBy = "created_at"
-) {
-  let query = supabase
-    .from("registrations")
-    .select(
-      "id, created_at, profiles(first_name, last_name, email), status, role, responses, events (slug)"
-    )
-    .eq("events.slug", eventSlug)
-    .order(orderBy, { ascending: false })
-
-  if (role) {
-    query = query.eq("role", role)
-  }
-
-  const { data: registrations, error } = await query
-
-  if (!registrations) {
-    throw new Error(`No se encontraron registros para este evento: ${error.message}`)
-  }
-
-  const flattenedRegistrations = registrations?.map(({ profiles, responses, events, ...rest }) => ({
-    ...rest,
-    ...profiles,
-    ...responses,
-  }))
-
-  return flattenedRegistrations
-}
-
 export async function submitRegistration(
   supabase: SupabaseClient,
   { event_id, event_slug, fields }: Registration
@@ -120,15 +87,48 @@ export async function submitRegistration(
   return { success: true }
 }
 
-export async function updateRegistrationStatus(
+export async function getRegistrationsByEvent(
   supabase: SupabaseClient,
-  reqgistrationId: number,
-  status: string
+  eventSlug: string,
+  role: string | null = null,
+  orderBy = "created_at"
+) {
+  let query = supabase
+    .from("registrations")
+    .select(
+      "id, created_at, profiles(first_name, last_name, email, phone_number), status, role, responses, events (slug)"
+    )
+    .eq("events.slug", eventSlug)
+    .order(orderBy, { ascending: false })
+
+  if (role) {
+    query = query.eq("role", role)
+  }
+
+  const { data: registrations, error } = await query
+
+  if (!registrations) {
+    throw new Error(`No se encontraron registros para este evento: ${error.message}`)
+  }
+
+  const flattenedRegistrations = registrations?.map(({ profiles, responses, events, ...rest }) => ({
+    ...rest,
+    ...profiles,
+    ...responses,
+  }))
+
+  return flattenedRegistrations
+}
+
+export async function updateRegistration(
+  supabase: SupabaseClient,
+  registrationId: number,
+  values: Record<string, string | number>
 ) {
   const { data: registration, error: findError } = await supabase
     .from("registrations")
     .select("id, status")
-    .eq("id", reqgistrationId)
+    .eq("id", registrationId)
     .single()
 
   if (findError || !registration) {
@@ -137,7 +137,7 @@ export async function updateRegistrationStatus(
 
   const { error: updateError } = await supabase
     .from("registrations")
-    .update({ status })
+    .update(values)
     .eq("id", registration.id)
 
   if (updateError) {

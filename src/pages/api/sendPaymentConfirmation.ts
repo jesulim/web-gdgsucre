@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro"
 
 import { sendPaymentConfirmationEmail } from "@/lib/services/emailService"
-import { updateRegistrationStatus } from "@/lib/services/registrationService"
+import { updateRegistration } from "@/lib/services/registrationService"
 import { createUserClient } from "@/lib/supabase"
 
 export const POST: APIRoute = async ({ request, cookies }) => {
@@ -23,7 +23,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     }
 
     const supabase = await createUserClient(cookies)
-    await updateRegistrationStatus(supabase, registrationId, "confirmed")
+    await updateRegistration(supabase, registrationId, { status: "confirmed" })
 
     const emailData = {
       userEmail,

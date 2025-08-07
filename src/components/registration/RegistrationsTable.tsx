@@ -25,6 +25,13 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 import { Input } from "@/components/ui/input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Toaster } from "@/components/ui/sonner"
 import {
   Table,
@@ -52,7 +59,6 @@ const STATUS_STYLES: {
 } = {
   pending: { colors: "bg-blue-100 text-blue-600", label: "Pendiente" },
   confirmed: { colors: "bg-green-100 text-green-600", label: "Confirmado" },
-  cancelled: { colors: "bg-red-100 text-red-600", label: "Cancelado" },
 }
 
 function normalizeString(str: string) {
@@ -122,6 +128,25 @@ export function RegistrationsTable() {
     }
   }
 
+  const switchRole = async (id: number, role: string) => {
+    const response = await fetch("/api/registrations", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        registrationId: id,
+        values: { role },
+      }),
+    })
+
+    const body = await response.json()
+    if (!response.ok) {
+      toast.error(body.details)
+      await fetchData()
+    }
+  }
+
   const deleteRegistration = async (id: number) => {
     const confirmed = window.confirm(
       "¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer."
@@ -175,10 +200,30 @@ export function RegistrationsTable() {
       filterFn: "includesString",
     },
     {
+      accessorKey: "phone_number",
+      header: "Teléfono",
+      enableGlobalFilter: false,
+    },
+    {
       accessorKey: "role",
       header: "Rol",
       enableGlobalFilter: false,
-      cell: ({ row }) => <div className="capitalize">{row.getValue("role")}</div>,
+      cell: ({ row }) => (
+        <Select
+          onValueChange={value => {
+            switchRole(row.original.id, value)
+          }}
+          defaultValue={row.getValue("role")}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Rol" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="Participante">Participante</SelectItem>
+            <SelectItem value="Organizer">Organizer</SelectItem>
+          </SelectContent>
+        </Select>
+      ),
     },
     {
       accessorKey: "status",

@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro"
 
-import { getRegistrationsByEvent } from "@/lib/services/registrationService"
+import { getRegistrationsByEvent, updateRegistration } from "@/lib/services/registrationService"
 import { createUserClient } from "@/lib/supabase"
 
 export const GET: APIRoute = async ({ url, cookies }) => {
@@ -22,6 +22,27 @@ export const GET: APIRoute = async ({ url, cookies }) => {
   } catch (error) {
     return new Response(`Error fetching registrations ${error}`, {
       status: 500,
+    })
+  }
+}
+
+export const POST: APIRoute = async ({ request, cookies }) => {
+  const body = await request.json()
+  const { registrationId, values } = body
+
+  const supabase = await createUserClient(cookies)
+
+  try {
+    const res = await updateRegistration(supabase, registrationId, values)
+
+    return new Response(JSON.stringify(res), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    })
+  } catch (error) {
+    return new Response(JSON.stringify({ details: `Error al actualizar el registro: ${error}` }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
     })
   }
 }
