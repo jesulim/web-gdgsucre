@@ -122,6 +122,16 @@ export function AccreditationTable() {
       filterFn: "includesString",
     },
     {
+      accessorKey: "package",
+      header: "Paquete",
+      enableGlobalFilter: false,
+    },
+    {
+      accessorKey: "dietary_restriction",
+      header: "Restricción alimentaria",
+      enableGlobalFilter: false,
+    },
+    {
       id: "check_in",
       header: "Check-in",
       enableGlobalFilter: false,
@@ -259,11 +269,7 @@ export function AccreditationTable() {
   )
 }
 
-function TablePagination({
-  table,
-}: {
-  table: TanstackTable<AccreditationData>
-}) {
+function TablePagination({ table }: { table: TanstackTable<AccreditationData> }) {
   const firstRow = table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1
   const currentPageRows = table.getRowModel().rows.length
   const lastRow = firstRow + currentPageRows - 1

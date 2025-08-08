@@ -150,7 +150,7 @@ export async function updateRegistration(
 export async function getRegistrationsWithActivities(supabase: SupabaseClient, event_slug: string) {
   const { data, error } = await supabase
     .from("registrations_with_activities")
-    .select("id, first_name, last_name, activities")
+    .select("id, first_name, last_name, package, dietary_restriction, activities")
     .eq("slug", event_slug)
     .order("first_name", { ascending: true })
   if (error) {
