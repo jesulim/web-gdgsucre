@@ -1,0 +1,38 @@
+---
+import RandomWinner from "@/components/RandomWinner"
+import SorteoHeader from "@/components/SorteoHeader.astro"
+import BaseLayout from "@/layout/BaseLayout.astro"
+
+import { getProfile } from "@/lib/services/profileService"
+import { createUserClient } from "@/lib/supabase"
+
+const supabase = await createUserClient(Astro.cookies)
+const profile = await getProfile(supabase)
+
+if (!profile?.is_admin) {
+  Astro.redirect("/")
+}
+---
+
+<BaseLayout title="Ruleta de Ganadores">
+  <SorteoHeader />
+  <main class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+    <RandomWinner client:load />
+  </main>
+</BaseLayout>
+
+<style>
+  @keyframes pulse-glow {
+    0%,
+    100% {
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+    }
+    50% {
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.8);
+    }
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 1s ease-in-out infinite;
+  }
+</style>
