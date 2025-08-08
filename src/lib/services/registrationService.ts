@@ -150,7 +150,7 @@ export async function updateRegistration(
 export async function getRegistrationsWithActivities(supabase: SupabaseClient, event_slug: string) {
   const { data, error } = await supabase
     .from("registrations_with_activities")
-    .select("*")
+    .select("id, first_name, last_name, activities")
     .eq("slug", event_slug)
     .order("first_name", { ascending: true })
   if (error) {
@@ -163,23 +163,27 @@ export async function getRegistrationsWithActivities(supabase: SupabaseClient, e
 export async function updateRegistrationActivity(
   supabase: SupabaseClient,
   registrationId: number,
-  field: string,
+  name: string,
   value: boolean
 ) {
-  const allowedFields = ["check_in", "lunch", "refreshment", "package_delivered"]
-  if (!allowedFields.includes(field)) {
-    throw new Error(`Invalid field: ${field}`)
-  }
-
-  const { data, error } = await supabase
+  const { data: activity, error: activityError } = await supabase
     .from("activities")
-    .update({ [field]: value })
-    .eq("registration_id", registrationId)
-    .select()
+    .select("id")
+    .eq("name", name)
+    .single()
 
-  if (error) {
-    throw new Error(`Error updating activity: ${error.message}`)
-  }
+  if (activityError) throw activityError
 
-  return data
+  const { error } = await supabase.from("registration_activities").upsert(
+    {
+      registration_id: registrationId,
+      activity_id: activity.id,
+      completed: value,
+    },
+    { onConflict: "registration_id,activity_id" }
+  )
+
+  if (error) throw error
+
+  return { success: true }
 }

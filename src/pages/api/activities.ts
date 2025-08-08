@@ -48,9 +48,14 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       status: 200,
     })
   } catch (error) {
-    return new Response(JSON.stringify({ error: `Error updating activity: ${error}` }), {
-      headers: { "Content-Type": "application/json" },
-      status: 500,
-    })
+    return new Response(
+      JSON.stringify({
+        error: `Error updating activity: ${error instanceof Error ? error.message : error}`,
+      }),
+      {
+        headers: { "Content-Type": "application/json" },
+        status: 500,
+      }
+    )
   }
 }
