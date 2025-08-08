@@ -1,13 +1,12 @@
 ---
 import { Image } from "astro:assets"
 
-// Importar las imágenes de sponsors (ajusta los nombres según tus archivos)
+// Importar las imágenes de colaboradores (ajusta los nombres según tus archivos)
 import Colaborador1 from "@/assets/io-extended-25/colaboradores/colaborador1.webp"
 import Colaborador2 from "@/assets/io-extended-25/colaboradores/colaborador2.webp"
 import Colaborador3 from "@/assets/io-extended-25/colaboradores/colaborador3.webp"
 import Colaborador4 from "@/assets/io-extended-25/colaboradores/colaborador4.webp"
 import Colaborador5 from "@/assets/io-extended-25/colaboradores/colaborador5.webp"
-import FondoSponsor from "@/assets/io-extended-25/sponsors/fondo.webp"
 
 const colaboradores = [
   { src: Colaborador1, alt: "sociedad", width: 320, height: 256 },
@@ -17,11 +16,10 @@ const colaboradores = [
   { src: Colaborador5, alt: "univalle", width: 320, height: 320 },
 ]
 
-// Duplicar los sponsors para crear el efecto infinito
 const duplicatedColaboradores = [...colaboradores, ...colaboradores]
 ---
 
-<section class="w-full py-16 sponsor-section">
+<section class="w-full py-16 colaboradores-section">
   <!-- Título -->
   <div class="max-w-7xl mx-auto px-4 md:px-6 mb-8 md:mb-12">
     <div class="text-center">
@@ -33,10 +31,10 @@ const duplicatedColaboradores = [...colaboradores, ...colaboradores]
   
   <!-- Carrusel -->
   <div class="w-full overflow-hidden">
-    <div class="flex animate-marquee hover:animate-none transition-all duration-1000 ease-linear">
+    <div class="flex animate-marquee-right hover:animate-none transition-all duration-1000 ease-linear">
       {duplicatedColaboradores.map((colaborador, index) => (
         <div 
-          class="flex-shrink-0 mx-3 md:mx-10 transform mobile-sponsor"
+          class="flex-shrink-0 mx-3 md:mx-10 transform mobile-colaborador"
         >
           <div class="flex items-center justify-center h-20 md:h-auto">
             <Image
@@ -47,7 +45,7 @@ const duplicatedColaboradores = [...colaboradores, ...colaboradores]
               height={colaborador.height}
               loading="lazy"
               decoding="async"
-              class="object-contain transition-all duration-300 mobile-logo"
+              class="object-contain transition-all duration-300 mobile-colaborador"
             />
           </div>
         </div>
@@ -57,7 +55,7 @@ const duplicatedColaboradores = [...colaboradores, ...colaboradores]
 </section>
 
 <style>
-  .sponsor-section {
+  .colaboradores-section {
     background-image: url('/src/assets/io-extended-25/sponsors/fondo-sponsors.webp');
     background-size: cover;
     background-position: center;
@@ -65,24 +63,24 @@ const duplicatedColaboradores = [...colaboradores, ...colaboradores]
     overflow: hidden; 
   }
   
-  @keyframes marquee {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-33.333%); } /* Ajustado para triple duplicación */
-  }
-  
-  .animate-marquee {
-    display: flex;
-    width: fit-content;
-    animation: marquee 45s linear infinite;
-  }
+  @keyframes marquee-right {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(33.333%); }
+}
+
+.animate-marquee-right {
+  display: flex;
+  width: fit-content;
+  animation: marquee-right 45s linear infinite;
+}
   
   /* Optimizaciones específicas para móvil - Mostrar solo 2 logos */
   @media (max-width: 768px) {
-    .animate-marquee {
+    .animate-marquee-right {
       animation-duration: 25s; /* Más rápido en móvil */
     }
     
-    .mobile-sponsor {
+    .mobile-colaborador {
       margin-left: 1rem;
       margin-right: 1rem;
       min-width: 160px; /* Ancho mínimo ajustado para 2 logos */
@@ -97,17 +95,17 @@ const duplicatedColaboradores = [...colaboradores, ...colaboradores]
     }
     
     /* Pausa la animación al hacer touch en móvil */
-    .animate-marquee:active {
+    .animate-marquee-right:active {
       animation-play-state: paused;
     }
   }
   
   @media (max-width: 480px) {
-    .animate-marquee {
+    .animate-marquee-right {
       animation-duration: 20s; /* Aún más rápido en pantallas muy pequeñas */
     }
     
-    .mobile-sponsor {
+    .mobile-colaborador {
       margin-left: 0.75rem;
       margin-right: 0.75rem;
       min-width: 150px; /* Ajustado para pantallas muy pequeñas */
@@ -124,7 +122,7 @@ const duplicatedColaboradores = [...colaboradores, ...colaboradores]
   
   /* Para pantallas extra pequeñas (menos de 360px) */
   @media (max-width: 360px) {
-    .mobile-sponsor {
+    .mobile-colaborador {
       margin-left: 0.5rem;
       margin-right: 0.5rem;
       min-width: 140px;
@@ -141,14 +139,14 @@ const duplicatedColaboradores = [...colaboradores, ...colaboradores]
   
   /* Mejoras para dispositivos táctiles */
   @media (hover: none) and (pointer: coarse) {
-    .animate-marquee:hover {
+    .animate-marquee-right:hover {
       animation-play-state: running; /* Mantiene la animación en dispositivos táctiles */
     }
   }
   
   /* Reducir movimiento para usuarios que prefieren menos animación */
   @media (prefers-reduced-motion: reduce) {
-    .animate-marquee {
+    .animate-marquee-right {
       animation-duration: 60s; /* Más lento */
     }
   }
