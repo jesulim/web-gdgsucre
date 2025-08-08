@@ -60,7 +60,6 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
   lastName = "Torres",
   title = "Software Engineer",
 }) => {
-  const wrapRef = useRef<HTMLDivElement>(null)
   const cardRef = useRef<HTMLDivElement>(null)
 
   const animationHandlers = useMemo(() => {
@@ -68,12 +67,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
 
     let rafId: number | null = null
 
-    const updateCardTransform = (
-      offsetX: number,
-      offsetY: number,
-      card: HTMLElement,
-      wrap: HTMLElement
-    ) => {
+    const updateCardTransform = (offsetX: number, offsetY: number, card: HTMLElement) => {
       const width = card.clientWidth
       const height = card.clientHeight
 
@@ -96,7 +90,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
       }
 
       for (const [property, value] of Object.entries(properties)) {
-        wrap.style.setProperty(property, value)
+        card.style.setProperty(property, value)
       }
     }
 
@@ -104,12 +98,11 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
       duration: number,
       startX: number,
       startY: number,
-      card: HTMLElement,
-      wrap: HTMLElement
+      card: HTMLElement
     ) => {
       const startTime = performance.now()
-      const targetX = wrap.clientWidth / 2
-      const targetY = wrap.clientHeight / 2
+      const targetX = card.clientWidth / 2
+      const targetY = card.clientHeight / 2
 
       const animationLoop = (currentTime: number) => {
         const elapsed = currentTime - startTime
@@ -119,7 +112,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
         const currentX = adjust(easedProgress, 0, 1, startX, targetX)
         const currentY = adjust(easedProgress, 0, 1, startY, targetY)
 
-        updateCardTransform(currentX, currentY, card, wrap)
+        updateCardTransform(currentX, currentY, card)
 
         if (progress < 1) {
           rafId = requestAnimationFrame(animationLoop)
@@ -144,16 +137,13 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
   const handlePointerMove = useCallback(
     (event: PointerEvent) => {
       const card = cardRef.current
-      const wrap = wrapRef.current
-
-      if (!card || !wrap || !animationHandlers) return
+      if (!card || !animationHandlers) return
 
       const rect = card.getBoundingClientRect()
       animationHandlers.updateCardTransform(
         event.clientX - rect.left,
         event.clientY - rect.top,
-        card,
-        wrap
+        card
       )
     },
     [animationHandlers]
@@ -161,30 +151,21 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
 
   const handlePointerEnter = useCallback(() => {
     const card = cardRef.current
-    const wrap = wrapRef.current
-
-    if (!card || !wrap || !animationHandlers) return
-
+    if (!card || !animationHandlers) return
     animationHandlers.cancelAnimation()
-    wrap.classList.add("active")
     card.classList.add("active")
   }, [animationHandlers])
 
   const handlePointerLeave = useCallback(
     (event: PointerEvent) => {
       const card = cardRef.current
-      const wrap = wrapRef.current
-
-      if (!card || !wrap || !animationHandlers) return
-
+      if (!card || !animationHandlers) return
       animationHandlers.createSmoothAnimation(
         ANIMATION_CONFIG.SMOOTH_DURATION,
         event.offsetX,
         event.offsetY,
-        card,
-        wrap
+        card
       )
-      wrap.classList.remove("active")
       card.classList.remove("active")
     },
     [animationHandlers]
@@ -193,9 +174,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
   const handleDeviceOrientation = useCallback(
     (event: DeviceOrientationEvent) => {
       const card = cardRef.current
-      const wrap = wrapRef.current
-
-      if (!card || !wrap || !animationHandlers) return
+      if (!card || !animationHandlers) return
 
       const { beta, gamma } = event
       if (!beta || !gamma) return
@@ -203,8 +182,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
       animationHandlers.updateCardTransform(
         card.clientHeight / 2 + gamma * mobileTiltSensitivity,
         card.clientWidth / 2 + (beta - ANIMATION_CONFIG.DEVICE_BETA_OFFSET) * mobileTiltSensitivity,
-        card,
-        wrap
+        card
       )
     },
     [animationHandlers, mobileTiltSensitivity]
@@ -214,9 +192,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
     if (!enableTilt || !animationHandlers) return
 
     const card = cardRef.current
-    const wrap = wrapRef.current
-
-    if (!card || !wrap) return
+    if (!card) return
 
     const pointerMoveHandler = handlePointerMove as EventListener
     const pointerEnterHandler = handlePointerEnter as EventListener
@@ -252,16 +228,15 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
     card.addEventListener("pointerleave", pointerLeaveHandler)
     card.addEventListener("click", handleClick)
 
-    const initialX = wrap.clientWidth - ANIMATION_CONFIG.INITIAL_X_OFFSET
+    const initialX = card.clientWidth - ANIMATION_CONFIG.INITIAL_X_OFFSET
     const initialY = ANIMATION_CONFIG.INITIAL_Y_OFFSET
 
-    animationHandlers.updateCardTransform(initialX, initialY, card, wrap)
+    animationHandlers.updateCardTransform(initialX, initialY, card)
     animationHandlers.createSmoothAnimation(
       ANIMATION_CONFIG.INITIAL_DURATION,
       initialX,
       initialY,
-      card,
-      wrap
+      card
     )
 
     return () => {
@@ -296,36 +271,34 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
   )
 
   return (
-    <div ref={wrapRef} className={`pc-card-wrapper ${className}`.trim()} style={cardStyle}>
-      <section ref={cardRef} className="pc-card">
-        <div className="pc-inside">
-          <div className="pc-shine" />
-          <div className="pc-glare" />
-          <div className="pc-content pc-avatar-content">
-            <img
-              className="avatar"
-              src={avatarUrl}
-              alt={`${firstName || "User"} avatar`}
-              loading="lazy"
-              onError={e => {
-                const target = e.target as HTMLImageElement
-                target.style.display = "none"
-              }}
-            />
+    <section ref={cardRef} className={`pc-card ${className}`.trim()} style={cardStyle}>
+      <div className="pc-inside">
+        <div className="pc-shine" />
+        <div className="pc-glare" />
+        <div className="pc-content pc-avatar-content">
+          <img
+            className="avatar"
+            src={avatarUrl}
+            alt={`${firstName || "User"} avatar`}
+            loading="lazy"
+            onError={e => {
+              const target = e.target as HTMLImageElement
+              target.style.display = "none"
+            }}
+          />
 
-            <div className="pc-user-info">
-              <div className="pc-handle">{title}</div>
-            </div>
-          </div>
-          <div className="pc-content">
-            <div className="pc-details">
-              <h3>{firstName}</h3>
-              <h3>{lastName}</h3>
-            </div>
+          <div className="pc-user-info">
+            <div className="pc-handle">{title}</div>
           </div>
         </div>
-      </section>
-    </div>
+        <div className="pc-content">
+          <div className="pc-details">
+            <h3>{firstName}</h3>
+            <h3>{lastName}</h3>
+          </div>
+        </div>
+      </div>
+    </section>
   )
 }
 
