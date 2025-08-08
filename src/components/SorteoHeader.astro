@@ -1,0 +1,26 @@
+---
+import { Image } from "astro:assets"
+import IOExtendedSucreWhite from "@/assets/io-extended-sucre-white.webp"
+import IOFooter from "@/assets/io25-footer.webp"
+---
+
+<header class="h-25 bg-black text-white flex md:items-center justify-between">
+  <div
+    class="w-full flex flex-col items-center sm:items-start lg:flex-row lg:justify-between lg:px-16 lg:items-center xl:px-28"
+  >
+    <a href="/">
+      <Image src={IOExtendedSucreWhite} alt="I/O Extended Sucre 2025 white" width={370} />
+    </a>
+
+    <div class="px-4">
+      <p class="text-lg text-center sm:text-left lg:text-xl font-bold lg:mb-4">Sorteo de Ganadores</p>
+    </div>
+  </div>
+
+  <Image
+    class="hidden sm:block h-full w-fit"
+    src={IOFooter}
+    alt="I/O Extended Sucre 2025 header"
+    height={300}
+  />
+</header>
