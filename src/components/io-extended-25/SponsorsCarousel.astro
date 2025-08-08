@@ -1,0 +1,81 @@
+---
+import { Image } from "astro:assets"
+
+import FondoSponsor from "@/assets/io-extended-25/sponsors/fondo.webp"
+// Importar las imágenes de sponsors (ajusta los nombres según tus archivos)
+import Sponsor1 from "@/assets/io-extended-25/sponsors/sponsor1.webp"
+import Sponsor2 from "@/assets/io-extended-25/sponsors/sponsor2.webp"
+import Sponsor3 from "@/assets/io-extended-25/sponsors/sponsor3.webp"
+
+const sponsors = [
+  { src: Sponsor1, alt: "Meru", width: 295, height: 160 },
+  { src: Sponsor2, alt: "Jala University", width: 584, height: 200 },
+  { src: Sponsor3, alt: "1 Minos", width: 240, height: 240 },
+]
+
+// Duplicar los sponsors para crear el efecto infinito
+const duplicatedSponsors = [...sponsors, ...sponsors]
+---
+
+<section class="w-full py-16 sponsor-section">
+  <div class="max-w-7xl mx-auto px-4 md:px-6">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold text-black mb-2" style="font-family: var(--font-google);">
+        SPONSORS
+      </h2>
+    </div>
+    
+    <div class="relative">
+      <!-- Carrusel infinito -->
+      <div class="flex animate-marquee hover:animate-none transition-all duration-1000 ease-linear">
+        {duplicatedSponsors.map((sponsor, index) => (
+          <div 
+            class="flex-shrink-0 mx-6 md:mx-10 transform"
+            style={`min-width: ${sponsor.width}px;`}
+          >
+            <div class="flex items-center justify-center">
+              <Image
+                src={sponsor.src}
+                alt={sponsor.alt}
+                width={sponsor.width}
+                height={sponsor.height}
+                class="object-contain transition-all duration-300"
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .sponsor-section {
+    background-image: url('/src/assets/io-extended-25/sponsors/fondo-sponsors.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: visible;
+  }
+  
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+  
+  .animate-marquee {
+    display: flex;
+    width: fit-content;
+    animation: marquee 30s linear infinite;
+  }
+  
+  @media (max-width: 768px) {
+    .animate-marquee {
+      animation-duration: 20s;
+    }
+  }
+</style>
