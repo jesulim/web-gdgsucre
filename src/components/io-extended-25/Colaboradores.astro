@@ -10,13 +10,13 @@ import Colaborador5 from "@/assets/io-extended-25/colaboradores/colaborador5.web
 
 const colaboradores = [
   { src: Colaborador1, alt: "sociedad", width: 320, height: 256 },
-  { src: Colaborador2, alt: "python", width: 260, height: 240 },
-  { src: Colaborador3, alt: "centro", width: 288, height: 288 },
-  { src: Colaborador4, alt: "flutter", width: 240, height: 240 },
-  { src: Colaborador5, alt: "univalle", width: 320, height: 320 },
+  { src: Colaborador2, alt: "sociedad", width: 260, height: 240 },
+  { src: Colaborador3, alt: "sociedad", width: 288, height: 288 },
+  { src: Colaborador4, alt: "sociedad", width: 240, height: 240 },
+  { src: Colaborador5, alt: "sociedad", width: 320, height: 320 },
 ]
 
-const duplicatedColaboradores = [...colaboradores, ...colaboradores]
+const duplicatedColaboradores = [...colaboradores, ...colaboradores, ...colaboradores]
 ---
 
 <section class="w-full py-16 colaboradores-section">
@@ -45,7 +45,7 @@ const duplicatedColaboradores = [...colaboradores, ...colaboradores]
               height={colaborador.height}
               loading="lazy"
               decoding="async"
-              class="object-contain transition-all duration-300 mobile-colaborador"
+              class="object-contain transition-all duration-300 mobile-logo"
             />
           </div>
         </div>
@@ -68,11 +68,11 @@ const duplicatedColaboradores = [...colaboradores, ...colaboradores]
   100% { transform: translateX(33.333%); }
 }
 
-.animate-marquee-right {
-  display: flex;
-  width: fit-content;
-  animation: marquee-right 45s linear infinite;
-}
+  .animate-marquee-right {
+    display: flex;
+    width: fit-content;
+    animation: marquee-right 45s linear infinite;
+  }
   
   /* Optimizaciones específicas para móvil - Mostrar solo 2 logos */
   @media (max-width: 768px) {
