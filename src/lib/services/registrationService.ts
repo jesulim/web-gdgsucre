@@ -146,3 +146,47 @@ export async function updateRegistration(
 
   return { success: true }
 }
+
+export async function getRandomRegistrations(
+  supabase: SupabaseClient,
+  limit: number | null = null,
+  role: string | null = null
+) {
+  let query = supabase
+    .from("registrations")
+    .select(
+      "id, created_at, profiles(first_name, last_name, email, phone_number), status, role, responses, events (slug)"
+    )
+    .eq("events.slug", "io-extended-25")
+
+  // Filtrar por rol si se especifica
+  if (role && (role === "Participante" || role === "Organizer")) {
+    query = query.eq("role", role)
+  }
+
+  const { data: registrations, error } = await query
+
+  if (error) {
+    throw new Error(`Error obteniendo registros: ${error.message}`)
+  }
+
+  if (!registrations || registrations.length === 0) {
+    return []
+  }
+
+  // Si no hay límite, devolver todos los registros mezclados
+  // Si hay límite, tomar solo esa cantidad
+  let aleatorios = registrations.sort(() => 0.5 - Math.random())
+
+  if (limit !== null && limit > 0) {
+    aleatorios = aleatorios.slice(0, Math.min(limit, registrations.length))
+  }
+
+  const flattenedRegistrations = aleatorios.map(({ profiles, responses, events, ...rest }) => ({
+    ...rest,
+    ...profiles,
+    ...responses,
+  }))
+
+  return flattenedRegistrations
+}
