@@ -21,7 +21,7 @@ const colaboradores = [
 const duplicatedColaboradores = [...colaboradores, ...colaboradores]
 ---
 
-<section class="w-full sponsor-section">
+<section class="w-full py-16 sponsor-section">
   <!-- Título -->
   <div class="max-w-7xl mx-auto px-4 md:px-6 mb-8 md:mb-12">
     <div class="text-center">
@@ -42,8 +42,8 @@ const duplicatedColaboradores = [...colaboradores, ...colaboradores]
             <Image
               src={colaborador.src}
               alt={colaborador.alt}
-              widths={[120, 150, 200, 300]} 
-              sizes="(max-width: 480px) 120px, (max-width: 768px) 150px, (max-width: 1024px) 200px, 300px"
+              widths={[160, 180, 200, 300]} 
+              sizes="(max-width: 480px) 160px, (max-width: 768px) 180px, (max-width: 1024px) 200px, 300px"
               height={colaborador.height}
               loading="lazy"
               decoding="async"
@@ -76,21 +76,24 @@ const duplicatedColaboradores = [...colaboradores, ...colaboradores]
     animation: marquee 45s linear infinite;
   }
   
-  /* Optimizaciones específicas para móvil */
+  /* Optimizaciones específicas para móvil - Mostrar solo 2 logos */
   @media (max-width: 768px) {
     .animate-marquee {
       animation-duration: 25s; /* Más rápido en móvil */
     }
     
     .mobile-sponsor {
-      margin-left: 0.5rem;
-      margin-right: 0.5rem;
-      min-width: 120px; /* Ancho mínimo en móvil */
+      margin-left: 1rem;
+      margin-right: 1rem;
+      min-width: 160px; /* Ancho mínimo ajustado para 2 logos */
+      max-width: 160px; /* Ancho máximo para mantener consistencia */
     }
     
     .mobile-logo {
-      max-height: 60px; /* Altura máxima en móvil */
+      max-height: 80px; /* Altura máxima ajustada */
+      max-width: 160px; /* Ancho máximo para evitar recortes */
       width: auto;
+      height: auto;
     }
     
     /* Pausa la animación al hacer touch en móvil */
@@ -105,13 +108,34 @@ const duplicatedColaboradores = [...colaboradores, ...colaboradores]
     }
     
     .mobile-sponsor {
-      margin-left: 0.25rem;
-      margin-right: 0.25rem;
-      min-width: 100px;
+      margin-left: 0.75rem;
+      margin-right: 0.75rem;
+      min-width: 150px; /* Ajustado para pantallas muy pequeñas */
+      max-width: 150px;
     }
     
     .mobile-logo {
-      max-height: 50px;
+      max-height: 75px; /* Altura ajustada para pantallas pequeñas */
+      max-width: 150px; /* Ancho ajustado */
+      width: auto;
+      height: auto;
+    }
+  }
+  
+  /* Para pantallas extra pequeñas (menos de 360px) */
+  @media (max-width: 360px) {
+    .mobile-sponsor {
+      margin-left: 0.5rem;
+      margin-right: 0.5rem;
+      min-width: 140px;
+      max-width: 140px;
+    }
+    
+    .mobile-logo {
+      max-height: 70px;
+      max-width: 140px;
+      width: auto;
+      height: auto;
     }
   }
   
@@ -129,4 +153,3 @@ const duplicatedColaboradores = [...colaboradores, ...colaboradores]
     }
   }
 </style>
-
