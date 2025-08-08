@@ -146,3 +146,16 @@ export async function updateRegistration(
 
   return { success: true }
 }
+
+export async function getRegistrationsWithActivities(supabase: SupabaseClient, event_slug: string) {
+  const { data, error } = await supabase
+    .from("registrations_with_activities")
+    .select("*")
+    .eq("slug", event_slug)
+    .order("first_name", { ascending: true })
+  if (error) {
+    throw new Error(`Error fetching registrations with activities: ${error.message}`)
+  }
+
+  return data?.map(({ activities, ...rest }) => ({ ...rest, ...activities }))
+}
