@@ -1,0 +1,18 @@
+---
+export interface Props {
+  start: string
+  end: string
+  title: string
+}
+
+const { start, end, title }: Props = Astro.props
+---
+
+<div
+  class="flex flex-col justify-center items-center py-[14px] px-[24px] md:px-[16px] rounded-[100px] border-black border-5 w-full md:w-[484px]"
+>
+  <p class="text-[24px] font-bold text-blue-500 text-center">
+    <span>{start}</span> - <span>{end}</span>
+  </p>
+  <p class="text-[28px] md:text-[36px] text-[#202124] text-center font-bold">{title.toLocaleUpperCase()}</p>
+</div>
