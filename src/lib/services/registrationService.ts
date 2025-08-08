@@ -159,3 +159,27 @@ export async function getRegistrationsWithActivities(supabase: SupabaseClient, e
 
   return data?.map(({ activities, ...rest }) => ({ ...rest, ...activities }))
 }
+
+export async function updateRegistrationActivity(
+  supabase: SupabaseClient,
+  registrationId: number,
+  field: string,
+  value: boolean
+) {
+  const allowedFields = ["check_in", "lunch", "refreshment", "package_delivered"]
+  if (!allowedFields.includes(field)) {
+    throw new Error(`Invalid field: ${field}`)
+  }
+
+  const { data, error } = await supabase
+    .from("activities")
+    .update({ [field]: value })
+    .eq("registration_id", registrationId)
+    .select()
+
+  if (error) {
+    throw new Error(`Error updating activity: ${error.message}`)
+  }
+
+  return data
+}
