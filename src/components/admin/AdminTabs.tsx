@@ -1,34 +1,24 @@
-import { AccreditationTable } from "@/components/accreditation/AccreditationTable"
 import { RegistrationsTable } from "@/components/registration/RegistrationsTable"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Button } from "@/components/ui/button"
 
 export function AdminTabs() {
   return (
     <div className="w-full">
-      <Tabs defaultValue="registrations" className="w-full">
-        <TabsList className="grid w-fit grid-cols-2 h-10">
-          <TabsTrigger value="registrations" className="px-6 py-2">
-            Registros
-          </TabsTrigger>
-          <TabsTrigger value="accreditation" className="px-6 py-2">
-            Acreditación
-          </TabsTrigger>
-        </TabsList>
+      <div className="mb-6">
+        <div className="flex gap-4 mb-6">
+          <a href="/admin/accreditation">
+            <Button variant="outline" className="flex items-center gap-2">
+              📋 Ir a Acreditación
+            </Button>
+          </a>
+        </div>
 
-        <TabsContent value="registrations" className="mt-6 space-y-4">
-          <div className="text-sm text-gray-600 mb-4">
-            Gestiona los registros de participantes del evento.
-          </div>
-          <RegistrationsTable />
-        </TabsContent>
-
-        <TabsContent value="accreditation" className="mt-6 space-y-4">
-          <div className="text-sm text-gray-600 mb-4">
-            Controla el check-in y entrega de paquetes a los participantes.
-          </div>
-          <AccreditationTable />
-        </TabsContent>
-      </Tabs>
+        <h2 className="text-xl font-semibold mb-2">Registros de Participantes</h2>
+        <div className="text-sm text-gray-600 mb-4">
+          Gestiona los registros de participantes del evento.
+        </div>
+        <RegistrationsTable />
+      </div>
     </div>
   )
 }

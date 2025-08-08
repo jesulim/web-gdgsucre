@@ -198,8 +198,7 @@ export function AccreditationTable() {
     <div className="w-full">
       <Toaster position="top-right" />
 
-      <div className="flex flex-col md:flex-row justify-between mb-4">
-        <h2 className="text-xl font-medium">Acreditación de participantes</h2>
+      <div className="flex flex-col md:flex-row justify-end mb-4">
         <AccreditationStats stats={stats} />
       </div>
 
