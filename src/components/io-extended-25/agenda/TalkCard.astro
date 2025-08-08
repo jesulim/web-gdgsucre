@@ -1,5 +1,7 @@
 ---
 import type { ImageMetadata } from "astro"
+import MarcoSvgExpert from "../speakers/marcos/marco-expert.svg"
+import MarcoSvg from "../speakers/marcos/marco.svg"
 
 export interface Tag {
   label: string
@@ -15,6 +17,7 @@ export interface Props {
   photoSrc: string | ImageMetadata
   photoAlt?: string
   imageSide?: "right" | "left"
+  isExpert?: boolean
 }
 
 const {
@@ -26,6 +29,7 @@ const {
   photoSrc,
   photoAlt = speaker || "Ponente",
   imageSide = "right",
+  isExpert = false,
 }: Props = Astro.props
 
 const resolvedPhotoSrc = typeof photoSrc === "string" ? photoSrc : photoSrc.src
@@ -33,17 +37,30 @@ const resolvedPhotoSrc = typeof photoSrc === "string" ? photoSrc : photoSrc.src
 const containerDir = imageSide === "left" ? "flex-col md:flex-row" : "flex-col md:flex-row-reverse"
 
 const infoPads = imageSide === "right" ? "md:pl-[72px] md:pr-[24px]" : "md:pl-[24px] md:pr-[72px]"
+
+const marcoSrc = isExpert ? MarcoSvgExpert : MarcoSvg
 ---
 
 <div
   class={`flex ${containerDir} items-center md:w-[638px] h-fit justify-between gap-[0px] p-[32px] md:p-0 rounded-[64px] md:rounded-[100px] bg-[#1E1E1E] text-white shadow-2xl`}
 >
-  <!-- Imagen -->
-  <div class="shrink-0">
+  <!-- Avatar -->
+  <div class="shrink-0 relative w-[200px] h-[200px]">
+    <!-- Foto -->
     <img
       src={resolvedPhotoSrc}
       alt={photoAlt}
-      class="h-[200px] rounded-full object-cover border-[6px] border-white"
+      class="w-full h-full rounded-full object-cover"
+    />
+
+    <!-- Marco -->
+    <img
+      src={marcoSrc.src}
+      alt=""
+      aria-hidden="true"
+      class={isExpert
+        ? "absolute top-[-4px] left-1/2 w-[220px] h-[220px] -translate-x-1/2 pointer-events-none"
+        : "absolute top-1/2 left-1/2 w-[220px] h-[220px] -translate-x-1/2 -translate-y-1/2 pointer-events-none"}
     />
   </div>
 
@@ -62,16 +79,18 @@ const infoPads = imageSide === "right" ? "md:pl-[72px] md:pr-[24px]" : "md:pl-[2
         {speaker}
       </p>
 
-      {tags.length > 0 && (
-        <div class="mt-2 flex gap-x-1 font-bold items-center">
-          {tags.map((t, i) => (
-            <>
-              <span class={t.class ?? "text-neutral-200"}>{t.label}</span>
-              {i < tags.length - 1 && <span class="text-white">&</span>}
-            </>
-          ))}
-        </div>
-      )}
+      {
+        tags.length > 0 && (
+          <div class="mt-2 flex gap-x-1 font-bold items-center">
+            {tags.map((t, i) => (
+              <>
+                <span class={t.class ?? "text-neutral-200"}>{t.label}</span>
+                {i < tags.length - 1 && <span class="text-white">&</span>}
+              </>
+            ))}
+          </div>
+        )
+      }
     </div>
   </div>
 </div>
