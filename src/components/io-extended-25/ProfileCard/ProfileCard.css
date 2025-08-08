@@ -247,6 +247,8 @@
   transform: translateX(-50%) scale(1);
   top: 40%;
   opacity: calc(1.75 - var(--pointer-from-center));
+  /* Ensure avatar stays above any overlays */
+  z-index: 2;
 }
 
 .pc-avatar-content::before {
@@ -254,14 +256,9 @@
   position: absolute;
   inset: 0;
   z-index: 1;
-  backdrop-filter: blur(30px);
-  mask: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 0) 60%,
-    rgba(0, 0, 0, 1) 90%,
-    rgba(0, 0, 0, 1) 100%
-  );
+  /* Remove blur overlay so it doesn't hide the avatar */
+  backdrop-filter: none;
+  mask: none;
   pointer-events: none;
 }
 
