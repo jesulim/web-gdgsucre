@@ -300,30 +300,6 @@ function TablePagination({
   )
 }
 
-// function AccreditationStats({ stats }: { stats: any }) {
-//   return (
-//     <div className="flex flex-wrap text-nowrap gap-2 items-center">
-//       <span className="rounded-md border p-2 text-sm font-medium text-black">
-//         Total: {stats.total}
-//       </span>
-//       <span className="rounded-md border p-2 text-sm font-medium text-black">
-//         Check-in: {stats.checkedIn}
-//       </span>
-//       <span className="rounded-md border p-2 text-sm font-medium text-black">
-//         Paquetes: {stats.packagesDelivered}
-//       </span>
-//       <span className="rounded-md border p-2 text-sm font-medium text-black">
-//         Almuerzos: {stats.lunchDelivered}
-//       </span>
-//       <span className="rounded-md border p-2 text-sm font-medium text-black">
-//         Refrigerios: {stats.refreshmentDelivered}
-//       </span>
-//     </div>
-//   );
-// }
-
-// Define a new interface to describe the shape of the 'stats' object.
-// All the properties appear to be numbers, so we'll type them as such.
 interface AccreditationStatsProps {
   stats: {
     total: number
@@ -334,8 +310,6 @@ interface AccreditationStatsProps {
   }
 }
 
-// Now, use the new interface in your function signature.
-// This replaces the 'any' type with a specific, strongly-typed interface.
 function AccreditationStats({ stats }: AccreditationStatsProps) {
   return (
     <div className="flex flex-wrap text-nowrap gap-2 items-center">
