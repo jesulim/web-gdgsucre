@@ -8,13 +8,15 @@ import { createUserClient } from "@/lib/supabase"
 
 export const GET: APIRoute = async ({ url, cookies }) => {
   const slug = url.searchParams.get("slug")
+  const role = url.searchParams.get("role") || "Todos"
+
   if (!slug) {
     return new Response("Event slug is required", { status: 400 })
   }
 
   try {
     const supabase = await createUserClient(cookies)
-    const registrations = await getRegistrationsWithActivities(supabase, slug)
+    const registrations = await getRegistrationsWithActivities(supabase, slug, role)
 
     return new Response(JSON.stringify(registrations), {
       headers: { "Content-Type": "application/json" },

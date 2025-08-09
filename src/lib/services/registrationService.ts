@@ -147,12 +147,21 @@ export async function updateRegistration(
   return { success: true }
 }
 
-export async function getRegistrationsWithActivities(supabase: SupabaseClient, event_slug: string) {
-  const { data, error } = await supabase
+export async function getRegistrationsWithActivities(
+  supabase: SupabaseClient,
+  event_slug: string,
+  role: string
+) {
+  const query = supabase
     .from("registrations_with_activities")
     .select("id, first_name, last_name, package, dietary_restriction, activities")
     .eq("slug", event_slug)
-    .order("first_name", { ascending: true })
+
+  if (role === "Participante" || role === "Organizer") {
+    query.eq("role", role)
+  }
+
+  const { data, error } = await query.order("first_name", { ascending: true })
   if (error) {
     throw new Error(`Error fetching registrations with activities: ${error.message}`)
   }
