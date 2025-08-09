@@ -1,32 +1,40 @@
 ---
 import Header from "@/components/Header.astro"
+import ProfileCard from "@/components/io-extended-25/ProfileCard"
+
 import BaseLayout from "@/layout/BaseLayout.astro"
+
 import { getProfile } from "@/lib/services/profileService"
 import { getEventRegistration } from "@/lib/services/registrationService"
 import { createUserClient } from "@/lib/supabase"
+
 const supabase = await createUserClient(Astro.cookies)
 const profile = await getProfile(supabase)
 if (!profile) return Astro.redirect("/")
 
 const registration = await getEventRegistration(supabase, profile?.id, Astro.params.eventSlug || "")
+if (!registration) return Astro.redirect("/")
 
-if (!registration || registration?.status !== "confirmed") return Astro.redirect("/")
+if (registration.status !== "confirmed")
+  return Astro.redirect(`/registro/${Astro.params.eventSlug}`)
 ---
 
 <BaseLayout>
   <Header />
   <main class="mt-16 pt-12 flex">
     <div class="mx-auto px-4">
-      <h1 class="text-xl mb-4">¡Hola, {profile?.first_name}!</h1>
-      <p>
-        ¡Felicidades! Tu registro ya fue validado, revisa tu correo electrónico.
-        <br />
-        Mientras esperas, te invitamos a nuestra
-        <a
-          href="https://chat.whatsapp.com/EHtkjWuuhPh8cPDY8U9A7O"
-          class="text-green-500 font-medium underline">Comunidad en WhatsApp</a
-        >
-      </p>
+      <ProfileCard
+        client:load
+        firstName={profile.first_name}
+        lastName={profile.last_name}
+        title={registration.role || "Participante"}
+        handle={profile.email}
+        avatarUrl={profile.avatar_url}
+        enableTilt={true}
+        enableMobileTilt={false}
+        iconUrl="/favicon.svg"
+        grainUrl="/grain.webp"
+      />
     </div>
   </main>
 </BaseLayout>
