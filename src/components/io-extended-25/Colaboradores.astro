@@ -25,42 +25,44 @@ const loopColaboradores = [...colaboradores, ...colaboradores]
   <!-- Título -->
   <div class="max-w-7xl mx-auto px-4 md:px-6 mb-8 md:mb-12">
     <div class="text-center">
-      <h2 class="text-2xl md:text-4xl font-bold text-black mb-2" style="font-family: var(--font-google);">
-        COLABORADORES
+      <h2
+        class="text-2xl md:text-4xl font-bold text-black mb-2"
+        style="font-family: var(--font-google);"
+      >
+        ALIADOS
       </h2>
     </div>
   </div>
-  
+
   <!-- Carrusel -->
   <div class="w-full overflow-hidden relative" aria-label="Carrusel de colaboradores">
     <!-- Gradientes de desvanecido laterales (mejora visual) -->
     <div class="pointer-events-none absolute inset-y-0 left-0 w-12 fade-edge"></div>
     <div class="pointer-events-none absolute inset-y-0 right-0 w-12 fade-edge fade-right"></div>
     <div class="marquee-track" role="list" aria-live="off">
-      {loopColaboradores.map((colaborador, index) => (
-        <div
-          role="listitem"
-          class="colaborador-item"
-        >
-          <Image
-            src={colaborador.src}
-            alt={colaborador.alt}
-            widths={[160, 180, 200, 300]}
-            sizes="(max-width: 480px) 150px, (max-width: 768px) 160px, (max-width: 1024px) 200px, 300px"
-            height={colaborador.height}
-            loading="lazy"
-            decoding="async"
-            class="colaborador-logo"
-          />
-        </div>
-      ))}
+      {
+        loopColaboradores.map((colaborador, index) => (
+          <div role="listitem" class="colaborador-item">
+            <Image
+              src={colaborador.src}
+              alt={colaborador.alt}
+              widths={[160, 180, 200, 300]}
+              sizes="(max-width: 480px) 150px, (max-width: 768px) 160px, (max-width: 1024px) 200px, 300px"
+              height={colaborador.height}
+              loading="lazy"
+              decoding="async"
+              class="colaborador-logo w-48 md:w-72"
+            />
+          </div>
+        ))
+      }
     </div>
   </div>
 </section>
 
 <style>
   .colaboradores-section {
-    background-image: url('/src/assets/io-extended-25/sponsors/fondo-sponsors.webp');
+    background-image: url("/src/assets/io-extended-25/sponsors/fondo-sponsors.webp");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -69,8 +71,12 @@ const loopColaboradores = [...colaboradores, ...colaboradores]
 
   /* Track continuo: al duplicar elementos, desplazamos exactamente el 50% del ancho */
   @keyframes colaboradores-marquee {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
   }
 
   .marquee-track {
@@ -81,7 +87,8 @@ const loopColaboradores = [...colaboradores, ...colaboradores]
     will-change: transform;
   }
 
-  .marquee-track:active { /* Pausa en touch */
+  .marquee-track:active {
+    /* Pausa en touch */
     animation-play-state: paused;
   }
 
@@ -96,46 +103,68 @@ const loopColaboradores = [...colaboradores, ...colaboradores]
   .colaborador-logo {
     object-fit: contain;
     max-height: 182px; /* antes 140px (+30%) */
-    transition: transform .3s ease;
+    transition: transform 0.3s ease;
   }
 
-  .colaborador-item:hover .colaborador-logo { transform: scale(1.05); }
+  .colaborador-item:hover .colaborador-logo {
+    transform: scale(1.05);
+  }
 
   /* Gradientes laterales */
   .fade-edge {
-    background: linear-gradient(to right, rgba(255,255,255,0.85), rgba(255,255,255,0));
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0));
   }
   .fade-right {
     left: auto;
     right: 0;
-    background: linear-gradient(to left, rgba(255,255,255,0.85), rgba(255,255,255,0));
+    background: linear-gradient(to left, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0));
   }
 
   /* Mobile <= 768px: mostrar ~2 logos estilos optimizados */
   @media (max-width: 768px) {
-    .marquee-track { animation-duration: 25s; } /* Igual Sponsors */
-    .colaborador-item { padding: 0 1rem; } /* Igual .mobile-sponsor en Sponsors */
-    .colaborador-logo { max-height: 104px; }
+    .marquee-track {
+      animation-duration: 25s;
+    } /* Igual Sponsors */
+    .colaborador-item {
+      padding: 0 1rem;
+    } /* Igual .mobile-sponsor en Sponsors */
+    .colaborador-logo {
+      max-height: 104px;
+    }
   }
 
   @media (max-width: 480px) {
-    .marquee-track { animation-duration: 20s; } /* Igual Sponsors */
-    .colaborador-item { padding: 0 0.75rem; }
-    .colaborador-logo { max-height: 94px; }
+    .marquee-track {
+      animation-duration: 20s;
+    } /* Igual Sponsors */
+    .colaborador-item {
+      padding: 0 0.75rem;
+    }
+    .colaborador-logo {
+      max-height: 94px;
+    }
   }
 
   @media (max-width: 360px) {
-    .colaborador-item { padding: 0 0.5rem; }
-    .colaborador-logo { max-height: 84px; }
+    .colaborador-item {
+      padding: 0 0.5rem;
+    }
+    .colaborador-logo {
+      max-height: 84px;
+    }
   }
 
   /* Dispositivos táctiles: mantener animación al "hover" inexistente */
   @media (hover: none) and (pointer: coarse) {
-    .marquee-track:hover { animation-play-state: running; }
+    .marquee-track:hover {
+      animation-play-state: running;
+    }
   }
 
   /* Accesibilidad: usuarios que prefieren menos movimiento */
   @media (prefers-reduced-motion: reduce) {
-    .marquee-track { animation-duration: 80s; }
+    .marquee-track {
+      animation-duration: 80s;
+    }
   }
 </style>
