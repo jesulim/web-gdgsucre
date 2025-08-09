@@ -9,7 +9,7 @@ import { createUserClient } from "@/lib/supabase"
 export const GET: APIRoute = async ({ url, cookies }) => {
   const slug = url.searchParams.get("slug")
   const role = url.searchParams.get("role") || "Todos"
-  const packageName = url.searchParams.get("package") || "Todos"
+  const packageName = url.searchParams.get("package")
 
   if (!slug) {
     return new Response("Event slug is required", { status: 400 })
