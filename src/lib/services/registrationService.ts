@@ -41,7 +41,7 @@ export async function getEventRegistration(
 
   const { data, error } = await supabase
     .from("registrations")
-    .select("status, events (slug)")
+    .select("role, status, events (slug)")
     .eq("user_id", user_id)
     .eq("events.slug", eventSlug)
     .single()
@@ -145,4 +145,89 @@ export async function updateRegistration(
   }
 
   return { success: true }
+}
+
+export async function getRegistrationsWithActivities(supabase: SupabaseClient, event_slug: string) {
+  const { data, error } = await supabase
+    .from("registrations_with_activities")
+    .select("id, first_name, last_name, package, dietary_restriction, activities")
+    .eq("slug", event_slug)
+    .order("first_name", { ascending: true })
+  if (error) {
+    throw new Error(`Error fetching registrations with activities: ${error.message}`)
+  }
+
+  return data?.map(({ activities, ...rest }) => ({ ...rest, ...activities }))
+}
+
+export async function updateRegistrationActivity(
+  supabase: SupabaseClient,
+  registrationId: number,
+  name: string,
+  value: boolean
+) {
+  const { data: activity, error: activityError } = await supabase
+    .from("activities")
+    .select("id")
+    .eq("name", name)
+    .single()
+
+  if (activityError) throw activityError
+
+  const { error } = await supabase.from("registration_activities").upsert(
+    {
+      registration_id: registrationId,
+      activity_id: activity.id,
+      completed: value,
+    },
+    { onConflict: "registration_id,activity_id" }
+  )
+
+  if (error) throw error
+
+  return { success: true }
+}
+
+export async function getRandomRegistrations(
+  supabase: SupabaseClient,
+  limit: number | null = null,
+  role: string | null = null
+) {
+  let query = supabase
+    .from("registrations")
+    .select(
+      "id, created_at, profiles(first_name, last_name, email, phone_number), status, role, responses, events (slug)"
+    )
+    .eq("events.slug", "io-extended-25")
+
+  // Filtrar por rol si se especifica
+  if (role && (role === "Participante" || role === "Organizer")) {
+    query = query.eq("role", role)
+  }
+
+  const { data: registrations, error } = await query
+
+  if (error) {
+    throw new Error(`Error obteniendo registros: ${error.message}`)
+  }
+
+  if (!registrations || registrations.length === 0) {
+    return []
+  }
+
+  // Si no hay límite, devolver todos los registros mezclados
+  // Si hay límite, tomar solo esa cantidad
+  let aleatorios = registrations.sort(() => 0.5 - Math.random())
+
+  if (limit !== null && limit > 0) {
+    aleatorios = aleatorios.slice(0, Math.min(limit, registrations.length))
+  }
+
+  const flattenedRegistrations = aleatorios.map(({ profiles, responses, events, ...rest }) => ({
+    ...rest,
+    ...profiles,
+    ...responses,
+  }))
+
+  return flattenedRegistrations
 }

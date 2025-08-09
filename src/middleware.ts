@@ -20,6 +20,9 @@ export const onRequest = defineMiddleware(async (context, next) => {
     if (data?.session) {
       const { access_token, refresh_token, expires_in } = data.session
       setSupabaseCookies(cookies, access_token, refresh_token, expires_in)
+    } else {
+      cookies.delete("sb-access-token")
+      cookies.delete("sb-refresh-token")
     }
   }
 
