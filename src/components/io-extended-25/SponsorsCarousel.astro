@@ -1,0 +1,159 @@
+---
+import { Image } from "astro:assets"
+
+// Importar las imágenes de sponsors
+import Sponsor1 from "@/assets/io-extended-25/sponsors/sponsor1.webp"
+import Sponsor2 from "@/assets/io-extended-25/sponsors/sponsor2.webp"
+import Sponsor3 from "@/assets/io-extended-25/sponsors/sponsor3.webp"
+
+const sponsors = [
+  { src: Sponsor1, alt: "Meru", width: 295, height: 140 },
+  { src: Sponsor2, alt: "Jala University", width: 584, height: 140 },
+  { src: Sponsor3, alt: "10 Minds", width: 240, height: 200 },
+]
+
+// Duplicar los sponsors para crear el efecto infinito
+const duplicatedSponsors = [...sponsors, ...sponsors, ...sponsors] // Triple para mejor efecto en móvil
+---
+
+<section class="w-full py-16 sponsor-section">
+  <!-- Título -->
+  <div class="max-w-7xl mx-auto px-4 md:px-6 mb-8 md:mb-12">
+    <div class="text-center">
+      <h2
+        class="text-2xl md:text-4xl font-bold text-black mb-2"
+        style="font-family: var(--font-google);"
+      >
+        SPONSORS
+      </h2>
+    </div>
+  </div>
+
+  <!-- Carrusel -->
+  <div class="w-full overflow-hidden">
+    <div
+      class="flex items-center animate-marquee hover:animate-none transition-all duration-1000 ease-linear"
+    >
+      {
+        duplicatedSponsors.map((sponsor, index) => (
+          <div class="flex-shrink-0 mx-3 md:mx-10 transform mobile-sponsor">
+            <div class="flex items-center justify-center h-20 md:h-auto">
+              <Image
+                src={sponsor.src}
+                alt={sponsor.alt}
+                widths={[160, 180, 200, 300]}
+                sizes="(max-width: 480px) 160px, (max-width: 768px) 180px, (max-width: 1024px) 200px, 300px"
+                height={sponsor.height}
+                loading="lazy"
+                decoding="async"
+                class="object-contain transition-all duration-300 mobile-logo lg:px-4"
+              />
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .sponsor-section {
+    background-image: url("/src/assets/io-extended-25/sponsors/fondo-sponsors.webp");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+  }
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-33.333%);
+    } /* Ajustado para triple duplicación */
+  }
+
+  .animate-marquee {
+    display: flex;
+    width: fit-content;
+    animation: marquee 45s linear infinite;
+  }
+
+  /* Optimizaciones específicas para móvil - Mostrar solo 2 logos */
+  @media (max-width: 768px) {
+    .animate-marquee {
+      animation-duration: 25s; /* Más rápido en móvil */
+    }
+
+    .mobile-sponsor {
+      margin-left: 1rem;
+      margin-right: 1rem;
+      min-width: 160px; /* Ancho mínimo ajustado para 2 logos */
+      max-width: 160px; /* Ancho máximo para mantener consistencia */
+    }
+
+    .mobile-logo {
+      max-height: 80px; /* Altura máxima ajustada */
+      max-width: 160px; /* Ancho máximo para evitar recortes */
+      width: auto;
+      height: auto;
+    }
+
+    /* Pausa la animación al hacer touch en móvil */
+    .animate-marquee:active {
+      animation-play-state: paused;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .animate-marquee {
+      animation-duration: 20s; /* Aún más rápido en pantallas muy pequeñas */
+    }
+
+    .mobile-sponsor {
+      margin-left: 0.75rem;
+      margin-right: 0.75rem;
+      min-width: 150px; /* Ajustado para pantallas muy pequeñas */
+      max-width: 150px;
+    }
+
+    .mobile-logo {
+      max-height: 75px; /* Altura ajustada para pantallas pequeñas */
+      max-width: 150px; /* Ancho ajustado */
+      width: auto;
+      height: auto;
+    }
+  }
+
+  /* Para pantallas extra pequeñas (menos de 360px) */
+  @media (max-width: 360px) {
+    .mobile-sponsor {
+      margin-left: 0.5rem;
+      margin-right: 0.5rem;
+      min-width: 140px;
+      max-width: 140px;
+    }
+
+    .mobile-logo {
+      max-height: 70px;
+      max-width: 140px;
+      width: auto;
+      height: auto;
+    }
+  }
+
+  /* Mejoras para dispositivos táctiles */
+  @media (hover: none) and (pointer: coarse) {
+    .animate-marquee:hover {
+      animation-play-state: running; /* Mantiene la animación en dispositivos táctiles */
+    }
+  }
+
+  /* Reducir movimiento para usuarios que prefieren menos animación */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-marquee {
+      animation-duration: 60s; /* Más lento */
+    }
+  }
+</style>

@@ -1,0 +1,170 @@
+---
+import { Image } from "astro:assets"
+
+// Importar las imágenes de colaboradores (ajusta los nombres según tus archivos)
+import Colaborador1 from "@/assets/io-extended-25/colaboradores/colaborador1.webp"
+import Colaborador2 from "@/assets/io-extended-25/colaboradores/colaborador2.webp"
+import Colaborador3 from "@/assets/io-extended-25/colaboradores/colaborador3.webp"
+import Colaborador4 from "@/assets/io-extended-25/colaboradores/colaborador4.webp"
+import Colaborador5 from "@/assets/io-extended-25/colaboradores/colaborador5.webp"
+
+// Lista base (solo una vez)
+const colaboradores = [
+  { src: Colaborador1, alt: "Colaborador 1", width: 300, height: 256 },
+  { src: Colaborador2, alt: "Colaborador 2", width: 200, height: 240 },
+  { src: Colaborador3, alt: "Colaborador 3", width: 288, height: 288 },
+  { src: Colaborador4, alt: "Colaborador 4", width: 240, height: 240 },
+  { src: Colaborador5, alt: "Colaborador 5", width: 320, height: 320 },
+]
+
+// Duplicamos una sola vez para crear un track continuo (el 100% del primer bloque + 100% del segundo = ciclo perfecto)
+const loopColaboradores = [...colaboradores, ...colaboradores]
+---
+
+<section class="w-full py-16 colaboradores-section">
+  <!-- Título -->
+  <div class="max-w-7xl mx-auto px-4 md:px-6 mb-8 md:mb-12">
+    <div class="text-center">
+      <h2
+        class="text-2xl md:text-4xl font-bold text-black mb-2"
+        style="font-family: var(--font-google);"
+      >
+        ALIADOS
+      </h2>
+    </div>
+  </div>
+
+  <!-- Carrusel -->
+  <div class="w-full overflow-hidden relative" aria-label="Carrusel de colaboradores">
+    <!-- Gradientes de desvanecido laterales (mejora visual) -->
+    <div class="pointer-events-none absolute inset-y-0 left-0 w-12 fade-edge"></div>
+    <div class="pointer-events-none absolute inset-y-0 right-0 w-12 fade-edge fade-right"></div>
+    <div class="marquee-track" role="list" aria-live="off">
+      {
+        loopColaboradores.map((colaborador, index) => (
+          <div role="listitem" class="colaborador-item">
+            <Image
+              src={colaborador.src}
+              alt={colaborador.alt}
+              widths={[160, 180, 200, 300]}
+              sizes="(max-width: 480px) 150px, (max-width: 768px) 160px, (max-width: 1024px) 200px, 300px"
+              height={colaborador.height}
+              loading="lazy"
+              decoding="async"
+              class="colaborador-logo w-48 md:w-72"
+            />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .colaboradores-section {
+    background-image: url("/src/assets/io-extended-25/sponsors/fondo-sponsors.webp");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+  }
+
+  /* Track continuo: al duplicar elementos, desplazamos exactamente el 50% del ancho */
+  @keyframes colaboradores-marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .marquee-track {
+    display: flex;
+    width: max-content; /* Se ajusta al contenido duplicado */
+    animation: colaboradores-marquee 45s linear infinite; /* Igual que Sponsors base */
+    animation-direction: reverse; /* Dirección contraria */
+    will-change: transform;
+  }
+
+  .marquee-track:active {
+    /* Pausa en touch */
+    animation-play-state: paused;
+  }
+
+  .colaborador-item {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 2.5rem; /* Desktop: similar a mx-10 (2.5rem) */
+  }
+
+  .colaborador-logo {
+    object-fit: contain;
+    max-height: 182px; /* antes 140px (+30%) */
+    transition: transform 0.3s ease;
+  }
+
+  .colaborador-item:hover .colaborador-logo {
+    transform: scale(1.05);
+  }
+
+  /* Gradientes laterales */
+  .fade-edge {
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0));
+  }
+  .fade-right {
+    left: auto;
+    right: 0;
+    background: linear-gradient(to left, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0));
+  }
+
+  /* Mobile <= 768px: mostrar ~2 logos estilos optimizados */
+  @media (max-width: 768px) {
+    .marquee-track {
+      animation-duration: 25s;
+    } /* Igual Sponsors */
+    .colaborador-item {
+      padding: 0 1rem;
+    } /* Igual .mobile-sponsor en Sponsors */
+    .colaborador-logo {
+      max-height: 104px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .marquee-track {
+      animation-duration: 20s;
+    } /* Igual Sponsors */
+    .colaborador-item {
+      padding: 0 0.75rem;
+    }
+    .colaborador-logo {
+      max-height: 94px;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .colaborador-item {
+      padding: 0 0.5rem;
+    }
+    .colaborador-logo {
+      max-height: 84px;
+    }
+  }
+
+  /* Dispositivos táctiles: mantener animación al "hover" inexistente */
+  @media (hover: none) and (pointer: coarse) {
+    .marquee-track:hover {
+      animation-play-state: running;
+    }
+  }
+
+  /* Accesibilidad: usuarios que prefieren menos movimiento */
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+      animation-duration: 80s;
+    }
+  }
+</style>

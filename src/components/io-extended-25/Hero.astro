@@ -5,7 +5,8 @@ import CalendarIcon from "@/assets/logos/calendar-month.svg"
 import LocationIcon from "@/assets/logos/distance.svg"
 import GoogleIoLogo from "@/assets/logos/google-io-extended-2025-logo.webp"
 
-const redirectHref = Astro.cookies.has("sb-refresh-token")
+const isLoggedIn = Astro.cookies.has("sb-refresh-token")
+const redirectHref = isLoggedIn
   ? "/registro/io-extended-25"
   : "/api/auth/signin?next=/registro/io-extended-25"
 ---
@@ -50,7 +51,7 @@ const redirectHref = Astro.cookies.has("sb-refresh-token")
             href={redirectHref}
             class="bg-blue-500 flex items-center justify-center px-8 md:px-14 py-3 md:py-3.5 rounded-[50px] text-white font-semibold text-[16px] md:text-[20px] tracking-[-0.1px] leading-[24px] md:leading-[28px] hover:bg-[#3367d6] transition-colors"
           >
-            Regístrate ahora
+            {isLoggedIn ? "Credencial" : "Regístrate ahora"}
           </a>
         </div>
       </div>

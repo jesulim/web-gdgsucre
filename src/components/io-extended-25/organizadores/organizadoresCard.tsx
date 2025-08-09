@@ -38,7 +38,7 @@ export function OrganizadoresCarousel({ organizers }: { organizers: Organizador[
   }, [api])
 
   return (
-    <div className="w-full h-full max-w-6xl mx-auto ">
+    <div className="w-full h-full mx-auto ">
       <Carousel
         opts={{
           align: "center",
@@ -49,10 +49,7 @@ export function OrganizadoresCarousel({ organizers }: { organizers: Organizador[
       >
         <CarouselContent className="-ml-2 md:-ml-4">
           {organizers.map(organizador => (
-            <CarouselItem
-              key={organizador.id}
-              className="max-w-64 md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
-            >
+            <CarouselItem key={organizador.id} className="max-w-64 lg:max-w-68">
               <Card className="bg-black rounded-3xl overflow-hidden p-4">
                 <CardContent className="flex flex-col items-center justify-center p-4 text-white">
                   {/* Imagen circular con borde */}

@@ -1,0 +1,111 @@
+---
+import ActivityCard from "@/components/io-extended-25/agenda/ActivityCard.astro"
+import TalkCard from "@/components/io-extended-25/agenda/TalkCard.astro"
+
+import brianImg from "@/assets/io-extended-25/speakers/Brian-Castillo.webp"
+import carlosAlarconImg from "@/assets/io-extended-25/speakers/Carlos-Alarcon.webp"
+import carlosImg from "@/assets/io-extended-25/speakers/Carlos-Collazos.webp"
+import rodrigoImg from "@/assets/io-extended-25/speakers/Rodrigo-Torrico.webp"
+import saraImg from "@/assets/io-extended-25/speakers/Sara-Salazar.webp"
+---
+
+<!-- Seccion de Agenda -->
+<section id="agenda" class="flex flex-col justify-center items-center gap-[52px] my-6 px-4">
+  <h2 class="font-bold text-3xl md:text-5xl">AGENDA</h2>
+  <!-- Contenido de la Agenda -->
+  <div class="flex flex-col xl:flex-row md:flex-col gap-[36px] lg:gap-[44px]">
+    <!-- Izquierda -->
+    <div class="flex-1 flex flex-col justify-center items-center gap-[36px]">
+      <ActivityCard 
+        start="8:00"
+        end="9:00"
+        title="acreditación"
+      />
+      <TalkCard
+        start="9:00"
+        end="9:45"
+        title="Del concepto a la producción: IA generativa accesible con Google Cloud"
+        speaker="Sara Salazar"
+        photoSrc={saraImg}
+        tags={[
+          { label: "AI", class: "text-red-500" },
+          { label: "Cloud", class: "text-yellow-600" },
+        ]}
+      />
+
+      <ActivityCard 
+        start="10:00"
+        end="10:30"
+        title="refrigrerio"
+      />
+
+      <TalkCard
+        start="10:30"
+        end="11:15"
+        title="Google ADK: Crea agentes AI paso a paso"
+        speaker="Carlos Alarcón"
+        photoSrc={carlosAlarconImg}
+        tags={[
+          { label: "AI", class: "text-red-500" },
+          { label: "Cloud", class: "text-yellow-400" },
+        ]}
+        imageSide="left"
+        isExpert
+      />
+
+      <TalkCard
+        start="11:15"
+        end="12:00"
+        title="¿La IA reemplazara a los diseñadores? UX en la era de la IA"
+        speaker="Carlos Collazos"
+        photoSrc={carlosImg}
+        tags={[
+          { label: "UX / UI", class: "text-green-500" },
+        ]}
+      />
+    </div>
+    <!-- Derecha -->
+    <div class="flex-1 flex flex-col justify-center items-center gap-[36px]">
+      <ActivityCard 
+        start="12:00"
+        end="13:00"
+        title="almuerzo"
+      />
+      <ActivityCard 
+        start="13:00"
+        end="13:45"
+        title="networking y sorteo"
+      />
+      <TalkCard
+        start="14:00"
+        end="14:45"
+        title="Firebase Studio: Del prompt al deploy"
+        speaker="Brian Castillo"
+        photoSrc={brianImg}
+        tags={[
+          { label: "AI", class: "text-red-500" },
+          { label: "Firebase", class: "text-yellow-600" },
+        ]}
+        imageSide="left"
+        isExpert
+      />
+
+      <TalkCard
+        start="14:45"
+        end="15:30"
+        title="Angular Hoy: Lo Nuevo en Angular 20 "
+        speaker="Rodrigo Torrico"
+        photoSrc={rodrigoImg}
+        tags={[
+          { label: "Desarrollo Web", class: "text-blue-500" },
+        ]}
+      />
+      <ActivityCard 
+        start="15:30"
+        end="16:00"
+        title="sorteo final y clausura"
+      />
+
+    </div>
+  </div>
+</section>
