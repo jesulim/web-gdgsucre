@@ -162,7 +162,7 @@ export async function getRegistrationsWithActivities(
     query.eq("role", role)
   }
 
-  if (packageName && packageName !== "Todos") {
+  if (packageName && packageName !== "Todos los paquetes") {
     query.eq("package", packageName)
   }
 
