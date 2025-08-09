@@ -147,6 +147,47 @@ export async function updateRegistration(
   return { success: true }
 }
 
+export async function getRegistrationsWithActivities(supabase: SupabaseClient, event_slug: string) {
+  const { data, error } = await supabase
+    .from("registrations_with_activities")
+    .select("id, first_name, last_name, package, dietary_restriction, activities")
+    .eq("slug", event_slug)
+    .order("first_name", { ascending: true })
+  if (error) {
+    throw new Error(`Error fetching registrations with activities: ${error.message}`)
+  }
+
+  return data?.map(({ activities, ...rest }) => ({ ...rest, ...activities }))
+}
+
+export async function updateRegistrationActivity(
+  supabase: SupabaseClient,
+  registrationId: number,
+  name: string,
+  value: boolean
+) {
+  const { data: activity, error: activityError } = await supabase
+    .from("activities")
+    .select("id")
+    .eq("name", name)
+    .single()
+
+  if (activityError) throw activityError
+
+  const { error } = await supabase.from("registration_activities").upsert(
+    {
+      registration_id: registrationId,
+      activity_id: activity.id,
+      completed: value,
+    },
+    { onConflict: "registration_id,activity_id" }
+  )
+
+  if (error) throw error
+
+  return { success: true }
+}
+
 export async function getRandomRegistrations(
   supabase: SupabaseClient,
   limit: number | null = null,
