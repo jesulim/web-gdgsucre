@@ -63,6 +63,7 @@ export function AccreditationTable() {
   const [data, setData] = useState<AccreditationData[]>()
   const [globalFilter, setGlobalFilter] = useState("")
   const [roleFilter, setRoleFilter] = useState<string>("Todos")
+  const [packageFilter, setPackageFilter] = useState<string>("Todos los paquetes")
 
   const fetchData = useCallback(async () => {
     setLoading(true)
@@ -70,6 +71,7 @@ export function AccreditationTable() {
       const url = new URL("/api/activities", window.location.origin)
       url.searchParams.set("slug", "io-extended-25")
       url.searchParams.set("role", roleFilter)
+      url.searchParams.set("package", packageFilter)
 
       const response = await fetch(url.toString())
       const result = await response.json()
@@ -82,7 +84,7 @@ export function AccreditationTable() {
     } finally {
       setLoading(false)
     }
-  }, [roleFilter])
+  }, [roleFilter, packageFilter])
 
   useEffect(() => {
     fetchData()
@@ -231,6 +233,18 @@ export function AccreditationTable() {
           onChange={e => setGlobalFilter(e.target.value)}
           className="mb-4 w-full"
         />
+
+        <Select onValueChange={value => setPackageFilter(value)} defaultValue={packageFilter}>
+          <SelectTrigger>
+            <SelectValue placeholder="Paquete" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="Todos los paquetes">Todos los paquetes</SelectItem>
+            <SelectItem value="WebVerse (35Bs)">WebVerse</SelectItem>
+            <SelectItem value="CodeLab (50 Bs)">CodeLab</SelectItem>
+            <SelectItem value="Innovators (80 Bs)">Innovators</SelectItem>
+          </SelectContent>
+        </Select>
 
         <Select onValueChange={value => setRoleFilter(value)} defaultValue="Todos">
           <SelectTrigger>

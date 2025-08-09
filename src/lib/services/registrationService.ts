@@ -150,7 +150,8 @@ export async function updateRegistration(
 export async function getRegistrationsWithActivities(
   supabase: SupabaseClient,
   event_slug: string,
-  role: string
+  role: string,
+  packageName: string
 ) {
   const query = supabase
     .from("registrations_with_activities")
@@ -159,6 +160,10 @@ export async function getRegistrationsWithActivities(
 
   if (role === "Participante" || role === "Organizer") {
     query.eq("role", role)
+  }
+
+  if (packageName && packageName !== "Todos") {
+    query.eq("package", packageName)
   }
 
   const { data, error } = await query.order("first_name", { ascending: true })
