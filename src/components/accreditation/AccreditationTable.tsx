@@ -18,6 +18,13 @@ import { Loader2Icon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Toaster } from "@/components/ui/sonner"
 import {
   Table,
@@ -55,11 +62,16 @@ export function AccreditationTable() {
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<AccreditationData[]>()
   const [globalFilter, setGlobalFilter] = useState("")
+  const [roleFilter, setRoleFilter] = useState<string>("Todos")
 
   const fetchData = useCallback(async () => {
     setLoading(true)
     try {
-      const response = await fetch("/api/activities?slug=io-extended-25")
+      const url = new URL("/api/activities", window.location.origin)
+      url.searchParams.set("slug", "io-extended-25")
+      url.searchParams.set("role", roleFilter)
+
+      const response = await fetch(url.toString())
       const result = await response.json()
 
       const dataArray = Object.values(result) as AccreditationData[]
@@ -70,7 +82,7 @@ export function AccreditationTable() {
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [roleFilter])
 
   useEffect(() => {
     fetchData()
@@ -212,13 +224,25 @@ export function AccreditationTable() {
         <AccreditationStats stats={stats} />
       </div>
 
-      <div className="flex gap-4">
+      <div className="flex gap-2">
         <Input
           placeholder="Buscar por nombre o apellido..."
           value={globalFilter ?? ""}
           onChange={e => setGlobalFilter(e.target.value)}
           className="mb-4 w-full"
         />
+
+        <Select onValueChange={value => setRoleFilter(value)} defaultValue="Todos">
+          <SelectTrigger>
+            <SelectValue placeholder="Rol" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="Todos">Todos</SelectItem>
+            <SelectItem value="Participante">Participantes</SelectItem>
+            <SelectItem value="Organizer">Organizers</SelectItem>
+          </SelectContent>
+        </Select>
+
         <Button className="bg-blue-500 rounded-sm" onClick={() => fetchData()}>
           {loading && <Loader2Icon className="animate-spin" />}
           Actualizar
