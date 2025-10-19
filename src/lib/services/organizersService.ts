@@ -1,7 +1,10 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
 
 export async function getOrganizers(supabase: SupabaseClient, eventSlug: string) {
-  const { data, error } = await supabase.from("event_organizers").select("*").eq("slug", eventSlug)
+  const { data, error } = await supabase
+    .from("organizers")
+    .select("id, profiles (first_name, last_name, avatar_url), events(slug)")
+    .eq("events.slug", eventSlug)
 
   if (error) {
     console.error("Error fetching organizers:", error)
@@ -9,7 +12,8 @@ export async function getOrganizers(supabase: SupabaseClient, eventSlug: string)
   }
 
   return data.map(organizer => ({
-    ...organizer,
-    image: organizer.avatar_url,
+    id: organizer.id,
+    image: organizer.profiles.avatar_url,
+    ...organizer.profiles,
   }))
 }
