@@ -1,13 +1,14 @@
 ---
 import "../styles/global.css"
 import ThemeScript from "../components/ThemeScript.astro"
+const { theme } = Astro.props
 ---
 
-<html lang="es">
+<html lang="es" class={theme}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
 
     <!-- <ThemeScript /> -->
@@ -16,7 +17,7 @@ import ThemeScript from "../components/ThemeScript.astro"
     <meta name="description" content="Google Developer Group Sucre" />
   </head>
 
-  <body class="dark:bg-[#fff] font-google">
+  <body class="font-google dark:bg-black dark:text-white">
     <slot />
   </body>
 </html>

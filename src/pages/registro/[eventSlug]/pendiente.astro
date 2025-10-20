@@ -1,5 +1,5 @@
 ---
-import Header from "@/components/Header.astro"
+import Header from "@/components/events/devfest-25/Header.astro"
 import BaseLayout from "@/layout/BaseLayout.astro"
 
 import { getProfile } from "@/lib/services/profileService"
@@ -16,7 +16,7 @@ const registration = await getEventRegistration(supabase, profile?.id, Astro.par
 if (!registration || registration?.status !== "pending") return Astro.redirect("/")
 ---
 
-<BaseLayout>
+<BaseLayout theme="dark">
   <Header />
   <main class="mt-16 pt-12 flex">
     <div class="mx-auto px-4">
