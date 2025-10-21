@@ -1,0 +1,62 @@
+---
+import GdgSucreLogo from "@/assets/logos/GDGSucreLogo.svg"
+import SocialIcons from "./SocialIcons.astro"
+---
+
+<footer class="w-full bg-[#1e1e1e] text-white">
+  <!-- Mobile Footer -->
+  <div class="block lg:hidden">
+    <div class="flex items-center justify-between gap-4 px-6 py-4">
+      <!-- Logo Section -->
+      <div class="flex items-center gap-4 h-[33px]">
+        <div class="flex items-center justify-center h-full min-w-[106px] px-6 rounded-full border-2 border-white text-sm font-semibold tracking-[0.08em]">
+          2025
+        </div>
+        <a
+          href="https://gdg.community.dev/gdg-sucre/"
+          class="flex items-center hover:opacity-80 transition-opacity"
+          target="_blank"
+        >
+          <GdgSucreLogo class="w-auto h-full" />
+        </a>
+      </div>
+      
+      <!-- Social Section -->
+      <div class="flex flex-col items-end gap-1">
+        <span class="text-xs font-semibold text-white">Síguenos en</span>
+        <SocialIcons class="gap-3" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Desktop Footer -->
+  <div class="hidden lg:block">
+    <div class="mx-auto max-w-screen-2xl px-8 py-8">
+      <!-- Main Footer Content -->
+      <div class="flex items-center justify-between gap-12">
+        <!-- Logo Section -->
+        <div class="flex items-center gap-6 h-[33px]">
+          <div class="flex items-center justify-center h-full min-w-[106px] px-6 rounded-full border-2 border-white text-sm font-semibold tracking-[0.08em]">
+            2025
+          </div>
+          <a
+            href="https://gdg.community.dev/gdg-sucre/"
+            class="flex items-center hover:opacity-80 transition-opacity"
+            target="_blank"
+          >
+            <GdgSucreLogo class="w-auto h-full" />
+          </a>
+        </div>
+        
+        <!-- Spacer -->
+        <div class="flex-1"></div>
+        
+        <!-- Social Section Right -->
+        <div class="flex flex-col items-end gap-2">
+          <span class="text-sm font-semibold text-white">Síguenos en</span>
+          <SocialIcons class="gap-4" />
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

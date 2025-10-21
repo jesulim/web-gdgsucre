@@ -4,7 +4,7 @@ import ThemeScript from "../components/ThemeScript.astro"
 const { theme } = Astro.props
 ---
 
-<html lang="es" class={theme}>
+<html lang="es" class={`${theme} h-screen flex flex-col`}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
@@ -17,7 +17,9 @@ const { theme } = Astro.props
     <meta name="description" content="Google Developer Group Sucre" />
   </head>
 
-  <body class="font-google dark:bg-black dark:text-white">
-    <slot />
+  <body class="font-google bg-[#232323] text-white flex flex-col min-h-screen">
+    <div class="flex-1">
+      <slot />
+    </div>
   </body>
 </html>

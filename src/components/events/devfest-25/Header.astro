@@ -10,7 +10,7 @@ import Avatar from "@/components/Avatar.astro"
 const refreshToken = Astro.cookies.has("sb-refresh-token")
 ---
 
-<nav class="w-full h-20 bg-white dark:bg-black flex items-center justify-between px-6 border-b shadow-sm fixed top-0 left-0 z-50">
+<nav class="w-full h-20 bg-[#1e1e1e] flex items-center justify-between px-6 border-b shadow-sm fixed top-0 left-0 z-50">
   <!-- Logo -->
   <a href="/#" class="flex items-center w-32 md:w-44">
     <DevFest25Logo/>
@@ -50,10 +50,10 @@ const refreshToken = Astro.cookies.has("sb-refresh-token")
 
       <a
         href="/api/auth/signin"
-        class="md:hidden flex items-center justify-center w-12 h-12 rounded-full border border-gray-300 hover:border-blue-500 transition"
+        class="md:hidden flex items-center justify-center w-12 h-12 rounded-full border border-gray-500 hover:border-blue-400 transition"
         aria-label="Iniciar sesión"
       >
-        <UserSignIn class="w-8 h-8 text-gray-800 dark:text-white" />
+        <UserSignIn class="w-8 h-8 text-white" />
       </a>
     )}
 
