@@ -5,9 +5,10 @@ interface FormFileInputProps {
   field: ControllerRenderProps
 }
 
-export const FormFileInput = ({ field }: FormFileInputProps) => {
+export const FormFileInput = ({ field, className }: FormFileInputProps) => {
   return (
     <Input
+      className={className}
       type="file"
       onChange={e => field.onChange(e.target.files?.item(0))}
     />

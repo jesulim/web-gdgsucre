@@ -1,7 +1,4 @@
-import {
-  type FormFieldSchema,
-  formFieldSchema,
-} from "@/lib/validators/formFields.ts"
+import { type FormFieldSchema, formFieldSchema } from "@/lib/validators/formFields.ts"
 import type { SupabaseClient } from "@supabase/supabase-js"
 
 export async function getFormFieldsByEvent(
@@ -21,7 +18,7 @@ export async function getFormFieldsByEvent(
         type,
         required
       ),
-      events (slug)
+      events!inner(slug)
     `
     )
     .eq("events.slug", eventSlug)

@@ -15,44 +15,31 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 
-import {
-  type FormFieldSchema,
-  buildZodSchemaFromFields,
-} from "@/lib/validators/formFields"
+import { type FormFieldSchema, buildZodSchemaFromFields } from "@/lib/validators/formFields"
 
 import { FormFileInput } from "./FormFileInput"
 import { FormSelect } from "./FormSelect"
 import ProfileFormFields from "./ProfileFormFields"
 
 interface RegisterFormProps {
-  event: { id: string; slug: string }
+  event: { id: string; slug: string; name: string }
   formFields: FormFieldSchema[]
   profile: { id: string; first_name: string; last_name: string } | null
 }
 
-export function RegisterForm({
-  formFields,
-  profile,
-  event,
-}: RegisterFormProps) {
+export function RegisterForm({ formFields, profile, event }: RegisterFormProps) {
   const [loading, setLoading] = useState(false)
 
   let formSchema = buildZodSchemaFromFields(formFields)
   let defaultValues = Object.fromEntries(
-    formFields.map(field => [
-      field.name,
-      field.type === "file" ? undefined : "",
-    ])
+    formFields.map(field => [field.name, field.type === "file" ? undefined : ""])
   )
 
   if (!profile) {
     formSchema = formSchema.extend({
       first_name: z.string().trim().min(1, "El nombre es requerido"),
       last_name: z.string().trim().min(1, "El apellido es requerido"),
-      phone_number: z
-        .string()
-        .trim()
-        .min(1, "El número de teléfono es requerido"),
+      phone_number: z.string().trim().min(1, "El número de teléfono es requerido"),
     })
 
     defaultValues = {
@@ -102,7 +89,11 @@ export function RegisterForm({
           console.error("Errores de validacion:", errors)
         })}
       >
-        {!profile && <ProfileFormFields form={form} />}
+        {profile ? (
+          <p className="text-lg">¡Nos alegra verte de nuevo, {profile.first_name}!</p>
+        ) : (
+          <ProfileFormFields form={form} />
+        )}
 
         {formFields.map(formField => (
           <FormField
@@ -114,8 +105,7 @@ export function RegisterForm({
                 <FormLabel>
                   {formField.required ? (
                     <>
-                      {formField.label}{" "}
-                      <span className="text-destructive">*</span>
+                      {formField.label} <span className="text-destructive">*</span>
                     </>
                   ) : (
                     `(Opcional) ${formField.label}`
@@ -131,13 +121,12 @@ export function RegisterForm({
                 )}
                 <FormControl>
                   {formField.type === "select" && formField.options ? (
-                    <FormSelect
-                      label={formField.label}
-                      options={formField.options}
+                    <FormSelect label={formField.label} options={formField.options} field={field} />
+                  ) : formField.type === "file" ? (
+                    <FormFileInput
+                      className="dark:file:text-gray-300 dark:file:pe-2"
                       field={field}
                     />
-                  ) : formField.type === "file" ? (
-                    <FormFileInput field={field} />
                   ) : (
                     <Input {...field} type={formField.type} />
                   )}
@@ -147,7 +136,10 @@ export function RegisterForm({
             )}
           />
         ))}
-        <Button className="w-full bg-green-500" type="submit">
+        <Button
+          className="w-full bg-gradient-to-b from-red-500 to-red-700 dark:text-white"
+          type="submit"
+        >
           {loading && <Loader2Icon className="animate-spin" />}
           Regístrate
         </Button>

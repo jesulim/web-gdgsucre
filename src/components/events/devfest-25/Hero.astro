@@ -1,0 +1,62 @@
+---
+import DevFest25Logo from "@/assets/events/devfest-25/DevFest25logo.svg"
+import CalendarIcon from "@/assets/logos/calendar-month.svg"
+import LocationIcon from "@/assets/logos/distance.svg"
+
+const isLoggedIn = Astro.cookies.has("sb-refresh-token")
+const redirectHref = isLoggedIn
+  ? "/registro/devfest-25"
+  : "/api/auth/signin?next=/registro/devfest-25"
+---
+
+<div class="w-full pt-32 py-8 flex flex-col gap-8 md:gap-8 items-center">
+  <div class="w-72 md:w-96 lg:w-1/2">
+    <DevFest25Logo />
+  </div>
+
+  <p class="font-medium text-center px-4 max-w-lg md:text-xl">
+    Únete a desarrolladores, diseñadores y entusiastas de la tecnología en la conferencia tecnológica
+    más importante de la región.
+  </p>
+
+  <div class="flex
+    items-center
+    justify-center">
+    <a
+      href={redirectHref}
+      class="text-xl bg-gradient-to-b from-red-500 to-red-700 flex items-center justify-center px-8 md:px-14 py-3 md:py-3.5 rounded-full text-white font-semibold hover:bg-red-500 transition-colors"
+    >
+      Regístrate ahora
+    </a>
+  </div>
+
+  <div class="flex flex-col md:flex-row items-center md:items-start justify-center gap-4 md:gap-6">
+    <div class="flex items-center gap-2 md:gap-3">
+      <div class="w-8 h-8 md:w-12 md:h-12 shrink-0">
+        <CalendarIcon class="fill-current" />
+      </div>
+      <div
+        class="flex flex-col justify-center text-base md:text-2xl text-center md:whitespace-pre font-medium"
+      >
+        <p class="block mb-0">Sábado, 15 de Noviembre</p>
+        <p class="block">8:00 Hrs</p>
+      </div>
+    </div>
+
+    <div class="hidden md:flex justify-center items-center h-10 w-[9px] text-[24px] font-semibold">
+      <p class="leading-[1.2]">|</p>
+    </div>
+
+    <div class="flex items-center gap-2 md:gap-3">
+      <div class="w-8 h-8 md:w-12 md:h-12 shrink-0">
+        <LocationIcon class="fill-current" />
+      </div>
+      <div
+        class="flex flex-col justify-center leading-[1.2] text-[16px] md:text-[24px] text-center md:whitespace-pre font-medium"
+      >
+        <p class="block mb-0">Facultad de Ciencias</p>
+        <p class="block">y Tecnología</p>
+      </div>
+    </div>
+  </div>
+</div>
