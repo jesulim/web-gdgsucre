@@ -1,0 +1,61 @@
+---
+import Discord from "../assets/icons/social/Discord.svg"
+import Facebook from "../assets/icons/social/Facebook.svg"
+import Instagram from "../assets/icons/social/Instagram.svg"
+import Linkedin from "../assets/icons/social/Linkedin.svg"
+import Tiktok from "../assets/icons/social/Tiktok.svg"
+import Twitter from "../assets/icons/social/Twitter.svg"
+
+const { class: className = "", ...props } = Astro.props
+---
+
+<div class={`flex items-center gap-4 ${className}`} {...props}>
+  <a 
+    href="https://www.linkedin.com/company/gdgsucre" 
+    target="_blank" 
+    aria-label="Linkedin page"
+    class="text-white/70 hover:text-white transition-colors"
+  >
+    <Linkedin class="w-5 h-5" />
+  </a>
+  <a 
+    href="https://www.instagram.com/gdgsucre/" 
+    target="_blank" 
+    aria-label="Instagram page"
+    class="text-white/70 hover:text-white transition-colors"
+  >
+    <Instagram class="w-5 h-5" />
+  </a>
+  <a 
+    href="https://www.tiktok.com/@gdgsucre" 
+    target="_blank" 
+    aria-label="Tiktok page"
+    class="text-white/70 hover:text-white transition-colors"
+  >
+    <Tiktok class="w-5 h-5" />
+  </a>
+  <a 
+    href="https://www.facebook.com/gdgsucre" 
+    target="_blank" 
+    aria-label="Facebook page"
+    class="text-white/70 hover:text-white transition-colors"
+  >
+    <Facebook class="w-5 h-5" />
+  </a>
+  <a 
+    href="https://twitter.com/gdg_sucre" 
+    target="_blank" 
+    aria-label="Twitter profile"
+    class="text-white/70 hover:text-white transition-colors"
+  >
+    <Twitter class="w-5 h-5" />
+  </a>
+  <a 
+    href="https://discord.com/invite/vcmjfcA7" 
+    target="_blank" 
+    aria-label="Discord invite"
+    class="text-white/70 hover:text-white transition-colors"
+  >
+    <Discord class="w-5 h-5" />
+  </a>
+</div>
