@@ -9,12 +9,12 @@ const redirectHref = isLoggedIn
   : "/api/auth/signin?next=/registro/devfest-25"
 ---
 
-<div class="w-full pt-20 pb-8 md:pt-32 md:pb-12 flex flex-col gap-5 md:gap-8 items-center bg-[#232323] text-white">
-  <div class="w-60 md:w-96 lg:w-1/2">
+<div class="w-full pt-32 py-8 flex flex-col gap-8 md:gap-8 items-center bg-[#232323] text-white">
+  <div class="w-72 md:w-96 lg:w-1/2">
     <DevFest25Logo />
   </div>
 
-  <p class="font-medium text-center px-5 max-w-sm md:max-w-lg md:text-xl">
+  <p class="font-medium text-center px-4 max-w-lg md:text-xl">
     Únete a desarrolladores, diseñadores y entusiastas de la tecnología en la conferencia tecnológica
     más importante de la región.
   </p>
@@ -24,15 +24,15 @@ const redirectHref = isLoggedIn
     justify-center">
     <a
       href={redirectHref}
-  class="text-lg md:text-xl bg-gradient-to-b from-red-500 to-red-700 flex items-center justify-center px-7 md:px-14 py-2.5 md:py-3.5 rounded-full text-white font-semibold hover:bg-red-500 transition-colors"
+      class="text-xl bg-gradient-to-b from-red-500 to-red-700 flex items-center justify-center px-8 md:px-14 py-3 md:py-3.5 rounded-full text-white font-semibold hover:bg-red-500 transition-colors"
     >
       Regístrate ahora
     </a>
   </div>
 
-  <div class="flex flex-col md:flex-row items-center md:items-start justify-center gap-3 md:gap-6">
+  <div class="flex flex-col md:flex-row items-center md:items-start justify-center gap-4 md:gap-6">
     <div class="flex items-center gap-2 md:gap-3">
-      <div class="w-7 h-7 md:w-12 md:h-12 shrink-0">
+      <div class="w-8 h-8 md:w-12 md:h-12 shrink-0">
         <CalendarIcon class="fill-current" />
       </div>
       <div
@@ -43,12 +43,12 @@ const redirectHref = isLoggedIn
       </div>
     </div>
 
-  <div class="hidden md:flex justify-center items-center h-10 w-[9px] text-[24px] font-semibold">
+    <div class="hidden md:flex justify-center items-center h-10 w-[9px] text-[24px] font-semibold">
       <p class="leading-[1.2]">|</p>
     </div>
 
-  <div class="flex items-center gap-2 md:gap-3">
-      <div class="w-7 h-7 md:w-12 md:h-12 shrink-0">
+    <div class="flex items-center gap-2 md:gap-3">
+      <div class="w-8 h-8 md:w-12 md:h-12 shrink-0">
         <LocationIcon class="fill-current" />
       </div>
       <div
