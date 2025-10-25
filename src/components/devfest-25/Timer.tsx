@@ -50,7 +50,7 @@ interface TimeUnitProps {
 }
 
 const TimeUnit = memo<TimeUnitProps>(({ label, value }) => (
-  <div className="flex min-w-[120px] flex-col items-center justify-center gap-4 rounded-3xl border-4 border-white/80 bg-transparent px-6 py-8 sm:min-w-[140px] sm:px-8 sm:py-10 md:min-w-[160px] md:px-10 md:py-12 lg:min-w-[180px] lg:px-12 lg:py-14">
+  <div className="flex min-w-[120px] flex-col items-center justify-center gap-4 rounded-3xl border-4 border-white/80 bg-transparent px-6 py-2 sm:min-w-[140px] sm:px-8 sm:py-3 md:min-w-[160px] md:px-10 md:py-3 lg:min-w-[180px] lg:px-12 lg:py-4">
     <div className="relative h-16 w-full overflow-visible text-center sm:h-20 md:h-24 lg:h-28">
       <div className="relative h-full w-full text-5xl font-bold leading-none text-red-500 sm:text-6xl md:text-7xl lg:text-8xl">
         <AnimatedValue value={value} />

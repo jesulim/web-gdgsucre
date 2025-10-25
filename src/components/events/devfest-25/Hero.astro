@@ -35,7 +35,7 @@ const initialTime = targetDate.getTime() - Date.now()
   </div>
 
   <div>
-    <Timer initialTime={initialTime}, targetDate={targetDate}/>
+    <Timer initialTime={initialTime} targetDate={targetDate} client:load/>
   </div>
 
   <div class="flex flex-col md:flex-row items-center md:items-start justify-center gap-4 md:gap-6">
