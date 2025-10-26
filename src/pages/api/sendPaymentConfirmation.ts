@@ -1,20 +1,25 @@
 import type { APIRoute } from "astro"
+import { z } from "zod"
 
 import { sendPaymentConfirmationEmail } from "@/lib/services/emailService"
-import { updateRegistration } from "@/lib/services/registrationService"
+import { confirmRegistration } from "@/lib/services/registrationService"
 import { createUserClient } from "@/lib/supabase"
+
+const PaymentConfirmationSchema = z.object({
+  registrationId: z.coerce.number().min(1, "Debe ser un número mayor a 1"),
+  userEmail: z.email({ message: "Email inválido" }),
+  userName: z.string().min(1),
+  eventName: z.string().min(1),
+})
 
 export const POST: APIRoute = async ({ request, cookies }) => {
   try {
     const body = await request.json()
+    const parsed = PaymentConfirmationSchema.safeParse(body)
 
-    const { registrationId, userEmail, userName, eventName } = body
-
-    if (!userEmail || !userName || !eventName) {
+    if (!parsed.success) {
       return new Response(
-        JSON.stringify({
-          error: "Faltan campos requeridos: userEmail, userName, eventName",
-        }),
+        JSON.stringify({ error: "Datos inválidos", details: z.prettifyError(parsed.error) }),
         {
           status: 400,
           headers: { "Content-Type": "application/json" },
@@ -22,15 +27,12 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       )
     }
 
+    const { registrationId, userEmail, userName, eventName } = parsed.data
+
     const supabase = await createUserClient(cookies)
-    await updateRegistration(supabase, registrationId, { status: "confirmed" })
+    await confirmRegistration(supabase, registrationId)
 
-    const emailData = {
-      userEmail,
-      userName,
-      eventName,
-    }
-
+    const emailData = { userEmail, userName, eventName }
     const result = await sendPaymentConfirmationEmail(emailData)
 
     return new Response(
