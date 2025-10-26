@@ -1,5 +1,5 @@
 import { useTimer } from "@/hooks/useTimer"
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, motion } from "motion/react"
 import { memo, useEffect, useRef, useState } from "react"
 
 const zeroPad = (value: number): string => `${value}`.padStart(2, "0")
