@@ -2,11 +2,15 @@
 import DevFest25Logo from "@/assets/events/devfest-25/DevFest25logo.svg"
 import CalendarIcon from "@/assets/logos/calendar-month.svg"
 import LocationIcon from "@/assets/logos/distance.svg"
+import { Timer } from "@/components/devfest-25/Timer"
 
 const isLoggedIn = Astro.cookies.has("sb-refresh-token")
 const redirectHref = isLoggedIn
   ? "/registro/devfest-25"
   : "/api/auth/signin?next=/registro/devfest-25"
+
+const targetDate = new Date("2025-11-15T08:00:00-04:00")
+const initialTime = targetDate.getTime() - Date.now()
 ---
 
 <div class="w-full pt-32 py-8 flex flex-col gap-8 md:gap-8 items-center bg-[#232323] text-white">
@@ -28,6 +32,10 @@ const redirectHref = isLoggedIn
     >
       Regístrate ahora
     </a>
+  </div>
+
+  <div>
+    <Timer initialTime={initialTime} targetDate={targetDate} client:load/>
   </div>
 
   <div class="flex flex-col md:flex-row items-center md:items-start justify-center gap-4 md:gap-6">
