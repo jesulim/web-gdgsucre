@@ -149,6 +149,23 @@ export async function confirmRegistration(supabase: SupabaseClient, registration
   return { success: true }
 }
 
+export async function updateRegistration(
+  supabase: SupabaseClient,
+  registrationId: number,
+  values: Record<string, string | number>
+) {
+  const { error: updateError } = await supabase
+    .from("registrations")
+    .update(values)
+    .eq("id", registrationId)
+
+  if (updateError) {
+    throw new Error(`Error actualizando estado del registro: ${updateError.message}`)
+  }
+
+  return { success: true }
+}
+
 export async function getRegistrationsWithActivities(
   supabase: SupabaseClient,
   event_slug: string,
