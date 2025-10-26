@@ -52,7 +52,7 @@ interface TimeUnitProps {
 const TimeUnit = memo<TimeUnitProps>(({ label, value }) => (
   <div className="flex flex-1 min-w-[70px] max-w-[90px] flex-col items-center justify-center gap-0 rounded-2xl sm:rounded-3xl border-3 sm:border-4 border-white/80 bg-transparent px-4 py-2 sm:min-w-[100px] sm:max-w-[120px] sm:px-6 sm:py-2 md:min-w-[140px] md:max-w-none md:px-8 md:py-3 lg:min-w-[180px] lg:px-12 lg:py-4">
     <div className="relative h-10 w-full overflow-visible text-center sm:h-16 md:h-20 lg:h-28">
-      <div className="relative h-full w-full text-5xl font-bold leading-none text-red-500 sm:text-6xl md:text-7xl lg:text-8xl">
+      <div className="relative h-full w-full text-4xl font-semibold leading-none text-red-500 sm:text-6xl md:text-7xl lg:text-8xl sm:font-semibold">
         <AnimatedValue value={value} />
       </div>
     </div>
@@ -118,7 +118,7 @@ export const Timer = ({
   ]
 
   return (
-    <div className="flex items-center justify-center gap-6 sm:gap-6 md:gap-8 lg:gap-10">
+    <div className="flex items-center justify-center gap-3 sm:gap-6 md:gap-8 lg:gap-10">
       {timeUnits.map(unit => (
         <TimeUnit key={unit.label} {...unit} />
       ))}
