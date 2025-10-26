@@ -1,4 +1,7 @@
 import type SupabaseClient from "@supabase/supabase-js/dist/module/SupabaseClient"
+import { customAlphabet } from "nanoid"
+
+const nanoid = customAlphabet("ABCDEFGHJKLMNPQRSTUVWXYZ23456789")
 
 async function uploadFile(
   supabase: SupabaseClient,
@@ -120,14 +123,10 @@ export async function getRegistrationsByEvent(
   return flattenedRegistrations
 }
 
-export async function updateRegistration(
-  supabase: SupabaseClient,
-  registrationId: number,
-  values: Record<string, string | number>
-) {
+export async function confirmRegistration(supabase: SupabaseClient, registrationId: number) {
   const { data: registration, error: findError } = await supabase
     .from("registrations")
-    .select("id, status")
+    .select("id")
     .eq("id", registrationId)
     .single()
 
@@ -137,8 +136,28 @@ export async function updateRegistration(
 
   const { error: updateError } = await supabase
     .from("registrations")
-    .update(values)
+    .update({
+      status: "confirmed",
+      token: nanoid(6),
+    })
     .eq("id", registration.id)
+
+  if (updateError) {
+    throw new Error(`Error actualizando estado del registro: ${updateError.message}`)
+  }
+
+  return { success: true }
+}
+
+export async function updateRegistration(
+  supabase: SupabaseClient,
+  registrationId: number,
+  values: Record<string, string | number>
+) {
+  const { error: updateError } = await supabase
+    .from("registrations")
+    .update(values)
+    .eq("id", registrationId)
 
   if (updateError) {
     throw new Error(`Error actualizando estado del registro: ${updateError.message}`)

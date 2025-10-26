@@ -129,22 +129,8 @@ export function RegistrationsTable() {
   }
 
   const switchRole = async (id: number, role: string) => {
-    const response = await fetch("/api/registrations", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        registrationId: id,
-        values: { role },
-      }),
-    })
-
-    const body = await response.json()
-    if (!response.ok) {
-      toast.error(body.details)
-      await fetchData()
-    }
+    // TODO: Refactor to add / delete using organizers table
+    toast.warning("Not implemented!")
   }
 
   const deleteRegistration = async (id: number) => {
