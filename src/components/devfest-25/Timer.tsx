@@ -50,7 +50,7 @@ interface TimeUnitProps {
 }
 
 const TimeUnit = memo<TimeUnitProps>(({ label, value }) => (
-  <div className="flex min-w-[120px] flex-col items-center justify-center gap-4 rounded-3xl border-4 border-white/80 bg-transparent px-6 py-2 sm:min-w-[140px] sm:px-8 sm:py-3 md:min-w-[160px] md:px-10 md:py-3 lg:min-w-[180px] lg:px-12 lg:py-4">
+  <div className="flex min-w-[120px] flex-col items-center justify-center gap-0 rounded-3xl border-4 border-white/80 bg-transparent px-6 py-2 sm:min-w-[140px] sm:px-8 sm:py-3 md:min-w-[160px] md:px-10 md:py-3 lg:min-w-[180px] lg:px-12 lg:py-4">
     <div className="relative h-16 w-full overflow-visible text-center sm:h-20 md:h-24 lg:h-28">
       <div className="relative h-full w-full text-5xl font-bold leading-none text-red-500 sm:text-6xl md:text-7xl lg:text-8xl">
         <AnimatedValue value={value} />
@@ -85,19 +85,16 @@ export const Timer = ({
     minutes: "Minutos",
     seconds: "Segundos",
   },
-  completionMessage = "¡Empezó el International Women's Day 2025!",
+  completionMessage = "¡Empezó el DevFest 2025!",
 }: TimerProps) => {
-  // Ensure targetDate is a Date object (handles both Date and string)
   const endDate = targetDate instanceof Date ? targetDate : new Date(targetDate)
 
   const { days, hours, minutes, seconds } = useTimer(initialTime, endDate)
 
-  // Don't render if more than 1 day in the past
   if (days < -1) {
     return null
   }
 
-  // Show completion message when timer reaches zero
   if (initialTime <= 0 || seconds < 0) {
     return (
       <div className="mt-8 text-center">
@@ -105,7 +102,7 @@ export const Timer = ({
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.5 }}
-          className="text-2xl font-bold text-green-500 md:text-3xl lg:text-4xl"
+          className="text-2xl font-bold text-red-500 md:text-3xl lg:text-4xl"
         >
           {completionMessage}
         </motion.div>

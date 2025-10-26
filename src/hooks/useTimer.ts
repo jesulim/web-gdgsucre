@@ -26,17 +26,10 @@ const toDatetime = (milliseconds: number): TimeRemaining => {
   return { days, hours, minutes, seconds }
 }
 
-/**
- * Custom hook that manages a countdown timer
- * @param initialTime - Initial time remaining in milliseconds
- * @param endTime - Target date/time for the countdown
- * @returns Object containing remaining days, hours, minutes, and seconds
- */
 export const useTimer = (initialTime: number, endTime: Date): TimeRemaining => {
   const [remainingMillis, setRemainingMillis] = useState<number>(initialTime)
   const endTimeRef = useRef(endTime)
 
-  // Update ref when endTime changes
   useEffect(() => {
     endTimeRef.current = endTime
   }, [endTime])
@@ -46,14 +39,12 @@ export const useTimer = (initialTime: number, endTime: Date): TimeRemaining => {
       return endTimeRef.current.getTime() - Date.now()
     }
 
-    // Immediately calculate to ensure accuracy
     setRemainingMillis(calculateRemaining())
 
     const timer = setInterval(() => {
       const remaining = calculateRemaining()
       setRemainingMillis(remaining)
 
-      // Stop the timer when countdown reaches zero
       if (remaining <= 0) {
         clearInterval(timer)
       }
@@ -62,7 +53,7 @@ export const useTimer = (initialTime: number, endTime: Date): TimeRemaining => {
     return () => {
       clearInterval(timer)
     }
-  }, []) // Empty dependency array is correct - we want this to run once and use the ref
+  }, [])
 
   return toDatetime(Math.max(0, remainingMillis))
 }
