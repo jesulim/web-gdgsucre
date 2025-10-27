@@ -1,5 +1,16 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
 
+export async function getAllEvents(supabase: SupabaseClient) {
+  const { data: events, error } = await supabase
+    .from("events")
+    .select("id, name, slug")
+    .order("date", { ascending: false })
+
+  if (error) throw new Error(error.message)
+
+  return events
+}
+
 export async function getEvent(supabase: SupabaseClient, slug: string) {
   const { data: event, error } = await supabase
     .from("events")

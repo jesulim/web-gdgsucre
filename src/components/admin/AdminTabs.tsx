@@ -1,4 +1,4 @@
-import { RegistrationsTable } from "@/components/registration/RegistrationsTable"
+import { RegistrationsTable } from "@/components/admin/RegistrationsTable"
 import { Button } from "@/components/ui/button"
 
 export function AdminTabs() {

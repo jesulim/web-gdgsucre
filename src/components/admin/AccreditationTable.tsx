@@ -1,19 +1,17 @@
-import { useCallback, useEffect, useState } from "react"
-import { toast } from "sonner"
-
 import {
   type ColumnDef,
-  type Row,
-  type Table as TanstackTable,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  type Row,
+  type Table as TanstackTable,
   useReactTable,
 } from "@tanstack/react-table"
-
 import { Loader2Icon } from "lucide-react"
+import { useCallback, useEffect, useState } from "react"
+import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -34,6 +32,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import EventSelector from "./EventSelector"
 
 interface AccreditationData {
   id: number
@@ -58,10 +57,41 @@ const customFilterFn = (rows: Row<AccreditationData>, columnId: string, filterVa
   return normalizeString(rowValue).includes(normalizeString(filterValue))
 }
 
+function PackageFilter({
+  rows,
+  packageFilter,
+  setPackageFilter,
+}: {
+  rows: Row<AccreditationData>[]
+  packageFilter: string
+  setPackageFilter: (value: string) => void
+}) {
+  if (!rows.length) return
+
+  const packages = new Set<string>(rows.map(row => row.getValue("package")))
+
+  return (
+    <Select onValueChange={value => setPackageFilter(value)} defaultValue={packageFilter}>
+      <SelectTrigger>
+        <SelectValue placeholder="Paquete" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="Todos los paquetes">Todos los paquetes</SelectItem>
+        {Array.from(packages).map(name => (
+          <SelectItem key={name} value={name}>
+            {name.split(" (")[0]}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  )
+}
+
 export function AccreditationTable() {
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<AccreditationData[]>()
   const [globalFilter, setGlobalFilter] = useState("")
+  const [eventSlug, setEventSlug] = useState("")
   const [roleFilter, setRoleFilter] = useState<string>("Todos")
   const [packageFilter, setPackageFilter] = useState<string>("Todos los paquetes")
 
@@ -69,7 +99,7 @@ export function AccreditationTable() {
     setLoading(true)
     try {
       const url = new URL("/api/activities", window.location.origin)
-      url.searchParams.set("slug", "io-extended-25")
+      url.searchParams.set("slug", eventSlug)
       url.searchParams.set("role", roleFilter)
       url.searchParams.set("package", packageFilter)
 
@@ -84,11 +114,12 @@ export function AccreditationTable() {
     } finally {
       setLoading(false)
     }
-  }, [roleFilter, packageFilter])
+  }, [eventSlug, roleFilter, packageFilter])
 
   useEffect(() => {
+    if (!eventSlug) return
     fetchData()
-  }, [fetchData])
+  }, [fetchData, eventSlug])
 
   const updateCheckbox = async (id: number, field: keyof AccreditationData, value: boolean) => {
     try {
@@ -222,7 +253,8 @@ export function AccreditationTable() {
     <div className="w-full">
       <Toaster position="top-right" />
 
-      <div className="flex flex-col md:flex-row justify-end mb-4">
+      <div className="flex flex-col md:flex-row justify-between mb-4">
+        <EventSelector eventSlug={eventSlug} setEventSlug={setEventSlug} />
         <AccreditationStats stats={stats} />
       </div>
 
@@ -234,17 +266,11 @@ export function AccreditationTable() {
           className="mb-4 w-full"
         />
 
-        <Select onValueChange={value => setPackageFilter(value)} defaultValue={packageFilter}>
-          <SelectTrigger>
-            <SelectValue placeholder="Paquete" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="Todos los paquetes">Todos los paquetes</SelectItem>
-            <SelectItem value="WebVerse (35Bs)">WebVerse</SelectItem>
-            <SelectItem value="CodeLab (50 Bs)">CodeLab</SelectItem>
-            <SelectItem value="Innovators (80 Bs)">Innovators</SelectItem>
-          </SelectContent>
-        </Select>
+        <PackageFilter
+          rows={table.getRowModel().rows}
+          packageFilter={packageFilter}
+          setPackageFilter={setPackageFilter}
+        />
 
         <Select onValueChange={value => setRoleFilter(value)} defaultValue="Todos">
           <SelectTrigger>
@@ -343,7 +369,9 @@ function TablePagination({ table }: { table: TanstackTable<AccreditationData> })
   )
 }
 
-interface AccreditationStatsProps {
+function AccreditationStats({
+  stats,
+}: {
   stats: {
     total: number
     checkedIn: number
@@ -351,26 +379,14 @@ interface AccreditationStatsProps {
     lunchDelivered: number
     refreshmentDelivered: number
   }
-}
-
-function AccreditationStats({ stats }: AccreditationStatsProps) {
+}) {
   return (
-    <div className="flex flex-wrap text-nowrap gap-2 items-center">
-      <span className="rounded-md border p-2 text-sm font-medium text-black">
-        Total: {stats.total}
-      </span>
-      <span className="rounded-md border p-2 text-sm font-medium text-black">
-        Check-in: {stats.checkedIn}
-      </span>
-      <span className="rounded-md border p-2 text-sm font-medium text-black">
-        Paquetes: {stats.packagesDelivered}
-      </span>
-      <span className="rounded-md border p-2 text-sm font-medium text-black">
-        Almuerzos: {stats.lunchDelivered}
-      </span>
-      <span className="rounded-md border p-2 text-sm font-medium text-black">
-        Refrigerios: {stats.refreshmentDelivered}
-      </span>
+    <div className="flex flex-wrap text-nowrap gap-2 items-center text-sm">
+      <span>Total: {stats.total}</span>
+      <span>Check-in: {stats.checkedIn}</span>
+      <span>Paquetes: {stats.packagesDelivered}</span>
+      <span>Almuerzos: {stats.lunchDelivered}</span>
+      <span>Refrigerios: {stats.refreshmentDelivered}</span>
     </div>
   )
 }
