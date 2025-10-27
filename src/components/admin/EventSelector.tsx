@@ -24,11 +24,19 @@ export default function EventSelector({
 
   useEffect(() => {
     const fetchEvents = async () => {
-      const response = await fetch("/api/events")
-      const result = await response.json()
+      try {
+        const response = await fetch("/api/events")
+        if (!response.ok) {
+          throw new Error(`Error ${response.status}: ${response.statusText}`)
+        }
+        const result = await response.json()
 
-      setEvents(result)
-      setEventSlug(result[0]?.slug)
+        setEvents(result)
+        setEventSlug(result[0]?.slug)
+      } catch (error) {
+        console.error("Error al cargar eventos:", error)
+        setEvents([])
+      }
     }
 
     fetchEvents()
@@ -38,7 +46,11 @@ export default function EventSelector({
     <div className="flex gap-2 items-center">
       <span className="text-lg font-medium">Evento</span>
 
-      <Select onValueChange={value => setEventSlug(value)} value={eventSlug} disabled={!events}>
+      <Select
+        onValueChange={value => setEventSlug(value)}
+        value={eventSlug}
+        disabled={!events?.length}
+      >
         <SelectTrigger>
           <SelectValue placeholder="Cargando eventos" />
         </SelectTrigger>

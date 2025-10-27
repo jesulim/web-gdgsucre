@@ -6,7 +6,7 @@ export async function getAllEvents(supabase: SupabaseClient) {
     .select("id, name, slug")
     .order("date", { ascending: false })
 
-  if (error) throw new Error(error.details)
+  if (error) throw new Error(error.message)
 
   return events
 }
