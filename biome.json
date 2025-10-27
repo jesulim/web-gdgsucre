@@ -1,21 +1,17 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "vcs": {
-    "enabled": false,
+    "enabled": true,
     "clientKind": "git",
     "useIgnoreFile": true
   },
   "files": {
-    "ignoreUnknown": true,
-    "ignore": [".astro", "dist", "node_modules", "public"]
+    "ignoreUnknown": true
   },
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
     "lineWidth": 100
-  },
-  "organizeImports": {
-    "enabled": true
   },
   "linter": {
     "enabled": true,
@@ -30,5 +26,27 @@
       "arrowParentheses": "asNeeded",
       "trailingCommas": "es5"
     }
-  }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["**/*.svelte", "**/*.astro", "**/*.vue"],
+      "linter": {
+        "rules": {
+          "style": {
+            "useConst": "off",
+            "useImportType": "off"
+          },
+          "correctness": {
+            "noUnusedVariables": "off",
+            "noUnusedImports": "off"
+          }
+        }
+      }
+    }
+  ]
 }
