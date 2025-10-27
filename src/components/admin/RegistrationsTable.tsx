@@ -1,19 +1,19 @@
-import { useCallback, useEffect, useState } from "react"
-import { toast } from "sonner"
-
 import {
   type ColumnDef,
-  type Row,
-  type Table as TanstackTable,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  type Row,
+  type Table as TanstackTable,
   useReactTable,
 } from "@tanstack/react-table"
-
 import { Loader2Icon, MoreHorizontal, SendHorizonal, Trash2 } from "lucide-react"
+import { useCallback, useEffect, useState } from "react"
+import { toast } from "sonner"
+
+import EventSelector from "@/components/admin/EventSelector"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -62,13 +62,10 @@ const STATUS_STYLES: {
 }
 
 function normalizeString(str: string) {
-  return (
-    str
-      .normalize("NFD")
-      // biome-ignore lint/suspicious/noMisleadingCharacterClass:
-      .replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase()
-  )
+  return str
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
 }
 
 const customFilterFn = (rows: Row<Registrations>, columnId: string, filterValue: string) => {
@@ -90,27 +87,37 @@ export function RegistrationsTable() {
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<Registrations[]>()
   const [globalFilter, setGlobalFilter] = useState("")
+  const [eventSlug, setEventSlug] = useState("")
 
-  const fetchData = useCallback(async () => {
-    setLoading(true)
-    const response = await fetch("/api/registrations?slug=io-extended-25")
-    const result = await response.json()
-    setData(result)
-    setLoading(false)
-  }, [])
+  const fetchRegistrations = useCallback(async () => {
+    try {
+      setLoading(true)
+
+      const url = new URL("/api/registrations", window.location.origin)
+      url.searchParams.set("slug", eventSlug)
+
+      const response = await fetch(url.toString())
+
+      const result = await response.json()
+      setData(result)
+    } catch {
+      setData([])
+    } finally {
+      setLoading(false)
+    }
+  }, [eventSlug])
 
   useEffect(() => {
-    fetchData()
-  }, [fetchData])
+    if (!eventSlug) return
+    fetchRegistrations()
+  }, [fetchRegistrations, eventSlug])
 
   const sendConfirmationEmail = async (id: number, email: string, name: string) => {
     toast.info(`Enviando email de confirmación a ${email}...`)
 
     const response = await fetch("/api/sendPaymentConfirmation", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         registrationId: id,
         userEmail: email,
@@ -122,13 +129,13 @@ export function RegistrationsTable() {
     const body = await response.json()
     if (body.success) {
       toast.success("Email enviado exitosamente")
-      await fetchData()
+      await fetchRegistrations()
     } else {
       toast.error(body.details)
     }
   }
 
-  const switchRole = async (id: number, role: string) => {
+  const switchRole = async (_id: number, _role: string) => {
     // TODO: Refactor to add / delete using organizers table
     toast.warning("Not implemented!")
   }
@@ -147,7 +154,7 @@ export function RegistrationsTable() {
     const body = await response.json()
     if (body.success) {
       toast.success("Registro eliminado exitosamente")
-      await fetchData()
+      await fetchRegistrations()
     } else {
       toast.error(body.message)
     }
@@ -311,7 +318,8 @@ export function RegistrationsTable() {
       <Toaster position="top-right" />
 
       <div className="flex flex-col md:flex-row justify-between mb-4">
-        <h2 className="text-xl  font-medium">Lista de participantes registrados</h2>
+        <EventSelector eventSlug={eventSlug} setEventSlug={setEventSlug} />
+
         <PackageCount rows={table.getFilteredRowModel().rows} />
       </div>
 
@@ -322,7 +330,7 @@ export function RegistrationsTable() {
           onChange={e => setGlobalFilter(e.target.value)}
           className="mb-4 w-full"
         />
-        <Button className="bg-blue-500 rounded-sm" onClick={() => fetchData()}>
+        <Button className="bg-blue-500 rounded-sm" onClick={() => fetchRegistrations()}>
           {loading && <Loader2Icon className="animate-spin" />}
           Actualizar
         </Button>
@@ -409,24 +417,31 @@ function TablePagination({ table }: { table: TanstackTable<Registrations> }) {
 }
 
 function PackageCount({ rows }: { rows: Row<Registrations>[] }) {
-  const packageCounts = {
-    "WebVerse (35Bs)": 0,
-    "CodeLab (50 Bs)": 0,
-    "Innovators (80 Bs)": 0,
-  } as Record<string, number>
+  if (!rows.length) return
+
+  const packageCounts: Record<string, { name: string; price: number; qty: number }> = {}
 
   for (const row of rows) {
-    const packageName = String(row.getValue("package"))
-    packageCounts[packageName] += 1
+    const match = String(row.getValue("package")).match(/^(.*)\s\((\d+).Bs\)$/)
+    if (!match) continue
+    const [, name, price] = match
+
+    if (!packageCounts[name]) {
+      packageCounts[name] = { name, price: Number(price), qty: 0 }
+    }
+    packageCounts[name].qty++
   }
 
   return (
     <div className="flex flex-wrap text-nowrap gap-2 items-center">
-      {Object.entries(packageCounts).map(([name, count]) => (
-        <span key={name} className="rounded-md border p-2 text-sm font-medium text-black">
-          {name}: {count}
-        </span>
-      ))}
+      Cantidad de paquetes:{" "}
+      {Object.values(packageCounts)
+        .sort((a, b) => a.price - b.price)
+        .map(({ name, qty }) => (
+          <span key={name} className="text-sm font-medium">
+            {name}={qty}
+          </span>
+        ))}
     </div>
   )
 }
