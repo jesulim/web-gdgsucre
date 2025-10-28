@@ -1,0 +1,53 @@
+---
+import Clock from "@/assets/events/devfest-25/clock.svg"
+
+interface Props {
+  type: "talk" | "event"
+  time: string
+  title: string
+  description?: string
+  speaker?: string
+}
+
+const { type, time, title, description, speaker } = Astro.props
+---
+
+<article
+  class:list={[
+    "flex flex-col gap-2.5 rounded-2xl border-2 bg-white/5 p-5 md:gap-3 md:rounded-[15.5px] md:border-[1.94px] md:p-[19.37px]",
+    {
+      "border-white": type === "event",
+      "border-red-500": type === "talk",
+    },
+  ]}
+>
+  <div class="flex flex-col gap-0.5 self-stretch md:gap-1">
+    <h2
+      class="self-stretch text-2xl font-bold leading-[1.2] text-white md:text-[31px]"
+    >
+      {title}
+    </h2>
+    {
+      description && (
+        <p class="self-stretch text-base leading-[1.2] text-white md:text-[23.25px]">
+          {description}
+        </p>
+      )
+    }
+    {
+      speaker && (
+        <p class="self-stretch text-base leading-[1.2] text-red-500 md:text-[23.25px]">
+          {speaker}
+        </p>
+      )
+    }
+  </div>
+  <div class="flex items-center gap-1.25 rounded-lg md:gap-[4.84px]">
+    <Clock class="h-4.5 w-4.5 md:h-[22px] md:w-[22px]" />
+    <time
+      class="text-center text-base font-bold leading-[1.1] text-white md:text-xl"
+    >
+      {time}
+    </time>
+  </div>
+</article>
