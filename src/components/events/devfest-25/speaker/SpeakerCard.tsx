@@ -18,6 +18,8 @@ export const SpeakerCard = ({ id, title, img, name, description }: Props) => {
           src={img}
           alt={name}
           className="rounded-lg w-full object-cover"
+          width="340"
+          height="301"
           loading="lazy"
           decoding="async"
         />
