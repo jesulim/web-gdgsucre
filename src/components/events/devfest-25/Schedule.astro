@@ -1,7 +1,7 @@
 ---
 import EndEventIcon from "@/assets/events/devfest-25/end_event.svg"
 import FoodIcon from "@/assets/events/devfest-25/food.svg"
-import LightbulbIcon from "@/assets/events/devfest-25/lightbulb.svg"
+import LightbulbIcon from "@/assets/events/devfest-25/lightbulb_on.svg"
 import ScheduleCard from "@/components/devfest-25/schedule/ScheduleCard.astro"
 import scheduleData from "@/components/devfest-25/schedule/schedule.json"
 
@@ -35,9 +35,9 @@ const icons = {
               ]}
             >
               <div class="hidden lg:flex lg:flex-1" />
-              <div class="relative flex w-8 shrink-0 flex-col items-center">
-                <div class="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center">
-                  <Icon class="h-8 w-8" />
+              <div class="relative hidden w-8 shrink-0 flex-col items-center lg:flex">
+                <div class="relative z-10 flex h-16 w-16 shrink-0 items-center justify-center">
+                  <Icon />
                 </div>
                 {!isLast && <div class="w-0.5 grow bg-[#878585]" />}
               </div>
