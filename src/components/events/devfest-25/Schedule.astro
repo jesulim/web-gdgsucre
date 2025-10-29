@@ -2,191 +2,58 @@
 import EndEventIcon from "@/assets/events/devfest-25/end_event.svg"
 import FoodIcon from "@/assets/events/devfest-25/food.svg"
 import LightbulbIcon from "@/assets/events/devfest-25/lightbulb.svg"
-import ScheduleCard from "@/components/events/devfest-25/ScheduleCard.astro"
+import ScheduleCard from "@/components/devfest-25/schedule/ScheduleCard.astro"
+import scheduleData from "@/components/devfest-25/schedule/schedule.json"
+
+const icons = {
+  food: FoodIcon,
+  lightbulb: LightbulbIcon,
+  end_event: EndEventIcon,
+}
 ---
 
-<section id="schedule" class="relative flex flex-col justify-center items-center gap-8 md:gap-12 my-8 md:my-12 px-4 max-w-7xl mx-auto">
-  <h2 class="font-bold text-2xl md:text-3xl lg:text-5xl text-white text-center">Event Agenda</h2>
-  
+<section
+  id="schedule"
+  class="relative mx-auto my-8 flex max-w-7xl flex-col items-center justify-center gap-8 px-4 md:my-12 md:gap-12"
+>
+  <h2 class="text-center text-3xl font-bold text-white md:text-4xl lg:text-6xl">
+    Event Agenda
+  </h2>
+
   <div class="relative w-full max-w-6xl">
-    <div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-white/10 hidden lg:block -translate-x-1/2 z-0"></div>
-    
     <div class="flex flex-col gap-4 md:gap-6 lg:gap-8">
-      <!-- Derecha -->
-      <div class="flex flex-row lg:flex-row items-start lg:items-center gap-3 lg:gap-6 relative">
-        <div class="hidden lg:flex lg:flex-1"></div>
-        <div class="relative shrink-0 w-8 h-8 items-center justify-center z-10 hidden lg:flex">
-          <FoodIcon class="w-8 h-8" />
-        </div>
-        <div class="flex-1 w-full lg:w-auto">
-          <ScheduleCard 
-            type="event"
-            time="09:00 - 09:45"
-            title="Registro & Acreditación"
-            description="Check-in y entrega de paquetes"
-          />
-        </div>
-      </div>
-
-      <!-- Izquierda -->
-      <div class="flex flex-row lg:flex-row items-start lg:items-center gap-3 lg:gap-6 relative">
-        <div class="flex-1 lg:text-right order-2 lg:order-1 w-full lg:w-auto hidden lg:block">
-          <ScheduleCard 
-            type="talk"
-            time="09:00 - 09:45"
-            title="Android XR compose for XR Devices"
-            speaker="Irvin Gassio Chavalier"
-          />
-        </div>
-        <div class="relative shrink-0 w-8 h-8 items-center justify-center z-10 order-1 lg:order-2 hidden lg:flex">
-          <LightbulbIcon class="w-8 h-8" />
-        </div>
-        <div class="flex-1 order-2 lg:order-3 w-full lg:w-auto lg:hidden">
-          <ScheduleCard 
-            type="talk"
-            time="09:00 - 09:45"
-            title="Android XR compose for XR Devices"
-            speaker="Irvin Gassio Chavalier"
-          />
-        </div>
-        <div class="hidden lg:flex lg:flex-1 order-3"></div>
-      </div>
-
-      <!-- Derecha -->
-      <div class="flex flex-row lg:flex-row items-start lg:items-center gap-3 lg:gap-6 relative">
-        <div class="hidden lg:flex lg:flex-1"></div>
-        <div class="relative shrink-0 w-8 h-8 items-center justify-center z-10 hidden lg:flex">
-          <LightbulbIcon class="w-8 h-8" />
-        </div>
-        <div class="flex-1 w-full lg:w-auto">
-          <ScheduleCard 
-            type="talk"
-            time="09:00 - 09:45"
-            title="People + AI Research (PAIR): Principles for AI Products"
-            speaker="Gustavo Pacchi Villarroel"
-          />
-        </div>
-      </div>
-
-      <!-- Izquierda -->
-      <div class="flex flex-row lg:flex-row items-start lg:items-center gap-3 lg:gap-6 relative">
-        <div class="flex-1 lg:text-right order-2 lg:order-1 w-full lg:w-auto hidden lg:block">
-          <ScheduleCard 
-            type="talk"
-            time="09:00 - 09:45"
-            title="Protegiendo y aprovechando la privacidad de la data: Federated Learning para Redes Neuronales"
-            speaker="Diego Angulo Ramírez"
-          />
-        </div>
-        <div class="relative shrink-0 w-8 h-8 items-center justify-center z-10 order-1 lg:order-2 hidden lg:flex">
-          <LightbulbIcon class="w-8 h-8" />
-        </div>
-        <div class="flex-1 order-2 lg:order-3 w-full lg:w-auto lg:hidden">
-          <ScheduleCard 
-            type="talk"
-            time="09:00 - 09:45"
-            title="Protegiendo y aprovechando la privacidad de la data: Federated Learning para Redes Neuronales"
-            speaker="Diego Angulo Ramírez"
-          />
-        </div>
-        <div class="hidden lg:flex lg:flex-1 order-3"></div>
-      </div>
-
-      <!-- Derecha -->
-      <div class="flex flex-row lg:flex-row items-start lg:items-center gap-3 lg:gap-6 relative">
-        <div class="hidden lg:flex lg:flex-1"></div>
-        <div class="relative shrink-0 w-8 h-8 items-center justify-center z-10 hidden lg:flex">
-          <FoodIcon class="w-8 h-8" />
-        </div>
-        <div class="flex-1 w-full lg:w-auto">
-          <ScheduleCard 
-            type="event"
-            time="09:00 - 09:45"
-            title="Descanso & Almuerzo"
-            description="Almuerzo de networking y zona de exposición"
-          />
-        </div>
-      </div>
-
-      <!-- Izquierda -->
-      <div class="flex flex-row lg:flex-row items-start lg:items-center gap-3 lg:gap-6 relative">
-        <div class="flex-1 lg:text-right order-2 lg:order-1 w-full lg:w-auto hidden lg:block">
-          <ScheduleCard 
-            type="talk"
-            time="09:00 - 09:45"
-            title="Frontend en la era del edge"
-            speaker="Nataly Paz"
-          />
-        </div>
-        <div class="relative shrink-0 w-8 h-8 items-center justify-center z-10 order-1 lg:order-2 hidden lg:flex">
-          <LightbulbIcon class="w-8 h-8" />
-        </div>
-        <div class="flex-1 order-2 lg:order-3 w-full lg:w-auto lg:hidden">
-          <ScheduleCard 
-            type="talk"
-            time="09:00 - 09:45"
-            title="Frontend en la era del edge"
-            speaker="Nataly Paz"
-          />
-        </div>
-        <div class="hidden lg:flex lg:flex-1 order-3"></div>
-      </div>
-
-      <!-- Derecha -->
-      <div class="flex flex-row lg:flex-row items-start lg:items-center gap-3 lg:gap-6 relative">
-        <div class="hidden lg:flex lg:flex-1"></div>
-        <div class="relative shrink-0 w-8 h-8 items-center justify-center z-10 hidden lg:flex">
-          <LightbulbIcon class="w-8 h-8" />
-        </div>
-        <div class="flex-1 w-full lg:w-auto">
-          <ScheduleCard 
-            type="talk"
-            time="09:00 - 09:45"
-            title="Como hacer despliegue a producción sin morir en el intento"
-            speaker="Daniel Santiago Silva"
-          />
-        </div>
-      </div>
-
-      <!-- Izquierda -->
-      <div class="flex flex-row lg:flex-row items-start lg:items-center gap-3 lg:gap-6 relative">
-        <div class="flex-1 lg:text-right order-2 lg:order-1 w-full lg:w-auto hidden lg:block">
-          <ScheduleCard 
-            type="talk"
-            time="09:00 - 09:45"
-            title="Flutter + Firebase + SQL = DataConnect con Flutter"
-            speaker="Fabián Varela Bonett"
-          />
-        </div>
-        <div class="relative shrink-0 w-8 h-8 items-center justify-center z-10 order-1 lg:order-2 hidden lg:flex">
-          <LightbulbIcon class="w-8 h-8" />
-        </div>
-        <div class="flex-1 order-2 lg:order-3 w-full lg:w-auto lg:hidden">
-          <ScheduleCard 
-            type="talk"
-            time="09:00 - 09:45"
-            title="Flutter + Firebase + SQL = DataConnect con Flutter"
-            speaker="Fabián Varela Bonett"
-          />
-        </div>
-        <div class="hidden lg:flex lg:flex-1 order-3"></div>
-      </div>
-
-      <!-- Derecha -->
-      <div class="flex flex-row lg:flex-row items-start lg:items-center gap-3 lg:gap-6 relative">
-        <div class="hidden lg:flex lg:flex-1"></div>
-        <div class="relative shrink-0 w-8 h-8 items-center justify-center z-10 hidden lg:flex">
-          <EndEventIcon class="w-8 h-8" />
-        </div>
-        <div class="flex-1 w-full lg:w-auto">
-          <ScheduleCard 
-            type="event"
-            time="09:00 - 09:45"
-            title="Sorteo & Cierre"
-            description="Sorteo con los participantes y despedida"
-          />
-        </div>
-      </div>
+      {
+        scheduleData.map((event, index) => {
+          const Icon = icons[event.icon as keyof typeof icons];
+          const isEven = index % 2 === 0;
+          const isLast = index === scheduleData.length - 1;
+          return (
+            <div
+              class:list={[
+                "flex flex-row items-stretch gap-3 relative lg:gap-6",
+                { "lg:flex-row-reverse": !isEven },
+              ]}
+            >
+              <div class="hidden lg:flex lg:flex-1" />
+              <div class="relative flex w-8 shrink-0 flex-col items-center">
+                <div class="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center">
+                  <Icon class="h-8 w-8" />
+                </div>
+                {!isLast && <div class="w-0.5 grow bg-[#878585]" />}
+              </div>
+              <div class="w-full flex-1 py-1 lg:w-auto">
+                <ScheduleCard
+                  type={event.type as "talk" | "event"}
+                  time={event.time}
+                  title={event.title}
+                  description={event.description}
+                  speaker={event.speaker}
+                />
+              </div>
+            </div>
+          );
+        })
+      }
     </div>
   </div>
 </section>

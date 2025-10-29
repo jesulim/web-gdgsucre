@@ -1,0 +1,65 @@
+[
+  {
+    "type": "event",
+    "time": "08:00 - 09:00",
+    "title": "Registro & Acreditación",
+    "description": "Check-in y entrega de paquetes",
+    "icon": "food"
+  },
+  {
+    "type": "talk",
+    "time": "09:00 - 09:45",
+    "title": "Android XR compose for XR Devices",
+    "speaker": "Irvin Cossio Chavalier",
+    "icon": "lightbulb"
+  },
+  {
+    "type": "talk",
+    "time": "09:00 - 09:45",
+    "title": "Protegiendo y aprovechando la privacidad de la data: Federated Learning para Redes Neuronales",
+    "speaker": "Diego Angulo Ramírez",
+    "icon": "lightbulb"
+  },
+  {
+    "type": "talk",
+    "time": "09:00 - 09:45",
+    "title": "People + AI Research (PAIR): Principles for AI Products",
+    "speaker": "Gustavo Pacchi Villarroel",
+    "icon": "lightbulb"
+  },
+  {
+    "type": "event",
+    "time": "09:00 - 09:45",
+    "title": "Descanso & Almuerzo",
+    "description": "Almuerzo de networking y zona de exposición",
+    "icon": "food"
+  },
+  {
+    "type": "talk",
+    "time": "09:00 - 09:45",
+    "title": "Frontend en la era del edge",
+    "speaker": "Nataly Paz",
+    "icon": "lightbulb"
+  },
+  {
+    "type": "talk",
+    "time": "09:00 - 09:45",
+    "title": "Como hacer despliegue a producción sin morir en el intento",
+    "speaker": "Daniel Santiago Silva",
+    "icon": "lightbulb"
+  },
+  {
+    "type": "talk",
+    "time": "09:00 - 09:45",
+    "title": "Flutter + Firebase + SQL = DataConnect con Flutter",
+    "speaker": "Fabián Varela Bonett",
+    "icon": "lightbulb"
+  },
+  {
+    "type": "event",
+    "time": "09:00 - 09:45",
+    "title": "Sorteo & Cierre",
+    "description": "Sorteo con los participantes y despedida",
+    "icon": "end_event"
+  }
+]
