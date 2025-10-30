@@ -7,7 +7,18 @@ import LlaveAbierta from "@/assets/events/devfest-25/llave-abierta.svg"
 import LlaveCerrada from "@/assets/events/devfest-25/llave-cerrada.svg"
 import Nube from "@/assets/events/devfest-25/nube.svg"
 import ScheduleCard from "@/components/devfest-25/schedule/ScheduleCard.astro"
-import scheduleData from "@/components/devfest-25/schedule/schedule.json"
+import scheduleDataRaw from "@/components/devfest-25/schedule/schedule.json"
+
+interface ScheduleEvent {
+  type: "talk" | "event"
+  time: string
+  title: string
+  icon: "food" | "lightbulb" | "end_event"
+  description?: string
+  speaker?: string
+}
+
+const scheduleData = scheduleDataRaw as ScheduleEvent[]
 
 const icons = {
   food: FoodIcon,
@@ -70,7 +81,7 @@ const icons = {
     <div class="flex flex-col gap-4 md:gap-6 lg:gap-8">
       {
         scheduleData.map((event, index) => {
-          const Icon = icons[event.icon as keyof typeof icons];
+          const Icon = icons[event.icon];
           const isEven = index % 2 === 0;
           const isLast = index === scheduleData.length - 1;
           return (
@@ -89,7 +100,7 @@ const icons = {
               </div>
               <div class="w-full flex-1 py-1 lg:w-auto">
                 <ScheduleCard
-                  type={event.type as "talk" | "event"}
+                  type={event.type}
                   time={event.time}
                   title={event.title}
                   description={event.description}

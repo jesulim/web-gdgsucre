@@ -12,9 +12,7 @@ interface Props {
 const { type, time, title, description, speaker } = Astro.props
 
 const isTalk = type === "talk"
-const accentClasses = isTalk ? "border-red-500 text-red-500" : "border-white text-white"
 const iconColor = isTalk ? "text-red-500" : "text-white"
-
 const textBase = "w-full text-base leading-tight md:text-2xl"
 ---
 
@@ -43,7 +41,7 @@ const textBase = "w-full text-base leading-tight md:text-2xl"
       >
         <Clock class="h-5 w-5 text-white" aria-hidden="true" />
         <time
-          datetime={time}
+          datetime={time.split(" - ")[0]}
           class="text-base font-bold leading-tight text-white"
         >
           {time}
@@ -74,7 +72,7 @@ const textBase = "w-full text-base leading-tight md:text-2xl"
         aria-hidden="true"
       />
       <time
-        datetime={time}
+        datetime={time.split(" - ")[0]}
         class:list={["text-base font-bold leading-tight md:text-xl", iconColor]}
       >
         {time}
