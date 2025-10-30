@@ -9,7 +9,7 @@ export interface Props {
 export const SpeakerCard = ({ id, title, img, name, description }: Props) => {
   return (
     <div key={id} className="card-speaker flex flex-col">
-      <div className="mb-2 flex flex-col h-full rounded-lg shadow-md overflow-hidden">
+      <div className="mb-2 flex flex-col h-full overflow-hidden">
         <h1 className="text-xl">{title}</h1>
       </div>
 
@@ -17,7 +17,7 @@ export const SpeakerCard = ({ id, title, img, name, description }: Props) => {
         <img
           src={img}
           alt={name}
-          className="rounded-lg w-full object-cover"
+          className="w-full object-cover"
           width="340"
           height="301"
           loading="lazy"
