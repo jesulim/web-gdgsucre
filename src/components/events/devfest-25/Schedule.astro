@@ -1,7 +1,11 @@
 ---
+import Corazon from "@/assets/events/devfest-25/corazon.svg"
 import EndEventIcon from "@/assets/events/devfest-25/end_event.svg"
 import FoodIcon from "@/assets/events/devfest-25/food.svg"
 import LightbulbIcon from "@/assets/events/devfest-25/lightbulb_on.svg"
+import LlaveAbierta from "@/assets/events/devfest-25/llave-abierta.svg"
+import LlaveCerrada from "@/assets/events/devfest-25/llave-cerrada.svg"
+import Nube from "@/assets/events/devfest-25/nube.svg"
 import ScheduleCard from "@/components/devfest-25/schedule/ScheduleCard.astro"
 import scheduleData from "@/components/devfest-25/schedule/schedule.json"
 
@@ -19,6 +23,48 @@ const icons = {
   <h2 class="text-center text-3xl font-bold text-white md:text-4xl lg:text-6xl">
     Event Agenda
   </h2>
+
+  <div
+    aria-hidden="true"
+    class="pointer-events-none absolute inset-0 -z-10 hidden overflow-visible lg:block"
+  >
+    <img
+      src={LlaveAbierta.src}
+      width={LlaveAbierta.width}
+      height={LlaveAbierta.height}
+      alt=""
+      class="absolute -left-16 h-[520px] w-auto opacity-80"
+      loading="lazy"
+      style={{ top: "0px" }}
+    />
+    <img
+      src={Corazon.src}
+      width={Corazon.width}
+      height={Corazon.height}
+      alt=""
+      class="absolute -right-1 h-[230px] w-auto opacity-80"
+      loading="lazy"
+      style={{ top: "770px" }}
+    />
+    <img
+      src={Nube.src}
+      width={Nube.width}
+      height={Nube.height}
+      alt=""
+      class="absolute -left-1 h-[230px] w-auto opacity-80"
+      loading="lazy"
+      style={{ top: "990px" }}
+    />
+    <img
+      src={LlaveCerrada.src}
+      width={LlaveCerrada.width}
+      height={LlaveCerrada.height}
+      alt=""
+      class="absolute -right-16 h-[520px] w-auto opacity-80"
+      loading="lazy"
+      style={{ top: "1320px" }}
+    />
+  </div>
 
   <div class="relative w-full max-w-6xl">
     <div class="flex flex-col gap-4 md:gap-6 lg:gap-8">
