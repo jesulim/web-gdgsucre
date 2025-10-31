@@ -122,7 +122,7 @@ export function RegistrationsTable() {
         registrationId: id,
         userEmail: email,
         userName: name,
-        eventName: "I/O Extended Sucre 2025",
+        eventName: "DevFest Sucre 2025",
       }),
     })
 
