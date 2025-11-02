@@ -21,7 +21,7 @@ export async function getProfile(supabase: SupabaseClient) {
     return null
   }
 
-  if (profile?.length === 0) {
+  if (!profile || profile.length === 0) {
     return {
       id: user.id,
       first_name: user.user_metadata.full_name,

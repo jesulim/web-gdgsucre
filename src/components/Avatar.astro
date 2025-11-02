@@ -5,7 +5,7 @@ import { getProfile } from "@/lib/services/profileService"
 import { getEventRegistration } from "@/lib/services/registrationService"
 import { createUserClient } from "@/lib/supabase"
 
-let userInitials = null
+let userInitials = ""
 
 const supabase = await createUserClient(Astro.cookies)
 const profile = await getProfile(supabase)

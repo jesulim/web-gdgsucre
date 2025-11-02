@@ -10,8 +10,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 interface AvatarMenuProps {
-  avatarUrl: string
-  userName: string
+  avatarUrl?: string
+  userName?: string
   userInitials: string
   email: string
   admin: boolean
