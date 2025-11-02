@@ -2,7 +2,7 @@
   {
     "type": "event",
     "time": "08:00 - 09:00",
-    "title": "Registro Y Acreditación",
+    "title": "Registro y Acreditación",
     "description": "Check-in y entrega de paquetes",
     "icon": "food"
   },
@@ -30,7 +30,7 @@
   {
     "type": "event",
     "time": "11:30 - 13:00",
-    "title": "Descanso & Almuerzo",
+    "title": "Descanso y Almuerzo",
     "description": "Almuerzo de networking y zona de exposición",
     "icon": "food"
   },
@@ -58,7 +58,7 @@
   {
     "type": "event",
     "time": "15:45 - 16:30",
-    "title": "Sorteo & Cierre",
+    "title": "Sorteo y Cierre",
     "description": "Sorteo con los participantes y despedida",
     "icon": "end_event"
   }
