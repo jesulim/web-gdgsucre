@@ -134,11 +134,13 @@ export async function confirmRegistration(supabase: SupabaseClient, registration
     throw new Error(`No se encontró el registro: ${findError?.message || "No existe registro"}`)
   }
 
+  const token = nanoid(6)
+
   const { error: updateError } = await supabase
     .from("registrations")
     .update({
       status: "confirmed",
-      token: nanoid(6),
+      token: token,
     })
     .eq("id", registration.id)
 
@@ -146,7 +148,32 @@ export async function confirmRegistration(supabase: SupabaseClient, registration
     throw new Error(`Error actualizando estado del registro: ${updateError.message}`)
   }
 
-  return { success: true }
+  try {
+    // TODO: agregar url de la función
+    const edgeFunctionUrl = ``
+    const response = await fetch(edgeFunctionUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await supabase.auth.getSession().then(s => s.data.session?.access_token)}`,
+      },
+      body: JSON.stringify({ token }),
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json()
+      console.error("Error al generar QR", errorData)
+    } else {
+      const { publicUrl } = await response.json()
+      console.log("QR generado correctamente", publicUrl)
+      // TODO: descomentar después de agregar qr_url a la tabla de registrations
+      // await supabase.from('registrations').update({ qr_url: publicUrl }).eq('id', registration.id)
+    }
+  } catch (qrError) {
+    console.error("Llamada a Edge Function fallida", qrError)
+  }
+
+  return { success: true, token }
 }
 
 export async function updateRegistration(
