@@ -31,59 +31,22 @@ const icons = {
   id="schedule"
   class="relative mx-auto my-8 flex max-w-7xl flex-col items-center justify-center gap-8 px-4 md:my-12 md:gap-12"
 >
-  <h2 class="text-center text-3xl font-bold text-white md:text-4xl lg:text-6xl">
-    Event Agenda
-  </h2>
+  <h2 class="text-center text-3xl font-bold text-white md:text-4xl lg:text-6xl">Event Agenda</h2>
 
-  <div
-    aria-hidden="true"
-    class="pointer-events-none absolute inset-0 -z-10 hidden overflow-visible lg:block"
-  >
-    <img
-      src={LlaveAbierta.src}
-      width={LlaveAbierta.width}
-      height={LlaveAbierta.height}
-      alt=""
-      class="absolute -left-16 h-[520px] w-auto opacity-80"
-      loading="lazy"
-      style={{ top: "0px" }}
-    />
-    <img
-      src={Corazon.src}
-      width={Corazon.width}
-      height={Corazon.height}
-      alt=""
-      class="absolute -right-1 h-[230px] w-auto opacity-80"
-      loading="lazy"
-      style={{ top: "770px" }}
-    />
-    <img
-      src={Nube.src}
-      width={Nube.width}
-      height={Nube.height}
-      alt=""
-      class="absolute -left-1 h-[230px] w-auto opacity-80"
-      loading="lazy"
-      style={{ top: "990px" }}
-    />
-    <img
-      src={LlaveCerrada.src}
-      width={LlaveCerrada.width}
-      height={LlaveCerrada.height}
-      alt=""
-      class="absolute -right-16 h-[520px] w-auto opacity-80"
-      loading="lazy"
-      style={{ top: "1320px" }}
-    />
+  <div aria-hidden="true" class="absolute inset-0 -z-10 hidden overflow-visible lg:block">
+    <LlaveAbierta height="520" class="absolute top-0 -left-16" />
+    <Corazon height="230" class="absolute -right-1" style={{ top: "770px" }} />
+    <Nube height="230" class="absolute -left-1" style={{ top: "990px" }} />
+    <LlaveCerrada height="520" class="absolute -right-16" style={{ top: "1320px" }} />
   </div>
 
   <div class="relative w-full max-w-6xl">
     <div class="flex flex-col gap-4 md:gap-6 lg:gap-8">
       {
         scheduleData.map((event, index) => {
-          const Icon = icons[event.icon];
-          const isEven = index % 2 === 0;
-          const isLast = index === scheduleData.length - 1;
+          const Icon = icons[event.icon]
+          const isEven = index % 2 === 0
+          const isLast = index === scheduleData.length - 1
           return (
             <div
               class:list={[
@@ -108,7 +71,7 @@ const icons = {
                 />
               </div>
             </div>
-          );
+          )
         })
       }
     </div>

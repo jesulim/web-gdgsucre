@@ -26,7 +26,7 @@ const textBase = "w-full text-base leading-tight md:text-2xl"
   ]}
 >
   <article
-    class="flex h-full w-full flex-col gap-2.5 rounded-[14px] bg-[#1E1E1E] p-5 md:gap-3 md:p-5"
+    class="flex h-full w-full flex-col gap-2.5 rounded-[14px] bg-[#2E2E2E] p-4 md:gap-3"
     data-event-type={type}
   >
     <div class="flex items-center gap-1.5 md:hidden">
@@ -40,10 +40,7 @@ const textBase = "w-full text-base leading-tight md:text-2xl"
         ]}
       >
         <Clock class="h-5 w-5 text-white" aria-hidden="true" />
-        <time
-          datetime={time.split(" - ")[0]}
-          class="text-base font-bold leading-tight text-white"
-        >
+        <time datetime={time.split(" - ")[0]} class="text-base font-bold leading-tight text-white">
           {time}
         </time>
       </div>
@@ -53,24 +50,13 @@ const textBase = "w-full text-base leading-tight md:text-2xl"
         {title}
       </h3>
 
-      {
-        speaker && (
-          <p class:list={[textBase, "font-medium text-[#D9D9D9]"]}>{speaker}</p>
-        )
-      }
+      {speaker && <p class:list={[textBase, "font-medium text-[#D9D9D9]"]}>{speaker}</p>}
 
-      {
-        description && (
-          <p class:list={[textBase, "text-white"]}>{description}</p>
-        )
-      }
+      {description && <p class:list={[textBase, "text-white"]}>{description}</p>}
     </div>
 
     <div class="hidden items-center gap-1.5 md:flex md:gap-2">
-      <Clock
-        class:list={["h-[18px] w-[18px] md:h-6 md:w-6", iconColor]}
-        aria-hidden="true"
-      />
+      <Clock class:list={["h-4.5 w-4.5 md:h-5 md:w-6", iconColor]} aria-hidden="true" />
       <time
         datetime={time.split(" - ")[0]}
         class:list={["text-base font-bold leading-tight md:text-xl", iconColor]}
