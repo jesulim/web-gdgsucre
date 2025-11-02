@@ -1,126 +1,68 @@
 ---
-
 import DevFest25Logo from "@/assets/events/devfest-25/DevFest25logo.svg"
 import UserSignIn from "@/assets/icons/social/user-round-plus.svg"
-import CredentialIcon from "@/assets/logos/credential.svg"
 
-import LogoutIcon from "@/assets/logos/logout.svg"
 import Avatar from "@/components/Avatar.astro"
 
 const refreshToken = Astro.cookies.has("sb-refresh-token")
+
+const navLinks = [
+  { name: "Sobre el evento", href: "/#about" },
+  { name: "Speakers", href: "/#speakers" },
+]
 ---
 
-<nav class="w-full h-20 bg-[#1e1e1e] flex items-center justify-between px-6 border-b shadow-sm fixed top-0 left-0 z-50">
-  <!-- Logo -->
-  <a href="/#" class="flex items-center w-32 md:w-44">
+<nav class="w-full h-20 px-4 bg-black flex items-center justify-between fixed top-0 left-0 z-50">
+  <a href="/#" class="flex items-center w-32 md:w-44 order-1">
     <DevFest25Logo/>
   </a>
 
-  <!-- Botones / sesión -->
-  <div class="flex items-center gap-4 h-12">
-    <!-- Avatar o Login -->
+  <div class="flex items-center gap-4 h-12 order-last">
     {refreshToken ? (
       <div class="relative">
-        <div class="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-gray-200">
-          <Avatar />
-        </div>
-
-        <!-- Dropdown personalizado -->
-        <div id="user-menu" class="absolute right-0 mt-2 w-[176px] h-[93px] bg-white rounded-[8px] shadow-lg px-4 py-[10px] z-50 border border-gray-200 opacity-0 transition-opacity duration-300 flex flex-col gap-4 text-nowrap">
-          <a
-            href="/registro/devfest-25"
-            class="flex items-center w-[144px] h-[24px] gap-2 px-1 text-black text-base font-medium leading-6 hover:text-blue-500 transition-colors duration-200"
-          >
-            <CredentialIcon class="w-[21px] h-[17px] fill-current text-black" />
-            <span class="text-[16px] font-medium leading-6">Ver Credencial</span>
-          </a>
-          <a
-            href="/api/auth/signout"
-            class="flex items-center w-[144px] h-[24px] gap-2 px-1 text-black text-base font-medium leading-6 hover:text-blue-500 transition-colors duration-200"
-          >
-            <LogoutIcon class="w-[21px] h-[17px] fill-current text-black" />
-            <span class="text-[16px] font-medium leading-6">Cerrar Sesión</span>
-          </a>
-        </div>
+        <Avatar eventSlug="devfest-25" />
       </div>
     ) : (
-      <a href="/api/auth/signin" class="hidden md:inline bg-gradient-to-b text-white bg-red-500 font-medium text-sm lg:text-base px-4 py-2 rounded-full transition-colors duration-200">
+      <a href="/api/auth/signin" class="hidden md:inline bg-linear-to-b text-white bg-red-500 font-medium px-4 py-2 rounded-full">
         Iniciar Sesión
       </a>
 
       <a
         href="/api/auth/signin"
-        class="md:hidden flex items-center justify-center w-12 h-12 rounded-full border border-gray-500 hover:border-blue-400 transition"
+        class="md:hidden grid place-items-center size-12 rounded-full"
         aria-label="Iniciar sesión"
       >
         <UserSignIn class="w-8 h-8 text-white" />
       </a>
     )}
 
-    <!-- Hamburguesa móvil -->
-    <!-- <button id="menu-toggle" class="md:hidden p-2 border rounded" aria-label="Abrir menú">
-      <svg class="w-6 h-6 text-gray-800 dark:stroke-white" fill="none" viewBox="0 0 24 24">
+    <button id="menu-toggle" class="md:hidden border rounded" aria-label="Abrir menú">
+      <svg class="size-6 dark:stroke-white" fill="none" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
           d="M4 6h16M4 12h16M4 18h16" />
       </svg>
-    </button> -->
+    </button>
+  </div>
+
+  <div id="mobile-menu" class="hidden absolute top-full left-0 w-full dark:bg-black md:order-2 md:static md:flex md:mx-auto md:w-fit">
+    <ul class="flex flex-col gap-4 p-4 md:flex-row md:p-0">
+      {navLinks.map(link => (
+        <li class="font-semibold">
+          <a href={link.href}>
+            {link.name}
+          </a>
+        </li>
+      ))}
+    </ul>
   </div>
 </nav>
 
-<!-- Script funcional -->
-<script type="module" is:inline>
-  const menuToggle = document.getElementById('menu-toggle');
-  const mobileMenu = document.getElementById('mobile-menu');
-  const avatarBtn = document.getElementById('avatar-btn');
-  const userMenu = document.getElementById('user-menu');
 
-  let isMenuOpen = false;
-  let isUserMenuOpen = false;
+<script>
+  const menuToggle = document.getElementById("menu-toggle")
+  const mobileMenu = document.getElementById("mobile-menu")
 
-  menuToggle?.addEventListener('click', () => {
-    isMenuOpen = !isMenuOpen;
-    mobileMenu.classList.toggle('hidden', !isMenuOpen);
-  });
-
-  avatarBtn?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    isUserMenuOpen = !isUserMenuOpen;
-    if (isUserMenuOpen) {
-      userMenu.classList.remove('hidden');
-      requestAnimationFrame(() => {
-        userMenu.classList.add('opacity-100');
-        userMenu.classList.remove('opacity-0');
-      });
-    } else {
-      userMenu.classList.remove('opacity-100');
-      userMenu.classList.add('opacity-0');
-      setTimeout(() => userMenu.classList.add('hidden'), 300);
-    }
-    avatarBtn.setAttribute('aria-expanded', isUserMenuOpen);
-  });
-
-  document.addEventListener('click', (e) => {
-    // Cerrar menú hamburguesa si está abierto y el click no es en toggle ni menú
-    if (
-      isMenuOpen &&
-      !menuToggle.contains(e.target) &&
-      !mobileMenu.contains(e.target)
-    ) {
-      isMenuOpen = false;
-      mobileMenu.classList.add('hidden');
-    }
-
-    // Cerrar menú usuario si está abierto y el click no es en avatarBtn ni userMenu
-    if (
-      isUserMenuOpen &&
-      !avatarBtn?.contains(e.target) &&
-      !userMenu?.contains(e.target)
-    ) {
-      isUserMenuOpen = false;
-      userMenu.classList.remove('opacity-100');
-      userMenu.classList.add('opacity-0');
-      setTimeout(() => userMenu.classList.add('hidden'), 300);
-      avatarBtn?.setAttribute('aria-expanded', false);
-    }
-  });
+  menuToggle?.addEventListener("click", () => {
+    mobileMenu?.classList.toggle("hidden")
+  })
 </script>
