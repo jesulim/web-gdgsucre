@@ -1,6 +1,6 @@
 ---
-import CredentialCard from "@/components/events/devfest-25/CredentialCard";
-import Header from "@/components/events/devfest-25/Header.astro";
+import CredentialCard from "@/components/events/devfest-25/CredentialCard"
+import Header from "@/components/events/devfest-25/Header.astro"
 
 import BaseLayout from "@/layout/BaseLayout.astro";
 
@@ -32,13 +32,11 @@ if (registration?.status !== "confirmed")
         avatarUrl={profile.avatar_url}
         firstName={profile.first_name}
         lastName={profile.last_name}
-        role={registration.role || "Asistente"}
+        role={registration.role || "Participante"}
         handle={profile.email}
         enableTilt={true}
         enableMobileTilt={false}
-        innerGradient={"/events/devfest-25/bg-credencial_v2.svg"}
-        grainUrl="/grain.webp"
-        qrUrl={registration?.qr_url}
+        innerGradient={"/events/devfest-25/bg-credential.svg"}
       />
     </div>
   </main>
