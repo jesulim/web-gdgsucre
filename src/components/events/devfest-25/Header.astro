@@ -42,10 +42,10 @@ const navLinks = [
     </button>
   </div>
 
-  <div id="mobile-menu" class="hidden absolute top-full left-0 w-full dark:bg-black md:order-2 md:static md:flex md:mx-auto md:w-fit">
+  <div id="mobile-menu" class="hidden absolute top-full left-0 w-full border-b rounded-b-xl dark:bg-black md:order-2 md:static md:flex md:ml-auto md:px-4 md:w-fit md:border-0">
     <ul class="flex flex-col gap-4 p-4 md:flex-row md:p-0">
       {navLinks.map(link => (
-        <li class="font-semibold">
+        <li class="font-medium hover:underline text-right">
           <a href={link.href}>
             {link.name}
           </a>
@@ -54,7 +54,6 @@ const navLinks = [
     </ul>
   </div>
 </nav>
-
 
 <script>
   const menuToggle = document.getElementById("menu-toggle")

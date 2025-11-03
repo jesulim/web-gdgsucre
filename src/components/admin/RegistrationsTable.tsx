@@ -99,7 +99,7 @@ export function RegistrationsTable() {
       const response = await fetch(url.toString())
 
       const result = await response.json()
-      setData(result)
+      setData(result.map((row, i) => ({ number: i + 1, ...row })))
     } catch {
       setData([])
     } finally {
@@ -161,6 +161,12 @@ export function RegistrationsTable() {
   }
 
   const columns: ColumnDef<Registrations>[] = [
+    {
+      accessorKey: "number",
+      header: "#",
+      enableGlobalFilter: false,
+      cell: ({ row }) => <span className="text-gray-600">{row.getValue("number")}</span>,
+    },
     {
       accessorKey: "created_at",
       header: "Fecha de registro",
