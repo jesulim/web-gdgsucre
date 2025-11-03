@@ -149,8 +149,9 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
       if (typeof beta !== "number" || typeof gamma !== "number") return
 
       animationHandlers.updateCardTransform(
-        card.clientHeight / 2 + gamma * mobileTiltSensitivity,
-        card.clientWidth / 2 + (beta - ANIMATION_CONFIG.DEVICE_BETA_OFFSET) * mobileTiltSensitivity,
+        card.clientWidth / 2 + gamma * mobileTiltSensitivity,
+        card.clientHeight / 2 +
+          (beta - ANIMATION_CONFIG.DEVICE_BETA_OFFSET) * mobileTiltSensitivity,
         card
       )
     },
