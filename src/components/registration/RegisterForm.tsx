@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 
-import { type FormFieldSchema, buildZodSchemaFromFields } from "@/lib/validators/formFields"
+import { buildZodSchemaFromFields, type FormFieldSchema } from "@/lib/validators/formFields"
 
 import { FormFileInput } from "./FormFileInput"
 import { FormSelect } from "./FormSelect"
@@ -35,7 +35,7 @@ export function RegisterForm({ formFields, profile, event }: RegisterFormProps) 
     formFields.map(field => [field.name, field.type === "file" ? undefined : ""])
   )
 
-  if (!profile) {
+  if (!profile?.last_name) {
     formSchema = formSchema.extend({
       first_name: z.string().trim().min(1, "El nombre es requerido"),
       last_name: z.string().trim().min(1, "El apellido es requerido"),
@@ -89,7 +89,7 @@ export function RegisterForm({ formFields, profile, event }: RegisterFormProps) 
           console.error("Errores de validacion:", errors)
         })}
       >
-        {profile ? (
+        {profile?.last_name ? (
           <p className="text-lg">¡Nos alegra verte de nuevo, {profile.first_name}!</p>
         ) : (
           <ProfileFormFields form={form} />

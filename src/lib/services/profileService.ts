@@ -16,14 +16,24 @@ export async function getProfile(supabase: SupabaseClient) {
     .from("profiles")
     .select("id, first_name, last_name, avatar_url, is_admin")
     .eq("id", user.id)
-    .single()
 
   if (error) {
     return null
   }
 
+  if (!profile || profile.length === 0) {
+    return {
+      id: user.id,
+      first_name: user.user_metadata.full_name,
+      last_name: "",
+      avatar_url: user?.user_metadata?.avatar_url,
+      email: user?.user_metadata.email,
+      is_admin: false,
+    }
+  }
+
   return {
-    ...profile,
+    ...profile[0],
     email: user?.user_metadata.email,
   }
 }

@@ -1,38 +1,33 @@
 ---
-import { Image } from "astro:assets"
+import AvatarMenu from "@/components/AvatarMenu"
 
+import { getProfile } from "@/lib/services/profileService"
+import { getEventRegistration } from "@/lib/services/registrationService"
 import { createUserClient } from "@/lib/supabase"
 
-const supabase = await createUserClient(Astro.cookies)
-const {
-  data: { user },
-} = await supabase.auth.getUser()
+let userInitials = ""
 
-const avatarUrl = user?.user_metadata?.avatar_url || null
-const userName = user?.user_metadata?.full_name || user?.email || "Usuario"
-const userInitial = userName.charAt(0).toUpperCase()
+const supabase = await createUserClient(Astro.cookies)
+const profile = await getProfile(supabase)
+
+const names = profile?.first_name.split(" ")
+if (names?.length > 1) {
+  userInitials = (names[0][0] + names[1][0]).toUpperCase()
+} else {
+  userInitials = profile?.first_name[0].toUpperCase()
+}
+
+const { eventSlug } = Astro.props
+const registration = await getEventRegistration(supabase, profile?.id, eventSlug)
 ---
 
-{
-  user && (
-    <div
-      id="avatar-btn"
-      class="rounded-full cursor-pointer border-2 border-transparent hover:border-blue-500 transition-all duration-300 ease-out"
-    >
-      {avatarUrl ? (
-        <Image
-          src={avatarUrl}
-          alt={`Avatar de ${userName}`}
-          class="rounded-full object-cover border border-gray-200"
-          width="48"
-          height="48"
-          loading="lazy"
-        />
-      ) : (
-        <div class="rounded-full w-full bg-gray-100 flex items-center justify-center border border-gray-300 text-xs font-medium text-gray-600">
-          {userInitial}
-        </div>
-      )}
-    </div>
-  )
-}
+<AvatarMenu
+  avatarUrl={profile?.avatar_url}
+  userName={profile?.first_name}
+  userInitials={userInitials}
+  email={profile?.email}
+  admin={profile?.is_admin}
+  registered={!!registration}
+  eventSlug={eventSlug}
+  client:load
+/>
