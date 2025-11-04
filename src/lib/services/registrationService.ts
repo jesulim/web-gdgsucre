@@ -149,15 +149,21 @@ export async function confirmRegistration(supabase: SupabaseClient, registration
   }
 
   try {
-    // TODO: agregar url de la función
-    const edgeFunctionUrl = ``
+    const supabaseUrl = import.meta.env.SUPABASE_URL
+    const edgeFunctionUrl = `${supabaseUrl}/functions/v1/generate-qr`
+
+    const session = await supabase.auth.getSession()
+
     const response = await fetch(edgeFunctionUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${await supabase.auth.getSession().then(s => s.data.session?.access_token)}`,
+        Authorization: `Bearer ${session.data.session?.access_token}`,
       },
-      body: JSON.stringify({ token }),
+      body: JSON.stringify({
+        token,
+        registrationId: registration.id,
+      }),
     })
 
     if (!response.ok) {
@@ -166,8 +172,8 @@ export async function confirmRegistration(supabase: SupabaseClient, registration
     } else {
       const { publicUrl } = await response.json()
       console.log("QR generado correctamente", publicUrl)
-      // TODO: descomentar después de agregar qr_url a la tabla de registrations
-      // await supabase.from('registrations').update({ qr_url: publicUrl }).eq('id', registration.id)
+      // TODO: agregar qr_url a la tabla de registrations
+      await supabase.from("registrations").update({ qr_url: publicUrl }).eq("id", registration.id)
     }
   } catch (qrError) {
     console.error("Llamada a Edge Function fallida", qrError)
