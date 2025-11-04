@@ -1,0 +1,9 @@
+---
+import OrganizerSlider from "@/components/events/devfest-25/organizers/OrganizerSlider"
+import { getOrganizers } from "@/lib/services/organizersService"
+import { supabase } from "@/lib/supabase"
+
+const organizers = await getOrganizers(supabase, "io-extended-25")
+---
+<h2 class="text-4xl font-bold mb-10 text-center">Organizers</h2>
+<OrganizerSlider client:visible organizers={organizers ? organizers: []} />
