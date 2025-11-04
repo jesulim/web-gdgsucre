@@ -22,31 +22,28 @@ serve(async req => {
   try {
     const { token, registrationId }: RequestBody = await req.json()
 
-    // // auth
-    // const supabaseClient = createClient(
-    //   Deno.env.get("SUPABASE_URL") ?? "",
-    //   Deno.env.get("SUPABASE_ANON_KEY") ?? "",
-    //   {
-    //     global: {
-    //       headers: { Authorization: req.headers.get("Authorization")! },
-    //     },
-    //   },
-    // );
+    // auth
+    const supabaseClient = createClient(
+      Deno.env.get("SUPABASE_URL") ?? "",
+      Deno.env.get("SUPABASE_ANON_KEY") ?? "",
+      {
+        global: {
+          headers: { Authorization: req.headers.get("Authorization")! },
+        },
+      }
+    )
 
-    // const {
-    //   data: { user },
-    //   error: userError,
-    // } = await supabaseClient.auth.getUser();
+    const {
+      data: { user },
+      error: userError,
+    } = await supabaseClient.auth.getUser()
 
-    // if (userError || !user) {
-    //   return new Response(
-    //     JSON.stringify({ error: "Unauthorized" }),
-    //     {
-    //       status: 401,
-    //       headers: { ...corsHeaders, "Content-Type": "application/json" },
-    //     },
-    //   );
-    // }
+    if (userError || !user) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      })
+    }
 
     if (!token || !registrationId) {
       return new Response(JSON.stringify({ error: "Token and registrationId are required" }), {
