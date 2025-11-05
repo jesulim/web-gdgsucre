@@ -152,13 +152,21 @@ export async function confirmRegistration(supabase: SupabaseClient, registration
     const supabaseUrl = import.meta.env.SUPABASE_URL
     const edgeFunctionUrl = `${supabaseUrl}/functions/v1/generate-qr`
 
-    const session = await supabase.auth.getSession()
+    const { data: sessionData } = await supabase.auth.getSession()
+    const accessToken = sessionData.session?.access_token
+
+    if (!accessToken) {
+      console.error("No access token available")
+      throw new Error("Usuario no autenticado")
+    }
+
+    console.log("Calling function with token:", accessToken.substring(0, 20) + "...")
 
     const response = await fetch(edgeFunctionUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${session.data.session?.access_token}`,
+        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify({
         token,

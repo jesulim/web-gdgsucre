@@ -20,7 +20,11 @@ serve(async req => {
   }
 
   try {
-    const { token, registrationId }: RequestBody = await req.json()
+    console.log("Starting QR generation request")
+
+    const authHeader = req.headers.get("Authorization")
+    console.log("Auth header present:", !!authHeader)
+    console.log("Auth header format:", authHeader?.substring(0, 20) + "...")
 
     // auth
     const supabaseClient = createClient(
@@ -28,7 +32,7 @@ serve(async req => {
       Deno.env.get("SUPABASE_ANON_KEY") ?? "",
       {
         global: {
-          headers: { Authorization: req.headers.get("Authorization")! },
+          headers: { Authorization: authHeader! },
         },
       }
     )
@@ -38,12 +42,25 @@ serve(async req => {
       error: userError,
     } = await supabaseClient.auth.getUser()
 
-    if (userError || !user) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+    if (userError) {
+      console.error("Auth error:", userError)
+      return new Response(JSON.stringify({ error: "Unauthorized", details: userError.message }), {
         status: 401,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       })
     }
+
+    if (!user) {
+      console.error("No user found")
+      return new Response(JSON.stringify({ error: "Unauthorized - No user found" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      })
+    }
+
+    console.log("User authenticated:", user.id)
+
+    const { token, registrationId }: RequestBody = await req.json()
 
     if (!token || !registrationId) {
       return new Response(JSON.stringify({ error: "Token and registrationId are required" }), {
