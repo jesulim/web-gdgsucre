@@ -1,0 +1,68 @@
+---
+import Clock from "@/assets/events/devfest-25/clock.svg"
+
+interface Props {
+  type: "talk" | "event"
+  time: string
+  title: string
+  description?: string
+  speaker?: string
+}
+
+const { type, time, title, description, speaker } = Astro.props
+
+const isTalk = type === "talk"
+const iconColor = isTalk ? "text-red-500" : "text-white"
+const textBase = "w-full text-base leading-tight md:text-2xl"
+---
+
+<div
+  class:list={[
+    "rounded-2xl p-0.5",
+    {
+      "bg-[linear-gradient(90deg,#6b1b14,#EA4535)]": isTalk,
+      "bg-white": !isTalk,
+    },
+  ]}
+>
+  <article
+    class="flex h-full w-full flex-col gap-2.5 rounded-[14px] bg-[#2E2E2E] p-4 md:gap-3"
+    data-event-type={type}
+  >
+    <div class="flex items-center gap-1.5 md:hidden">
+      <div
+        class:list={[
+          "flex items-center gap-2 rounded-lg px-3 py-1",
+          {
+            "bg-[linear-gradient(180deg,#EA4535,#AD2F23)]": isTalk,
+            "bg-[linear-gradient(180deg,#8E8E8E,#4D4D4D)]": !isTalk,
+          },
+        ]}
+      >
+        <Clock class="h-5 w-5 text-white" aria-hidden="true" />
+        <time datetime={time.split(" - ")[0]} class="text-base font-bold leading-tight text-white">
+          {time}
+        </time>
+      </div>
+    </div>
+    <div class="flex flex-col gap-0.5 md:gap-1">
+      <h3 class="text-xl font-bold leading-tight text-white md:text-3xl">
+        {title}
+      </h3>
+
+      {speaker && <p class:list={[textBase, "font-medium text-[#D9D9D9]"]}>{speaker}</p>}
+
+      {description && <p class:list={[textBase, "text-white"]}>{description}</p>}
+    </div>
+
+    <div class="hidden items-center gap-1.5 md:flex md:gap-2">
+      <Clock class:list={["h-4.5 w-4.5 md:h-5 md:w-6", iconColor]} aria-hidden="true" />
+      <time
+        datetime={time.split(" - ")[0]}
+        class:list={["text-base font-bold leading-tight md:text-xl", iconColor]}
+      >
+        {time}
+      </time>
+    </div>
+  </article>
+</div>
