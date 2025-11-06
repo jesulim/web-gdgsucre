@@ -283,3 +283,20 @@ export async function getRandomRegistrations(
 
   return flattenedRegistrations
 }
+
+export async function getRegistrationData(supabase: SupabaseClient, registrationId: string) {
+  const { data, error } = await supabase
+    .from("registrations")
+    .select("user_id, event_id")
+    .eq("id", registrationId)
+    .single()
+
+  if (error || !data) {
+    return null
+  }
+
+  return {
+    profile_id: data.user_id,
+    event_id: data.event_id,
+  }
+}
