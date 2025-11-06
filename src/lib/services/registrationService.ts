@@ -1,3 +1,4 @@
+import { FunctionsHttpError } from "@supabase/supabase-js"
 import type SupabaseClient from "@supabase/supabase-js/dist/module/SupabaseClient"
 import { customAlphabet } from "nanoid"
 
@@ -131,22 +132,40 @@ export async function confirmRegistration(supabase: SupabaseClient, registration
     .single()
 
   if (findError || !registration) {
-    throw new Error(`No se encontró el registro: ${findError?.message || "No existe registro"}`)
+    throw new Error(`No se encontró el registro: ${findError?.message}`)
+  }
+
+  const token = nanoid(6)
+
+  const { data: qrData, error: qrError } = await supabase.functions.invoke("generate-qr", {
+    body: { token, registrationId: registration.id },
+  })
+
+  if (qrError instanceof FunctionsHttpError) {
+    const errorMessage = await qrError.context.json()
+    throw new Error(`Error generando el QR: ${JSON.stringify(errorMessage)}`)
+  } else if (qrError) {
+    throw new Error(`Error generando el QR: ${qrError.message}`)
+  }
+
+  if (!qrData?.publicUrl) {
+    throw new Error("Invalid response from QR generation service")
   }
 
   const { error: updateError } = await supabase
     .from("registrations")
     .update({
+      token,
       status: "confirmed",
-      token: nanoid(6),
+      qr_url: qrData.publicUrl,
     })
-    .eq("id", registration.id)
+    .eq("id", registrationId)
 
   if (updateError) {
-    throw new Error(`Error actualizando estado del registro: ${updateError.message}`)
+    throw new Error(`Error actualizando el registro: ${updateError.message}`)
   }
 
-  return { success: true }
+  return { success: true, token }
 }
 
 export async function updateRegistration(
