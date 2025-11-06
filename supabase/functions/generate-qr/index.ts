@@ -78,7 +78,7 @@ serve(async req => {
       return new Response(
         JSON.stringify({
           error: "Unauthorized",
-          details: error.message,
+          details: "Ivalid or expired authorization token",
         }),
         {
           status: 401,
@@ -90,7 +90,7 @@ serve(async req => {
       )
     }
 
-    console.info("User authenticated:", claims?.user_metadata?.email)
+    console.info("User authenticated:", claims?.sub)
 
     console.log(`Generating QR code for token: ${token}, registrationId: ${registrationId}`)
     const qrBase64 = await qrcode(token, {

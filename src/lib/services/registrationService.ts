@@ -143,9 +143,13 @@ export async function confirmRegistration(supabase: SupabaseClient, registration
 
   if (qrError instanceof FunctionsHttpError) {
     const errorMessage = await qrError.context.json()
-    throw new Error(`Error generando el QR: ${errorMessage}`)
+    throw new Error(`Error generando el QR: ${JSON.stringify(errorMessage)}`)
   } else if (qrError) {
     throw new Error(`Error generando el QR: ${qrError.message}`)
+  }
+
+  if (!qrData?.publicUrl) {
+    throw new Error("Invalid response from QR generation service")
   }
 
   const { error: updateError } = await supabase
