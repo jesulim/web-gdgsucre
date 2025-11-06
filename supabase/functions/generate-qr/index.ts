@@ -4,9 +4,16 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { qrcode } from "https://deno.land/x/qrcode@v2.0.0/mod.ts"
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3"
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+const ALLOWED_ORIGINS = ["https://gdgsucre.com", "http://localhost:4321"] as const
+
+function getCorsHeaders(origin: string | null) {
+  const allowedOrigin =
+    origin && ALLOWED_ORIGINS.includes(origin as any) ? origin : ALLOWED_ORIGINS[0]
+  return {
+    "Access-Control-Allow-Origin": allowedOrigin,
+    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+  }
 }
 
 interface RequestBody {
@@ -15,8 +22,10 @@ interface RequestBody {
 }
 
 serve(async req => {
+  const origin = req.headers.get("Origin")
+
   if (req.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders })
+    return new Response("ok", { headers: getCorsHeaders(origin) })
   }
 
   try {
@@ -46,7 +55,10 @@ serve(async req => {
       console.error("Auth error:", userError)
       return new Response(JSON.stringify({ error: "Unauthorized", details: userError.message }), {
         status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: {
+          ...getCorsHeaders(origin),
+          "Content-Type": "application/json",
+        },
       })
     }
 
@@ -54,7 +66,10 @@ serve(async req => {
       console.error("No user found")
       return new Response(JSON.stringify({ error: "Unauthorized - No user found" }), {
         status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: {
+          ...getCorsHeaders(origin),
+          "Content-Type": "application/json",
+        },
       })
     }
 
@@ -65,7 +80,10 @@ serve(async req => {
     if (!token || !registrationId) {
       return new Response(JSON.stringify({ error: "Token and registrationId are required" }), {
         status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: {
+          ...getCorsHeaders(origin),
+          "Content-Type": "application/json",
+        },
       })
     }
 
@@ -110,7 +128,10 @@ serve(async req => {
         }),
         {
           status: 500,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          headers: {
+            ...getCorsHeaders(origin),
+            "Content-Type": "application/json",
+          },
         }
       )
     }
@@ -129,14 +150,20 @@ serve(async req => {
       }),
       {
         status: 200,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: {
+          ...getCorsHeaders(origin),
+          "Content-Type": "application/json",
+        },
       }
     )
   } catch (error) {
     console.error("Error:", error)
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      headers: {
+        ...getCorsHeaders(origin),
+        "Content-Type": "application/json",
+      },
     })
   }
 })
@@ -153,4 +180,12 @@ serve(async req => {
     --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0' \
     --header 'Content-Type: application/json' \
     --data '{"token":"3AKFM9","registrationId":267}'
+
+    function getCorsHeaders(origin: string | null) {
+  const allowedOrigin = origin && allowedOrigins.includes(origin) ? origin : allowedOrigins[0]
+  return {
+    ...corsHeaders,
+    "Access-Control-Allow-Origin": allowedOrigin,
+  }
+}
 */
