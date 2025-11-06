@@ -24,7 +24,7 @@ export async function addOrganizer(supabase: SupabaseClient, registrationId: str
   const registrationData = await getRegistrationData(supabase, registrationId)
 
   if (!registrationData) {
-    return false
+    return { success: false, reason: "registration_not_found" }
   }
 
   const { error } = await supabase.from("organizers").insert({
@@ -32,7 +32,11 @@ export async function addOrganizer(supabase: SupabaseClient, registrationId: str
     event_id: registrationData.event_id,
   })
 
-  return !error
+  if (error) {
+    return { success: false, reason: "insert_failed", message: error.message }
+  }
+
+  return { success: true }
 }
 
 export async function removeOrganizer(supabase: SupabaseClient, registrationId: string) {

@@ -16,17 +16,22 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     }
 
     const supabase = await createUserClient(cookies)
-    const success = await addOrganizer(supabase, registrationId)
+    const result = await addOrganizer(supabase, registrationId)
 
-    if (!success) {
-      return new Response(JSON.stringify({ error: "No se pudo agregar el organizador" }), {
-        status: 500,
+    if (!result.success) {
+      const errorMessage =
+        result.reason === "registration_not_found"
+          ? "El registro no fue encontrado"
+          : result.message || "No se pudo agregar el organizador"
+
+      return new Response(JSON.stringify({ error: errorMessage }), {
+        status: result.reason === "registration_not_found" ? 404 : 500,
         headers: { "Content-Type": "application/json" },
       })
     }
 
     return new Response(JSON.stringify({ message: "Organizador agregado exitosamente" }), {
-      status: 200,
+      status: 201,
       headers: { "Content-Type": "application/json" },
     })
   } catch (error) {
