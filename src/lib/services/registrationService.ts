@@ -1,3 +1,4 @@
+import { FunctionsHttpError } from "@supabase/supabase-js"
 import type SupabaseClient from "@supabase/supabase-js/dist/module/SupabaseClient"
 import { customAlphabet } from "nanoid"
 
@@ -131,60 +132,33 @@ export async function confirmRegistration(supabase: SupabaseClient, registration
     .single()
 
   if (findError || !registration) {
-    throw new Error(`No se encontró el registro: ${findError?.message || "No existe registro"}`)
+    throw new Error(`No se encontró el registro: ${findError?.message}`)
   }
 
   const token = nanoid(6)
 
+  const { data: qrData, error: qrError } = await supabase.functions.invoke("generate-qr", {
+    body: { token, registrationId: registration.id },
+  })
+
+  if (qrError instanceof FunctionsHttpError) {
+    const errorMessage = await qrError.context.json()
+    throw new Error(`Error generando el QR: ${errorMessage}`)
+  } else if (qrError) {
+    throw new Error(`Error generando el QR: ${qrError.message}`)
+  }
+
   const { error: updateError } = await supabase
     .from("registrations")
     .update({
+      token,
       status: "confirmed",
-      token: token,
+      qr_url: qrData.publicUrl,
     })
-    .eq("id", registration.id)
+    .eq("id", registrationId)
 
   if (updateError) {
-    throw new Error(`Error actualizando estado del registro: ${updateError.message}`)
-  }
-
-  try {
-    const supabaseUrl = import.meta.env.SUPABASE_URL
-    const edgeFunctionUrl = `${supabaseUrl}/functions/v1/generate-qr`
-
-    const { data: sessionData } = await supabase.auth.getSession()
-    const accessToken = sessionData.session?.access_token
-
-    if (!accessToken) {
-      console.error("No access token available")
-      throw new Error("Usuario no autenticado")
-    }
-
-    console.log("Calling function with token:", accessToken.substring(0, 20) + "...")
-
-    const response = await fetch(edgeFunctionUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({
-        token,
-        registrationId: registration.id,
-      }),
-    })
-
-    if (!response.ok) {
-      const errorData = await response.json()
-      console.error("Error al generar QR", errorData)
-    } else {
-      const { publicUrl } = await response.json()
-      console.log("QR generado correctamente", publicUrl)
-      // TODO: agregar qr_url a la tabla de registrations
-      await supabase.from("registrations").update({ qr_url: publicUrl }).eq("id", registration.id)
-    }
-  } catch (qrError) {
-    console.error("Llamada a Edge Function fallida", qrError)
+    throw new Error(`Error actualizando el registro: ${updateError.message}`)
   }
 
   return { success: true, token }

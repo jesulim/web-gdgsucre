@@ -4,11 +4,10 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { qrcode } from "https://deno.land/x/qrcode@v2.0.0/mod.ts"
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3"
 
-const ALLOWED_ORIGINS = ["https://gdgsucre.com", "http://localhost:4321"] as const
+const ALLOWED_ORIGINS = ["https://gdgsucre.com", "http://localhost:4321"]
 
 function getCorsHeaders(origin: string | null) {
-  const allowedOrigin =
-    origin && ALLOWED_ORIGINS.includes(origin as any) ? origin : ALLOWED_ORIGINS[0]
+  const allowedOrigin = origin && ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0]
   return {
     "Access-Control-Allow-Origin": allowedOrigin,
     "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -29,71 +28,74 @@ serve(async req => {
   }
 
   try {
-    console.log("Starting QR generation request")
+    console.info("Starting QR generation")
 
     const authHeader = req.headers.get("Authorization")
-    console.log("Auth header present:", !!authHeader)
-    console.log("Auth header format:", authHeader?.substring(0, 20) + "...")
-
-    // auth
-    const supabaseClient = createClient(
-      Deno.env.get("SUPABASE_URL") ?? "",
-      Deno.env.get("SUPABASE_ANON_KEY") ?? "",
-      {
-        global: {
-          headers: { Authorization: authHeader! },
-        },
-      }
-    )
-
-    const {
-      data: { user },
-      error: userError,
-    } = await supabaseClient.auth.getUser()
-
-    if (userError) {
-      console.error("Auth error:", userError)
-      return new Response(JSON.stringify({ error: "Unauthorized", details: userError.message }), {
-        status: 401,
-        headers: {
-          ...getCorsHeaders(origin),
-          "Content-Type": "application/json",
-        },
-      })
-    }
-
-    if (!user) {
-      console.error("No user found")
-      return new Response(JSON.stringify({ error: "Unauthorized - No user found" }), {
-        status: 401,
-        headers: {
-          ...getCorsHeaders(origin),
-          "Content-Type": "application/json",
-        },
-      })
-    }
-
-    console.log("User authenticated:", user.id)
+    if (!authHeader)
+      return new Response(
+        JSON.stringify({
+          error: "Unauthorized",
+          details: "Authorization header is missing",
+        }),
+        {
+          status: 401,
+          headers: {
+            ...getCorsHeaders(origin),
+            "Content-Type": "application/json",
+          },
+        }
+      )
 
     const { token, registrationId }: RequestBody = await req.json()
-
     if (!token || !registrationId) {
-      return new Response(JSON.stringify({ error: "Token and registrationId are required" }), {
-        status: 400,
-        headers: {
-          ...getCorsHeaders(origin),
-          "Content-Type": "application/json",
-        },
-      })
+      return new Response(
+        JSON.stringify({
+          error: "token and registrationId are required",
+        }),
+        {
+          status: 400,
+          headers: {
+            ...getCorsHeaders(origin),
+            "Content-Type": "application/json",
+          },
+        }
+      )
     }
 
-    console.log(`Generating QR code for token: ${token}, registrationId: ${registrationId}`)
+    // auth
+    const jwt = authHeader.replace(/^Bearer\s+/i, "")
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL"),
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")
+    )
+    const {
+      data: { claims },
+      error,
+    } = await supabase.auth.getClaims(jwt)
 
+    if (error) {
+      console.error("Couldn't get claims", error.message)
+      return new Response(
+        JSON.stringify({
+          error: "Unauthorized",
+          details: error.message,
+        }),
+        {
+          status: 401,
+          headers: {
+            ...getCorsHeaders(origin),
+            "Content-Type": "application/json",
+          },
+        }
+      )
+    }
+
+    console.info("User authenticated:", claims?.user_metadata?.email)
+
+    console.log(`Generating QR code for token: ${token}, registrationId: ${registrationId}`)
     const qrBase64 = await qrcode(token, {
       size: 500,
     })
-
-    console.log("QR code generated successfully")
 
     const base64Data = qrBase64.split(",")[1] // remove data:image/png;base64, prefix
     const binaryString = atob(base64Data)
@@ -102,26 +104,13 @@ serve(async req => {
       bytes[i] = binaryString.charCodeAt(i)
     }
 
-    console.log(`Converted to bytes, length: ${bytes.length}`)
-
-    const supabaseAdmin = createClient(
-      Deno.env.get("SUPABASE_URL") ?? "",
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
-    )
-
-    const filePath = `devfest-25/qr/${registrationId}/${token}.png`
-
-    console.log(`Uploading to: ${filePath}`)
-
-    const { error: uploadError } = await supabaseAdmin.storage
-      .from("event-uploads")
-      .upload(filePath, bytes, {
-        contentType: "image/png",
-        upsert: true,
-      })
+    const filePath = `qr/devfest-25/${registrationId}.png`
+    const { error: uploadError } = await supabase.storage
+      .from("assets")
+      .upload(filePath, bytes, { contentType: "image/png", upsert: true })
 
     if (uploadError) {
-      console.error("Upload error:", uploadError)
+      console.error("Upload error:", uploadError.message)
       return new Response(
         JSON.stringify({
           error: `Failed to upload QR code: ${uploadError.message}`,
@@ -136,11 +125,9 @@ serve(async req => {
       )
     }
 
-    console.log("Upload successful")
+    console.info("Uploaded successfully to:", filePath)
 
-    const { data: urlData } = supabaseAdmin.storage.from("event-uploads").getPublicUrl(filePath)
-
-    console.log(`Public URL: ${urlData.publicUrl}`)
+    const { data: urlData } = supabase.storage.from("assets").getPublicUrl(filePath)
 
     return new Response(
       JSON.stringify({
@@ -158,34 +145,18 @@ serve(async req => {
     )
   } catch (error) {
     console.error("Error:", error)
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: {
-        ...getCorsHeaders(origin),
-        "Content-Type": "application/json",
-      },
-    })
+    return new Response(
+      JSON.stringify({
+        error: "Error generating QR code",
+        details: error instanceof Error ? error.message : error,
+      }),
+      {
+        status: 500,
+        headers: {
+          ...getCorsHeaders(origin),
+          "Content-Type": "application/json",
+        },
+      }
+    )
   }
 })
-
-/* To invoke locally:
-
-  1. Run `supabase start` (see: https://supabase.com/docs/reference/cli/supabase-start)
-  2. Make an HTTP request:
-
-  # Get your local anon key and access token first
-  # The local anon key is shown when you run `supabase start`
-
-  curl -i --location --request POST 'http://localhost:54321/functions/v1/generate-qr' \
-    --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0' \
-    --header 'Content-Type: application/json' \
-    --data '{"token":"3AKFM9","registrationId":267}'
-
-    function getCorsHeaders(origin: string | null) {
-  const allowedOrigin = origin && allowedOrigins.includes(origin) ? origin : allowedOrigins[0]
-  return {
-    ...corsHeaders,
-    "Access-Control-Allow-Origin": allowedOrigin,
-  }
-}
-*/
