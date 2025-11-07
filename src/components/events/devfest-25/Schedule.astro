@@ -6,8 +6,8 @@ import LightbulbIcon from "@/assets/events/devfest-25/lightbulb_on.svg"
 import LlaveAbierta from "@/assets/events/devfest-25/llave-abierta.svg"
 import LlaveCerrada from "@/assets/events/devfest-25/llave-cerrada.svg"
 import Nube from "@/assets/events/devfest-25/nube.svg"
-import ScheduleCard from "@/components/devfest-25/schedule/ScheduleCard.astro"
-import scheduleDataRaw from "@/components/devfest-25/schedule/schedule.json"
+import ScheduleCard from "@/components/events/devfest-25/schedule/ScheduleCard.astro"
+import scheduleDataRaw from "@/components/events/devfest-25/schedule/schedule.json"
 
 interface ScheduleEvent {
   type: "talk" | "event"
@@ -28,12 +28,10 @@ const icons = {
 ---
 
 <section
-  id="schedule"
+  id="agenda"
   class="relative mx-auto my-8 flex max-w-7xl flex-col items-center justify-center gap-8 px-4 md:my-12 md:gap-12"
 >
-  <h2 class="text-center text-3xl font-bold text-white md:text-4xl lg:text-6xl">
-    Agenda
-  </h2>
+  <h2 class="text-center text-3xl font-bold text-white md:text-4xl lg:text-6xl">Agenda</h2>
 
   <div aria-hidden="true" class="absolute inset-0 -z-10 hidden overflow-visible lg:block">
     <LlaveAbierta height="520" class="absolute top-0 -left-16" />
