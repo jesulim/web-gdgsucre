@@ -3,15 +3,21 @@ import "./CredentialCard.css"
 
 interface CredentialCardProps {
   innerGradient?: string
+  behindGradient?: string
   className?: string
   enableTilt?: boolean
   enableMobileTilt?: boolean
   mobileTiltSensitivity?: number
+  showBehindGradient?: boolean
   firstName?: string
   lastName?: string
   role?: string
   handle?: string
+  grainUrl?: string
 }
+
+const DEFAULT_BEHIND_GRADIENT =
+  "radial-gradient(farthest-side circle at var(--pointer-x) var(--pointer-y),hsla(266,100%,90%,var(--card-opacity)) 4%,hsla(266,50%,80%,calc(var(--card-opacity)*0.75)) 10%,hsla(266,25%,70%,calc(var(--card-opacity)*0.5)) 50%,hsla(266,0%,60%,0) 100%),radial-gradient(35% 52% at 55% 20%,#00ffaac4 0%,#073aff00 100%),radial-gradient(100% 100% at 50% 50%,#00c1ffff 1%,#073aff00 76%),conic-gradient(from 124deg at 50% 50%,#c137ffff 0%,#07c6ffff 40%,#07c6ffff 60%,#c137ffff 100%)"
 
 const ANIMATION_CONFIG = {
   SMOOTH_DURATION: 600,
@@ -30,12 +36,15 @@ const easeInOutCubic = (x: number) => (x < 0.5 ? 4 * x * x * x : 1 - (-2 * x + 2
 const CredentialCardComponent: React.FC<CredentialCardProps> = ({
   innerGradient,
   className = "",
+  behindGradient,
   enableTilt = true,
   enableMobileTilt = false,
+  showBehindGradient = false,
   mobileTiltSensitivity = 3,
   firstName = "Gabriel",
   lastName = "Martinez",
   role = "Software Engineer",
+  grainUrl,
 }) => {
   const cardRef = useRef<HTMLDivElement>(null)
 
@@ -172,7 +181,9 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
     let removeOrientation = () => {}
     if (!canHover && enableMobileTilt && location.protocol === "https:") {
       const requestIOSPermission = async () => {
-        const anyDO = window.DeviceOrientationEvent as any
+        const anyDO = window.DeviceOrientationEvent as unknown as {
+          requestPermission?: () => Promise<"granted" | "denied">
+        }
         if (typeof anyDO?.requestPermission === "function") {
           try {
             const state = await anyDO.requestPermission()
@@ -203,7 +214,6 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
         }
       }
 
-      // Un “tap” para solicitar permiso en iOS
       const askOnTap = () => {
         requestIOSPermission()
         card.removeEventListener("click", askOnTap)
@@ -249,15 +259,20 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
     () =>
       ({
         "--inner-gradient": innerGradient ? `url("${innerGradient}")` : "none",
-        "--behind-gradient": "none",
+        "--behind-gradient": showBehindGradient
+          ? (behindGradient ?? DEFAULT_BEHIND_GRADIENT)
+          : "none",
         "--icon": "none",
+        "--grain": grainUrl ? `url(${grainUrl})` : "none",
       }) as React.CSSProperties,
-    [innerGradient]
+    [innerGradient, grainUrl, showBehindGradient, behindGradient]
   )
 
   return (
     <section ref={cardRef} className={`pc-card ${className}`.trim()} style={cardStyle}>
       <div className="pc-inside">
+        <div className="pc-shine" />
+        <div className="pc-glare" />
         <div className="pc-content">
           <div className="absolute top-1/2 left-10 right-10 -translate-y-1/2 grid place-items-center bg-white text-black rounded-[30px] px-[8px] py-[8px] pointer-events-auto">
             <p className="text-xl">{`${firstName} ${lastName}`}</p>
