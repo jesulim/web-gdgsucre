@@ -20,7 +20,7 @@ const registration = await getEventRegistration(
 if (!registration) return Astro.redirect("/");
 
 if (registration?.status !== "confirmed")
-  return Astro.redirect(`/registro/${Astro.params.eventSlug}`);
+  return Astro.redirect(`/registro/${Astro.params.eventSlug}`)
 ---
 
 <BaseLayout theme="dark">
@@ -32,12 +32,13 @@ if (registration?.status !== "confirmed")
         avatarUrl={profile.avatar_url}
         firstName={profile.first_name}
         lastName={profile.last_name}
-        role={registration.role || "Participante"}
+        role={registration.role || "Asistente"}
         handle={profile.email}
         enableTilt={true}
         enableMobileTilt={false}
-        innerGradient={"/events/devfest-25/bg-credential.svg"}
+        innerGradient={"/events/devfest-25/bg-credencial_v2.svg"}
         grainUrl="/grain.webp"
+        qrUrl="/events/devfest-25/qr.png"
       />
     </div>
   </main>

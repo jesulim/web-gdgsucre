@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useRef } from "react"
 import "./CredentialCard.css"
+import { Avatar, AvatarImage } from "@/components/ui/avatar"
 
 interface CredentialCardProps {
+  avatarUrl: string
   innerGradient?: string
   behindGradient?: string
   className?: string
@@ -14,6 +16,7 @@ interface CredentialCardProps {
   role?: string
   handle?: string
   grainUrl?: string
+  qrUrl: string
 }
 
 const DEFAULT_BEHIND_GRADIENT =
@@ -34,6 +37,7 @@ const adjust = (v: number, a: number, b: number, c: number, d: number) =>
 const easeInOutCubic = (x: number) => (x < 0.5 ? 4 * x * x * x : 1 - (-2 * x + 2) ** 3 / 2)
 
 const CredentialCardComponent: React.FC<CredentialCardProps> = ({
+  avatarUrl,
   innerGradient,
   className = "",
   behindGradient,
@@ -45,6 +49,7 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
   lastName = "Martinez",
   role = "Software Engineer",
   grainUrl,
+  qrUrl,
 }) => {
   const cardRef = useRef<HTMLDivElement>(null)
 
@@ -274,12 +279,29 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
         <div className="pc-shine" />
         <div className="pc-glare" />
         <div className="pc-content">
-          <div className="absolute top-1/2 left-10 right-10 -translate-y-1/2 grid place-items-center bg-white text-black rounded-[30px] px-[8px] py-[8px] pointer-events-auto">
-            <p className="text-xl">{`${firstName} ${lastName}`}</p>
+          <div
+            className="absolute left-1/2 -translate-x-1/2
+  top-[21%] sm:top-[21%] md:top-[21%] lg:top-[20%] w-25 h-24 rounded-full overflow-hidden"
+          >
+            <Avatar className="w-full h-full">
+              <AvatarImage src={avatarUrl} className="w-full h-full object-cover" />
+            </Avatar>
           </div>
 
-          <div className="absolute top-[62%] left-5 right-5 -translate-y-1/2 grid place-items-center px-[14px] py-3 pointer-events-auto">
+          <div
+            className="absolute top-[48%] left-10 right-10 -translate-y-1/2
+  grid place-items-center bg-white text-black rounded-[24px]
+  px-2 py-3 sm:px-2 sm:py-2 pointer-events-auto"
+          >
+            <p className="text-xl leading-tight">{`${firstName} ${lastName}`}</p>
+          </div>
+
+          <div className="absolute top-[59%] left-5 right-5 -translate-y-1/2 grid place-items-center px-[14px] py-3 pointer-events-auto">
             <p className="text-4xl">{`${role}`}</p>
+          </div>
+
+          <div className="absolute left-1/2 -translate-x-2 top-[66%] w-36 h-36">
+            <img src={qrUrl} alt="imagen" />
           </div>
         </div>
       </div>
