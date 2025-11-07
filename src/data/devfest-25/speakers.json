@@ -1,17 +1,17 @@
 [
   {
+    "id": "7",
+    "title": "Detrás del build: Asegurando tu app Flutter antes de lanzarla",
+    "img": "/events/devfest-25/speakers/Bettina.webp",
+    "name": "Bettina Carrizo",
+    "description": "Flutter & Ciberseguridad"
+  },
+  {
     "id": "1",
     "title": "Flutter + Firebase + SQL = DataConnect con Flutter",
     "img": "/events/devfest-25/speakers/speaker-1.webp",
     "name": "Fabián Varela Bonett",
     "description": "Firebase & Flutter"
-  },
-  {
-    "id": "2",
-    "title": "Como hacer despliegue a producción sin morir en el intento",
-    "img": "/events/devfest-25/speakers/speaker-2.webp",
-    "name": "Daniel Santiago Silva",
-    "description": "DevOps & Cloud"
   },
   {
     "id": "3",
@@ -21,11 +21,11 @@
     "description": "Desarrollo Web"
   },
   {
-    "id": "4",
-    "title": "Protegiendo y aprovechando la privacidad de la data: Federated Learning para Redes Neuronales",
-    "img": "/events/devfest-25/speakers/speaker-4.webp",
-    "name": "Diego Angulo Ramirez",
-    "description": "IA/ML"
+    "id": "2",
+    "title": "Como hacer despliegue a producción sin morir en el intento",
+    "img": "/events/devfest-25/speakers/speaker-2.webp",
+    "name": "Daniel Santiago Silva",
+    "description": "DevOps & Cloud"
   },
   {
     "id": "5",
@@ -40,5 +40,12 @@
     "img": "/events/devfest-25/speakers/speaker-6.webp",
     "name": "Irvin Cossio Chavalier",
     "description": "Android, Desarrollo Web & XR - 5"
+  },
+  {
+    "id": "4",
+    "title": "Protegiendo y aprovechando la privacidad de la data: Federated Learning para Redes Neuronales",
+    "img": "/events/devfest-25/speakers/speaker-4.webp",
+    "name": "Diego Angulo Ramirez",
+    "description": "IA/ML"
   }
 ]
