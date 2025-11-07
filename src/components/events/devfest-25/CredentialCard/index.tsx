@@ -369,6 +369,10 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
               className="block w-full h-full max-w-full max-h-full object-contain"
             />
           </div>
+
+          <div className="absolute left-1/2 -translate-x-2 top-[66%] w-36 h-36">
+            <img src={qrUrl} alt="imagen" />
+          </div>
         </div>
       </div>
     </section>
