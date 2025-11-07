@@ -4,12 +4,13 @@ import UserSignIn from "@/assets/icons/social/user-round-plus.svg"
 
 import Avatar from "@/components/Avatar.astro"
 
-const refreshToken = Astro.cookies.has("sb-refresh-token")
+const accessToken = Astro.cookies.has("sb-access-token")
 
 const navLinks = [
   { name: "Sobre el evento", href: "/#about" },
   { name: "Speakers", href: "/#speakers" },
   { name: "Agenda", href: "/#agenda" },
+  { name: "Sponsors", href: "/#sponsors" },
 ]
 ---
 
@@ -19,7 +20,7 @@ const navLinks = [
   </a>
 
   <div class="flex items-center gap-4 h-12 order-last">
-    {refreshToken ? (
+    {accessToken ? (
       <Avatar eventSlug="devfest-25" />
     ) : (
       <a href="/api/auth/signin" class="hidden md:inline bg-linear-to-b text-white bg-red-500 font-medium px-4 py-2 rounded-full">
