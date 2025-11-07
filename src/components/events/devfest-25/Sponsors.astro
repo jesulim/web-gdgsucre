@@ -12,31 +12,31 @@ import Navi from "@/assets/events/devfest-25/sponsors/navi_full.svg"
 const sponsors = [
   {
     src: Delve,
-    link: "Delve",
+    label: "Delve",
   },
   {
     src: Helvetas,
-    link: "Helvetas",
+    label: "Helvetas",
   },
   {
     src: TenMinds,
-    link: "10 Minds",
+    label: "10 Minds",
   },
   {
     src: Napp,
-    link: "Fundación Napp",
+    label: "Fundación Napp",
   },
   {
     src: Favorcito,
-    link: "Favorcito",
+    label: "Favorcito",
   },
   {
     src: JalaU,
-    link: "",
+    label: "Jala University",
   },
   {
     src: Mediamor,
-    link: "Mediamor",
+    label: "Mediamor",
   },
 ]
 ---
@@ -48,13 +48,7 @@ const sponsors = [
       class="grid grid-cols-2 md:grid-cols-3 place-items-center gap-8 bg-white rounded-3xl p-8 md:py-12 mx-auto max-w-6xl"
     >
       <Navi height="100" />
-      {
-        sponsors.map(({ src, link }) => (
-          <a href={link} target="_blank" rel="noopener noreferrer">
-            <Image src={src} alt={link} height="100" srcset="" />
-          </a>
-        ))
-      }
+      {sponsors.map(({ src, label }) => <Image src={src} alt={label} height="100" srcset="" />)}
     </div>
   </div>
 </section>
