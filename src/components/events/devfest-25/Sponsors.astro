@@ -1,0 +1,65 @@
+---
+import { Image } from "astro:assets"
+import TenMinds from "@/assets/events/devfest-25/sponsors/10minds.webp"
+import Delve from "@/assets/events/devfest-25/sponsors/delve.webp"
+import Favorcito from "@/assets/events/devfest-25/sponsors/favorcito.webp"
+import Helvetas from "@/assets/events/devfest-25/sponsors/helvetas.webp"
+import JalaU from "@/assets/events/devfest-25/sponsors/jalau.webp"
+import Mediamor from "@/assets/events/devfest-25/sponsors/mediamor.webp"
+import Napp from "@/assets/events/devfest-25/sponsors/napp.webp"
+import Navi from "@/assets/events/devfest-25/sponsors/navi_full.svg"
+
+const sponsors = [
+  {
+    src: Delve,
+    label: "Delve",
+    cls: "px-4",
+  },
+  {
+    src: Helvetas,
+    label: "Helvetas",
+    cls: "",
+  },
+  {
+    src: TenMinds,
+    label: "10 Minds",
+    cls: "",
+  },
+  {
+    src: Napp,
+    label: "Fundación Napp",
+    cls: "",
+  },
+  {
+    src: Favorcito,
+    label: "Favorcito",
+    cls: "",
+  },
+  {
+    src: JalaU,
+    label: "Jala University",
+    cls: "",
+  },
+  {
+    src: Mediamor,
+    label: "Mediamor",
+    cls: "",
+  },
+]
+---
+
+<section id="sponsors">
+  <h2 class="text-4xl lg:text-5xl text-center font-bold mb-4 md:mb-6">Sponsors</h2>
+  <div class="flex flex-row mx-4 mb-4">
+    <div
+      class="grid grid-cols-2 md:grid-cols-3 place-items-center gap-8 bg-white rounded-3xl p-8 md:py-12 mx-auto max-w-6xl"
+    >
+      <Navi height="100" class="w-36 sm:w-full" />
+      {
+        sponsors.map(({ src, label, cls }) => (
+          <Image src={src} alt={label} class={cls} height="100" />
+        ))
+      }
+    </div>
+  </div>
+</section>
