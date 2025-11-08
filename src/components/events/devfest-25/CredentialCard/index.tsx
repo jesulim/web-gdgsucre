@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useRef } from "react"
 import "./CredentialCard.css"
-import { Avatar, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 interface CredentialCardProps {
-  avatarUrl: string
+  avatarUrl?: string
   innerGradient?: string
   behindGradient?: string
   className?: string
@@ -51,12 +51,23 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
   grainUrl,
   qrUrl,
 }) => {
+  let userInitials = ""
   const cardRef = useRef<HTMLDivElement>(null)
 
   const canHover = useMemo(() => {
     if (typeof window === "undefined" || typeof window.matchMedia !== "function") return false
     return window.matchMedia("(hover: hover)").matches
   }, [])
+
+  const names = firstName.split(" ")
+  if (names?.length > 1) {
+    userInitials = (names[0][0] + names[1][0]).toUpperCase()
+  } else {
+    userInitials = firstName[0].toUpperCase()
+  }
+
+  const finalAvatar =
+    avatarUrl && avatarUrl.trim() !== "" ? avatarUrl : "/images/default-avatar.png"
 
   const animationHandlers = useMemo(() => {
     if (!enableTilt) return null
@@ -284,20 +295,26 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
   top-[21%] sm:top-[21%] md:top-[21%] lg:top-[20%] w-25 h-24 rounded-full overflow-hidden"
           >
             <Avatar className="w-full h-full">
-              <AvatarImage src={avatarUrl} className="w-full h-full object-cover" />
+              <AvatarImage src={finalAvatar} className="w-full h-full object-cover" />
+              <AvatarFallback>{userInitials}</AvatarFallback>
             </Avatar>
           </div>
-
           <div
-            className="absolute top-[48%] left-10 right-10 -translate-y-1/2
-  grid place-items-center bg-white text-black rounded-[24px]
-  px-2 py-3 sm:px-2 sm:py-2 pointer-events-auto"
+            className="
+    absolute top-[50%] sm:top-[48%] -translate-y-1/2
+    left-7 right-7 sm:left-10 sm:right-10
+    grid place-items-center bg-white text-black rounded-[24px]
+    px-2 py-1 sm:px-4 sm:py-2
+    pointer-events-auto
+  "
           >
-            <p className="text-xl leading-tight">{`${firstName} ${lastName}`}</p>
+            <p className="text-base sm:text-xl leading-tight break-words text-center">
+              {`${firstName} ${lastName}`}
+            </p>
           </div>
 
           <div className="absolute top-[59%] left-5 right-5 -translate-y-1/2 grid place-items-center px-[14px] py-3 pointer-events-auto">
-            <p className="text-4xl">{`${role}`}</p>
+            <p className="text-3xl">{`${role}`}</p>
           </div>
 
           <div className="absolute left-1/2 -translate-x-2 top-[66%] w-36 h-36">
