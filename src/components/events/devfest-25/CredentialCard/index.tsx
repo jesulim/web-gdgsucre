@@ -11,9 +11,9 @@ interface CredentialCardProps {
   enableMobileTilt?: boolean
   mobileTiltSensitivity?: number
   showBehindGradient?: boolean
-  firstName?: string
-  lastName?: string
-  role?: string
+  firstName: string
+  lastName: string
+  role: string
   handle?: string
   grainUrl?: string
   qrUrl: string
@@ -45,9 +45,9 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
   enableMobileTilt = false,
   showBehindGradient = false,
   mobileTiltSensitivity = 3,
-  firstName = "Gabriel",
-  lastName = "Martinez",
-  role = "Software Engineer",
+  firstName,
+  lastName,
+  role,
   grainUrl,
   qrUrl,
 }) => {
@@ -301,7 +301,7 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
           </div>
 
           <div className="absolute left-1/2 -translate-x-2 top-[66%] w-36 h-36">
-            <img src={qrUrl} alt="imagen" />
+            <img src={qrUrl} alt="Código QR de la credencial" />
           </div>
         </div>
       </div>
