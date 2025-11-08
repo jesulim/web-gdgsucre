@@ -65,15 +65,15 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
     return window.matchMedia("(hover: hover)").matches;
   }, []);
 
-  const names = firstName.split(" ");
-  if (names?.length > 1) {
-    userInitials = (names[0][0] + names[1][0]).toUpperCase();
-  } else {
-    userInitials = firstName[0].toUpperCase();
-  }
-
   const finalAvatar =
     avatarUrl && avatarUrl.trim() !== "" ? avatarUrl : "/avatar-default.webp";
+
+  const names = firstName.split(" ")
+  if (names?.length > 1) {
+    userInitials = (names[0][0] + names[1][0]).toUpperCase()
+  } else {
+    userInitials = firstName[0].toUpperCase()
+  }
 
   const animationHandlers = useMemo(() => {
     if (!enableTilt) return null;
