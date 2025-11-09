@@ -1,8 +1,9 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts"
 
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+// TODO: qrcode@v2.0.0 is unmaintained, for a future version consider: https://github.com/soldair/node-qrcode
 import { qrcode } from "https://deno.land/x/qrcode@v2.0.0/mod.ts"
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3"
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.80.0"
+import { serve } from "jsr:@std/http@0.224.0/server"
 
 const ALLOWED_ORIGINS = ["https://gdgsucre.com", "http://localhost:4321"]
 
@@ -33,7 +34,6 @@ async function generateAndUploadQR(
   registrationId: number
 ): Promise<{ publicUrl: string } | null> {
   try {
-    // Generate QR code
     const qrBase64 = await qrcode(token, {
       size: 500,
     })
@@ -78,17 +78,28 @@ serve(async req => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")
     )
 
-    const { eventSlug, limit }: RequestBody = await req.json()
+    let eventSlug: string | undefined
+    let limit: number | undefined
+
+    try {
+      const body = await req.json()
+      eventSlug = body.eventSlug
+      limit = body.limit
+    } catch {
+      console.info("No request body provided, processing all eligible registrations")
+    }
+
+    const selectFields = eventSlug ? "id, token, events!inner(slug)" : "id, token"
 
     let query = supabase
       .from("registrations")
-      .select("id, token")
+      .select(selectFields)
       .eq("status", "confirmed")
       .not("token", "is", null)
       .is("qr_url", null)
 
     if (eventSlug) {
-      query = query.select("id, token, events!inner(slug)").eq("events.slug", eventSlug)
+      query = query.eq("events.slug", eventSlug)
     }
 
     if (limit && limit > 0) {
@@ -134,9 +145,7 @@ serve(async req => {
 
     console.info(`Found ${registrations.length} registrations to process`)
 
-    const results: ProcessResult[] = []
-
-    for (const registration of registrations) {
+    const promises = registrations.map(async registration => {
       console.log(`Processing registration ${registration.id} with token ${registration.token}`)
 
       const qrResult = await generateAndUploadQR(supabase, registration.token, registration.id)
@@ -149,26 +158,28 @@ serve(async req => {
 
         if (updateError) {
           console.error(`Failed to update registration ${registration.id}:`, updateError.message)
-          results.push({
+          return {
             registrationId: registration.id,
             success: false,
             error: `Failed to update database: ${updateError.message}`,
-          })
+          }
         } else {
-          results.push({
+          return {
             registrationId: registration.id,
             success: true,
             publicUrl: qrResult.publicUrl,
-          })
+          }
         }
       } else {
-        results.push({
+        return {
           registrationId: registration.id,
           success: false,
           error: "Failed to generate or upload QR code",
-        })
+        }
       }
-    }
+    })
+
+    const results = await Promise.all(promises)
 
     const successCount = results.filter(r => r.success).length
     const failureCount = results.filter(r => !r.success).length
