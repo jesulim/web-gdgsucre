@@ -6,5 +6,7 @@ import { supabase } from "@/lib/supabase"
 const organizers = await getOrganizers(supabase, "devfest-25")
 ---
 
-<h2 class="text-4xl lg:text-5xl font-bold mt-8 mb-10 text-center">Organizers</h2>
-<OrganizerSlider client:visible organizers={organizers} />
+<section id="equipo">
+  <h2 class="text-4xl lg:text-5xl font-bold mt-8 mb-10 text-center">Organizers</h2>
+  <OrganizerSlider client:visible organizers={organizers} />
+</section>
