@@ -38,7 +38,7 @@ if (registration?.status !== "confirmed")
         enableMobileTilt={false}
         innerGradient={"/events/devfest-25/bg-credencial_v2.svg"}
         grainUrl="/grain.webp"
-        qrUrl="/events/devfest-25/qr.png"
+        qrUrl={registration?.qr_url}
       />
     </div>
   </main>
