@@ -94,32 +94,48 @@ export async function submitRegistration(
 export async function getRegistrationsByEvent(
   supabase: SupabaseClient,
   eventSlug: string,
-  role: string | null = null,
   orderBy = "created_at"
 ) {
-  let query = supabase
+  const { data: registrations, error } = await supabase
     .from("registrations")
     .select(
-      "id, created_at, profiles(first_name, last_name, email, phone_number), status, role, responses, events!inner(slug)"
+      `id,
+      created_at,
+      profiles(
+        id,
+        first_name,
+        last_name,
+        email,
+        phone_number
+      ),
+      status,
+      responses,
+      events!inner(slug)`
     )
     .eq("events.slug", eventSlug)
     .order(orderBy, { ascending: false })
 
-  if (role) {
-    query = query.eq("role", role)
+  const { data: organizers, error: organizersError } = await supabase
+    .from("organizers")
+    .select("profile_id, events!inner(slug)")
+    .eq("events.slug", eventSlug)
+
+  if (error || organizersError || !registrations) {
+    throw new Error(
+      `No se encontraron registros para este evento: ${error?.message || organizersError?.message}`
+    )
   }
 
-  const { data: registrations, error } = await query
-
-  if (!registrations) {
-    throw new Error(`No se encontraron registros para este evento: ${error.message}`)
-  }
-
-  const flattenedRegistrations = registrations?.map(({ profiles, responses, events, ...rest }) => ({
-    ...rest,
-    ...profiles,
-    ...responses,
-  }))
+  const organizerIds = organizers?.map(organizer => organizer.profile_id)
+  const flattenedRegistrations = registrations?.map(
+    ({ id, profiles, responses, events, ...rest }) => ({
+      ...rest,
+      ...profiles,
+      ...responses,
+      id,
+      role: organizerIds?.includes(profiles.id) ? "Organizer" : "Participante",
+    })
+  )
 
   return flattenedRegistrations
 }
@@ -127,12 +143,17 @@ export async function getRegistrationsByEvent(
 export async function confirmRegistration(supabase: SupabaseClient, registrationId: number) {
   const { data: registration, error: findError } = await supabase
     .from("registrations")
-    .select("id")
+    .select("id, token")
     .eq("id", registrationId)
     .single()
 
   if (findError || !registration) {
     throw new Error(`No se encontró el registro: ${findError?.message}`)
+  }
+
+  // Skip token generation if exists
+  if (registration.token) {
+    return { success: true, token: registration.token }
   }
 
   const token = nanoid(6)
