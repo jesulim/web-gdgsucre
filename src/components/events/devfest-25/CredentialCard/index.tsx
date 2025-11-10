@@ -59,6 +59,8 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
     return window.matchMedia("(hover: hover)").matches
   }, [])
 
+  const finalAvatar = avatarUrl && avatarUrl.trim() !== "" ? avatarUrl : "/avatar-default.webp"
+
   const names = firstName.split(" ")
   if (names?.length > 1) {
     userInitials = (names[0][0] + names[1][0]).toUpperCase()
@@ -194,7 +196,12 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
     }
 
     let removeOrientation = () => {}
-    if (!canHover && enableMobileTilt && location.protocol === "https:") {
+    if (
+      !canHover &&
+      enableMobileTilt &&
+      typeof location !== "undefined" &&
+      location.protocol === "https:"
+    ) {
       const requestIOSPermission = async () => {
         const anyDO = window.DeviceOrientationEvent as unknown as {
           requestPermission?: () => Promise<"granted" | "denied">
