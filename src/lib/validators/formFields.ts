@@ -48,6 +48,10 @@ export function buildZodSchemaFromFields(fields: FormFieldSchema[]) {
         break
     }
 
+    if (!field.required) {
+      base = base.optional()
+    }
+
     shape[field.name] = base
   }
 
