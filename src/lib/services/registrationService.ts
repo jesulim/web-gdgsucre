@@ -127,12 +127,15 @@ export async function getRegistrationsByEvent(
   }
 
   const organizerIds = organizers?.map(organizer => organizer.profile_id)
-  const flattenedRegistrations = registrations?.map(({ profiles, responses, events, ...rest }) => ({
-    ...rest,
-    ...profiles,
-    ...responses,
-    role: organizerIds?.includes(profiles.id) ? "Organizer" : "Participante",
-  }))
+  const flattenedRegistrations = registrations?.map(
+    ({ id, profiles, responses, events, ...rest }) => ({
+      ...rest,
+      ...profiles,
+      ...responses,
+      id,
+      role: organizerIds?.includes(profiles.id) ? "Organizer" : "Participante",
+    })
+  )
 
   return flattenedRegistrations
 }

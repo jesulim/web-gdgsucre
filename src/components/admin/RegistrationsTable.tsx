@@ -150,6 +150,7 @@ export function RegistrationsTable() {
       toast.success("Rol actualizado")
     } else {
       toast.error("Error al actualizar el rol")
+      await fetchRegistrations()
     }
   }
 
