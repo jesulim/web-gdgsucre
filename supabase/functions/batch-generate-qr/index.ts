@@ -1,6 +1,5 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts"
 
-// TODO: qrcode@v2.0.0 is unmaintained, for a future version consider: https://github.com/soldair/node-qrcode
 import { qrcode } from "https://deno.land/x/qrcode@v2.0.0/mod.ts"
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.80.0"
 import { serve } from "jsr:@std/http@0.224.0/server"
@@ -34,6 +33,7 @@ async function generateAndUploadQR(
   registrationId: number
 ): Promise<{ publicUrl: string } | null> {
   try {
+    // Generate QR code
     const qrBase64 = await qrcode(token, {
       size: 500,
     })
@@ -45,6 +45,7 @@ async function generateAndUploadQR(
       bytes[i] = binaryString.charCodeAt(i)
     }
 
+    // Upload to storage
     const filePath = `qr/devfest-25/${registrationId}.png`
     const { error: uploadError } = await supabase.storage
       .from("assets")
@@ -73,10 +74,48 @@ serve(async req => {
   try {
     console.info("Starting batch QR generation")
 
-    const supabase = createClient(
-      Deno.env.get("SUPABASE_URL"),
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")
-    )
+    // TODO: learn how keys work, this block is unknown supabase magic
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")
+    const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")
+    const publishableKey = Deno.env.get("SB_PUBLISHABLE_KEY")
+
+    if (!supabaseUrl || !supabaseServiceKey) {
+      console.error("Missing environment variables:", {
+        hasUrl: !!supabaseUrl,
+        hasKey: !!supabaseServiceKey,
+      })
+      return new Response(
+        JSON.stringify({
+          error: "Configuration error",
+          details: "Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY environment variables",
+        }),
+        {
+          status: 500,
+          headers: {
+            ...getCorsHeaders(origin),
+            "Content-Type": "application/json",
+          },
+        }
+      )
+    }
+
+    // use publishable key if available, otherwise fall back to service role key
+    const clientKey = publishableKey || supabaseServiceKey
+
+    const supabase = createClient(supabaseUrl, clientKey, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+        detectSessionInUrl: false,
+      },
+      global: {
+        headers: publishableKey
+          ? {
+              "X-Supabase-Api-Key": supabaseServiceKey,
+            }
+          : {},
+      },
+    })
 
     let eventSlug: string | undefined
     let limit: number | undefined
