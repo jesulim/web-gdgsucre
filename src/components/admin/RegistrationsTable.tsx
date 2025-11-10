@@ -135,9 +135,22 @@ export function RegistrationsTable() {
     }
   }
 
-  const switchRole = async (_id: number, _role: string) => {
-    // TODO: Refactor to add / delete using organizers table
-    toast.warning("Not implemented!")
+  const switchRole = async (id: number, role: string) => {
+    toast.info("Actualizando rol")
+
+    const res = await fetch("/api/organizers", {
+      method: role === "Organizer" ? "POST" : "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ registrationId: id }),
+    })
+
+    if (res.ok) {
+      toast.success("Rol actualizado")
+    } else {
+      toast.error("Error al actualizar el rol")
+    }
   }
 
   const deleteRegistration = async (id: number) => {
@@ -274,20 +287,21 @@ export function RegistrationsTable() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-              {registration.status === "pending" && (
-                <DropdownMenuItem
-                  onClick={() =>
-                    sendConfirmationEmail(
-                      registration.id,
-                      registration.email,
-                      registration.first_name
-                    )
-                  }
-                >
-                  <SendHorizonal />
-                  Enviar confirmación de registro
-                </DropdownMenuItem>
-              )}
+              <DropdownMenuItem
+                onClick={() =>
+                  sendConfirmationEmail(
+                    registration.id,
+                    registration.email,
+                    registration.first_name
+                  )
+                }
+              >
+                <SendHorizonal />
+                {registration.status === "pending"
+                  ? "Enviar confirmación"
+                  : "Reenviar confirmación"}
+              </DropdownMenuItem>
+
               <DropdownMenuItem
                 variant="destructive"
                 onClick={() => deleteRegistration(registration.id)}
