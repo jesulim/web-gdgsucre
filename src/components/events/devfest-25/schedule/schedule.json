@@ -9,55 +9,62 @@
   {
     "type": "talk",
     "time": "09:00 - 09:45",
-    "title": "Android XR compose for XR Devices",
-    "speaker": "Irvin Cossio Chavalier",
-    "icon": "lightbulb"
-  },
-  {
-    "type": "talk",
-    "time": "09:45 - 10:30",
     "title": "People + AI Research (PAIR): Principles for AI Products",
     "speaker": "Gustavo Pacchi Villarroel",
     "icon": "lightbulb"
   },
   {
     "type": "talk",
-    "time": "10:45 - 11:30",
-    "title": "Protegiendo y aprovechando la privacidad de la data: Federated Learning para Redes Neuronales",
-    "speaker": "Diego Angulo Ramírez",
-    "icon": "lightbulb"
-  },
-  {
-    "type": "event",
-    "time": "11:30 - 13:00",
-    "title": "Descanso y Almuerzo",
-    "description": "Almuerzo de networking y zona de exposición",
-    "icon": "food"
-  },
-  {
-    "type": "talk",
-    "time": "13:00 - 13:45",
+    "time": "09:45 - 10:30",
     "title": "Frontend en la era del edge",
     "speaker": "Nataly Paz",
     "icon": "lightbulb"
   },
   {
+    "type": "event",
+    "time": "10:30 - 11:00",
+    "title": "Refrigerio",
+    "description": "Momento ideal para conectar y compartir",
+    "icon": "food"
+  },
+  {
     "type": "talk",
-    "time": "13:45 - 14:30",
-    "title": "Como hacer despliegue a producción sin morir en el intento",
-    "speaker": "Daniel Santiago Silva",
+    "time": "11:00 - 11:45",
+    "title": "Protegiendo y aprovechando la privacidad de la data: Federated Learning para Redes Neuronales",
+    "speaker": "Diego Angulo Ramírez",
     "icon": "lightbulb"
   },
   {
     "type": "talk",
-    "time": "14:30 - 15:45",
+    "time": "11:45 - 12:30",
     "title": "Flutter + Firebase + SQL = DataConnect con Flutter",
     "speaker": "Fabián Varela Bonett",
     "icon": "lightbulb"
   },
   {
     "type": "event",
-    "time": "15:45 - 16:30",
+    "time": "12:30 - 14:00",
+    "title": "Descanso y Almuerzo",
+    "description": "Almuerzo de networking y zona de exposición",
+    "icon": "food"
+  },
+  {
+    "type": "talk",
+    "time": "14:00 - 14:45",
+    "title": "Android XR compose for XR Devices",
+    "speaker": "Irvin Cossio Chavalier",
+    "icon": "lightbulb"
+  },
+  {
+    "type": "talk",
+    "time": "14:45 - 15:30",
+    "title": "Como hacer despliegue a producción sin morir en el intento",
+    "speaker": "Daniel Santiago Silva",
+    "icon": "lightbulb"
+  },
+  {
+    "type": "event",
+    "time": "15:30 - 16:15",
     "title": "Sorteo y Cierre",
     "description": "Sorteo con los participantes y despedida",
     "icon": "end_event"
