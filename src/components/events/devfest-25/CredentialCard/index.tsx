@@ -298,7 +298,7 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
         <div className="pc-content">
           <div
             className="absolute left-1/2 -translate-x-1/2
-  top-[21%] sm:top-[21%] md:top-[21%] lg:top-[20%] w-25 h-24 rounded-full overflow-hidden"
+  top-[23%] sm:top-[25%] md:top-[23%] lg:top-[20%] w-25 h-24 rounded-full overflow-hidden"
           >
             <Avatar className="w-full h-full">
               <AvatarImage src={finalAvatar} className="w-full h-full object-cover" />
@@ -309,21 +309,21 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
             className="
     absolute top-[50%] sm:top-[48%] -translate-y-1/2
     left-7 right-7 sm:left-10 sm:right-10
-    grid place-items-center bg-white text-black rounded-[24px]
-    px-2 py-1 sm:px-4 sm:py-2
+    grid place-items-center bg-white text-black rounded-3xl
+    px-6 py-3 sm:px-4 sm:py-2
     pointer-events-auto
   "
           >
-            <p className="text-base sm:text-xl leading-tight break-words text-center">
+            <p className="text-base sm:text-xl leading-tight wrap-break-word text-center">
               {`${firstName} ${lastName}`}
             </p>
           </div>
 
-          <div className="absolute top-[59%] left-5 right-5 -translate-y-1/2 grid place-items-center px-[14px] py-3 pointer-events-auto">
+          <div className="absolute top-[59%] left-5 right-5 -translate-y-1/2 grid place-items-center px-3.5 py-3 pointer-events-auto">
             <p className="text-3xl">{`${role}`}</p>
           </div>
 
-          <div className="absolute left-1/2 -translate-x-2 top-[66%] sm:top-[66%] w-36 h-36 sm:w-36 sm:h-36 inline-block">
+          <div className="absolute left-1/2 -translate-x-2 top-[66%] sm:top-[66%] w-37 h-36 sm:w-37 sm:h-36 inline-block">
             <img
               src={qrUrl}
               alt="Código QR de la credencial"
