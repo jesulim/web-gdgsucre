@@ -1,12 +1,5 @@
 [
   {
-    "id": "7",
-    "title": "Detrás del build: Asegurando tu app Flutter antes de lanzarla",
-    "img": "/events/devfest-25/speakers/Bettina.webp",
-    "name": "Bettina Carrizo",
-    "description": "Flutter & Ciberseguridad"
-  },
-  {
     "id": "1",
     "title": "Flutter + Firebase + SQL = DataConnect con Flutter",
     "img": "/events/devfest-25/speakers/speaker-1.webp",
