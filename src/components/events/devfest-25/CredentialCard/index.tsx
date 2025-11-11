@@ -307,10 +307,10 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
           </div>
           <div
             className="
-    absolute top-[50%] sm:top-[48%] -translate-y-1/2
-    left-7 right-7 sm:left-10 sm:right-10
+    absolute top-[48%] sm:top-[48%] -translate-y-1/2
+    left-10 right-10 sm:left-10 sm:right-10
     grid place-items-center bg-white text-black rounded-3xl
-    px-6 py-3 sm:px-4 sm:py-2
+    px-6 py-3 sm:px-2 sm:py-2
     pointer-events-auto
   "
           >
