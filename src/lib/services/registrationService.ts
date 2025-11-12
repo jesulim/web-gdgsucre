@@ -271,14 +271,15 @@ export async function updateRegistrationActivity(
 export async function getRandomRegistrations(
   supabase: SupabaseClient,
   limit: number | null = null,
-  role: string | null = null
+  role: string | null = null,
+  eventSlug: string | null = "devfest-25"
 ) {
   let query = supabase
     .from("registrations")
     .select(
       "id, created_at, profiles(first_name, last_name, email, phone_number), status, role, responses, events (slug)"
     )
-    .eq("events.slug", "io-extended-25")
+    .eq("events.slug", eventSlug)
 
   // Filtrar por rol si se especifica
   if (role && (role === "Participante" || role === "Organizer")) {
