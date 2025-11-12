@@ -4,7 +4,6 @@ import { Image } from "astro:assets"
 import DevFest25Logo from "@/assets/events/devfest-25/DevFest25logo.svg"
 import Gemini from "@/assets/events/devfest-25/packages/KitGemini.webp"
 import Nano from "@/assets/events/devfest-25/packages/KitNano.webp"
-import Veo from "@/assets/events/devfest-25/packages/KitVeo.webp"
 import CalendarIcon from "@/assets/logos/calendar-month.svg"
 import LocationIcon from "@/assets/logos/distance.svg"
 
@@ -13,7 +12,6 @@ import { Timer } from "@/components/events/devfest-25/Timer"
 const packages = [
   { src: Nano, alt: "Kit Nano" },
   { src: Gemini, alt: "Kit Gemini" },
-  { src: Veo, alt: "Kit Veo" },
 ]
 
 const redirectHref = Astro.cookies.has("sb-access-token")
@@ -80,7 +78,7 @@ const initialTime = targetDate.getTime() - Date.now()
   </div>
 
   <h2 class="mt-4 text-3xl md:text-4xl font-bold">Paquetes disponibles</h2>
-  <div class="mx-8 max-w-5xl grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:gap-8">
+  <div class="mx-8 max-w-3xl grid gap-4 sm:grid-cols-2 lg:gap-8">
     {packages.map(({ src, alt }) => <Image class="rounded-2xl" src={src} alt={alt} />)}
   </div>
 </div>
