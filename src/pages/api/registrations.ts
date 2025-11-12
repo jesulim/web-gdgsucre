@@ -9,11 +9,9 @@ export const GET: APIRoute = async ({ url, cookies }) => {
     return new Response("Event slug is required", { status: 400 })
   }
 
-  const role = url.searchParams.get("role")
-
   try {
     const supabase = await createUserClient(cookies)
-    const registrations = await getRegistrationsByEvent(supabase, slug, role)
+    const registrations = await getRegistrationsByEvent(supabase, slug)
 
     return new Response(JSON.stringify(registrations), {
       headers: { "Content-Type": "application/json" },
