@@ -68,8 +68,6 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
     userInitials = firstName[0].toUpperCase()
   }
 
-  const finalAvatar = avatarUrl && avatarUrl.trim() !== "" ? avatarUrl : "/avatar-default.webp"
-
   const animationHandlers = useMemo(() => {
     if (!enableTilt) return null
     let rafId: number | null = null
@@ -327,7 +325,7 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
             <img
               src={qrUrl}
               alt="Código QR de la credencial"
-              className="block w-full h-full max-w-full max-h-full object-contain border-5 border-white"
+              className="rounded-sm object-contain border-8 border-white"
             />
           </div>
         </div>
