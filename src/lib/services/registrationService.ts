@@ -45,16 +45,23 @@ export async function getEventRegistration(
 
   const { data, error } = await supabase
     .from("registrations")
-    .select("role, status, events!inner(slug)")
+    .select("status, events!inner(slug), qr_url")
     .eq("user_id", user_id)
     .eq("events.slug", eventSlug)
     .single()
+
+  const { data: organizer } = await supabase
+    .from("organizers")
+    .select("events!inner(slug)")
+    .eq("profile_id", user_id)
+    .eq("events.slug", eventSlug)
+    .maybeSingle()
 
   if (error) {
     return null
   }
 
-  return data
+  return { ...data, role: organizer ? "Organizador" : "Participante" }
 }
 
 export async function submitRegistration(

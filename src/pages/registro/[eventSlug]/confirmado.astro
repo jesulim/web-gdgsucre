@@ -1,6 +1,6 @@
 ---
+import CredentialCard from "@/components/events/devfest-25/CredentialCard"
 import Header from "@/components/events/devfest-25/Header.astro"
-import ProfileCard from "@/components/io-extended-25/ProfileCard"
 
 import BaseLayout from "@/layout/BaseLayout.astro"
 
@@ -15,7 +15,7 @@ if (!profile) return Astro.redirect("/")
 const registration = await getEventRegistration(supabase, profile?.id, Astro.params.eventSlug || "")
 if (!registration) return Astro.redirect("/")
 
-if (registration.status !== "confirmed")
+if (registration?.status !== "confirmed")
   return Astro.redirect(`/registro/${Astro.params.eventSlug}`)
 ---
 
@@ -23,17 +23,18 @@ if (registration.status !== "confirmed")
   <Header />
   <main class="mt-16 pt-12 flex">
     <div class="mx-auto px-4">
-      <ProfileCard
+      <CredentialCard
         client:load
+        avatarUrl={profile.avatar_url}
         firstName={profile.first_name}
         lastName={profile.last_name}
-        title={registration.role || "Participante"}
+        role={registration.role || "Asistente"}
         handle={profile.email}
-        avatarUrl={profile.avatar_url}
         enableTilt={true}
         enableMobileTilt={false}
-        iconUrl="/favicon.svg"
+        innerGradient={"/events/devfest-25/bg-credencial_v2.svg"}
         grainUrl="/grain.webp"
+        qrUrl={registration?.qr_url}
       />
     </div>
   </main>
