@@ -327,7 +327,7 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
             <img
               src={qrUrl}
               alt="Código QR de la credencial"
-              className="block w-full h-full max-w-full max-h-full object-contain"
+              className="block w-full h-full max-w-full max-h-full object-contain border-5 border-white"
             />
           </div>
         </div>
