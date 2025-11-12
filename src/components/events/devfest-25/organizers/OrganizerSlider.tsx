@@ -56,16 +56,16 @@ export default function OrganizersSlider({ organizers }: Props) {
               <img src={abiertoIcon.src} alt="" loading="lazy" decoding="async" />
               {organizer.image ? (
                 <img
-                  className="w-full h-full object-cover rounded-4xl"
+                  className="w-full max-w-52 h-full object-cover rounded-4xl"
                   src={organizer.image}
                   alt={`${organizer.first_name} ${organizer.last_name}`}
-                  width="208"
-                  height="208"
                   loading="lazy"
                   decoding="async"
                 />
               ) : (
-                <div>No se encontró imagen</div>
+                <div className="flex items-center justify-center h-full aspect-square bg-red-500 rounded-4xl text-8xl font-semibold">
+                  {organizer.first_name.charAt(0)}
+                </div>
               )}
               <img src={cerradoIcon.src} alt="" loading="lazy" decoding="async" />
             </div>
