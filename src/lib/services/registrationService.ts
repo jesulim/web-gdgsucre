@@ -243,13 +243,15 @@ export async function getRegistrationsWithActivities(
 export async function updateRegistrationActivity(
   supabase: SupabaseClient,
   registrationId: number,
+  eventSlug: string,
   name: string,
   value: boolean
 ) {
   const { data: activity, error: activityError } = await supabase
     .from("activities")
-    .select("id")
+    .select("id, events!inner(slug)")
     .eq("name", name)
+    .eq("events.slug", eventSlug)
     .single()
 
   if (activityError) throw activityError
@@ -263,7 +265,7 @@ export async function updateRegistrationActivity(
     { onConflict: "registration_id,activity_id" }
   )
 
-  if (error) throw error
+  if (error) throw new Error(`Error updating activity: ${error.message}`)
 
   return { success: true }
 }

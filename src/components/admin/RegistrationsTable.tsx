@@ -99,7 +99,7 @@ export function RegistrationsTable() {
       const response = await fetch(url.toString())
 
       const result = await response.json()
-      setData(result.map((row, i) => ({ number: i + 1, ...row })))
+      setData(result.map((row, i) => ({ number: result.length - i, ...row })))
     } catch {
       setData([])
     } finally {
@@ -259,16 +259,22 @@ export function RegistrationsTable() {
       accessorKey: "voucher",
       header: "Comprobante",
       enableGlobalFilter: false,
-      cell: ({ row }) => (
-        <a
-          href={`/api/getSignedUrl?bucket=event-uploads&url=${row.getValue("voucher")}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-500 hover:underline text-center w-full"
-        >
-          Ver
-        </a>
-      ),
+      cell: ({ row }) => {
+        const voucher = row.getValue("voucher")
+
+        return (
+          voucher !== "undefined" && (
+            <a
+              href={`/api/getSignedUrl?bucket=event-uploads&url=${voucher}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 hover:underline text-center w-full"
+            >
+              Ver
+            </a>
+          )
+        )
+      },
     },
     {
       id: "actions",
