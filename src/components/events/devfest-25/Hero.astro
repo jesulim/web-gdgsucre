@@ -76,13 +76,13 @@ const initialTime = targetDate.getTime() - Date.now()
       href={googleCalendarUrl}
       target="_blank"
       rel="noopener noreferrer" 
-      class="flex items-center gap-2 md:gap-3 cursor-pointer hover:opacity-80"
+      class="flex items-center gap-2 md:gap-3 cursor-pointer hover:text-red-500"
     >
       <div class="w-8 h-8 md:w-12 md:h-12 shrink-0">
         <CalendarIcon class="fill-current" />
       </div>
       <div
-        class="flex flex-col justify-center text-base md:text-2xl text-center md:whitespace-pre font-medium"
+        class="flex flex-col justify-center text-base md:text-2xl text-center md:whitespace-pre font-medium underline"
       >
         <p class="block mb-0">Sábado, 15 de Noviembre</p>
         <p class="block">8:00 Hrs</p>
