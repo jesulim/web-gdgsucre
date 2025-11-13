@@ -9,13 +9,14 @@ import {
   type Table as TanstackTable,
   useReactTable,
 } from "@tanstack/react-table"
-import { Loader2Icon } from "lucide-react"
-import { useCallback, useEffect, useState } from "react"
+import { Loader2Icon, SearchIcon } from "lucide-react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
+import { Kbd } from "@/components/ui/kbd"
 import {
   Select,
   SelectContent,
@@ -63,6 +64,20 @@ export function AccreditationTable() {
   const [globalFilter, setGlobalFilter] = useState("")
   const [eventSlug, setEventSlug] = useState("")
   const [roleFilter, setRoleFilter] = useState<string>("Todos")
+  const searchInputRef = useRef<HTMLInputElement>(null)
+
+  // Agregar atajo de teclado Ctrl+K para enfocar el buscador
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key === "k") {
+        event.preventDefault()
+        searchInputRef.current?.focus()
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [])
 
   const fetchData = useCallback(async () => {
     setLoading(true)
@@ -244,13 +259,21 @@ export function AccreditationTable() {
         <AccreditationStats stats={stats} />
       </div>
 
-      <div className="flex gap-2">
-        <Input
-          placeholder="Buscar por nombre o apellido..."
-          value={globalFilter ?? ""}
-          onChange={e => setGlobalFilter(e.target.value)}
-          className="mb-4 w-full"
-        />
+      <div className="flex gap-2 mb-4">
+        <div className="relative flex-1">
+          <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            ref={searchInputRef}
+            placeholder="Buscar por nombre o apellido..."
+            value={globalFilter ?? ""}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setGlobalFilter(e.target.value)}
+            className="pl-9 pr-20"
+          />
+          <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex gap-1">
+            <Kbd>Ctrl</Kbd>
+            <Kbd>K</Kbd>
+          </div>
+        </div>
 
         <Select onValueChange={value => setRoleFilter(value)} defaultValue="Todos">
           <SelectTrigger>
