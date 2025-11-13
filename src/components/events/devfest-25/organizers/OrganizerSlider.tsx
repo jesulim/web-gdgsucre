@@ -61,6 +61,8 @@ export default function OrganizersSlider({ organizers }: Props) {
                   alt={`${organizer.first_name} ${organizer.last_name}`}
                   loading="lazy"
                   decoding="async"
+                  width="208"
+                  height="208"
                 />
               ) : (
                 <div className="flex items-center justify-center h-full aspect-square bg-red-500 rounded-4xl text-8xl font-semibold">
