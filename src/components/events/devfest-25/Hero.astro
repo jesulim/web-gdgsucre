@@ -8,6 +8,7 @@ import CalendarIcon from "@/assets/logos/calendar-month.svg"
 import LocationIcon from "@/assets/logos/distance.svg"
 
 import { Timer } from "@/components/events/devfest-25/Timer"
+import CTALink from "./CTALink.astro"
 
 const packages = [
   { src: Nano, alt: "Kit Nano" },
@@ -18,8 +19,42 @@ const redirectHref = Astro.cookies.has("sb-access-token")
   ? "/registro/devfest-25"
   : "/api/auth/signin?next=/registro/devfest-25"
 
+const eventTitle = "DevFest Sucre 2025"
+const eventLocation = "Regimiento Campos 6 de Infantería 180, Sucre"
+const eventDescription = "DevFest Sucre 2025"
+
+const eventStart = new Date("2025-11-15T08:00:00-04:00")
+const eventEnd = new Date("2025-11-15T18:00:00-04:00")
+
+const formatDateForCalendar = (date: Date): string =>
+  date
+    .toISOString()
+    .replace(/[-:]/g, "")
+    .replace(/\.\d{3}Z$/, "Z")
+
+const gcalMobileIntent =
+  `intent://create` +
+  `?text=${encodeURIComponent(eventTitle)}` +
+  `&dates=${formatDateForCalendar(eventStart)}/${formatDateForCalendar(eventEnd)}` +
+  `&details=${encodeURIComponent(eventDescription)}` +
+  `&location=${encodeURIComponent(eventLocation)}` +
+  `#Intent;package=com.google.android.calendar;scheme=google.calendar;end;`
+
+const googleCalendarUrl: string =
+  `https://calendar.google.com/calendar/render?action=TEMPLATE` +
+  `&text=${encodeURIComponent(eventTitle)}` +
+  `&dates=${formatDateForCalendar(eventStart)}/${formatDateForCalendar(eventEnd)}` +
+  `&location=${encodeURIComponent(eventLocation)}` +
+  `&details=${encodeURIComponent(eventDescription)}`
+
+const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+
+const calendarUrl = isMobile ? gcalMobileIntent : googleCalendarUrl
+
 const targetDate = new Date("2025-11-15T08:00:00-04:00")
 const initialTime = targetDate.getTime() - Date.now()
+
+const mapsUrl = "https://maps.app.goo.gl/3PS7ysYJDmMUvNpg6"
 ---
 
 <div class="w-full pt-32 py-8 flex flex-col gap-8 md:gap-8 items-center bg-[#232323] text-white">
@@ -32,15 +67,10 @@ const initialTime = targetDate.getTime() - Date.now()
     más importante de la región.
   </p>
 
-  <div class="flex
-    items-center
-    justify-center">
-    <a
-      href={redirectHref}
-      class="text-xl bg-gradient-to-b from-red-500 to-red-700 flex items-center justify-center px-8 md:px-14 py-3 md:py-3.5 rounded-full text-white font-semibold hover:bg-red-500 transition-colors"
-    >
-      Regístrate ahora
-    </a>
+  <div
+    class="text-xl bg-linear-to-b from-red-500 to-red-700 flex items-center justify-center px-8 md:px-14 py-3 md:py-3.5 rounded-full text-white font-semibold hover:bg-red-500 transition-colors"
+  >
+    <CTALink />
   </div>
 
   <div>
@@ -48,8 +78,13 @@ const initialTime = targetDate.getTime() - Date.now()
   </div>
 
   <div class="flex flex-col md:flex-row items-center md:items-start justify-center gap-4 md:gap-6">
-    <div class="flex items-center gap-2 md:gap-3">
-      <div class="w-8 h-8 md:w-12 md:h-12 shrink-0">
+    <a
+      href={calendarUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="flex items-center gap-2 md:gap-3 cursor-pointer hover:text-red-500 hover:underline"
+    >
+      <div class="w-8 h-8 md:w-12 md:h-12 shrink-0 animate-soft-pulse">
         <CalendarIcon class="fill-current" />
       </div>
       <div
@@ -58,14 +93,19 @@ const initialTime = targetDate.getTime() - Date.now()
         <p class="block mb-0">Sábado, 15 de Noviembre</p>
         <p class="block">8:00 Hrs</p>
       </div>
-    </div>
+    </a>
 
     <div class="hidden md:flex justify-center items-center h-10 w-[9px] text-[24px] font-semibold">
-      <hv class="border-2 border-white h-full mt-4"></hv>
+      <div class="border-2 border-white h-full mt-4"></div>
     </div>
 
-    <div class="flex items-center gap-2 md:gap-3">
-      <div class="w-8 h-8 md:w-12 md:h-12 shrink-0">
+    <a
+      href={mapsUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="flex items-center gap-2 md:gap-3 hover:text-red-500 hover:underline"
+    >
+      <div class="w-8 h-8 md:w-12 md:h-12 shrink-0 animate-soft-pulse">
         <LocationIcon class="fill-current" />
       </div>
       <div
@@ -74,7 +114,7 @@ const initialTime = targetDate.getTime() - Date.now()
         <p class="block mb-0">Facultad de Ciencias</p>
         <p class="block">y Tecnología</p>
       </div>
-    </div>
+    </a>
   </div>
 
   <h2 class="mt-4 text-3xl md:text-4xl font-bold">Paquetes disponibles</h2>

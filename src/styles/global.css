@@ -248,3 +248,28 @@ html {
 .animate-confetti {
   animation: confetti 3s ease-out forwards;
 }
+
+/* ANIMACION 1: Efecto de latido suave con resplandor */
+@keyframes soft-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.6))
+      drop-shadow(0 0 12px rgba(255, 255, 255, 0.4));
+  }
+  40% {
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.95))
+      drop-shadow(0 0 22px rgba(255, 255, 255, 0.7));
+  }
+  70% {
+    transform: scale(1.04);
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.85))
+      drop-shadow(0 0 18px rgba(255, 255, 255, 0.6));
+  }
+}
+
+.animate-soft-pulse {
+  animation: soft-pulse 2.2s ease-in-out infinite;
+  transform-origin: center;
+}
