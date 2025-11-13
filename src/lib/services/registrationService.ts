@@ -34,6 +34,21 @@ interface Registration {
   fields: { [k: string]: string | File }
 }
 
+export async function hasRegistration(
+  supabase: SupabaseClient,
+  user_id: string,
+  eventSlug: string
+) {
+  const { data } = await supabase
+    .from("registrations")
+    .select("id, events!inner(slug)")
+    .eq("user_id", user_id)
+    .eq("events.slug", eventSlug)
+    .maybeSingle()
+
+  return !!data
+}
+
 export async function getEventRegistration(
   supabase: SupabaseClient,
   user_id: string,

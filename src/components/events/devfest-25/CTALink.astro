@@ -1,0 +1,22 @@
+---
+import { getProfile } from "@/lib/services/profileService"
+import { hasRegistration } from "@/lib/services/registrationService"
+import { createUserClient } from "@/lib/supabase"
+
+const accessToken = Astro.cookies.has("sb-access-token")
+let redirectHref = accessToken
+  ? "/registro/devfest-25"
+  : "/api/auth/signin?next=/registro/devfest-25"
+
+let registration = false
+if (accessToken) {
+  const supabase = await createUserClient(Astro.cookies)
+  const profile = await getProfile(supabase)
+  registration = await hasRegistration(supabase, profile?.id, "devfest-25")
+  redirectHref = "/registro/devfest-25/confirmado"
+}
+---
+
+<a href={redirectHref}>
+  {!registration ? "Regístrate ahora" : "Ver credencial"}
+</a>
