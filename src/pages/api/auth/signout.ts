@@ -1,5 +1,5 @@
-import { createUserClient } from "@/lib/supabase"
 import type { APIRoute } from "astro"
+import { createUserClient } from "@/lib/supabase"
 
 export const GET: APIRoute = async ({ cookies, redirect }) => {
   const supabase = await createUserClient(cookies)

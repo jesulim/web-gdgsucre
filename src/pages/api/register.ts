@@ -10,15 +10,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   const formData = await request.formData()
   let profile = null
 
-  const {
-    event_id,
-    event_slug,
-    event_name,
-    first_name,
-    last_name,
-    phone_number,
-    ...fields
-  } = Object.fromEntries(formData)
+  const { event_id, event_slug, event_name, first_name, last_name, phone_number, ...fields } =
+    Object.fromEntries(formData)
   if (first_name && last_name && phone_number) {
     try {
       profile = await createProfile(
@@ -45,9 +38,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
         eventSlug: String(event_slug),
       })
     } else {
-      console.error(
-        "No se pudo obtener el perfil o el email del usuario para enviar el correo."
-      )
+      console.error("No se pudo obtener el perfil o el email del usuario para enviar el correo.")
     }
 
     return new Response("Registro exitoso", { status: 200 })

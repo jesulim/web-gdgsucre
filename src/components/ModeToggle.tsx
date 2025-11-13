@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button"
 import { Moon, Sun } from "lucide-react"
 import { useEffect, useState } from "react"
+import { Button } from "@/components/ui/button"
 
 // Animation constants
 const STYLE_ID = "astro-theme-toggle-temporary-styles"
@@ -20,11 +20,7 @@ function injectTemporaryStyles() {
   document.head.appendChild(style)
 }
 
-async function startCircleAnimation(
-  callback: () => void,
-  x: number,
-  y: number
-) {
+async function startCircleAnimation(callback: () => void, x: number, y: number) {
   const doc = document as unknown as {
     startViewTransition?: (updateCallback?: () => unknown) => {
       ready?: Promise<void>
@@ -53,9 +49,7 @@ async function startCircleAnimation(
   const w = window.innerWidth
   const h = window.innerHeight
 
-  const maxRadius = Math.ceil(
-    Math.hypot(Math.max(x, w - x), Math.max(y, h - y)) / gradientOffset
-  )
+  const maxRadius = Math.ceil(Math.hypot(Math.max(x, w - x), Math.max(y, h - y)) / gradientOffset)
 
   document.documentElement.animate(
     {

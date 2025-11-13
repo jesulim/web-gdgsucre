@@ -1,3 +1,4 @@
+import type { ControllerRenderProps } from "react-hook-form"
 import {
   Select,
   SelectContent,
@@ -5,7 +6,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import type { ControllerRenderProps } from "react-hook-form"
 
 interface FormSelectProps {
   label: string
