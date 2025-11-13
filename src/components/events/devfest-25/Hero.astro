@@ -40,6 +40,8 @@ const googleCalendarUrl: string =
 
 const targetDate = new Date("2025-11-15T08:00:00-04:00")
 const initialTime = targetDate.getTime() - Date.now()
+
+const mapsUrl = "https://maps.app.goo.gl/3PS7ysYJDmMUvNpg6"
 ---
 
 <div
@@ -95,8 +97,8 @@ const initialTime = targetDate.getTime() - Date.now()
       <hv class="border-2 border-white h-full mt-4"></hv>
     </div>
 
-    <div class="flex items-center gap-2 md:gap-3">
-      <div class="w-8 h-8 md:w-12 md:h-12 shrink-0">
+    <a href={mapsUrl} target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 md:gap-3">
+      <div class="w-8 h-8 md:w-12 md:h-12 shrink-0 animate-soft-pulse">
         <LocationIcon class="fill-current" />
       </div>
       <div
@@ -105,7 +107,7 @@ const initialTime = targetDate.getTime() - Date.now()
         <p class="block mb-0">Facultad de Ciencias</p>
         <p class="block">y Tecnología</p>
       </div>
-    </div>
+    </a>
   </div>
 
   <h2 class="mt-4 text-3xl md:text-4xl font-bold">Paquetes disponibles</h2>
