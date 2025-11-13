@@ -47,10 +47,6 @@ const googleCalendarUrl: string =
   `&location=${encodeURIComponent(eventLocation)}` +
   `&details=${encodeURIComponent(eventDescription)}`
 
-const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
-
-const calendarUrl = isMobile ? gcalMobileIntent : googleCalendarUrl
-
 const targetDate = new Date("2025-11-15T08:00:00-04:00")
 const initialTime = targetDate.getTime() - Date.now()
 
@@ -79,7 +75,8 @@ const mapsUrl = "https://maps.app.goo.gl/3PS7ysYJDmMUvNpg6"
 
   <div class="flex flex-col md:flex-row items-center md:items-start justify-center gap-4 md:gap-6">
     <a
-      href={calendarUrl}
+      id="calendar-link"
+      href={googleCalendarUrl}
       target="_blank"
       rel="noopener noreferrer"
       class="flex items-center gap-2 md:gap-3 cursor-pointer hover:text-red-500 hover:underline"
@@ -122,3 +119,14 @@ const mapsUrl = "https://maps.app.goo.gl/3PS7ysYJDmMUvNpg6"
     {packages.map(({ src, alt }) => <Image class="rounded-2xl" src={src} alt={alt} />)}
   </div>
 </div>
+
+<script define:vars={{ gcalMobileIntent, googleCalendarUrl }}>
+  // Detectar si es móvil y actualizar el enlace del calendario
+  document.addEventListener('DOMContentLoaded', () => {
+    const calendarLink = document.getElementById('calendar-link')
+    if (calendarLink) {
+      const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+      calendarLink.href = isMobile ? gcalMobileIntent : googleCalendarUrl
+    }
+  })
+</script>
