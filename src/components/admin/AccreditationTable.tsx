@@ -42,6 +42,8 @@ interface AccreditationData {
   last_name: string
   role: string
   status: string
+  package?: string
+  dietary_restriction?: string
   lunch: boolean
   check_in: boolean
   refreshment: boolean
@@ -148,6 +150,16 @@ export function AccreditationTable() {
 
   const columns: ColumnDef<AccreditationData>[] = [
     {
+      id: "number",
+      header: "#",
+      enableGlobalFilter: false,
+      cell: ({ row }) => {
+        const filteredRows = table.getFilteredRowModel().rows
+        const index = filteredRows.findIndex(r => r.id === row.id)
+        return <span className="text-gray-600">{index + 1}</span>
+      },
+    },
+    {
       accessorKey: "first_name",
       header: "Nombre(s)",
       filterFn: "includesString",
@@ -156,6 +168,23 @@ export function AccreditationTable() {
       accessorKey: "last_name",
       header: "Apellido(s)",
       filterFn: "includesString",
+    },
+    {
+      accessorKey: "role",
+      header: "Rol",
+      enableGlobalFilter: false,
+      cell: ({ row }) => {
+        const role = row.getValue("role") as string
+        return (
+          <span
+            className={`rounded-sm py-1 px-2 text-sm ${
+              role === "Organizer" ? "bg-purple-100 text-purple-700" : "bg-blue-100 text-blue-700"
+            }`}
+          >
+            {role === "Organizer" ? "Organizador" : "Participante"}
+          </span>
+        )
+      },
     },
     {
       id: "package",

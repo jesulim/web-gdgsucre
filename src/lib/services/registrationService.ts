@@ -236,7 +236,7 @@ export async function getRegistrationsWithActivities(
 ) {
   const query = supabase
     .from("registrations_with_activities")
-    .select("id, first_name, last_name, package, dietary_restriction, activities")
+    .select("id, first_name, last_name, role, package, dietary_restriction, activities")
     .eq("slug", event_slug)
 
   if (role === "Participante" || role === "Organizer") {
