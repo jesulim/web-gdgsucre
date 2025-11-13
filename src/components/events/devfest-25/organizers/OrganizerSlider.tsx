@@ -10,7 +10,7 @@ export type Organizer = {
   image: string | null
   first_name: string
   last_name: string
-  areas: string
+  areas?: string
 }
 
 type Props = { organizers: Organizer[] }
@@ -74,7 +74,7 @@ export default function OrganizersSlider({ organizers }: Props) {
                 {organizer.first_name} {organizer.last_name}
               </p>
               <p className="font-medium text-sm md:text-2xl text-center text-red-500">
-                {organizer.areas}
+                {organizer.areas ?? ""}
               </p>
             </div>
           </div>
