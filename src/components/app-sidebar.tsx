@@ -34,7 +34,7 @@ const defaultData = {
       icon: List,
     },
     {
-      title: "Acreditación",
+      title: "Acreditación del Evento",
       view: "accreditation" as ViewType,
       icon: Users,
     },
