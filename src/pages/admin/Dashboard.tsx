@@ -47,7 +47,7 @@ export function Dashboard({
           {currentView === "accreditation" && (
             <div className="w-full p-4 lg:p-8">
               <div className="mb-6">
-                <h2 className="text-xl font-semibold mb-2">Acreditación de Participantes</h2>
+                <h2 className="text-xl font-semibold mb-2">Acreditación del Evento</h2>
                 <div className="text-sm text-gray-600 mb-4">
                   Controla el check-in y entrega de paquetes a los participantes.
                 </div>
