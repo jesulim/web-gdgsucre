@@ -7,6 +7,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar"
 
 type ViewType = "registrations" | "accreditation"
@@ -24,6 +25,16 @@ export function NavMain({
   currentView?: ViewType
   onNavigate?: (view: ViewType) => void
 }) {
+  const { isMobile, setOpenMobile } = useSidebar()
+
+  const handleClick = (view: ViewType) => {
+    onNavigate?.(view)
+    // Cerrar el sidebar en móvil después de hacer clic
+    if (isMobile) {
+      setOpenMobile(false)
+    }
+  }
+
   return (
     <SidebarGroup>
       <SidebarMenu>
@@ -32,7 +43,7 @@ export function NavMain({
             <SidebarMenuButton
               tooltip={item.title}
               isActive={currentView === item.view}
-              onClick={() => onNavigate?.(item.view)}
+              onClick={() => handleClick(item.view)}
             >
               {item.icon && <item.icon />}
               <span>{item.title}</span>
