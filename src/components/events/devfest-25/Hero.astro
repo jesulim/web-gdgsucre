@@ -31,12 +31,24 @@ const formatDateForCalendar = (date: Date): string =>
     .replace(/[-:]/g, "")
     .replace(/\.\d{3}Z$/, "Z")
 
+const gcalMobileIntent =
+  `intent://create` +
+  `?text=${encodeURIComponent(eventTitle)}` +
+  `&dates=${formatDateForCalendar(eventStart)}/${formatDateForCalendar(eventEnd)}` +
+  `&details=${encodeURIComponent(eventDescription)}` +
+  `&location=${encodeURIComponent(eventLocation)}` +
+  `#Intent;package=com.google.android.calendar;scheme=google.calendar;end;`
+
 const googleCalendarUrl: string =
   `https://calendar.google.com/calendar/render?action=TEMPLATE` +
   `&text=${encodeURIComponent(eventTitle)}` +
   `&dates=${formatDateForCalendar(eventStart)}/${formatDateForCalendar(eventEnd)}` +
   `&location=${encodeURIComponent(eventLocation)}` +
   `&details=${encodeURIComponent(eventDescription)}`
+
+const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+
+const calendarUrl = isMobile ? gcalMobileIntent : googleCalendarUrl
 
 const targetDate = new Date("2025-11-15T08:00:00-04:00")
 const initialTime = targetDate.getTime() - Date.now()
@@ -75,16 +87,16 @@ const mapsUrl = "https://maps.app.goo.gl/3PS7ysYJDmMUvNpg6"
     class="flex flex-col md:flex-row items-center md:items-start justify-center gap-4 md:gap-6"
   >
     <a
-      href={googleCalendarUrl}
+      href={calendarUrl}
       target="_blank"
       rel="noopener noreferrer" 
-      class="flex items-center gap-2 md:gap-3 cursor-pointer hover:text-red-500"
+      class="flex items-center gap-2 md:gap-3 cursor-pointer hover:text-red-500 hover:underline"
     >
-      <div class="w-8 h-8 md:w-12 md:h-12 shrink-0">
+      <div class="w-8 h-8 md:w-12 md:h-12 shrink-0 animate-soft-pulse">
         <CalendarIcon class="fill-current" />
       </div>
       <div
-        class="flex flex-col justify-center text-base md:text-2xl text-center md:whitespace-pre font-medium underline"
+        class="flex flex-col justify-center text-base md:text-2xl text-center md:whitespace-pre font-medium"
       >
         <p class="block mb-0">Sábado, 15 de Noviembre</p>
         <p class="block">8:00 Hrs</p>
