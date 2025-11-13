@@ -57,43 +57,12 @@ const customFilterFn = (rows: Row<AccreditationData>, columnId: string, filterVa
   return normalizeString(rowValue).includes(normalizeString(filterValue))
 }
 
-function PackageFilter({
-  rows,
-  packageFilter,
-  setPackageFilter,
-}: {
-  rows: Row<AccreditationData>[]
-  packageFilter: string
-  setPackageFilter: (value: string) => void
-}) {
-  if (!rows.length) return
-
-  const packages = new Set<string>(rows.map(row => row.getValue("package")))
-
-  return (
-    <Select onValueChange={value => setPackageFilter(value)} defaultValue={packageFilter}>
-      <SelectTrigger>
-        <SelectValue placeholder="Paquete" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="Todos los paquetes">Todos los paquetes</SelectItem>
-        {Array.from(packages).map(name => (
-          <SelectItem key={name} value={name}>
-            {name.split(" (")[0]}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
-  )
-}
-
 export function AccreditationTable() {
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<AccreditationData[]>()
   const [globalFilter, setGlobalFilter] = useState("")
   const [eventSlug, setEventSlug] = useState("")
   const [roleFilter, setRoleFilter] = useState<string>("Todos")
-  const [packageFilter, setPackageFilter] = useState<string>("Todos los paquetes")
 
   const fetchData = useCallback(async () => {
     setLoading(true)
@@ -101,7 +70,6 @@ export function AccreditationTable() {
       const url = new URL("/api/activities", window.location.origin)
       url.searchParams.set("slug", eventSlug)
       url.searchParams.set("role", roleFilter)
-      url.searchParams.set("package", packageFilter)
 
       const response = await fetch(url.toString())
       const result = await response.json()
@@ -114,15 +82,22 @@ export function AccreditationTable() {
     } finally {
       setLoading(false)
     }
-  }, [eventSlug, roleFilter, packageFilter])
+  }, [eventSlug, roleFilter])
 
   useEffect(() => {
     if (!eventSlug) return
     fetchData()
   }, [fetchData, eventSlug])
 
-  const updateCheckbox = async (id: number, field: keyof AccreditationData, value: boolean) => {
+  const updateCheckbox = async (
+    id: number,
+    eventSlug: string,
+    field: keyof AccreditationData,
+    value: boolean
+  ) => {
     try {
+      toast.info(`Actualizando ${field}...`)
+
       const response = await fetch("/api/activities", {
         method: "POST",
         headers: {
@@ -130,6 +105,7 @@ export function AccreditationTable() {
         },
         body: JSON.stringify({
           id,
+          eventSlug,
           field,
           value,
         }),
@@ -167,9 +143,10 @@ export function AccreditationTable() {
       filterFn: "includesString",
     },
     {
-      accessorKey: "package",
+      id: "package",
       header: "Paquete",
       enableGlobalFilter: false,
+      cell: ({ row }) => <span>{row.original.package?.split(" (")[0]}</span>,
     },
     {
       accessorKey: "dietary_restriction",
@@ -183,7 +160,9 @@ export function AccreditationTable() {
       cell: ({ row }) => (
         <Checkbox
           checked={row.original.check_in}
-          onCheckedChange={checked => updateCheckbox(row.original.id, "check_in", !!checked)}
+          onCheckedChange={checked =>
+            updateCheckbox(row.original.id, eventSlug, "check_in", !!checked)
+          }
         />
       ),
     },
@@ -194,8 +173,9 @@ export function AccreditationTable() {
       cell: ({ row }) => (
         <Checkbox
           checked={row.original.package_delivered}
+          disabled={String(row.original.package).startsWith("Sin paquete")}
           onCheckedChange={checked =>
-            updateCheckbox(row.original.id, "package_delivered", !!checked)
+            updateCheckbox(row.original.id, eventSlug, "package_delivered", !!checked)
           }
         />
       ),
@@ -207,7 +187,10 @@ export function AccreditationTable() {
       cell: ({ row }) => (
         <Checkbox
           checked={row.original.lunch}
-          onCheckedChange={checked => updateCheckbox(row.original.id, "lunch", !!checked)}
+          disabled={String(row.original.package).startsWith("Sin paquete")}
+          onCheckedChange={checked =>
+            updateCheckbox(row.original.id, eventSlug, "lunch", !!checked)
+          }
         />
       ),
     },
@@ -218,7 +201,10 @@ export function AccreditationTable() {
       cell: ({ row }) => (
         <Checkbox
           checked={row.original.refreshment}
-          onCheckedChange={checked => updateCheckbox(row.original.id, "refreshment", !!checked)}
+          disabled={String(row.original.package).startsWith("Sin paquete")}
+          onCheckedChange={checked =>
+            updateCheckbox(row.original.id, eventSlug, "refreshment", !!checked)
+          }
         />
       ),
     },
@@ -266,12 +252,6 @@ export function AccreditationTable() {
           className="mb-4 w-full"
         />
 
-        <PackageFilter
-          rows={table.getRowModel().rows}
-          packageFilter={packageFilter}
-          setPackageFilter={setPackageFilter}
-        />
-
         <Select onValueChange={value => setRoleFilter(value)} defaultValue="Todos">
           <SelectTrigger>
             <SelectValue placeholder="Rol" />
@@ -279,7 +259,7 @@ export function AccreditationTable() {
           <SelectContent>
             <SelectItem value="Todos">Todos</SelectItem>
             <SelectItem value="Participante">Participantes</SelectItem>
-            <SelectItem value="Organizer">Organizers</SelectItem>
+            <SelectItem value="Organizer">Organizadores</SelectItem>
           </SelectContent>
         </Select>
 
