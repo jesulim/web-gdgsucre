@@ -237,7 +237,6 @@ export function AccreditationTable() {
       cell: ({ row }) => (
         <Checkbox
           checked={row.original.package_delivered}
-          disabled={String(row.original.package).startsWith("Sin paquete")}
           onCheckedChange={checked =>
             updateCheckbox(row.original.id, eventSlug, "package_delivered", !!checked)
           }
@@ -251,7 +250,6 @@ export function AccreditationTable() {
       cell: ({ row }) => (
         <Checkbox
           checked={row.original.lunch}
-          disabled={String(row.original.package).startsWith("Sin paquete")}
           onCheckedChange={checked =>
             updateCheckbox(row.original.id, eventSlug, "lunch", !!checked)
           }
@@ -265,7 +263,6 @@ export function AccreditationTable() {
       cell: ({ row }) => (
         <Checkbox
           checked={row.original.refreshment}
-          disabled={String(row.original.package).startsWith("Sin paquete")}
           onCheckedChange={checked =>
             updateCheckbox(row.original.id, eventSlug, "refreshment", !!checked)
           }
