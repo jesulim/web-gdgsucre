@@ -20,7 +20,10 @@ interface ApiResponse {
 }
 
 export default function RandomWinnerSelector() {
-  const [registrations, setRegistrations] = useState<Registration[]>([])
+  const [allRegistrations, setAllRegistrations] = useState<Registration[]>([]) // Todos los registros originales
+  const [registrations, setRegistrations] = useState<Registration[]>([]) // Registros activos (sin ganadores ni descartados)
+  const [winners, setWinners] = useState<Registration[]>([]) // Lista de ganadores
+  const [discarded, setDiscarded] = useState<Registration[]>([]) // Lista de descartados
   const [isLoading, setIsLoading] = useState(false)
   const [isSelecting, setIsSelecting] = useState(false)
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -50,7 +53,12 @@ export default function RandomWinnerSelector() {
       const data: ApiResponse = await response.json()
 
       if (response.ok) {
-        setRegistrations(data.data)
+        setAllRegistrations(data.data)
+        // Filtrar los que ya están en ganadores o descartados
+        const activeRegistrations = data.data.filter(
+          reg => !winners.find(w => w.id === reg.id) && !discarded.find(d => d.id === reg.id)
+        )
+        setRegistrations(activeRegistrations)
       } else {
         console.error("Error fetching registrations:", data)
         alert("Error al obtener los registros")
@@ -61,7 +69,7 @@ export default function RandomWinnerSelector() {
     } finally {
       setIsLoading(false)
     }
-  }, [limit, selectedRole])
+  }, [limit, selectedRole, winners, discarded])
 
   useEffect(() => {
     fetchRegistrations()
@@ -107,11 +115,39 @@ export default function RandomWinnerSelector() {
     animate()
   }
 
-  const resetSelection = () => {
+  const markAsWinner = () => {
+    if (winner) {
+      setWinners(prev => [...prev, winner])
+      setRegistrations(prev => prev.filter(reg => reg.id !== winner.id))
+      setWinner(null)
+      setShowWinner(false)
+      setCurrentIndex(0)
+    }
+  }
+
+  const markAsDiscarded = () => {
+    if (winner) {
+      setDiscarded(prev => [...prev, winner])
+      setRegistrations(prev => prev.filter(reg => reg.id !== winner.id))
+      setWinner(null)
+      setShowWinner(false)
+      setCurrentIndex(0)
+    }
+  }
+
+  const continueInList = () => {
     setWinner(null)
     setShowWinner(false)
     setCurrentIndex(0)
-    fetchRegistrations()
+  }
+
+  const resetAll = () => {
+    setWinner(null)
+    setShowWinner(false)
+    setCurrentIndex(0)
+    setWinners([])
+    setDiscarded([])
+    setRegistrations(allRegistrations)
   }
 
   return (
@@ -163,16 +199,14 @@ export default function RandomWinnerSelector() {
             {isSelecting ? "🎰 Girando ruleta..." : "🎰 Girar Ruleta"}
           </Button>
 
-          {winner && (
-            <Button
-              onClick={resetSelection}
-              variant="outline"
-              className="border-2 border-[#4285F4] text-[#4285F4] hover:bg-[#4285F4] hover:text-white text-lg px-8 py-3 font-semibold rounded-lg transition-all duration-300"
-              disabled={isLoading}
-            >
-              {isLoading ? "Cargando..." : "🔄 Nuevo Sorteo"}
-            </Button>
-          )}
+          <Button
+            onClick={resetAll}
+            variant="outline"
+            className="border-2 border-[#EA4335] text-[#EA4335] hover:bg-[#EA4335] hover:text-white text-lg px-8 py-3 font-semibold rounded-lg transition-all duration-300"
+            disabled={isLoading}
+          >
+            {isLoading ? "Cargando..." : "🔄 Reiniciar Todo"}
+          </Button>
         </div>
       </div>
 
@@ -224,7 +258,13 @@ export default function RandomWinnerSelector() {
 
           {registrations.length > 0 && !isSelecting && (
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 border-2 border-[#EA4335]/20">
-              <h3 className="text-xl font-bold mb-4 text-[#EA4335]">📋 Lista de Participantes</h3>
+              <h3 className="text-xl font-bold mb-4 text-[#EA4335]">
+                📋 Lista de Participantes Activos
+              </h3>
+              <div className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                {registrations.length} participante{registrations.length !== 1 ? "s" : ""}{" "}
+                disponible{registrations.length !== 1 ? "s" : ""}
+              </div>
               <div className="grid gap-2 max-h-96 overflow-y-auto">
                 {registrations.map((registration, index) => (
                   <div
@@ -244,11 +284,60 @@ export default function RandomWinnerSelector() {
                       <div>
                         <div className="font-medium">
                           {registration.first_name} {registration.last_name}
-                          {winner?.id === registration.id && <span className="ml-2">👑</span>}
+                          {winner?.id === registration.id && <span className="ml-2">🎯</span>}
                         </div>
-                        {/* <div className="text-sm text-gray-600 dark:text-gray-400">
-                          {registration.email}
-                        </div> */}
+                      </div>
+                      <div className="text-sm text-gray-500">{registration.role}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {winners.length > 0 && (
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 border-2 border-[#34A853]/40">
+              <h3 className="text-xl font-bold mb-4 text-[#34A853]">🏆 Ganadores</h3>
+              <div className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                {winners.length} ganador{winners.length !== 1 ? "es" : ""}
+              </div>
+              <div className="grid gap-2 max-h-64 overflow-y-auto">
+                {winners.map(registration => (
+                  <div
+                    key={registration.id}
+                    className="p-3 rounded-lg border-2 border-[#34A853] bg-gradient-to-r from-[#34A853]/20 to-[#FBBC04]/20 dark:bg-gradient-to-r dark:from-[#34A853]/30 dark:to-[#FBBC04]/30"
+                  >
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <div className="font-medium">
+                          🏆 {registration.first_name} {registration.last_name}
+                        </div>
+                      </div>
+                      <div className="text-sm text-gray-500">{registration.role}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {discarded.length > 0 && (
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 border-2 border-[#EA4335]/40">
+              <h3 className="text-xl font-bold mb-4 text-[#EA4335]">❌ Descartados</h3>
+              <div className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                {discarded.length} descartado{discarded.length !== 1 ? "s" : ""}
+              </div>
+              <div className="grid gap-2 max-h-64 overflow-y-auto">
+                {discarded.map(registration => (
+                  <div
+                    key={registration.id}
+                    className="p-3 rounded-lg border-2 border-[#EA4335] bg-gradient-to-r from-[#EA4335]/20 to-[#EA4335]/10 dark:bg-gradient-to-r dark:from-[#EA4335]/30 dark:to-[#EA4335]/20"
+                  >
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <div className="font-medium">
+                          ❌ {registration.first_name} {registration.last_name}
+                        </div>
                       </div>
                       <div className="text-sm text-gray-500">{registration.role}</div>
                     </div>
@@ -264,7 +353,7 @@ export default function RandomWinnerSelector() {
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-8 sticky top-6 border-4 border-transparent bg-gradient-to-br from-[#4285F4]/10 via-[#EA4335]/10 to-[#FBBC04]/10">
               <div className="text-center">
                 <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-[#4285F4] via-[#EA4335] to-[#FBBC04] bg-clip-text text-transparent">
-                  🏆 ¡GANADOR DEL SORTEO GDG! 🏆
+                  � ¡PARTICIPANTE SELECCIONADO! �
                 </h2>
 
                 <div className="bg-gradient-to-br from-[#4285F4] via-[#EA4335] to-[#FBBC04] text-white rounded-2xl p-8 mb-6 animate-winner-glow shadow-2xl">
@@ -273,25 +362,35 @@ export default function RandomWinnerSelector() {
                     {winner.first_name} {winner.last_name}
                   </div>
                   <div className="text-xl opacity-95 mb-4 font-medium">
-                    ¡Felicitaciones por haber sido seleccionado!
+                    ¿Qué acción deseas tomar?
+                  </div>
+                  <div className="space-y-3 py-4">
+                    <Button
+                      onClick={markAsWinner}
+                      className="w-full bg-[#34A853] hover:bg-[#2d9249] text-white text-lg px-8 py-4 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 rounded-lg"
+                    >
+                      🏆 Marcar como Ganador
+                    </Button>
+
+                    <Button
+                      onClick={markAsDiscarded}
+                      className="w-full bg-[#EA4335] hover:bg-[#d33426] text-white text-lg px-8 py-4 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 rounded-lg"
+                    >
+                      ❌ Descartar
+                    </Button>
+
+                    <Button
+                      onClick={continueInList}
+                      variant="outline"
+                      className="w-full border-2 border-[#FBBC04] text-[#FBBC04] hover:bg-[#FBBC04] hover:text-white text-lg px-8 py-4 font-semibold rounded-lg transition-all duration-300"
+                    >
+                      ↩️ Continuar en la Lista
+                    </Button>
                   </div>
                   <div className="bg-white/20 rounded-xl p-6 backdrop-blur-sm shadow-lg">
-                    {/* <div className="text-sm opacity-90 mb-1">📧 Correo electrónico:</div>
-                    <div className="font-semibold">{winner.email}</div>
-                    {winner.phone_number && (
-                      <>
-                        <div className="text-sm opacity-90 mb-1 mt-3">📱 Teléfono:</div>
-                        <div className="font-semibold">{winner.phone_number}</div>
-                      </>
-                    )} */}
-                    <div className="text-sm opacity-90 mb-1 mt-3">🏷️ Rol:</div>
+                    <div className="text-sm opacity-90 mb-1">🏷️ Rol:</div>
                     <div className="font-semibold">{winner.role}</div>
                   </div>
-                </div>
-
-                <div className="bg-gradient-to-r from-[#34A853] to-[#0F9D58] text-white rounded-xl p-6 shadow-lg">
-                  <div className="text-xl font-bold mb-2">🎁 ¡Enhorabuena!</div>
-                  <div className="text-base opacity-95">Has sido seleccionado aleatoriamente</div>
                 </div>
               </div>
             </div>
@@ -313,14 +412,33 @@ export default function RandomWinnerSelector() {
                 </div>
 
                 {registrations.length > 0 && !isSelecting && (
-                  <div className="bg-gradient-to-br from-[#4285F4]/20 via-[#EA4335]/20 to-[#FBBC04]/20 dark:from-[#4285F4]/30 dark:via-[#EA4335]/30 dark:to-[#FBBC04]/30 rounded-xl p-8 border-2 border-[#4285F4]/30">
-                    <div className="text-5xl mb-4">👥</div>
-                    <div className="text-2xl font-bold text-[#4285F4] dark:text-[#4285F4] mb-1">
-                      {registrations.length} participantes
+                  <div className="space-y-4">
+                    <div className="bg-gradient-to-br from-[#4285F4]/20 via-[#EA4335]/20 to-[#FBBC04]/20 dark:from-[#4285F4]/30 dark:via-[#EA4335]/30 dark:to-[#FBBC04]/30 rounded-xl p-8 border-2 border-[#4285F4]/30">
+                      <div className="text-5xl mb-4">👥</div>
+                      <div className="text-2xl font-bold text-[#4285F4] dark:text-[#4285F4] mb-1">
+                        {registrations.length} participantes activos
+                      </div>
+                      <div className="text-base text-gray-600 dark:text-gray-400 font-medium">
+                        listos para el sorteo
+                      </div>
                     </div>
-                    <div className="text-base text-gray-600 dark:text-gray-400 font-medium">
-                      listos para el sorteo
-                    </div>
+
+                    {(winners.length > 0 || discarded.length > 0) && (
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="bg-[#34A853]/10 dark:bg-[#34A853]/20 rounded-lg p-4 border-2 border-[#34A853]/30">
+                          <div className="text-3xl mb-2">🏆</div>
+                          <div className="text-xl font-bold text-[#34A853]">{winners.length}</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-400">Ganadores</div>
+                        </div>
+                        <div className="bg-[#EA4335]/10 dark:bg-[#EA4335]/20 rounded-lg p-4 border-2 border-[#EA4335]/30">
+                          <div className="text-3xl mb-2">❌</div>
+                          <div className="text-xl font-bold text-[#EA4335]">{discarded.length}</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-400">
+                            Descartados
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
