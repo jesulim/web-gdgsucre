@@ -357,3 +357,21 @@ export async function getRegistrationData(supabase: SupabaseClient, registration
     event_id: data.event_id,
   }
 }
+
+export async function getRegistrationByToken(supabase: SupabaseClient, token: string) {
+  const { data, error } = await supabase
+    .from("registrations")
+    .select("id, profiles(first_name, last_name)")
+    .eq("token", token)
+    .maybeSingle()
+
+  if (error || !data) {
+    return null
+  }
+
+  return {
+    id: data.id,
+    first_name: data.profiles.first_name,
+    last_name: data.profiles.last_name,
+  }
+}

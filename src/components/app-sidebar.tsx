@@ -1,4 +1,4 @@
-import { Box, List, Users } from "lucide-react"
+import { Box, List, ScanQrCode, Users } from "lucide-react"
 import type * as React from "react"
 
 import { NavMain } from "@/components/NavMain"
@@ -37,6 +37,11 @@ const defaultData = {
       title: "Acreditación del Evento",
       view: "accreditation" as ViewType,
       icon: Users,
+    },
+    {
+      title: "Escanear QR",
+      view: "scanner" as ViewType,
+      icon: ScanQrCode,
     },
   ],
 }

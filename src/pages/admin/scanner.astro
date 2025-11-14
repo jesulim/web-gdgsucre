@@ -1,0 +1,9 @@
+---
+import QRScanner from "@/components/admin/QRScanner"
+import BaseLayout from "@/layout/BaseLayout.astro"
+---
+
+<BaseLayout>
+  <h2>Scanner</h2>
+  <QRScanner client:only="react" />
+</BaseLayout>
