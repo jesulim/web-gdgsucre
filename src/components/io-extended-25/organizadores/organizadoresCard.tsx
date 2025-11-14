@@ -1,6 +1,6 @@
+import { useEffect, useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Carousel, type CarouselApi, CarouselContent, CarouselItem } from "@/components/ui/carousel"
-import { useEffect, useState } from "react"
 
 interface Organizador {
   id: number

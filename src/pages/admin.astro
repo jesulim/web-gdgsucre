@@ -5,18 +5,31 @@ import BaseLayout from "@/layout/BaseLayout.astro"
 import { getProfile } from "@/lib/services/profileService"
 import { createUserClient } from "@/lib/supabase"
 
+import { Dashboard } from "../pages/admin/Dashboard.tsx"
+
 const supabase = await createUserClient(Astro.cookies)
 const profile = await getProfile(supabase)
 
 if (!profile?.is_admin) {
   return Astro.redirect("/")
 }
+
+const isAuthenticated = Astro.cookies.has("sb-refresh-token")
+
+const userData = profile
+  ? {
+      name: `${profile.first_name} ${profile.last_name}`.trim() || "Usuario",
+      email: profile.email || "",
+      avatar: profile.avatar_url || "/avatars/default.jpg",
+    }
+  : {
+      name: "Usuario",
+      email: "",
+      avatar: "/avatars/default.jpg",
+    }
 ---
 
 <BaseLayout>
-  <Header />
-  <main class="mt-20 p-4 lg:p-8">
-    <h1 class="text-2xl font-bold mb-6">Panel de Administración</h1>
-    <AdminTabs client:visible />
-  </main>
+  <!-- <Header /> -->
+  <Dashboard client:visible isAuthenticated={isAuthenticated} user={userData} />
 </BaseLayout>

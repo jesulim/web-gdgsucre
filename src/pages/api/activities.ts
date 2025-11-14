@@ -34,9 +34,9 @@ export const GET: APIRoute = async ({ url, cookies }) => {
 export const POST: APIRoute = async ({ request, cookies }) => {
   try {
     const body = await request.json()
-    const { id, field, value } = body
+    const { id, field, eventSlug, value } = body
 
-    if (!id || !field || typeof value !== "boolean") {
+    if (!id || !eventSlug || !field || typeof value !== "boolean") {
       return new Response(JSON.stringify({ error: "Invalid request body" }), {
         status: 400,
         headers: { "Content-Type": "application/json" },
@@ -44,7 +44,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     }
 
     const supabase = await createUserClient(cookies)
-    const result = await updateRegistrationActivity(supabase, id, field, value)
+    const result = await updateRegistrationActivity(supabase, id, eventSlug, field, value)
 
     return new Response(JSON.stringify({ success: true, data: result }), {
       headers: { "Content-Type": "application/json" },

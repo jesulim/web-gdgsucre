@@ -9,13 +9,14 @@ import {
   type Table as TanstackTable,
   useReactTable,
 } from "@tanstack/react-table"
-import { Loader2Icon } from "lucide-react"
-import { useCallback, useEffect, useState } from "react"
+import { Loader2Icon, SearchIcon } from "lucide-react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
+import { Kbd } from "@/components/ui/kbd"
 import {
   Select,
   SelectContent,
@@ -41,6 +42,8 @@ interface AccreditationData {
   last_name: string
   role: string
   status: string
+  package?: string
+  dietary_restriction?: string
   lunch: boolean
   check_in: boolean
   refreshment: boolean
@@ -57,43 +60,26 @@ const customFilterFn = (rows: Row<AccreditationData>, columnId: string, filterVa
   return normalizeString(rowValue).includes(normalizeString(filterValue))
 }
 
-function PackageFilter({
-  rows,
-  packageFilter,
-  setPackageFilter,
-}: {
-  rows: Row<AccreditationData>[]
-  packageFilter: string
-  setPackageFilter: (value: string) => void
-}) {
-  if (!rows.length) return
-
-  const packages = new Set<string>(rows.map(row => row.getValue("package")))
-
-  return (
-    <Select onValueChange={value => setPackageFilter(value)} defaultValue={packageFilter}>
-      <SelectTrigger>
-        <SelectValue placeholder="Paquete" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="Todos los paquetes">Todos los paquetes</SelectItem>
-        {Array.from(packages).map(name => (
-          <SelectItem key={name} value={name}>
-            {name.split(" (")[0]}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
-  )
-}
-
 export function AccreditationTable() {
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<AccreditationData[]>()
   const [globalFilter, setGlobalFilter] = useState("")
   const [eventSlug, setEventSlug] = useState("")
   const [roleFilter, setRoleFilter] = useState<string>("Todos")
-  const [packageFilter, setPackageFilter] = useState<string>("Todos los paquetes")
+  const searchInputRef = useRef<HTMLInputElement>(null)
+
+  // Agregar atajo de teclado Ctrl+K para enfocar el buscador
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key === "k") {
+        event.preventDefault()
+        searchInputRef.current?.focus()
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [])
 
   const fetchData = useCallback(async () => {
     setLoading(true)
@@ -101,7 +87,6 @@ export function AccreditationTable() {
       const url = new URL("/api/activities", window.location.origin)
       url.searchParams.set("slug", eventSlug)
       url.searchParams.set("role", roleFilter)
-      url.searchParams.set("package", packageFilter)
 
       const response = await fetch(url.toString())
       const result = await response.json()
@@ -114,15 +99,22 @@ export function AccreditationTable() {
     } finally {
       setLoading(false)
     }
-  }, [eventSlug, roleFilter, packageFilter])
+  }, [eventSlug, roleFilter])
 
   useEffect(() => {
     if (!eventSlug) return
     fetchData()
   }, [fetchData, eventSlug])
 
-  const updateCheckbox = async (id: number, field: keyof AccreditationData, value: boolean) => {
+  const updateCheckbox = async (
+    id: number,
+    eventSlug: string,
+    field: keyof AccreditationData,
+    value: boolean
+  ) => {
     try {
+      toast.info(`Actualizando ${field}...`)
+
       const response = await fetch("/api/activities", {
         method: "POST",
         headers: {
@@ -130,6 +122,7 @@ export function AccreditationTable() {
         },
         body: JSON.stringify({
           id,
+          eventSlug,
           field,
           value,
         }),
@@ -157,6 +150,16 @@ export function AccreditationTable() {
 
   const columns: ColumnDef<AccreditationData>[] = [
     {
+      id: "number",
+      header: "#",
+      enableGlobalFilter: false,
+      cell: ({ row }) => {
+        const filteredRows = table.getFilteredRowModel().rows
+        const index = filteredRows.findIndex(r => r.id === row.id)
+        return <span className="text-gray-600">{index + 1}</span>
+      },
+    },
+    {
       accessorKey: "first_name",
       header: "Nombre(s)",
       filterFn: "includesString",
@@ -167,9 +170,27 @@ export function AccreditationTable() {
       filterFn: "includesString",
     },
     {
-      accessorKey: "package",
+      accessorKey: "role",
+      header: "Rol",
+      enableGlobalFilter: false,
+      cell: ({ row }) => {
+        const role = row.getValue("role") as string
+        return (
+          <span
+            className={`rounded-sm py-1 px-2 text-sm ${
+              role === "Organizer" ? "bg-purple-100 text-purple-700" : "bg-blue-100 text-blue-700"
+            }`}
+          >
+            {role === "Organizer" ? "Organizador" : "Participante"}
+          </span>
+        )
+      },
+    },
+    {
+      id: "package",
       header: "Paquete",
       enableGlobalFilter: false,
+      cell: ({ row }) => <span>{row.original.package?.split(" (")[0]}</span>,
     },
     {
       accessorKey: "dietary_restriction",
@@ -183,7 +204,9 @@ export function AccreditationTable() {
       cell: ({ row }) => (
         <Checkbox
           checked={row.original.check_in}
-          onCheckedChange={checked => updateCheckbox(row.original.id, "check_in", !!checked)}
+          onCheckedChange={checked =>
+            updateCheckbox(row.original.id, eventSlug, "check_in", !!checked)
+          }
         />
       ),
     },
@@ -194,8 +217,9 @@ export function AccreditationTable() {
       cell: ({ row }) => (
         <Checkbox
           checked={row.original.package_delivered}
+          disabled={String(row.original.package).startsWith("Sin paquete")}
           onCheckedChange={checked =>
-            updateCheckbox(row.original.id, "package_delivered", !!checked)
+            updateCheckbox(row.original.id, eventSlug, "package_delivered", !!checked)
           }
         />
       ),
@@ -207,7 +231,10 @@ export function AccreditationTable() {
       cell: ({ row }) => (
         <Checkbox
           checked={row.original.lunch}
-          onCheckedChange={checked => updateCheckbox(row.original.id, "lunch", !!checked)}
+          disabled={String(row.original.package).startsWith("Sin paquete")}
+          onCheckedChange={checked =>
+            updateCheckbox(row.original.id, eventSlug, "lunch", !!checked)
+          }
         />
       ),
     },
@@ -218,7 +245,10 @@ export function AccreditationTable() {
       cell: ({ row }) => (
         <Checkbox
           checked={row.original.refreshment}
-          onCheckedChange={checked => updateCheckbox(row.original.id, "refreshment", !!checked)}
+          disabled={String(row.original.package).startsWith("Sin paquete")}
+          onCheckedChange={checked =>
+            updateCheckbox(row.original.id, eventSlug, "refreshment", !!checked)
+          }
         />
       ),
     },
@@ -258,19 +288,21 @@ export function AccreditationTable() {
         <AccreditationStats stats={stats} />
       </div>
 
-      <div className="flex gap-2">
-        <Input
-          placeholder="Buscar por nombre o apellido..."
-          value={globalFilter ?? ""}
-          onChange={e => setGlobalFilter(e.target.value)}
-          className="mb-4 w-full"
-        />
-
-        <PackageFilter
-          rows={table.getRowModel().rows}
-          packageFilter={packageFilter}
-          setPackageFilter={setPackageFilter}
-        />
+      <div className="flex gap-2 mb-4">
+        <div className="relative flex-1">
+          <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            ref={searchInputRef}
+            placeholder="Buscar por nombre o apellido..."
+            value={globalFilter ?? ""}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setGlobalFilter(e.target.value)}
+            className="pl-9 pr-20"
+          />
+          <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex gap-1">
+            <Kbd>Ctrl</Kbd>
+            <Kbd>K</Kbd>
+          </div>
+        </div>
 
         <Select onValueChange={value => setRoleFilter(value)} defaultValue="Todos">
           <SelectTrigger>
@@ -279,7 +311,7 @@ export function AccreditationTable() {
           <SelectContent>
             <SelectItem value="Todos">Todos</SelectItem>
             <SelectItem value="Participante">Participantes</SelectItem>
-            <SelectItem value="Organizer">Organizers</SelectItem>
+            <SelectItem value="Organizer">Organizadores</SelectItem>
           </SelectContent>
         </Select>
 

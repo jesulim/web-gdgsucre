@@ -29,13 +29,7 @@ async function loadEmailTemplate(
   templateData: Record<string, string | number>
 ): Promise<string> {
   try {
-    const templatePath = join(
-      process.cwd(),
-      "src",
-      "lib",
-      "templates",
-      `${templateName}.html`
-    )
+    const templatePath = join(process.cwd(), "src", "lib", "templates", `${templateName}.html`)
     let htmlContent = await readFile(templatePath, "utf-8")
 
     for (const [key, value] of Object.entries(templateData)) {
@@ -82,9 +76,7 @@ interface RegistrationEmailData extends BaseEmailData {
   eventSlug: string
 }
 
-export async function sendRegistrationConfirmationEmail(
-  data: RegistrationEmailData
-) {
+export async function sendRegistrationConfirmationEmail(data: RegistrationEmailData) {
   const htmlContent = await loadEmailTemplate("registrationEmail", data)
 
   return await sendEmail({
@@ -99,9 +91,7 @@ interface PaymentConfirmationEmailData extends BaseEmailData {
   eventName: string
 }
 
-export async function sendPaymentConfirmationEmail(
-  data: PaymentConfirmationEmailData
-) {
+export async function sendPaymentConfirmationEmail(data: PaymentConfirmationEmailData) {
   const htmlContent = await loadEmailTemplate("paymentConfirmationEmail", data)
 
   return await sendEmail({

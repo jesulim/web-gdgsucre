@@ -9,8 +9,8 @@ import {
   type Table as TanstackTable,
   useReactTable,
 } from "@tanstack/react-table"
-import { Loader2Icon, MoreHorizontal, SendHorizonal, Trash2 } from "lucide-react"
-import { useCallback, useEffect, useState } from "react"
+import { Loader2Icon, MoreHorizontal, SearchIcon, SendHorizonal, Trash2 } from "lucide-react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { toast } from "sonner"
 
 import EventSelector from "@/components/admin/EventSelector"
@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 import { Input } from "@/components/ui/input"
+import { Kbd } from "@/components/ui/kbd"
 import {
   Select,
   SelectContent,
@@ -88,6 +89,19 @@ export function RegistrationsTable() {
   const [data, setData] = useState<Registrations[]>()
   const [globalFilter, setGlobalFilter] = useState("")
   const [eventSlug, setEventSlug] = useState("")
+  const searchInputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+        e.preventDefault()
+        searchInputRef.current?.focus()
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown)
+    return () => document.removeEventListener("keydown", handleKeyDown)
+  }, [])
 
   const fetchRegistrations = useCallback(async () => {
     try {
@@ -99,7 +113,7 @@ export function RegistrationsTable() {
       const response = await fetch(url.toString())
 
       const result = await response.json()
-      setData(result.map((row, i) => ({ number: i + 1, ...row })))
+      setData(result.map((row, i) => ({ number: result.length - i, ...row })))
     } catch {
       setData([])
     } finally {
@@ -259,16 +273,22 @@ export function RegistrationsTable() {
       accessorKey: "voucher",
       header: "Comprobante",
       enableGlobalFilter: false,
-      cell: ({ row }) => (
-        <a
-          href={`/api/getSignedUrl?bucket=event-uploads&url=${row.getValue("voucher")}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-500 hover:underline text-center w-full"
-        >
-          Ver
-        </a>
-      ),
+      cell: ({ row }) => {
+        const voucher = row.getValue("voucher")
+
+        return (
+          voucher !== "undefined" && (
+            <a
+              href={`/api/getSignedUrl?bucket=event-uploads&url=${voucher}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 hover:underline text-center w-full"
+            >
+              Ver
+            </a>
+          )
+        )
+      },
     },
     {
       id: "actions",
@@ -344,13 +364,22 @@ export function RegistrationsTable() {
         <PackageCount rows={table.getFilteredRowModel().rows} />
       </div>
 
-      <div className="flex gap-4">
-        <Input
-          placeholder="Buscar por nombre, apellido o correo electrónico..."
-          value={globalFilter ?? ""}
-          onChange={e => setGlobalFilter(e.target.value)}
-          className="mb-4 w-full"
-        />
+      <div className="flex gap-4 mb-4">
+        <div className="relative flex-1">
+          <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            ref={searchInputRef}
+            placeholder="Buscar por nombre, apellido o correo electrónico..."
+            value={globalFilter ?? ""}
+            onChange={e => setGlobalFilter(e.target.value)}
+            className="pl-9 pr-20"
+          />
+          <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex gap-1">
+            <Kbd>Ctrl</Kbd>
+            <Kbd>K</Kbd>
+          </div>
+        </div>
+
         <Button className="bg-blue-500 rounded-sm" onClick={() => fetchRegistrations()}>
           {loading && <Loader2Icon className="animate-spin" />}
           Actualizar
