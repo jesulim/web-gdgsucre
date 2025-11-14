@@ -310,7 +310,7 @@ export async function getRandomRegistrations(
   const { data: registrations, error } = await supabase
     .from("registrations")
     .select(
-      "id, created_at, profiles(first_name, last_name, email, phone_number), status, role, responses, events!inner(slug)"
+      "id, created_at, profiles(id, first_name, last_name, email, phone_number), status, role, responses, events!inner(slug)"
     )
     .eq("events.slug", eventSlug)
 
@@ -335,12 +335,17 @@ export async function getRandomRegistrations(
 
   const registrationsWithCorrectRole = registrations.map(
     ({ profiles, responses, events, ...rest }) => {
-      const profileId = profiles?.id
+      const profile = profiles as any
+      const profileId = profile?.id
       const correctRole = organizerIds.has(profileId) ? "Organizer" : "Participante"
 
       return {
         ...rest,
-        ...profiles,
+        id: profile?.id,
+        first_name: profile?.first_name,
+        last_name: profile?.last_name,
+        email: profile?.email,
+        phone_number: profile?.phone_number,
         ...responses,
         role: correctRole,
       }
@@ -348,24 +353,20 @@ export async function getRandomRegistrations(
   )
 
   let filteredRegistrations = registrationsWithCorrectRole
-  if (role && (role === "Participante" || role === "Organizer")) {
-    filteredRegistrations = registrationsWithCorrectRole.filter(reg => reg.role === role)
+
+  if (role === "Participante") {
+    filteredRegistrations = registrationsWithCorrectRole.filter(reg => reg.role === "Participante")
+  } else if (role === "Organizer") {
+    filteredRegistrations = registrationsWithCorrectRole.filter(reg => reg.role === "Organizer")
   }
 
-  // Mezclar usando Fisher-Yates con crypto.getRandomValues para mayor robustez
-  let aleatorios = shuffleArray(registrations)
+  let aleatorios = shuffleArray(filteredRegistrations)
 
   if (limit !== null && limit > 0) {
     aleatorios = aleatorios.slice(0, Math.min(limit, filteredRegistrations.length))
   }
 
-  const flattenedRegistrations = aleatorios.map(({ profiles, responses, events, ...rest }) => ({
-    ...rest,
-    ...profiles,
-    ...responses,
-  }))
-
-  return flattenedRegistrations
+  return aleatorios
 }
 
 export async function getRegistrationData(supabase: SupabaseClient, registrationId: string) {

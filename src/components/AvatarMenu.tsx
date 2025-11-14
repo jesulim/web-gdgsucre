@@ -51,6 +51,14 @@ export default function AvatarMenu({
           </DropdownMenuItem>
         )}
 
+        {admin && (
+          <DropdownMenuItem asChild>
+            <a href="/sorteo">
+              <Users /> Sorteo GdgSucre
+            </a>
+          </DropdownMenuItem>
+        )}
+
         {registered ? (
           <DropdownMenuItem asChild>
             <a href={`/registro/${eventSlug}/confirmado`}>
