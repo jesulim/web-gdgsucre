@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 
 interface Registration {
   id: number
@@ -31,6 +32,7 @@ export default function RandomWinnerSelector() {
   const [showWinner, setShowWinner] = useState(false)
   const [limit] = useState<number | null>(null)
   const [selectedRole, setSelectedRole] = useState<string>("")
+  const [searchTerm, setSearchTerm] = useState<string>("")
 
   const fetchRegistrations = useCallback(async () => {
     setIsLoading(true)
@@ -150,6 +152,19 @@ export default function RandomWinnerSelector() {
     setRegistrations(allRegistrations)
   }
 
+  // Filtrar participantes por búsqueda
+  const filteredRegistrations = useMemo(() => {
+    if (!searchTerm.trim()) return registrations
+
+    const search = searchTerm.toLowerCase().trim()
+    return registrations.filter(
+      reg =>
+        reg.first_name.toLowerCase().includes(search) ||
+        reg.last_name.toLowerCase().includes(search) ||
+        `${reg.first_name} ${reg.last_name}`.toLowerCase().includes(search)
+    )
+  }, [registrations, searchTerm])
+
   return (
     <div className="max-w-7xl mx-auto p-6 space-y-6">
       <div className="text-center">
@@ -212,147 +227,11 @@ export default function RandomWinnerSelector() {
 
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
         <div className="space-y-6">
-          {registrations.length > 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 border-2 border-[#4285F4]/20">
-              <div className="text-center mb-6">
-                <h2 className="text-2xl font-bold mb-4 text-[#4285F4]">
-                  {isSelecting
-                    ? "🎰 Ruleta en acción..."
-                    : showWinner
-                      ? "🎉 ¡Participante seleccionado!"
-                      : "👥 Participante Actual"}
-                </h2>
-
-                <div
-                  className={`
-                  p-8 rounded-xl border-4 transition-all duration-300 shadow-lg
-                  ${
-                    isSelecting
-                      ? "border-[#4285F4] bg-gradient-to-br from-[#4285F4]/20 to-[#EA4335]/20 dark:bg-gradient-to-br dark:from-[#4285F4]/30 dark:to-[#EA4335]/30 animate-pulse-glow animate-roulette-spin"
-                      : showWinner
-                        ? "border-[#34A853] bg-gradient-to-br from-[#34A853]/20 to-[#FBBC04]/20 dark:bg-gradient-to-br dark:from-[#34A853]/30 dark:to-[#FBBC04]/30 animate-winner-bounce animate-winner-glow"
-                        : "border-gray-200 dark:border-gray-600"
-                  }
-                `}
-                >
-                  <div className="text-2xl font-bold text-gray-800 dark:text-gray-200">
-                    {registrations[currentIndex]?.first_name}{" "}
-                    {registrations[currentIndex]?.last_name}
-                  </div>
-                  {/* <div className="text-gray-600 dark:text-gray-400 mt-2">
-                    📧 {registrations[currentIndex]?.email}
-                  </div>
-                  {registrations[currentIndex]?.phone_number && (
-                    <div className="text-gray-600 dark:text-gray-400">
-                      📱 {registrations[currentIndex]?.phone_number}
-                    </div>
-                  )} */}
-                  <div className="text-sm text-gray-500 dark:text-gray-500 mt-2">
-                    🏷️ {registrations[currentIndex]?.role} • 📅{" "}
-                    {new Date(registrations[currentIndex]?.created_at).toLocaleDateString()}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-          {winners.length > 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 border-2 border-[#34A853]/40">
-              <h3 className="text-xl font-bold mb-4 text-[#34A853]">🏆 Ganadores</h3>
-              <div className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-                {winners.length} ganador{winners.length !== 1 ? "es" : ""}
-              </div>
-              <div className="grid gap-2 max-h-64 overflow-y-auto">
-                {winners.map(registration => (
-                  <div
-                    key={registration.id}
-                    className="p-3 rounded-lg border-2 border-[#34A853] bg-gradient-to-r from-[#34A853]/20 to-[#FBBC04]/20 dark:bg-gradient-to-r dark:from-[#34A853]/30 dark:to-[#FBBC04]/30"
-                  >
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <div className="font-medium">
-                          🏆 {registration.first_name} {registration.last_name}
-                        </div>
-                      </div>
-                      <div className="text-sm text-gray-500">{registration.role}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {registrations.length > 0 && !isSelecting && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 border-2 border-[#EA4335]/20">
-              <h3 className="text-xl font-bold mb-4 text-[#EA4335]">
-                📋 Lista de Participantes Activos
-              </h3>
-              <div className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-                {registrations.length} participante{registrations.length !== 1 ? "s" : ""}{" "}
-                disponible{registrations.length !== 1 ? "s" : ""}
-              </div>
-              <div className="grid gap-2 max-h-96 overflow-y-auto">
-                {registrations.map((registration, index) => (
-                  <div
-                    key={registration.id}
-                    className={`
-                      p-3 rounded-lg border-2 transition-all duration-200
-                      ${
-                        index === currentIndex
-                          ? "border-[#4285F4] bg-gradient-to-r from-[#4285F4]/20 to-[#EA4335]/20 dark:bg-gradient-to-r dark:from-[#4285F4]/30 dark:to-[#EA4335]/30 shadow-md"
-                          : winner?.id === registration.id
-                            ? "border-[#34A853] bg-gradient-to-r from-[#34A853]/20 to-[#FBBC04]/20 dark:bg-gradient-to-r dark:from-[#34A853]/30 dark:to-[#FBBC04]/30 shadow-md"
-                            : "border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-[#4285F4]/50"
-                      }
-                    `}
-                  >
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <div className="font-medium">
-                          {registration.first_name} {registration.last_name}
-                          {winner?.id === registration.id && <span className="ml-2">🎯</span>}
-                        </div>
-                      </div>
-                      <div className="text-sm text-gray-500">{registration.role}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {discarded.length > 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 border-2 border-[#EA4335]/40">
-              <h3 className="text-xl font-bold mb-4 text-[#EA4335]">❌ Descartados</h3>
-              <div className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-                {discarded.length} descartado{discarded.length !== 1 ? "s" : ""}
-              </div>
-              <div className="grid gap-2 max-h-64 overflow-y-auto">
-                {discarded.map(registration => (
-                  <div
-                    key={registration.id}
-                    className="p-3 rounded-lg border-2 border-[#EA4335] bg-gradient-to-r from-[#EA4335]/20 to-[#EA4335]/10 dark:bg-gradient-to-r dark:from-[#EA4335]/30 dark:to-[#EA4335]/20"
-                  >
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <div className="font-medium">
-                          ❌ {registration.first_name} {registration.last_name}
-                        </div>
-                      </div>
-                      <div className="text-sm text-gray-500">{registration.role}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div className="space-y-6">
           {showWinner && winner ? (
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-8 sticky top-6 border-4 border-transparent bg-gradient-to-br from-[#4285F4]/10 via-[#EA4335]/10 to-[#FBBC04]/10">
               <div className="text-center">
                 <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-[#4285F4] via-[#EA4335] to-[#FBBC04] bg-clip-text text-transparent">
-                  � ¡PARTICIPANTE SELECCIONADO! �
+                  🎉 ¡PARTICIPANTE SELECCIONADO! 🎉
                 </h2>
 
                 <div className="bg-gradient-to-br from-[#4285F4] via-[#EA4335] to-[#FBBC04] text-white rounded-2xl p-8 mb-6 animate-winner-glow shadow-2xl">
@@ -440,6 +319,161 @@ export default function RandomWinnerSelector() {
                     )}
                   </div>
                 )}
+              </div>
+            </div>
+          )}
+        </div>
+        <div className="space-y-6">
+          {registrations.length > 0 && (
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 border-2 border-[#4285F4]/20">
+              <div className="text-center mb-6">
+                <h2 className="text-2xl font-bold mb-4 text-[#4285F4]">
+                  {isSelecting
+                    ? "🎰 Ruleta en acción..."
+                    : showWinner
+                      ? "🎉 ¡Participante seleccionado!"
+                      : "👥 Participante Actual"}
+                </h2>
+
+                <div
+                  className={`
+                  p-8 rounded-xl border-4 transition-all duration-300 shadow-lg
+                  ${
+                    isSelecting
+                      ? "border-[#4285F4] bg-gradient-to-br from-[#4285F4]/20 to-[#EA4335]/20 dark:bg-gradient-to-br dark:from-[#4285F4]/30 dark:to-[#EA4335]/30 animate-pulse-glow animate-roulette-spin"
+                      : showWinner
+                        ? "border-[#34A853] bg-gradient-to-br from-[#34A853]/20 to-[#FBBC04]/20 dark:bg-gradient-to-br dark:from-[#34A853]/30 dark:to-[#FBBC04]/30 animate-winner-bounce animate-winner-glow"
+                        : "border-gray-200 dark:border-gray-600"
+                  }
+                `}
+                >
+                  <div className="text-2xl font-bold text-gray-800 dark:text-gray-200">
+                    {registrations[currentIndex]?.first_name}{" "}
+                    {registrations[currentIndex]?.last_name}
+                  </div>
+                  {/* <div className="text-gray-600 dark:text-gray-400 mt-2">
+                    📧 {registrations[currentIndex]?.email}
+                  </div>
+                  {registrations[currentIndex]?.phone_number && (
+                    <div className="text-gray-600 dark:text-gray-400">
+                      📱 {registrations[currentIndex]?.phone_number}
+                    </div>
+                  )} */}
+                  <div className="text-sm text-gray-500 dark:text-gray-500 mt-2">
+                    🏷️ {registrations[currentIndex]?.role} • 📅{" "}
+                    {new Date(registrations[currentIndex]?.created_at).toLocaleDateString()}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {winners.length > 0 && (
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 border-2 border-[#34A853]/40">
+              <h3 className="text-xl font-bold mb-4 text-[#34A853]">🏆 Ganadores</h3>
+              <div className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                {winners.length} ganador{winners.length !== 1 ? "es" : ""}
+              </div>
+              <div className="grid gap-2 max-h-64 overflow-y-auto">
+                {winners.map(registration => (
+                  <div
+                    key={registration.id}
+                    className="p-3 rounded-lg border-2 border-[#34A853] bg-gradient-to-r from-[#34A853]/20 to-[#FBBC04]/20 dark:bg-gradient-to-r dark:from-[#34A853]/30 dark:to-[#FBBC04]/30"
+                  >
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <div className="font-medium">
+                          🏆 {registration.first_name} {registration.last_name}
+                        </div>
+                      </div>
+                      <div className="text-sm text-gray-500">{registration.role}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {registrations.length > 0 && !isSelecting && (
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 border-2 border-[#EA4335]/20">
+              <h3 className="text-xl font-bold mb-4 text-[#EA4335]">
+                📋 Lista de Participantes Activos
+              </h3>
+
+              <div className="mb-4">
+                <Input
+                  type="text"
+                  placeholder="🔍 Buscar por nombre..."
+                  value={searchTerm}
+                  onChange={e => setSearchTerm(e.target.value)}
+                  className="w-full border-2 border-[#EA4335]/30 focus:border-[#EA4335] rounded-lg"
+                />
+              </div>
+
+              <div className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                {filteredRegistrations.length} de {registrations.length} participante
+                {registrations.length !== 1 ? "s" : ""} {searchTerm ? "encontrado" : "disponible"}
+                {filteredRegistrations.length !== 1 ? "s" : ""}
+              </div>
+
+              <div className="grid gap-2 max-h-96 overflow-y-auto">
+                {filteredRegistrations.length > 0 ? (
+                  filteredRegistrations.map((registration, index) => (
+                    <div
+                      key={registration.id}
+                      className={`
+                        p-3 rounded-lg border-2 transition-all duration-200
+                        ${
+                          index === currentIndex
+                            ? "border-[#4285F4] bg-gradient-to-r from-[#4285F4]/20 to-[#EA4335]/20 dark:bg-gradient-to-r dark:from-[#4285F4]/30 dark:to-[#EA4335]/30 shadow-md"
+                            : winner?.id === registration.id
+                              ? "border-[#34A853] bg-gradient-to-r from-[#34A853]/20 to-[#FBBC04]/20 dark:bg-gradient-to-r dark:from-[#34A853]/30 dark:to-[#FBBC04]/30 shadow-md"
+                              : "border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-[#4285F4]/50"
+                        }
+                      `}
+                    >
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <div className="font-medium">
+                            {registration.first_name} {registration.last_name}
+                            {winner?.id === registration.id && <span className="ml-2">🎯</span>}
+                          </div>
+                        </div>
+                        <div className="text-sm text-gray-500">{registration.role}</div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                    <div className="text-4xl mb-2">🔍</div>
+                    <p>No se encontraron participantes con "{searchTerm}"</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {discarded.length > 0 && (
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 border-2 border-[#EA4335]/40">
+              <h3 className="text-xl font-bold mb-4 text-[#EA4335]">❌ Descartados</h3>
+              <div className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                {discarded.length} descartado{discarded.length !== 1 ? "s" : ""}
+              </div>
+              <div className="grid gap-2 max-h-64 overflow-y-auto">
+                {discarded.map(registration => (
+                  <div
+                    key={registration.id}
+                    className="p-3 rounded-lg border-2 border-[#EA4335] bg-gradient-to-r from-[#EA4335]/20 to-[#EA4335]/10 dark:bg-gradient-to-r dark:from-[#EA4335]/30 dark:to-[#EA4335]/20"
+                  >
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <div className="font-medium">
+                          ❌ {registration.first_name} {registration.last_name}
+                        </div>
+                      </div>
+                      <div className="text-sm text-gray-500">{registration.role}</div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           )}

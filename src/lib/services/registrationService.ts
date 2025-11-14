@@ -294,7 +294,7 @@ export async function getRandomRegistrations(
   let query = supabase
     .from("registrations")
     .select(
-      "id, created_at, profiles(first_name, last_name, email, phone_number), status, role, responses, events (slug)"
+      "id, created_at, profiles(first_name, last_name, email, phone_number), status, role, responses, events!inner(slug)"
     )
     .eq("events.slug", eventSlug)
 
