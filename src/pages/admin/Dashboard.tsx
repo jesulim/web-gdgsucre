@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { AccreditationTable } from "@/components/admin/AccreditationTable"
 import { AdminTabs } from "@/components/admin/AdminTabs"
 import { AppSidebar } from "@/components/app-sidebar"
@@ -15,6 +15,8 @@ interface UserData {
 
 type ViewType = "registrations" | "accreditation"
 
+const VIEW_STORAGE_KEY = "admin_current_view"
+
 export function Dashboard({
   isAuthenticated = false,
   user,
@@ -22,7 +24,19 @@ export function Dashboard({
   isAuthenticated?: boolean
   user?: UserData
 }) {
-  const [currentView, setCurrentView] = useState<ViewType>("registrations")
+  // Inicializar con la vista guardada o "registrations" por defecto
+  const [currentView, setCurrentView] = useState<ViewType>(() => {
+    if (typeof window !== "undefined") {
+      const savedView = localStorage.getItem(VIEW_STORAGE_KEY)
+      return (savedView as ViewType) || "registrations"
+    }
+    return "registrations"
+  })
+
+  // Guardar la vista actual en localStorage cuando cambie
+  useEffect(() => {
+    localStorage.setItem(VIEW_STORAGE_KEY, currentView)
+  }, [currentView])
 
   return (
     <SidebarProvider
