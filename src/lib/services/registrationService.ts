@@ -255,6 +255,9 @@ export async function getRegistrationsWithActivities(
   return data?.map(({ activities, ...rest }) => ({ ...rest, ...activities }))
 }
 
+// Caché simple para almacenar los IDs de actividades
+const activityCache = new Map<string, number>()
+
 export async function updateRegistrationActivity(
   supabase: SupabaseClient,
   registrationId: number,
@@ -262,19 +265,28 @@ export async function updateRegistrationActivity(
   name: string,
   value: boolean
 ) {
-  const { data: activity, error: activityError } = await supabase
-    .from("activities")
-    .select("id, events!inner(slug)")
-    .eq("name", name)
-    .eq("events.slug", eventSlug)
-    .single()
+  const cacheKey = `${eventSlug}:${name}`
+  let activityId = activityCache.get(cacheKey)
 
-  if (activityError) throw activityError
+  // Solo consultar si no está en caché
+  if (!activityId) {
+    const { data: activity, error: activityError } = await supabase
+      .from("activities")
+      .select("id, events!inner(slug)")
+      .eq("name", name)
+      .eq("events.slug", eventSlug)
+      .single()
+
+    if (activityError) throw activityError
+
+    activityId = activity.id
+    activityCache.set(cacheKey, activityId)
+  }
 
   const { error } = await supabase.from("registration_activities").upsert(
     {
       registration_id: registrationId,
-      activity_id: activity.id,
+      activity_id: activityId,
       completed: value,
     },
     { onConflict: "registration_id,activity_id" }

@@ -112,9 +112,12 @@ export function AccreditationTable() {
     field: keyof AccreditationData,
     value: boolean
   ) => {
-    try {
-      toast.info(`Actualizando ${field}...`)
+    // Actualización optimista: actualizar UI inmediatamente
+    setData(prevData =>
+      prevData?.map(item => (item.id === id ? { ...item, [field]: value } : item))
+    )
 
+    try {
       const response = await fetch("/api/activities", {
         method: "POST",
         headers: {
@@ -128,23 +131,22 @@ export function AccreditationTable() {
         }),
       })
 
-      const body = await response.json()
-
       if (!response.ok) {
+        const body = await response.json()
+        // Revertir cambio si falla
+        setData(prevData =>
+          prevData?.map(item => (item.id === id ? { ...item, [field]: !value } : item))
+        )
         toast.error(body.error || "Error al actualizar")
-        await fetchData()
         return
       }
-
-      setData(prevData =>
-        prevData?.map(item => (item.id === id ? { ...item, [field]: value } : item))
-      )
-
-      toast.success("Actualizado correctamente")
     } catch (error) {
+      // Revertir cambio si falla
+      setData(prevData =>
+        prevData?.map(item => (item.id === id ? { ...item, [field]: !value } : item))
+      )
       toast.error("Error al actualizar")
       console.error("Error updating checkbox:", error)
-      await fetchData()
     }
   }
 
