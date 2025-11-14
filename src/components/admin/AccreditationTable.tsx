@@ -33,6 +33,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import EventSelector from "./EventSelector"
 
 interface AccreditationData {
@@ -198,6 +199,23 @@ export function AccreditationTable() {
       accessorKey: "dietary_restriction",
       header: "Restricción alimentaria",
       enableGlobalFilter: false,
+      cell: ({ row }) => {
+        const restriction = row.getValue("dietary_restriction") as string
+        if (!restriction || restriction === "Ninguna") return <span>-</span>
+
+        return (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className="block max-w-[200px] truncate">{restriction}</span>
+              </TooltipTrigger>
+              <TooltipContent className="max-w-[300px]">
+                <p>{restriction}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )
+      },
     },
     {
       id: "check_in",
