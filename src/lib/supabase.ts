@@ -1,4 +1,4 @@
-import { type SupabaseClient, createClient } from "@supabase/supabase-js"
+import { createClient, type SupabaseClient } from "@supabase/supabase-js"
 import type { APIContext } from "astro"
 
 export const supabase = createClient(
@@ -9,21 +9,15 @@ export const supabase = createClient(
   }
 )
 
-export const createUserClient = async (
-  cookies: APIContext["cookies"]
-): Promise<SupabaseClient> => {
+export const createUserClient = async (cookies: APIContext["cookies"]): Promise<SupabaseClient> => {
   const accessToken = cookies.get("sb-access-token")?.value
 
-  const client = createClient(
-    import.meta.env.SUPABASE_URL,
-    import.meta.env.SUPABASE_ANON_KEY,
-    {
-      global: {
-        headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {},
-      },
-      auth: { persistSession: false },
-    }
-  )
+  const client = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY, {
+    global: {
+      headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {},
+    },
+    auth: { persistSession: false },
+  })
 
   return client
 }

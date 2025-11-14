@@ -1,5 +1,5 @@
-import { createUserClient } from "@/lib/supabase"
 import type { APIRoute } from "astro"
+import { createUserClient } from "@/lib/supabase"
 
 export const GET: APIRoute = async ({ url, cookies, redirect }) => {
   const bucket = url.searchParams?.get("bucket")
@@ -15,9 +15,7 @@ export const GET: APIRoute = async ({ url, cookies, redirect }) => {
 
   const supabase = await createUserClient(cookies)
 
-  const { data, error } = await supabase.storage
-    .from(bucket)
-    .createSignedUrl(fileUrl, 60 * 60) // 1 hour
+  const { data, error } = await supabase.storage.from(bucket).createSignedUrl(fileUrl, 60 * 60) // 1 hour
 
   if (!data || error) {
     return new Response(`Unable to generate link. ${error.message}`, {

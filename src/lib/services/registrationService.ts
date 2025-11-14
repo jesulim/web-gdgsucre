@@ -34,6 +34,21 @@ interface Registration {
   fields: { [k: string]: string | File }
 }
 
+export async function hasRegistration(
+  supabase: SupabaseClient,
+  user_id: string,
+  eventSlug: string
+) {
+  const { data } = await supabase
+    .from("registrations")
+    .select("id, events!inner(slug)")
+    .eq("user_id", user_id)
+    .eq("events.slug", eventSlug)
+    .maybeSingle()
+
+  return !!data
+}
+
 export async function getEventRegistration(
   supabase: SupabaseClient,
   user_id: string,
@@ -221,7 +236,7 @@ export async function getRegistrationsWithActivities(
 ) {
   const query = supabase
     .from("registrations_with_activities")
-    .select("id, first_name, last_name, package, dietary_restriction, activities")
+    .select("id, first_name, last_name, role, package, dietary_restriction, activities")
     .eq("slug", event_slug)
 
   if (role === "Participante" || role === "Organizer") {
@@ -243,13 +258,15 @@ export async function getRegistrationsWithActivities(
 export async function updateRegistrationActivity(
   supabase: SupabaseClient,
   registrationId: number,
+  eventSlug: string,
   name: string,
   value: boolean
 ) {
   const { data: activity, error: activityError } = await supabase
     .from("activities")
-    .select("id")
+    .select("id, events!inner(slug)")
     .eq("name", name)
+    .eq("events.slug", eventSlug)
     .single()
 
   if (activityError) throw activityError
@@ -263,7 +280,7 @@ export async function updateRegistrationActivity(
     { onConflict: "registration_id,activity_id" }
   )
 
-  if (error) throw error
+  if (error) throw new Error(`Error updating activity: ${error.message}`)
 
   return { success: true }
 }

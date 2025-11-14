@@ -1,9 +1,8 @@
 import react from "@astrojs/react"
-import tailwindcss from "@tailwindcss/vite"
-// @ts-check
-import { defineConfig } from "astro/config"
-
 import vercel from "@astrojs/vercel"
+import tailwindcss from "@tailwindcss/vite"
+
+import { defineConfig } from "astro/config"
 
 // https://astro.build/config
 export default defineConfig({
@@ -33,6 +32,10 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
+    // FIXME: Issue with Astro 5.15 https://github.com/withastro/astro/issues/14692#issuecomment-3487416407
+    optimizeDeps: {
+      include: ["picocolors"],
+    },
   },
 
   integrations: [react()],
