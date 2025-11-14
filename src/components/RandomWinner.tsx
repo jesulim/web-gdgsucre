@@ -255,6 +255,31 @@ export default function RandomWinnerSelector() {
               </div>
             </div>
           )}
+          {winners.length > 0 && (
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 border-2 border-[#34A853]/40">
+              <h3 className="text-xl font-bold mb-4 text-[#34A853]">🏆 Ganadores</h3>
+              <div className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                {winners.length} ganador{winners.length !== 1 ? "es" : ""}
+              </div>
+              <div className="grid gap-2 max-h-64 overflow-y-auto">
+                {winners.map(registration => (
+                  <div
+                    key={registration.id}
+                    className="p-3 rounded-lg border-2 border-[#34A853] bg-gradient-to-r from-[#34A853]/20 to-[#FBBC04]/20 dark:bg-gradient-to-r dark:from-[#34A853]/30 dark:to-[#FBBC04]/30"
+                  >
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <div className="font-medium">
+                          🏆 {registration.first_name} {registration.last_name}
+                        </div>
+                      </div>
+                      <div className="text-sm text-gray-500">{registration.role}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {registrations.length > 0 && !isSelecting && (
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 border-2 border-[#EA4335]/20">
@@ -285,32 +310,6 @@ export default function RandomWinnerSelector() {
                         <div className="font-medium">
                           {registration.first_name} {registration.last_name}
                           {winner?.id === registration.id && <span className="ml-2">🎯</span>}
-                        </div>
-                      </div>
-                      <div className="text-sm text-gray-500">{registration.role}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {winners.length > 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 border-2 border-[#34A853]/40">
-              <h3 className="text-xl font-bold mb-4 text-[#34A853]">🏆 Ganadores</h3>
-              <div className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-                {winners.length} ganador{winners.length !== 1 ? "es" : ""}
-              </div>
-              <div className="grid gap-2 max-h-64 overflow-y-auto">
-                {winners.map(registration => (
-                  <div
-                    key={registration.id}
-                    className="p-3 rounded-lg border-2 border-[#34A853] bg-gradient-to-r from-[#34A853]/20 to-[#FBBC04]/20 dark:bg-gradient-to-r dark:from-[#34A853]/30 dark:to-[#FBBC04]/30"
-                  >
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <div className="font-medium">
-                          🏆 {registration.first_name} {registration.last_name}
                         </div>
                       </div>
                       <div className="text-sm text-gray-500">{registration.role}</div>
