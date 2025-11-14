@@ -335,17 +335,15 @@ export async function getRandomRegistrations(
 
   const registrationsWithCorrectRole = registrations.map(
     ({ profiles, responses, events, ...rest }) => {
-      const profile = profiles as any
-      const profileId = profile?.id
+      const profileId = profiles?.id
       const correctRole = organizerIds.has(profileId) ? "Organizer" : "Participante"
 
       return {
         ...rest,
-        id: profile?.id,
-        first_name: profile?.first_name,
-        last_name: profile?.last_name,
-        email: profile?.email,
-        phone_number: profile?.phone_number,
+        first_name: profiles?.first_name,
+        last_name: profiles?.last_name,
+        email: profiles?.email,
+        phone_number: profiles?.phone_number,
         ...responses,
         role: correctRole,
       }
