@@ -77,6 +77,12 @@ export default function RandomWinnerSelector() {
     fetchRegistrations()
   }, [fetchRegistrations])
 
+  const getSecureRandomIndex = (max: number): number => {
+    const randomBuffer = new Uint32Array(1)
+    crypto.getRandomValues(randomBuffer)
+    return Math.floor((randomBuffer[0] / (0xffffffff + 1)) * max)
+  }
+
   const startSelection = () => {
     if (registrations.length === 0) {
       alert("Primero debes cargar los registros")
@@ -103,7 +109,7 @@ export default function RandomWinnerSelector() {
       if (elapsed < duration) {
         setTimeout(animate, Math.min(speed, 300))
       } else {
-        const finalIndex = Math.floor(Math.random() * registrations.length)
+        const finalIndex = getSecureRandomIndex(registrations.length)
         setCurrentIndex(finalIndex)
         setWinner(registrations[finalIndex])
         setIsSelecting(false)

@@ -285,6 +285,22 @@ export async function updateRegistrationActivity(
   return { success: true }
 }
 
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array]
+
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    // Generar índice aleatorio usando crypto para mayor robustez
+    const randomBuffer = new Uint32Array(1)
+    crypto.getRandomValues(randomBuffer)
+    const j = Math.floor((randomBuffer[0] / (0xffffffff + 1)) * (i + 1))
+
+    // Intercambiar elementos
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+
+  return shuffled
+}
+
 export async function getRandomRegistrations(
   supabase: SupabaseClient,
   limit: number | null = null,
@@ -313,9 +329,8 @@ export async function getRandomRegistrations(
     return []
   }
 
-  // Si no hay límite, devolver todos los registros mezclados
-  // Si hay límite, tomar solo esa cantidad
-  let aleatorios = registrations.sort(() => 0.5 - Math.random())
+  // Mezclar usando Fisher-Yates con crypto.getRandomValues para mayor robustez
+  let aleatorios = shuffleArray(registrations)
 
   if (limit !== null && limit > 0) {
     aleatorios = aleatorios.slice(0, Math.min(limit, registrations.length))
