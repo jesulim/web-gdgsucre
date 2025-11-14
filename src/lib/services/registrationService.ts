@@ -307,33 +307,56 @@ export async function getRandomRegistrations(
   role: string | null = null,
   eventSlug: string | null = "devfest-25"
 ) {
-  let query = supabase
+  const { data: registrations, error } = await supabase
     .from("registrations")
     .select(
       "id, created_at, profiles(first_name, last_name, email, phone_number), status, role, responses, events!inner(slug)"
     )
     .eq("events.slug", eventSlug)
 
-  // Filtrar por rol si se especifica
-  if (role && (role === "Participante" || role === "Organizer")) {
-    query = query.eq("role", role)
-  }
-
-  const { data: registrations, error } = await query
-
   if (error) {
     throw new Error(`Error obteniendo registros: ${error.message}`)
+  }
+
+  const { data: organizers, error: organizersError } = await supabase
+    .from("organizers")
+    .select("profile_id, events!inner(slug)")
+    .eq("events.slug", eventSlug)
+
+  if (organizersError) {
+    throw new Error(`Error obteniendo organizadores: ${organizersError.message}`)
   }
 
   if (!registrations || registrations.length === 0) {
     return []
   }
 
+  const organizerIds = new Set(organizers?.map(organizer => organizer.profile_id) || [])
+
+  const registrationsWithCorrectRole = registrations.map(
+    ({ profiles, responses, events, ...rest }) => {
+      const profileId = profiles?.id
+      const correctRole = organizerIds.has(profileId) ? "Organizer" : "Participante"
+
+      return {
+        ...rest,
+        ...profiles,
+        ...responses,
+        role: correctRole,
+      }
+    }
+  )
+
+  let filteredRegistrations = registrationsWithCorrectRole
+  if (role && (role === "Participante" || role === "Organizer")) {
+    filteredRegistrations = registrationsWithCorrectRole.filter(reg => reg.role === role)
+  }
+
   // Mezclar usando Fisher-Yates con crypto.getRandomValues para mayor robustez
   let aleatorios = shuffleArray(registrations)
 
   if (limit !== null && limit > 0) {
-    aleatorios = aleatorios.slice(0, Math.min(limit, registrations.length))
+    aleatorios = aleatorios.slice(0, Math.min(limit, filteredRegistrations.length))
   }
 
   const flattenedRegistrations = aleatorios.map(({ profiles, responses, events, ...rest }) => ({
