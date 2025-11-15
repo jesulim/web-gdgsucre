@@ -31,5 +31,5 @@ const userData = profile
 
 <BaseLayout>
   <!-- <Header /> -->
-  <Dashboard client:visible isAuthenticated={isAuthenticated} user={userData} />
+  <Dashboard client:only="react" isAuthenticated={isAuthenticated} user={userData} />
 </BaseLayout>
