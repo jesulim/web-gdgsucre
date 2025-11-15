@@ -93,7 +93,7 @@ export default function QRScanner() {
       }
 
       toast.success(
-        `${getActivityLabel(activity)} confirmado para ${pendingRegistration?.first_name} ${pendingRegistration?.last_name}`
+        `${getActivityLabel(activity)} completado para ${pendingRegistration?.first_name} ${pendingRegistration?.last_name}`
       )
       setDialogOpen(false)
     } catch (error) {
@@ -134,7 +134,7 @@ export default function QRScanner() {
 
       if (response.message === "activity_completed") {
         toast.warning(
-          `${getActivityLabel(activity)} ya fue marcado para ${response.first_name} ${response.last_name}`,
+          `${getActivityLabel(activity)} ya fue completado para ${response.first_name} ${response.last_name}`,
           {
             duration: 4000,
           }
