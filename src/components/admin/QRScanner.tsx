@@ -40,6 +40,34 @@ export default function QRScanner() {
     }
   }
 
+  const checkActivityStatus = async (registrationId: number) => {
+    try {
+      const url = new URL("/api/activities", window.location.origin)
+      url.searchParams.set("slug", eventSlug)
+      url.searchParams.set("role", "Todos")
+
+      const response = await fetch(url.toString())
+      const result = await response.json()
+
+      // Buscar el participante específico en los resultados
+      const participant = result.find((p: any) => p.id === registrationId)
+      return participant || null
+    } catch (error) {
+      console.error("Error al verificar estado de actividad:", error)
+      throw error
+    }
+  }
+
+  const getActivityLabel = (activityKey: string) => {
+    const labels: Record<string, string> = {
+      check_in: "Check-in",
+      package_delivered: "Paquete",
+      lunch: "Almuerzo",
+      refreshment: "Refrigerio",
+    }
+    return labels[activityKey] || activityKey
+  }
+
   const updateActivity = async (registrationId: number, field: string, value: boolean) => {
     try {
       const response = await fetch("/api/activities", {
@@ -98,11 +126,25 @@ export default function QRScanner() {
         return
       }
 
+      // Verificar si la actividad ya fue completada
+      const participantStatus = await checkActivityStatus(registration.id)
+
+      if (participantStatus && participantStatus[activity] === true) {
+        toast.warning(
+          `⚠️ ${getActivityLabel(activity)} ya fue entregado a ${registration.first_name} ${registration.last_name}`,
+          {
+            duration: 4000,
+          }
+        )
+        setIsProcessing(false)
+        return
+      }
+
       // Actualizar la actividad automáticamente
       await updateActivity(registration.id, activity, true)
 
       toast.success(
-        `✅ ${activity === "check_in" ? "Check-in" : activity === "package_delivered" ? "Paquete entregado" : activity === "lunch" ? "Almuerzo entregado" : "Refrigerio entregado"} confirmado para ${registration.first_name} ${registration.last_name}`
+        `✅ ${getActivityLabel(activity)} confirmado para ${registration.first_name} ${registration.last_name}`
       )
     } catch (error) {
       toast.error(`Error: ${error instanceof Error ? error.message : "Error desconocido"}`)
