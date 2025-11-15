@@ -205,6 +205,7 @@ export default function QRScanner() {
 
       <div className="max-w-2xl mx-auto">
         <Scanner
+          classNames={["rounded-md"]}
           onScan={handleOnScan}
           formats={["qr_code"]}
           constraints={{
@@ -225,7 +226,12 @@ export default function QRScanner() {
         <ConfirmDialog
           open={dialogOpen}
           title={`¿Completar ${getActivityLabel(activity)}?`}
-          description={`${pendingRegistration.first_name} ${pendingRegistration.last_name}\nPaquete: ${pendingRegistration.package?.split(" (")[0]}`}
+          description={
+            `${pendingRegistration.first_name} ${pendingRegistration.last_name}` +
+            (activity === "package_delivered"
+              ? `\nPaquete: ${pendingRegistration.package?.split(" (")[0]}`
+              : "")
+          }
           onConfirm={updateActivity}
           onCancel={() => setDialogOpen(false)}
         />
