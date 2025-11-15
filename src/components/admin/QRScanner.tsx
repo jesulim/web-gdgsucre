@@ -3,6 +3,15 @@ import { useRef, useState } from "react"
 import { Toaster, toast } from "sonner"
 
 import EventSelector from "@/components/admin/EventSelector"
+import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+
 import {
   Select,
   SelectContent,
@@ -12,6 +21,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+
+function ConfirmDialog({ open, onConfirm, onCancel, title, description }) {
+  return (
+    <Dialog open={open} onOpenChange={onCancel}>
+      <DialogContent className="max-w-sm">
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+          <p className="text-sm text-muted-foreground">{description}</p>
+        </DialogHeader>
+        <DialogFooter className="gap-4">
+          <Button variant="outline" onClick={onCancel}>
+            Cancelar
+          </Button>
+          <Button className="bg-green-500" onClick={onConfirm}>
+            Confirmar
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
 
 export default function QRScanner() {
   const processedRef = useRef<Map<string, number>>(new Map())
@@ -24,9 +54,12 @@ export default function QRScanner() {
   const [activity, setActivity] = useState("check_in")
   const [eventSlug, setEventSlug] = useState("")
 
+  const [pendingRegistration, setPendingRegistration] = useState(null)
+  const [dialogOpen, setDialogOpen] = useState(false)
+
   const fetchRegistration = async (token: string) => {
     try {
-      const response = await fetch(`/api/registrationByToken?token=${token}`)
+      const response = await fetch(`/api/registrationByToken?token=${token}&activity=${activity}`)
 
       if (!response.ok) {
         throw new Error("Registro no encontrado")
@@ -36,24 +69,6 @@ export default function QRScanner() {
       return body
     } catch (error) {
       console.error("Error al cargar registro:", error)
-      throw error
-    }
-  }
-
-  const checkActivityStatus = async (registrationId: number) => {
-    try {
-      const url = new URL("/api/activities", window.location.origin)
-      url.searchParams.set("slug", eventSlug)
-      url.searchParams.set("role", "Todos")
-
-      const response = await fetch(url.toString())
-      const result = await response.json()
-
-      // Buscar el participante específico en los resultados
-      const participant = result.find((p: any) => p.id === registrationId)
-      return participant || null
-    } catch (error) {
-      console.error("Error al verificar estado de actividad:", error)
       throw error
     }
   }
@@ -68,7 +83,7 @@ export default function QRScanner() {
     return labels[activityKey] || activityKey
   }
 
-  const updateActivity = async (registrationId: number, field: string, value: boolean) => {
+  const updateActivity = async () => {
     try {
       const response = await fetch("/api/activities", {
         method: "POST",
@@ -76,22 +91,24 @@ export default function QRScanner() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id: registrationId,
+          id: pendingRegistration.id,
           eventSlug,
-          field,
-          value,
+          field: activity,
+          value: true,
         }),
       })
 
       if (!response.ok) {
         const body = await response.json()
-        throw new Error(body.error || "Error al actualizar")
+        toast.error(body.error)
       }
 
-      return true
+      toast.success(
+        `${getActivityLabel(activity)} confirmado para ${pendingRegistration.first_name} ${pendingRegistration.last_name}`
+      )
+      setDialogOpen(false)
     } catch (error) {
-      console.error("Error al actualizar actividad:", error)
-      throw error
+      toast.error(error instanceof Error ? error.message : "Error desconocido")
     }
   }
 
@@ -118,20 +135,17 @@ export default function QRScanner() {
     processedRef.current.set(token, now)
 
     try {
-      const registration = await fetchRegistration(token)
+      const response = await fetchRegistration(token, activity)
 
-      if (!registration) {
-        toast.error("Registro no encontrado")
+      if (response.error) {
+        toast.error(response.error)
         setIsProcessing(false)
         return
       }
 
-      // Verificar si la actividad ya fue completada
-      const participantStatus = await checkActivityStatus(registration.id)
-
-      if (participantStatus && participantStatus[activity] === true) {
+      if (response.message === "activity_completed") {
         toast.warning(
-          `⚠️ ${getActivityLabel(activity)} ya fue entregado a ${registration.first_name} ${registration.last_name}`,
+          `${getActivityLabel(activity)} ya fue entregado a ${response.first_name} ${response.last_name}`,
           {
             duration: 4000,
           }
@@ -140,12 +154,8 @@ export default function QRScanner() {
         return
       }
 
-      // Actualizar la actividad automáticamente
-      await updateActivity(registration.id, activity, true)
-
-      toast.success(
-        `✅ ${getActivityLabel(activity)} confirmado para ${registration.first_name} ${registration.last_name}`
-      )
+      setPendingRegistration(response)
+      setDialogOpen(true)
     } catch (error) {
       toast.error(`Error: ${error instanceof Error ? error.message : "Error desconocido"}`)
     } finally {
@@ -220,6 +230,16 @@ export default function QRScanner() {
 
       {isProcessing && (
         <div className="mt-4 text-center text-lg font-medium text-blue-600">Procesando...</div>
+      )}
+
+      {pendingRegistration && (
+        <ConfirmDialog
+          open={dialogOpen}
+          title={`Completar ${activity}?`}
+          description={`${pendingRegistration.first_name} ${pendingRegistration.last_name}`}
+          onConfirm={updateActivity}
+          onCancel={() => setDialogOpen(false)}
+        />
       )}
     </div>
   )
