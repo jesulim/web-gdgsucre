@@ -297,48 +297,86 @@ export async function updateRegistrationActivity(
   return { success: true }
 }
 
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array]
+
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    // Generar índice aleatorio usando crypto para mayor robustez
+    const randomBuffer = new Uint32Array(1)
+    crypto.getRandomValues(randomBuffer)
+    const j = Math.floor((randomBuffer[0] / (0xffffffff + 1)) * (i + 1))
+
+    // Intercambiar elementos
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+
+  return shuffled
+}
+
 export async function getRandomRegistrations(
   supabase: SupabaseClient,
   limit: number | null = null,
-  role: string | null = null
+  role: string | null = null,
+  eventSlug: string | null = "devfest-25"
 ) {
-  let query = supabase
+  const { data: registrations, error } = await supabase
     .from("registrations")
     .select(
-      "id, created_at, profiles(first_name, last_name, email, phone_number), status, role, responses, events (slug)"
+      "id, created_at, profiles(id, first_name, last_name, email, phone_number), status, role, responses, events!inner(slug)"
     )
-    .eq("events.slug", "io-extended-25")
-
-  // Filtrar por rol si se especifica
-  if (role && (role === "Participante" || role === "Organizer")) {
-    query = query.eq("role", role)
-  }
-
-  const { data: registrations, error } = await query
+    .eq("events.slug", eventSlug)
 
   if (error) {
     throw new Error(`Error obteniendo registros: ${error.message}`)
+  }
+
+  const { data: organizers, error: organizersError } = await supabase
+    .from("organizers")
+    .select("profile_id, events!inner(slug)")
+    .eq("events.slug", eventSlug)
+
+  if (organizersError) {
+    throw new Error(`Error obteniendo organizadores: ${organizersError.message}`)
   }
 
   if (!registrations || registrations.length === 0) {
     return []
   }
 
-  // Si no hay límite, devolver todos los registros mezclados
-  // Si hay límite, tomar solo esa cantidad
-  let aleatorios = registrations.sort(() => 0.5 - Math.random())
+  const organizerIds = new Set(organizers?.map(organizer => organizer.profile_id) || [])
 
-  if (limit !== null && limit > 0) {
-    aleatorios = aleatorios.slice(0, Math.min(limit, registrations.length))
+  const registrationsWithCorrectRole = registrations.map(
+    ({ profiles, responses, events, ...rest }) => {
+      const profileId = profiles?.id
+      const correctRole = organizerIds.has(profileId) ? "Organizer" : "Participante"
+
+      return {
+        ...rest,
+        first_name: profiles?.first_name,
+        last_name: profiles?.last_name,
+        email: profiles?.email,
+        phone_number: profiles?.phone_number,
+        ...responses,
+        role: correctRole,
+      }
+    }
+  )
+
+  let filteredRegistrations = registrationsWithCorrectRole
+
+  if (role === "Participante") {
+    filteredRegistrations = registrationsWithCorrectRole.filter(reg => reg.role === "Participante")
+  } else if (role === "Organizer") {
+    filteredRegistrations = registrationsWithCorrectRole.filter(reg => reg.role === "Organizer")
   }
 
-  const flattenedRegistrations = aleatorios.map(({ profiles, responses, events, ...rest }) => ({
-    ...rest,
-    ...profiles,
-    ...responses,
-  }))
+  let aleatorios = shuffleArray(filteredRegistrations)
 
-  return flattenedRegistrations
+  if (limit !== null && limit > 0) {
+    aleatorios = aleatorios.slice(0, Math.min(limit, filteredRegistrations.length))
+  }
+
+  return aleatorios
 }
 
 export async function getRegistrationData(supabase: SupabaseClient, registrationId: string) {

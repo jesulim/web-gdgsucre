@@ -1,26 +1,31 @@
 ---
 import { Image } from "astro:assets"
-import IOExtendedSucreWhite from "@/assets/io-extended-sucre-white.webp"
-import IOFooter from "@/assets/io25-footer.webp"
+import LogoHorizontalBlack from "@/assets/logos/LogoHorizontalBlack.png"
 ---
 
-<header class="h-25 bg-black text-white flex md:items-center justify-between">
+<header class="min-h-fit sm:h-32 bg-gradient-to-r from-white via-gray-50 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 border-b-4 border-transparent bg-gradient-to-r border-image-slice-1 shadow-lg flex items-center justify-center px-4 sm:px-6 lg:px-16 xl:px-28">
+  <style>
+    header {
+      border-image: linear-gradient(to right, #4285F4, #EA4335, #FBBC04, #34A853) 1;
+    }
+  </style>
+  
   <div
-    class="w-full flex flex-col items-center sm:items-start lg:flex-row lg:justify-between lg:px-16 lg:items-center xl:px-28"
+    class="w-full flex flex-col items-center gap-3 sm:gap-4 lg:gap-6 lg:flex-row lg:justify-between lg:items-center py-4 sm:py-6"
   >
-    <a href="/">
-      <Image src={IOExtendedSucreWhite} alt="I/O Extended Sucre 2025 white" width={370} />
+    <a href="/" class="hover:scale-105 transition-transform duration-300 flex-shrink-0">
+      <Image 
+        src={LogoHorizontalBlack} 
+        alt="GDG Sucre Logo" 
+        width={350} 
+        class="h-auto w-[250px] sm:w-[300px] lg:w-[350px] dark:brightness-0 dark:invert" 
+      />
     </a>
 
-    <div class="px-4">
-      <p class="text-lg text-center sm:text-left lg:text-xl font-bold lg:mb-4">Sorteo de Ganadores</p>
+    <div class="px-2 sm:px-4 text-center lg:text-left">
+      <p class="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-[#4285F4] via-[#EA4335] to-[#FBBC04] bg-clip-text text-transparent leading-tight">
+        🎰 Sorteo de Ganadores
+      </p>
     </div>
   </div>
-
-  <Image
-    class="hidden sm:block h-full w-fit"
-    src={IOFooter}
-    alt="I/O Extended Sucre 2025 header"
-    height={300}
-  />
 </header>
