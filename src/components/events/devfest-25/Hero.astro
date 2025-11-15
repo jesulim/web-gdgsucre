@@ -66,7 +66,9 @@ const mapsUrl = "https://maps.app.goo.gl/3PS7ysYJDmMUvNpg6"
   <div
     class="text-xl bg-linear-to-b from-red-500 to-red-700 flex items-center justify-center px-8 md:px-14 py-3 md:py-3.5 rounded-full text-white font-semibold hover:bg-red-500 transition-colors"
   >
-    <CTALink />
+    <CTALink server:defer>
+      <span slot="fallback">Regístrate ahora</span>
+    </CTALink>
   </div>
 
   <div>
@@ -117,8 +119,8 @@ const mapsUrl = "https://maps.app.goo.gl/3PS7ysYJDmMUvNpg6"
 
 <script define:vars={{ gcalMobileIntent, googleCalendarUrl }}>
   // Detectar si es móvil y actualizar el enlace del calendario
-  document.addEventListener('DOMContentLoaded', () => {
-    const calendarLink = document.getElementById('calendar-link')
+  document.addEventListener("DOMContentLoaded", () => {
+    const calendarLink = document.getElementById("calendar-link")
     if (calendarLink) {
       const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
       calendarLink.href = isMobile ? gcalMobileIntent : googleCalendarUrl

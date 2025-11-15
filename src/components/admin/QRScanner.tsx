@@ -228,7 +228,7 @@ export default function QRScanner() {
           title={`¿Completar ${getActivityLabel(activity)}?`}
           description={
             `${pendingRegistration.first_name} ${pendingRegistration.last_name}` +
-            (activity === "package_delivered"
+            (activity !== "check_in"
               ? `\nPaquete: ${pendingRegistration.package?.split(" (")[0]}`
               : "")
           }
