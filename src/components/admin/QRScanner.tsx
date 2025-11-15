@@ -38,7 +38,7 @@ function ConfirmDialog({ open, onConfirm, onCancel, title, description }) {
       <DialogContent className="max-w-sm">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
-          <p className="text-sm text-muted-foreground">{description}</p>
+          <p className="text-sm">{description}</p>
         </DialogHeader>
         <DialogFooter className="gap-4">
           <Button variant="outline" onClick={onCancel}>
@@ -225,7 +225,7 @@ export default function QRScanner() {
         <ConfirmDialog
           open={dialogOpen}
           title={`¿Marcar ${getActivityLabel(activity)}?`}
-          description={`${pendingRegistration.first_name} ${pendingRegistration.last_name}`}
+          description={`${pendingRegistration.first_name} ${pendingRegistration.last_name}\n${pendingRegistration.package?.split(" (")[0]}`}
           onConfirm={updateActivity}
           onCancel={() => setDialogOpen(false)}
         />

@@ -403,7 +403,7 @@ export async function getRegistrationByToken(
 ) {
   const { data: registration, error } = await supabase
     .from("registrations_with_activities")
-    .select(`id, first_name, last_name, activities->${activity}`)
+    .select(`id, first_name, last_name, package, activities->${activity}`)
     .eq("token", token)
     .maybeSingle()
 
