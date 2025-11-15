@@ -1,6 +1,8 @@
 import { type IDetectedBarcode, Scanner, useDevices } from "@yudiel/react-qr-scanner"
 import { useRef, useState } from "react"
+import { Toaster, toast } from "sonner"
 
+import EventSelector from "@/components/admin/EventSelector"
 import {
   Select,
   SelectContent,
@@ -19,21 +21,59 @@ export default function QRScanner() {
 
   const [isProcessing, setIsProcessing] = useState(false)
   const [selectedDevice, setSelectedDevice] = useState("")
-  const [activity, setActivity] = useState("check-in")
+  const [activity, setActivity] = useState("check_in")
+  const [eventSlug, setEventSlug] = useState("")
 
   const fetchRegistration = async (token: string) => {
     try {
       const response = await fetch(`/api/registrationByToken?token=${token}`)
 
+      if (!response.ok) {
+        throw new Error("Registro no encontrado")
+      }
+
       const body = await response.json()
       return body
     } catch (error) {
       console.error("Error al cargar registro:", error)
+      throw error
+    }
+  }
+
+  const updateActivity = async (registrationId: number, field: string, value: boolean) => {
+    try {
+      const response = await fetch("/api/activities", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: registrationId,
+          eventSlug,
+          field,
+          value,
+        }),
+      })
+
+      if (!response.ok) {
+        const body = await response.json()
+        throw new Error(body.error || "Error al actualizar")
+      }
+
+      return true
+    } catch (error) {
+      console.error("Error al actualizar actividad:", error)
+      throw error
     }
   }
 
   const handleOnScan = async (result: IDetectedBarcode[]) => {
     if (!result.length || isProcessing) return
+
+    if (!eventSlug) {
+      toast.error("Selecciona un evento primero")
+      return
+    }
 
     setIsProcessing(true)
     const token = result[0].rawValue
@@ -43,6 +83,7 @@ export default function QRScanner() {
 
     if (now - last < COOLDOWN_MS) {
       console.debug("Ignored duplicated token", token)
+      setIsProcessing(false)
       return
     }
 
@@ -51,17 +92,22 @@ export default function QRScanner() {
     try {
       const registration = await fetchRegistration(token)
 
-      // TODO: Make API call to confirm activity, handle rejection when it was already confirmed
-      const confirmed = window.confirm(
-        `Completar ${activity} de ${registration.first_name} ${registration.last_name}?`
-      )
-
-      if (confirmed) {
-        console.info("Confirmed")
-      } else {
-        console.warn("Canceled")
+      if (!registration) {
+        toast.error("Registro no encontrado")
+        setIsProcessing(false)
+        return
       }
+
+      // Actualizar la actividad automáticamente
+      await updateActivity(registration.id, activity, true)
+
+      toast.success(
+        `✅ ${activity === "check_in" ? "Check-in" : activity === "package_delivered" ? "Paquete entregado" : activity === "lunch" ? "Almuerzo entregado" : "Refrigerio entregado"} confirmado para ${registration.first_name} ${registration.last_name}`
+      )
+    } catch (error) {
+      toast.error(`Error: ${error instanceof Error ? error.message : "Error desconocido"}`)
     } finally {
+      setIsProcessing(false)
       // Clear cooldown by token
       setTimeout(() => {
         const t = processedRef.current.get(token)
@@ -72,9 +118,15 @@ export default function QRScanner() {
 
   return (
     <div className="w-full p-4">
-      <div className="flex justify-between mb-8">
+      <Toaster position="top-right" />
+
+      <div className="mb-4">
+        <EventSelector eventSlug={eventSlug} setEventSlug={setEventSlug} />
+      </div>
+
+      <div className="flex gap-4 mb-8">
         <Select onValueChange={value => setActivity(value)} defaultValue="check_in">
-          <SelectTrigger>
+          <SelectTrigger className="w-[200px]">
             <SelectValue placeholder="Selecciona una actividad" />
           </SelectTrigger>
           <SelectContent>
@@ -90,7 +142,7 @@ export default function QRScanner() {
 
         {devices?.length > 0 && (
           <Select onValueChange={value => setSelectedDevice(value)}>
-            <SelectTrigger>
+            <SelectTrigger className="w-[200px]">
               <SelectValue placeholder="Selecciona una cámara" />
             </SelectTrigger>
             <SelectContent>
@@ -110,17 +162,23 @@ export default function QRScanner() {
         )}
       </div>
 
-      <Scanner
-        onScan={handleOnScan}
-        formats={["qr_code"]}
-        constraints={{
-          facingMode: "environment",
-          deviceId: selectedDevice,
-          aspectRatio: 1,
-          width: { ideal: 600 },
-          height: { ideal: 600 },
-        }}
-      />
+      <div className="max-w-2xl mx-auto">
+        <Scanner
+          onScan={handleOnScan}
+          formats={["qr_code"]}
+          constraints={{
+            facingMode: "environment",
+            deviceId: selectedDevice,
+            aspectRatio: 1,
+            width: { ideal: 600 },
+            height: { ideal: 600 },
+          }}
+        />
+      </div>
+
+      {isProcessing && (
+        <div className="mt-4 text-center text-lg font-medium text-blue-600">Procesando...</div>
+      )}
     </div>
   )
 }
