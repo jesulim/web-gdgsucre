@@ -22,7 +22,9 @@ const navLinks = [
 
   <div class="flex items-center gap-4 h-12 order-last">
     {accessToken ? (
-      <Avatar eventSlug="devfest-25" />
+      <Avatar server:defer eventSlug="devfest-25" >
+        <div class="bg-muted rounded-full size-12" slot="fallback" />
+      </Avatar>
     ) : (
       <a href="/api/auth/signin" class="hidden md:inline bg-linear-to-b text-white bg-red-500 font-medium px-4 py-2 rounded-full">
         Iniciar Sesión

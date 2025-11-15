@@ -37,8 +37,8 @@ function ConfirmDialog({ open, onConfirm, onCancel, title, description }) {
     <Dialog open={open} onOpenChange={onCancel}>
       <DialogContent className="max-w-sm">
         <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          <p className="text-sm text-muted-foreground">{description}</p>
+          <DialogTitle className="text-xl">{title}</DialogTitle>
+          <p className="whitespace-pre-line text-left text-xl">{description}</p>
         </DialogHeader>
         <DialogFooter className="gap-4">
           <Button variant="outline" onClick={onCancel}>
@@ -93,7 +93,7 @@ export default function QRScanner() {
       }
 
       toast.success(
-        `${getActivityLabel(activity)} confirmado para ${pendingRegistration?.first_name} ${pendingRegistration?.last_name}`
+        `${getActivityLabel(activity)} completado para ${pendingRegistration?.first_name} ${pendingRegistration?.last_name}`
       )
       setDialogOpen(false)
     } catch (error) {
@@ -134,7 +134,7 @@ export default function QRScanner() {
 
       if (response.message === "activity_completed") {
         toast.warning(
-          `${getActivityLabel(activity)} ya fue marcado para ${response.first_name} ${response.last_name}`,
+          `${getActivityLabel(activity)} ya fue completado para ${response.first_name} ${response.last_name}`,
           {
             duration: 4000,
           }
@@ -205,6 +205,7 @@ export default function QRScanner() {
 
       <div className="max-w-2xl mx-auto">
         <Scanner
+          classNames={["rounded-md"]}
           onScan={handleOnScan}
           formats={["qr_code"]}
           constraints={{
@@ -224,8 +225,13 @@ export default function QRScanner() {
       {pendingRegistration && (
         <ConfirmDialog
           open={dialogOpen}
-          title={`¿Marcar ${getActivityLabel(activity)}?`}
-          description={`${pendingRegistration.first_name} ${pendingRegistration.last_name}`}
+          title={`¿Completar ${getActivityLabel(activity)}?`}
+          description={
+            `${pendingRegistration.first_name} ${pendingRegistration.last_name}` +
+            (activity !== "check_in"
+              ? `\nPaquete: ${pendingRegistration.package?.split(" (")[0]}`
+              : "")
+          }
           onConfirm={updateActivity}
           onCancel={() => setDialogOpen(false)}
         />
