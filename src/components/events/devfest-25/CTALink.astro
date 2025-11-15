@@ -1,9 +1,8 @@
 ---
-import { getProfile } from "@/lib/services/profileService"
 import { hasRegistration } from "@/lib/services/registrationService"
 import { createUserClient } from "@/lib/supabase"
 
-const accessToken = Astro.cookies.has("sb-access-token")
+const accessToken = Astro.cookies.get("sb-access-token")?.value
 let redirectHref = accessToken
   ? "/registro/devfest-25"
   : "/api/auth/signin?next=/registro/devfest-25"
@@ -11,8 +10,10 @@ let redirectHref = accessToken
 let registration = false
 if (accessToken) {
   const supabase = await createUserClient(Astro.cookies)
-  const profile = await getProfile(supabase)
-  registration = await hasRegistration(supabase, profile?.id, "devfest-25")
+  const {
+    data: { claims },
+  } = await supabase.auth.getClaims(accessToken)
+  registration = await hasRegistration(supabase, claims?.sub, "devfest-25")
   redirectHref = "/registro/devfest-25/confirmado"
 }
 ---
