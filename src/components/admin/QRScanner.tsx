@@ -22,6 +22,16 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
+const getActivityLabel = (activityKey: string) => {
+  const labels: Record<string, string> = {
+    check_in: "Check-in",
+    package_delivered: "Paquete",
+    lunch: "Almuerzo",
+    refreshment: "Refrigerio",
+  }
+  return labels[activityKey] || activityKey
+}
+
 function ConfirmDialog({ open, onConfirm, onCancel, title, description }) {
   return (
     <Dialog open={open} onOpenChange={onCancel}>
@@ -57,41 +67,20 @@ export default function QRScanner() {
   const [pendingRegistration, setPendingRegistration] = useState(null)
   const [dialogOpen, setDialogOpen] = useState(false)
 
-  const fetchRegistration = async (token: string) => {
-    try {
-      const response = await fetch(`/api/registrationByToken?token=${token}&activity=${activity}`)
+  const fetchRegistration = async (token: string, activity: string) => {
+    const response = await fetch(`/api/registrationByToken?token=${token}&activity=${activity}`)
+    const body = await response.json()
 
-      if (!response.ok) {
-        throw new Error("Registro no encontrado")
-      }
-
-      const body = await response.json()
-      return body
-    } catch (error) {
-      console.error("Error al cargar registro:", error)
-      throw error
-    }
-  }
-
-  const getActivityLabel = (activityKey: string) => {
-    const labels: Record<string, string> = {
-      check_in: "Check-in",
-      package_delivered: "Paquete",
-      lunch: "Almuerzo",
-      refreshment: "Refrigerio",
-    }
-    return labels[activityKey] || activityKey
+    return body
   }
 
   const updateActivity = async () => {
     try {
       const response = await fetch("/api/activities", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          id: pendingRegistration.id,
+          id: pendingRegistration?.id,
           eventSlug,
           field: activity,
           value: true,
@@ -104,7 +93,7 @@ export default function QRScanner() {
       }
 
       toast.success(
-        `${getActivityLabel(activity)} confirmado para ${pendingRegistration.first_name} ${pendingRegistration.last_name}`
+        `${getActivityLabel(activity)} confirmado para ${pendingRegistration?.first_name} ${pendingRegistration?.last_name}`
       )
       setDialogOpen(false)
     } catch (error) {
@@ -145,7 +134,7 @@ export default function QRScanner() {
 
       if (response.message === "activity_completed") {
         toast.warning(
-          `${getActivityLabel(activity)} ya fue entregado a ${response.first_name} ${response.last_name}`,
+          `${getActivityLabel(activity)} ya fue marcado para ${response.first_name} ${response.last_name}`,
           {
             duration: 4000,
           }
@@ -235,7 +224,7 @@ export default function QRScanner() {
       {pendingRegistration && (
         <ConfirmDialog
           open={dialogOpen}
-          title={`¿Marcar ${getActivityLabel(activity)}`}
+          title={`¿Marcar ${getActivityLabel(activity)}?`}
           description={`${pendingRegistration.first_name} ${pendingRegistration.last_name}`}
           onConfirm={updateActivity}
           onCancel={() => setDialogOpen(false)}
