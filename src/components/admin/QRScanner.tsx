@@ -38,7 +38,7 @@ function ConfirmDialog({ open, onConfirm, onCancel, title, description }) {
       <DialogContent className="max-w-sm">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
-          <p className="text-sm whitespace-pre-line">{description}</p>
+          <p className="text-sm whitespace-pre-line mx-8 text-left text-xl">{description}</p>
         </DialogHeader>
         <DialogFooter className="gap-4">
           <Button variant="outline" onClick={onCancel}>
