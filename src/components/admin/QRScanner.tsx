@@ -235,7 +235,7 @@ export default function QRScanner() {
       {pendingRegistration && (
         <ConfirmDialog
           open={dialogOpen}
-          title={`Completar ${activity}?`}
+          title={`¿Marcar ${getActivityLabel(activity)}`}
           description={`${pendingRegistration.first_name} ${pendingRegistration.last_name}`}
           onConfirm={updateActivity}
           onCancel={() => setDialogOpen(false)}
