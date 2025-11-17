@@ -9,10 +9,12 @@ const { start, end, title }: Props = Astro.props
 ---
 
 <div
-  class="flex flex-col justify-center items-center py-[14px] px-[24px] md:px-[16px] rounded-[100px] border-black border-5 w-full md:w-[484px]"
+  class="flex flex-col justify-center items-center py-3.5 px-6 md:px-4 rounded-full border-black border-5 w-full md:w-[484px]"
 >
-  <p class="text-[24px] font-bold text-blue-500 text-center">
+  <p class="text-2xl font-bold text-blue-500 text-center">
     <span>{start}</span> - <span>{end}</span>
   </p>
-  <p class="text-2xl md:text-9 text-[#202124] text-center font-bold">{title.toLocaleUpperCase()}</p>
+  <p class="text-2xl md:text-4xl text-[#202124] text-center font-bold">
+    {title.toLocaleUpperCase()}
+  </p>
 </div>
