@@ -1,23 +1,10 @@
 ---
-import { Image } from "astro:assets"
-
 import DevFest25Logo from "@/assets/events/devfest-25/DevFest25logo.svg"
-import Gemini from "@/assets/events/devfest-25/packages/KitGemini.webp"
-import Nano from "@/assets/events/devfest-25/packages/KitNano.webp"
 import CalendarIcon from "@/assets/logos/calendar-month.svg"
 import LocationIcon from "@/assets/logos/distance.svg"
 
 import { Timer } from "@/components/events/devfest-25/Timer"
 import CTALink from "./CTALink.astro"
-
-const packages = [
-  { src: Nano, alt: "Kit Nano" },
-  { src: Gemini, alt: "Kit Gemini" },
-]
-
-const redirectHref = Astro.cookies.has("sb-access-token")
-  ? "/registro/devfest-25"
-  : "/api/auth/signin?next=/registro/devfest-25"
 
 const eventTitle = "DevFest Sucre 2025"
 const eventLocation = "Regimiento Campos 6 de Infantería 180, Sucre"
@@ -71,9 +58,7 @@ const mapsUrl = "https://maps.app.goo.gl/3PS7ysYJDmMUvNpg6"
     </CTALink>
   </div>
 
-  <div>
-    <Timer initialTime={initialTime} targetDate={targetDate} client:load />
-  </div>
+  <Timer initialTime={initialTime} targetDate={targetDate} client:load />
 
   <div class="flex flex-col md:flex-row items-center md:items-start justify-center gap-4 md:gap-6">
     <a

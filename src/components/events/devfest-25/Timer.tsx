@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "motion/react"
-import { memo, useEffect, useRef, useState } from "react"
+import { memo, useEffect, useRef } from "react"
 import { useTimer } from "@/hooks/useTimer"
 
 const zeroPad = (value: number): string => `${value}`.padStart(2, "0")
@@ -73,7 +73,8 @@ interface TimerProps {
     minutes: string
     seconds: string
   }
-  completionMessage?: string
+  ongoingMessage?: string
+  finishedMessage?: string
 }
 
 export const Timer = ({
@@ -85,16 +86,12 @@ export const Timer = ({
     minutes: "Minutos",
     seconds: "Segundos",
   },
-  completionMessage = "¡Empezó el DevFest 2025!",
+  ongoingMessage = "¡Empezó el DevFest Sucre 2025!",
+  finishedMessage = "¡Gracias por ser parte del DevFest Sucre 2025!",
 }: TimerProps) => {
   const endDate = targetDate instanceof Date ? targetDate : new Date(targetDate)
 
   const { days, hours, minutes, seconds } = useTimer(initialTime, endDate)
-
-  // hide timer when more than 1 day has passed since the event began
-  if (days < -1) {
-    return null
-  }
 
   if (initialTime <= 0 || seconds < 0) {
     return (
@@ -105,7 +102,7 @@ export const Timer = ({
           transition={{ duration: 0.5 }}
           className="text-2xl font-bold text-red-500 md:text-3xl lg:text-4xl"
         >
-          {completionMessage}
+          {days < -1 || (days === 0 && hours < -8) ? finishedMessage : ongoingMessage}
         </motion.div>
       </div>
     )

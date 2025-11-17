@@ -1,5 +1,10 @@
 import { useEffect, useRef, useState } from "react"
 
+const MS_PER_SECOND = 1000
+const MS_PER_MINUTE = MS_PER_SECOND * 60
+const MS_PER_HOUR = MS_PER_MINUTE * 60
+const MS_PER_DAY = MS_PER_HOUR * 24
+
 interface TimeRemaining {
   days: number
   hours: number
@@ -13,15 +18,10 @@ interface TimeRemaining {
  * @returns Object containing days, hours, minutes, and seconds
  */
 const toDatetime = (milliseconds: number): TimeRemaining => {
-  const MS_PER_SECOND = 1000
-  const MS_PER_MINUTE = MS_PER_SECOND * 60
-  const MS_PER_HOUR = MS_PER_MINUTE * 60
-  const MS_PER_DAY = MS_PER_HOUR * 24
-
-  const days = Math.floor(milliseconds / MS_PER_DAY)
-  const hours = Math.floor((milliseconds % MS_PER_DAY) / MS_PER_HOUR)
-  const minutes = Math.floor((milliseconds % MS_PER_HOUR) / MS_PER_MINUTE)
-  const seconds = Math.floor((milliseconds % MS_PER_MINUTE) / MS_PER_SECOND)
+  const days = Math.trunc(milliseconds / MS_PER_DAY)
+  const hours = Math.trunc((milliseconds % MS_PER_DAY) / MS_PER_HOUR)
+  const minutes = Math.trunc((milliseconds % MS_PER_HOUR) / MS_PER_MINUTE)
+  const seconds = Math.trunc((milliseconds % MS_PER_MINUTE) / MS_PER_SECOND)
 
   return { days, hours, minutes, seconds }
 }
@@ -55,5 +55,5 @@ export const useTimer = (initialTime: number, endTime: Date): TimeRemaining => {
     }
   }, [])
 
-  return toDatetime(Math.max(0, remainingMillis))
+  return toDatetime(remainingMillis)
 }
