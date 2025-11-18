@@ -1,11 +1,9 @@
 ---
-import { AdminTabs } from "@/components/admin/AdminTabs"
-import Header from "@/components/Header.astro"
+import { Dashboard } from "@/components/admin/Dashboard.tsx"
+
 import BaseLayout from "@/layout/BaseLayout.astro"
 import { getProfile } from "@/lib/services/profileService"
 import { createUserClient } from "@/lib/supabase"
-
-import { Dashboard } from "../pages/admin/Dashboard.tsx"
 
 const supabase = await createUserClient(Astro.cookies)
 const profile = await getProfile(supabase)
@@ -29,7 +27,6 @@ const userData = profile
     }
 ---
 
-<BaseLayout>
-  <!-- <Header /> -->
+<BaseLayout title="Admin GDG Sucre">
   <Dashboard client:only="react" isAuthenticated={isAuthenticated} user={userData} />
 </BaseLayout>

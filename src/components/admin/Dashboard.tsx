@@ -1,11 +1,11 @@
-"use client"
-
 import { useEffect, useState } from "react"
+
 import { AccreditationTable } from "@/components/admin/AccreditationTable"
-import { AdminTabs } from "@/components/admin/AdminTabs"
+import { AppSidebar } from "@/components/admin/AdminSidebar"
 import QRScanner from "@/components/admin/QRScanner"
-import { AppSidebar } from "@/components/app-sidebar"
-import { SiteHeader } from "@/components/SiteHeader"
+import { AdminTabs } from "@/components/admin/Registrations"
+import { SiteHeader } from "@/components/admin/SiteHeader"
+
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 
 interface UserData {

@@ -1,8 +1,7 @@
 import { Box, List, ScanQrCode, Users } from "lucide-react"
-import type * as React from "react"
-
-import { NavMain } from "@/components/NavMain"
-import { NavUser } from "@/components/NavUser"
+import type { ComponentProps } from "react"
+import { NavMain } from "@/components/admin/NavMain"
+import { NavUser } from "@/components/admin/NavUser"
 import {
   Sidebar,
   SidebarContent,
@@ -19,7 +18,7 @@ interface UserData {
   avatar: string
 }
 
-type ViewType = "registrations" | "accreditation"
+type ViewType = "registrations" | "accreditation" | "scanner"
 
 const defaultData = {
   user: {
@@ -52,7 +51,7 @@ export function AppSidebar({
   currentView = "registrations",
   onNavigate,
   ...props
-}: React.ComponentProps<typeof Sidebar> & {
+}: ComponentProps<typeof Sidebar> & {
   isAuthenticated?: boolean
   user?: UserData
   currentView?: ViewType

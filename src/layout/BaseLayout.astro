@@ -1,7 +1,7 @@
 ---
 import "../styles/global.css"
 
-const { theme } = Astro.props
+const { theme, title = "Google Developer Group Sucre" } = Astro.props
 ---
 
 <html lang="es" class={theme}>
@@ -13,7 +13,7 @@ const { theme } = Astro.props
 
     <!-- <ThemeScript /> -->
 
-    <title>Google Developer Group Sucre</title>
+    <title>{title}</title>
     <meta name="description" content="Google Developer Group Sucre" />
   </head>
 

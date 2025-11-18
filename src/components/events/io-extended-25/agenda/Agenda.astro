@@ -4,22 +4,18 @@ import carlosAlarconImg from "@/assets/io-extended-25/speakers/Carlos-Alarcon.we
 import carlosImg from "@/assets/io-extended-25/speakers/Carlos-Collazos.webp"
 import rodrigoImg from "@/assets/io-extended-25/speakers/Rodrigo-Torrico.webp"
 import saraImg from "@/assets/io-extended-25/speakers/Sara-Salazar.webp"
-import ActivityCard from "@/components/io-extended-25/agenda/ActivityCard.astro"
-import TalkCard from "@/components/io-extended-25/agenda/TalkCard.astro"
+import ActivityCard from "@/components/events/io-extended-25/agenda/ActivityCard.astro"
+import TalkCard from "@/components/events/io-extended-25/agenda/TalkCard.astro"
 ---
 
 <!-- Seccion de Agenda -->
 <section id="agenda" class="flex flex-col justify-center items-center gap-[52px] my-6 px-4">
   <h2 class="font-bold text-3xl md:text-5xl">AGENDA</h2>
   <!-- Contenido de la Agenda -->
-  <div class="flex flex-col xl:flex-row md:flex-col gap-[36px] lg:gap-[44px]">
+  <div class="flex flex-col xl:flex-row md:flex-col gap-9 lg:gap-11">
     <!-- Izquierda -->
-    <div class="flex-1 flex flex-col justify-center items-center gap-[36px]">
-      <ActivityCard 
-        start="8:00"
-        end="9:00"
-        title="acreditación"
-      />
+    <div class="flex-1 flex flex-col justify-center items-center gap-9">
+      <ActivityCard start="8:00" end="9:00" title="acreditación" />
       <TalkCard
         start="9:00"
         end="9:45"
@@ -32,11 +28,7 @@ import TalkCard from "@/components/io-extended-25/agenda/TalkCard.astro"
         ]}
       />
 
-      <ActivityCard 
-        start="10:00"
-        end="10:30"
-        title="refrigrerio"
-      />
+      <ActivityCard start="10:00" end="10:30" title="refrigrerio" />
 
       <TalkCard
         start="10:30"
@@ -58,23 +50,13 @@ import TalkCard from "@/components/io-extended-25/agenda/TalkCard.astro"
         title="¿La IA reemplazara a los diseñadores? UX en la era de la IA"
         speaker="Carlos Collazos"
         photoSrc={carlosImg}
-        tags={[
-          { label: "UX / UI", class: "text-green-500" },
-        ]}
+        tags={[{ label: "UX / UI", class: "text-green-500" }]}
       />
     </div>
     <!-- Derecha -->
-    <div class="flex-1 flex flex-col justify-center items-center gap-[36px]">
-      <ActivityCard 
-        start="12:00"
-        end="13:00"
-        title="almuerzo"
-      />
-      <ActivityCard 
-        start="13:00"
-        end="13:45"
-        title="networking y sorteo"
-      />
+    <div class="flex-1 flex flex-col justify-center items-center gap-9">
+      <ActivityCard start="12:00" end="13:00" title="almuerzo" />
+      <ActivityCard start="13:00" end="13:45" title="networking y sorteo" />
       <TalkCard
         start="14:00"
         end="14:45"
@@ -95,16 +77,9 @@ import TalkCard from "@/components/io-extended-25/agenda/TalkCard.astro"
         title="Angular Hoy: Lo Nuevo en Angular 20 "
         speaker="Rodrigo Torrico"
         photoSrc={rodrigoImg}
-        tags={[
-          { label: "Desarrollo Web", class: "text-blue-500" },
-        ]}
+        tags={[{ label: "Desarrollo Web", class: "text-blue-500" }]}
       />
-      <ActivityCard 
-        start="15:30"
-        end="16:00"
-        title="sorteo final y clausura"
-      />
-
+      <ActivityCard start="15:30" end="16:00" title="sorteo final y clausura" />
     </div>
   </div>
 </section>

@@ -16,7 +16,7 @@ const sponsors = [
 const duplicatedSponsors = [...sponsors, ...sponsors, ...sponsors] // Triple para mejor efecto en móvil
 ---
 
-<section class="w-full py-16 sponsor-section">
+<section id="sponsors" class="w-full py-16 sponsor-section">
   <!-- Título -->
   <div class="max-w-7xl mx-auto px-4 md:px-6 mb-8 md:mb-12">
     <div class="text-center">
@@ -36,7 +36,7 @@ const duplicatedSponsors = [...sponsors, ...sponsors, ...sponsors] // Triple par
     >
       {
         duplicatedSponsors.map((sponsor, index) => (
-          <div class="flex-shrink-0 mx-3 md:mx-10 transform mobile-sponsor">
+          <div class="shrink-0 mx-3 md:mx-10 transform mobile-sponsor">
             <div class="flex items-center justify-center h-20 md:h-auto">
               <Image
                 src={sponsor.src}

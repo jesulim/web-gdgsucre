@@ -1,0 +1,27 @@
+---
+import About from "@/components/events/io-extended-25/About.astro"
+import Agenda from "@/components/events/io-extended-25/agenda/Agenda.astro"
+import Colaboradores from "@/components/events/io-extended-25/Colaboradores.astro"
+import Footer from "@/components/events/io-extended-25/Footer.astro"
+import Header from "@/components/events/io-extended-25/Header.astro"
+import Hero from "@/components/events/io-extended-25/Hero.astro"
+import OrganizadoresSection from "@/components/events/io-extended-25/OrganizadoresSection.astro"
+import PackageSection from "@/components/events/io-extended-25/PackageSection.astro"
+import SponsorsCarousel from "@/components/events/io-extended-25/SponsorsCarousel.astro"
+import SpeakersSection from "@/components/events/io-extended-25/speakers/SpeakersSection.astro"
+
+import BaseLayout from "@/layout/BaseLayout.astro"
+---
+
+<BaseLayout>
+  <Header />
+  <Hero />
+  <PackageSection />
+  <About />
+  <SpeakersSection />
+  <Agenda />
+  <SponsorsCarousel />
+  <Colaboradores />
+  <OrganizadoresSection />
+  <Footer />
+</BaseLayout>

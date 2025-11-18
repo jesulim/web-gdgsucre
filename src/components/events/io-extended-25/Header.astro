@@ -10,23 +10,23 @@ import Avatar from "@/components/Avatar.astro"
 const refreshToken = Astro.cookies.has("sb-refresh-token")
 
 const navLinks = [
-  { name: "Paquetes", href: "/#seccion-paquetes" },
-  { name: "Sobre el evento", href: "/#about" },
-  { name: "Speakers", href: "/#speakers" },
-  { name: "Sponsors", href: "/#sponsors" },
-  { name: "Agenda", href: "/#agenda" },
-  { name: "Equipo", href: "/#organizadores" },
+  { name: "Paquetes", href: "/eventos/io-extended-25/#seccion-paquetes" },
+  { name: "Sobre el evento", href: "/eventos/io-extended-25/#about" },
+  { name: "Speakers", href: "/eventos/io-extended-25/#speakers" },
+  { name: "Agenda", href: "/eventos/io-extended-25/#agenda" },
+  { name: "Sponsors", href: "/eventos/io-extended-25/#sponsors" },
+  { name: "Equipo", href: "/eventos/io-extended-25/#organizadores" },
 ]
 ---
 
 <nav class="w-full h-20 bg-white flex items-center justify-between px-6 border-b shadow-sm fixed top-0 left-0 z-50">
   <!-- Logo -->
-  <a href="/#" class="flex items-center">
+  <a href="/evento/io-extended-25/#" class="flex items-center">
     <Image src={LogoBlackIO} alt="GDG Logo" width={140} height={40} class="object-contain md:w-[200px] md:h-[46px]" />
   </a>
 
   <!-- Navegación desktop -->
-  <ul class="hidden md:flex gap-[49px] h-[32px]">
+  <ul class="hidden md:flex gap-[49px] h-8">
     {navLinks.map(link => (
       <li>
         <a href={link.href} class="text-gray-800 text-base font-medium leading-6 pb-1 border-b-2 border-transparent hover:border-blue-500 hover:text-blue-500 transition-colors duration-200">
@@ -39,7 +39,7 @@ const navLinks = [
   <!-- Botones / sesión -->
   <div class="flex items-center gap-4 h-[42px]">
     <!-- Eventos Pasados (visible en desktop y móvil) -->
-    <a href="https://devfest2024.gdgsucre.com/pastEvents/" class="hidden md:inline text-blue-500 border-2 border-blue-500 bg-white hover:bg-blue-500 hover:text-white font-medium text-sm lg:text-base leading-5 lg:leading-6 px-4 lg:px-6 py-[6px] lg:py-[9px] rounded-full transition-colors duration-200">
+    <a href="https://devfest2024.gdgsucre.com/pastEvents/" class="hidden md:inline text-blue-500 border-2 border-blue-500 bg-white hover:bg-blue-500 hover:text-white font-medium text-sm lg:text-base leading-5 lg:leading-6 px-4 lg:px-6 py-1.5 lg:py-[9px] rounded-full transition-colors duration-200">
       Eventos Pasados
     </a>
 
@@ -51,17 +51,17 @@ const navLinks = [
         </div>
 
         <!-- Dropdown personalizado -->
-        <div id="user-menu" class="absolute right-0 mt-2 w-[176px] h-[93px] bg-white rounded-[8px] shadow-lg px-4 py-[10px] z-50 border border-gray-200 opacity-0 transition-opacity duration-300 flex flex-col gap-4 text-nowrap">
+        <div id="user-menu" class="absolute right-0 mt-2 w-44 h-[93px] bg-white rounded-xl shadow-lg px-4 py-2.5 z-50 border border-gray-200 opacity-0 transition-opacity duration-300 flex flex-col gap-4 text-nowrap">
           <a
             href="/registro/io-extended-25"
-            class="flex items-center w-[144px] h-[24px] gap-2 px-1 text-black text-base font-medium leading-6 hover:text-blue-500 transition-colors duration-200"
+            class="flex items-center w-36 h-6 gap-2 px-1 text-black text-base font-medium leading-6 hover:text-blue-500 transition-colors duration-200"
           >
             <CredentialIcon class="w-[21px] h-[17px] fill-current text-black" />
             <span class="text-[16px] font-medium leading-6">Ver Credencial</span>
           </a>
           <a
             href="/api/auth/signout"
-            class="flex items-center w-[144px] h-[24px] gap-2 px-1 text-black text-base font-medium leading-6 hover:text-blue-500 transition-colors duration-200"
+            class="flex items-center w-36 h-6 gap-2 px-1 text-black text-base font-medium leading-6 hover:text-blue-500 transition-colors duration-200"
           >
             <LogoutIcon class="w-[21px] h-[17px] fill-current text-black" />
             <span class="text-[16px] font-medium leading-6">Cerrar Sesión</span>
@@ -69,7 +69,7 @@ const navLinks = [
         </div>
       </div>
     ) : (
-      <a href="/api/auth/signin" class="hidden md:inline bg-blue-500 text-white hover:bg-[#3367D6] font-medium text-sm lg:text-base leading-5 lg:leading-6 px-5 lg:px-8 py-[6px] lg:py-[9px] rounded-full transition-colors duration-200">
+      <a href="/api/auth/signin" class="hidden md:inline bg-blue-500 text-white hover:bg-[#3367D6] font-medium text-sm lg:text-base leading-5 lg:leading-6 px-5 lg:px-8 py-1.5 lg:py-[9px] rounded-full transition-colors duration-200">
         Iniciar Sesión
       </a>
 

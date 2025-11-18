@@ -19,7 +19,7 @@ function getWordColor(palabra: string): string {
   const texto = palabra.toLowerCase()
 
   if (texto.includes("desarrollo") || texto.includes("web")) {
-    return "text-[#4285F4]"
+    return "text-blue-500"
   }
 
   if (texto.includes("ia") || texto.includes("ai")) {
@@ -80,16 +80,9 @@ const topicoColoreado = colorearPalabrasIndividuales(topico)
       </h3>
 
       <div class="flex flex-col items-center gap-0">
-        <p
-          class="text-sm md:text-lg font-bold"
-          set:html={topicoColoreado}
-        />
+        <p class="text-sm md:text-lg font-bold" set:html={topicoColoreado} />
 
-        {
-          ubicacion && (
-            <p class="text-white text-xs md:text-sm">{ubicacion}</p>
-          )
-        }
+        {ubicacion && <p class="text-white text-xs md:text-sm">{ubicacion}</p>}
       </div>
     </div>
   </div>

@@ -139,7 +139,6 @@
   z-index: 3;
   background: transparent;
   background-size: cover;
-  background-position: center;
   background-image:
     repeating-linear-gradient(
       0deg,
@@ -171,10 +170,6 @@
     var(--background-x) var(--background-y),
     center;
   background-blend-mode: color, hard-light;
-  background-size:
-    500% 500%,
-    300% 300%,
-    200% 200%;
   background-repeat: repeat;
 }
 
@@ -340,7 +335,7 @@
     calc(var(--pointer-from-left) * -6px + 3px),
     calc(var(--pointer-from-top) * -6px + 3px),
     0.1px
-  ) !important;
+  );
   z-index: 5;
 }
 
@@ -356,7 +351,6 @@
   font-weight: 600;
   margin: 0;
   font-size: min(4svh, 2.5em);
-  margin: 0;
   background-image: linear-gradient(to bottom, #fff, #6f6fbe);
   background-size: 1em 1.5em;
   -webkit-text-fill-color: transparent;
