@@ -1,0 +1,21 @@
+---
+import { hasRegistration } from "@/lib/services/registrationService"
+import { createUserClient } from "@/lib/supabase"
+
+const accessToken = Astro.cookies.get("sb-access-token")?.value
+let redirectHref = accessToken ? "/registro/wtm-26" : "/api/auth/signin?next=/registro/wtm-26"
+
+let registration = false
+if (accessToken) {
+  const supabase = await createUserClient(Astro.cookies)
+  const {
+    data: { claims },
+  } = await supabase.auth.getClaims(accessToken)
+  registration = await hasRegistration(supabase, claims?.sub, "wtm-26")
+  redirectHref = "/registro/wtm-26/confirmado"
+}
+---
+
+<a href={redirectHref} class="block w-full h-full">
+  {registration ? "Ver mi registro" : <slot />}
+</a>

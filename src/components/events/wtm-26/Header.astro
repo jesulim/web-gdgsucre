@@ -1,0 +1,85 @@
+---
+import UserSignIn from "@/assets/icons/social/user-round-plus.svg"
+import WTMLogo from "@/assets/logos/WTM_Logo_Icon Only.png"
+import Avatar from "@/components/Avatar.astro"
+
+const accessToken = Astro.cookies.has("sb-access-token")
+
+const navLinks = [
+  { name: "Inicio", href: "/#hero" },
+  { name: "Sobre el evento", href: "/#about" },
+]
+---
+
+<nav class="w-full h-20 px-6 bg-white/90 backdrop-blur-md flex items-center justify-between fixed top-0 left-0 z-50 border-b border-gray-100 shadow-sm transition-all duration-300">
+  <div class="flex items-center order-1 hover:opacity-80 transition-opacity">
+    <img src={WTMLogo.src} alt="Women Techmakers Logo" class="h-10 w-auto" />
+  </div>
+
+  <div class="flex items-center gap-4 h-12 order-last">
+    {accessToken ? (
+      <Avatar server:defer eventSlug="wtm-26" >
+        <div class="bg-gray-200 rounded-full size-12" slot="fallback" />
+      </Avatar>
+    ) : (
+      <a href="/api/auth/signin" class="hidden md:inline-flex bg-[#4285F4] hover:bg-[#3367d6] text-white font-medium px-6 py-2.5 rounded-full transition-all shadow-md hover:shadow-lg text-sm items-center gap-2">
+        <UserSignIn class="w-4 h-4" />
+        Registrarse
+      </a>
+
+      <a
+        href="/api/auth/signin"
+        class="md:hidden grid place-items-center size-10 rounded-full bg-[#4285F4] text-white shadow-md active:scale-95 transition-transform"
+        aria-label="Registrarse"
+      >
+        <UserSignIn class="w-5 h-5" />
+      </a>
+    )}
+
+    <button id="menu-toggle" class="md:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors focus:ring-2 focus:ring-[#4285F4] focus:outline-none" aria-label="Abrir menú">
+      <svg class="size-6 stroke-current" fill="none" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
+
+  <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-white shadow-xl md:shadow-none md:bg-transparent md:order-2 md:static md:flex md:ml-auto md:px-4 md:w-fit md:border-t-0 md:border-0 border-t border-gray-100">
+    <ul class="flex flex-col md:flex-row gap-0 md:gap-8 p-0 md:p-0">
+      {navLinks.map(link => (
+        <li class="font-medium text-gray-600 hover:text-[#4285F4] transition-colors text-left text-base border-b border-gray-50 md:border-0 last:border-0">
+          <a href={link.href} class="block py-4 px-6 md:p-0 w-full hover:bg-gray-50 md:hover:bg-transparent transition-colors">
+            {link.name}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</nav>
+
+<script>
+  const menuToggle = document.getElementById("menu-toggle")
+  const mobileMenu = document.getElementById("mobile-menu")
+
+  // Toggle menu
+  menuToggle?.addEventListener("click", (e) => {
+    e.stopPropagation()
+    mobileMenu?.classList.toggle("hidden")
+  })
+  
+  // Close menu when clicking outside
+  document.addEventListener('click', (event) => {
+    const target = event.target as Node
+    if (mobileMenu && !mobileMenu.classList.contains('hidden') && !mobileMenu.contains(target) && menuToggle && !menuToggle.contains(target)) {
+      mobileMenu.classList.add('hidden')
+    }
+  })
+
+  // Close menu when clicking a link
+  const links = mobileMenu?.querySelectorAll('a')
+  links?.forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu?.classList.add('hidden')
+    })
+  })
+</script>
