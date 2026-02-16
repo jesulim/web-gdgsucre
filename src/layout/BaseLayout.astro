@@ -1,7 +1,14 @@
 ---
 import "../styles/global.css"
 
-const { theme, title = "Google Developer Group Sucre" } = Astro.props
+const {
+  theme,
+  title = "Google Developer Group Sucre",
+  description = "Google Developer Group Sucre",
+  ogTitle = title,
+  ogDescription = description,
+  ogImage = "/og.png",
+} = Astro.props
 ---
 
 <html lang="es" class={theme}>
@@ -14,7 +21,21 @@ const { theme, title = "Google Developer Group Sucre" } = Astro.props
     <!-- <ThemeScript /> -->
 
     <title>{title}</title>
-    <meta name="description" content="Google Developer Group Sucre" />
+    <meta name="description" content={description} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:title" content={ogTitle} />
+    <meta property="og:description" content={ogDescription} />
+    <meta property="og:image" content={new URL(ogImage, Astro.url)} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={Astro.url} />
+    <meta property="twitter:title" content={ogTitle} />
+    <meta property="twitter:description" content={ogDescription} />
+    <meta property="twitter:image" content={new URL(ogImage, Astro.url)} />
   </head>
 
   <body class="min-h-screen flex flex-col font-google dark:bg-[#232323] dark:text-white">
