@@ -50,13 +50,13 @@ interface TimeUnitProps {
 }
 
 const TimeUnit = memo<TimeUnitProps>(({ label, value }) => (
-  <div className="flex w-24 flex-col items-center justify-center gap-0 border-2 border-[#1976D2] bg-white px-3 py-2 sm:w-36 sm:border-3 sm:px-6 sm:py-3 md:w-48 md:px-9 md:py-5 lg:w-60 lg:px-15 lg:py-6 shadow-lg">
-    <div className="relative h-12 w-full overflow-visible text-center sm:h-18 md:h-24 lg:h-36">
-      <div className="flex items-center justify-center h-full w-full text-5xl font-bold leading-none text-[#1976D2] sm:text-7xl md:text-8xl lg:text-9xl tracking-tight">
+  <div className="flex w-[86px] flex-col items-center justify-center gap-0 border-2 border-[#1976D2] bg-white px-[11px] py-[7px] sm:w-[130px] sm:border-3 sm:px-[22px] sm:py-[11px] md:w-[173px] md:px-[32px] md:py-[18px] lg:w-[216px] lg:px-[54px] lg:py-[22px] shadow-lg">
+    <div className="relative h-[43px] w-full overflow-visible text-center sm:h-[65px] md:h-[86px] lg:h-[130px]">
+      <div className="flex items-center justify-center h-full w-full text-[2.7rem] font-bold leading-none text-[#1976D2] sm:text-[4.05rem] md:text-[5.4rem] lg:text-[7.2rem] tracking-tight">
         <AnimatedValue value={value} />
       </div>
     </div>
-    <span className="whitespace-nowrap text-xs font-bold text-[#ebb842] sm:text-sm md:text-lg lg:text-xl uppercase tracking-widest">
+    <span className="whitespace-nowrap text-[0.675rem] font-bold text-[#ebb842] sm:text-[0.788rem] md:text-[1.013rem] lg:text-[1.125rem] uppercase tracking-widest">
       {label}
     </span>
   </div>
@@ -117,7 +117,7 @@ export const Timer = ({
   ]
 
   return (
-    <div className="flex items-center justify-center gap-3 sm:gap-5 md:gap-6 lg:gap-9">
+    <div className="flex items-center justify-center gap-[11px] sm:gap-[18px] md:gap-[22px] lg:gap-[32px]">
       {timeUnits.map(unit => (
         <TimeUnit key={unit.label} {...unit} />
       ))}
