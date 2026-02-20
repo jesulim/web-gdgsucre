@@ -52,7 +52,7 @@ async function sendEmail({ to, subject, html, text }: EmailOptions) {
   }
   try {
     const mailOptions = {
-      from: '"GDG Sucre" <gdgsucre@gmail.com>',
+      from: '"WTM Sucre" <wtmsucre@gmail.com>',
       to,
       subject,
       html,
