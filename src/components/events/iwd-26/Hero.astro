@@ -1,8 +1,8 @@
 ---
-import patrones from "@/assets/events/wtm-26/patrones.jpg"
-import patrones2 from "@/assets/events/wtm-26/patrones_2.jpg"
+import patrones from "@/assets/events/iwd-26/patrones.jpg"
+import patrones2 from "@/assets/events/iwd-26/patrones_2.jpg"
 import wtmBanner from "@/assets/wtm_banner.jpg"
-import { Timer } from "@/components/events/wtm-26/Timer"
+import { Timer } from "@/components/events/iwd-26/Timer"
 
 const eventDate = new Date("2026-03-07T08:00:00-04:00")
 const initialTime = eventDate.getTime() - Date.now()
@@ -19,7 +19,7 @@ const initialTime = eventDate.getTime() - Date.now()
     <!-- Banner principal con contador -->
     <div class="w-full md:max-w-5xl lg:max-w-7xl flex flex-col">
       <img src={wtmBanner.src} alt="Women Techmakers Sucre 2026" class="w-full h-auto" />
-      
+
       <!-- Contador -->
       <div class="w-full py-8 md:py-12 px-4 flex items-center justify-center bg-white">
         <Timer initialTime={initialTime} targetDate={eventDate} client:load />
@@ -32,5 +32,3 @@ const initialTime = eventDate.getTime() - Date.now()
     <img src={patrones2.src} alt="" class="w-full h-auto" />
   </div>
 </section>
-
-

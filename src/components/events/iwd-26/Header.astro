@@ -12,13 +12,15 @@ const navLinks = [
 ---
 
 <nav class="w-full h-20 px-6 bg-white/90 backdrop-blur-md flex items-center justify-between fixed top-0 left-0 z-50 border-b border-gray-100 shadow-sm transition-all duration-300">
-  <div class="flex items-center order-1 hover:opacity-80 transition-opacity">
-    <img src={WTMLogo.src} alt="Women Techmakers Logo" class="h-10 w-auto" />
-  </div>
+  <a href="/#">
+    <div class="flex items-center order-1 hover:opacity-80 transition-opacity">
+      <img src={WTMLogo.src} alt="Women Techmakers Logo" class="h-10 w-auto" />
+    </div>
+  </a>
 
   <div class="flex items-center gap-4 h-12 order-last">
     {accessToken ? (
-      <Avatar server:defer eventSlug="wtm-26" >
+      <Avatar server:defer eventSlug="iwd-26" >
         <div class="bg-gray-200 rounded-full size-12" slot="fallback" />
       </Avatar>
     ) : (
@@ -66,7 +68,7 @@ const navLinks = [
     e.stopPropagation()
     mobileMenu?.classList.toggle("hidden")
   })
-  
+
   // Close menu when clicking outside
   document.addEventListener('click', (event) => {
     const target = event.target as Node
