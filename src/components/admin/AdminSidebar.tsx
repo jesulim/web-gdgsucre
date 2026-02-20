@@ -1,4 +1,4 @@
-import { Box, List, ScanQrCode, Users } from "lucide-react"
+import { Box, List, ScanQrCode, Ticket, Users } from "lucide-react"
 import type { ComponentProps } from "react"
 import { NavMain } from "@/components/admin/NavMain"
 import { NavUser } from "@/components/admin/NavUser"
@@ -18,7 +18,7 @@ interface UserData {
   avatar: string
 }
 
-type ViewType = "registrations" | "accreditation" | "scanner"
+type ViewType = "registrations" | "accreditation" | "scanner" | "events"
 
 const defaultData = {
   user: {
@@ -27,6 +27,11 @@ const defaultData = {
     avatar: "/avatars/shadcn.jpg",
   },
   navMain: [
+    {
+      title: "Eventos",
+      view: "events" as ViewType,
+      icon: Ticket,
+    },
     {
       title: "Registro de Participantes",
       view: "registrations" as ViewType,
