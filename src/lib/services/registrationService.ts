@@ -107,7 +107,7 @@ export async function submitRegistration(
   ])
 
   if (insertError) {
-    throw new Error(`Error en registro: ${insertError.message}`)
+    throw new Error(insertError.message)
   }
 
   return { success: true }

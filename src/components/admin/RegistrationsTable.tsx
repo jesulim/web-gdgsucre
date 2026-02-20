@@ -136,7 +136,7 @@ export function RegistrationsTable() {
         registrationId: id,
         userEmail: email,
         userName: name,
-        eventName: "DevFest Sucre 2025",
+        eventName: "International Women's Day 2026",
       }),
     })
 

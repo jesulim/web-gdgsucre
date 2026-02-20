@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 
 import { AccreditationTable } from "@/components/admin/AccreditationTable"
 import { AppSidebar } from "@/components/admin/AdminSidebar"
+import { Events } from "@/components/admin/events/Events"
 import QRScanner from "@/components/admin/QRScanner"
 import { AdminTabs } from "@/components/admin/Registrations"
 import { SiteHeader } from "@/components/admin/SiteHeader"
@@ -14,7 +15,7 @@ interface UserData {
   avatar: string
 }
 
-type ViewType = "registrations" | "accreditation" | "scanner"
+type ViewType = "registrations" | "accreditation" | "scanner" | "events"
 
 const VIEW_STORAGE_KEY = "admin_current_view"
 
@@ -58,6 +59,7 @@ export function Dashboard({
       <SidebarInset>
         <SiteHeader />
         <main>
+          {currentView === "events" && <Events />}
           {currentView === "registrations" && <AdminTabs />}
           {currentView === "accreditation" && (
             <div className="w-full p-4 lg:p-8">

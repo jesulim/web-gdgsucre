@@ -1,5 +1,5 @@
 ---
-import Header from "@/components/events/devfest-25/Header.astro"
+import Header from "@/components/events/iwd-26/Header.astro"
 import { RegisterForm } from "@/components/registration/RegisterForm"
 import BaseLayout from "@/layout/BaseLayout.astro"
 
@@ -33,7 +33,7 @@ if (registration?.status === "confirmed") {
 const formFields = await getFormFieldsByEvent(supabase, eventSlug)
 ---
 
-<BaseLayout theme="dark">
+<BaseLayout theme="light">
   <Header />
   <main class="mt-16 pt-12 flex">
     <div class="mx-auto px-4 pb-16">

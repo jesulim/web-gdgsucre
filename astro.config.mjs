@@ -2,7 +2,7 @@ import react from "@astrojs/react"
 import vercel from "@astrojs/vercel"
 import tailwindcss from "@tailwindcss/vite"
 
-import { defineConfig } from "astro/config"
+import { defineConfig, fontProviders } from "astro/config"
 
 // https://astro.build/config
 export default defineConfig({
@@ -11,21 +11,23 @@ export default defineConfig({
   experimental: {
     fonts: [
       {
-        provider: "local",
+        provider: fontProviders.local(),
         name: "Google Sans Display",
         cssVariable: "--font-google",
-        variants: [
-          {
-            weight: "400",
-            style: "normal",
-            src: ["./src/assets/fonts/GoogleSansDisplay-Regular.ttf"],
-          },
-          {
-            weight: "700",
-            style: "normal",
-            src: ["./src/assets/fonts/GoogleSansDisplay-Bold.ttf"],
-          },
-        ],
+        options: {
+          variants: [
+            {
+              weight: "400",
+              style: "normal",
+              src: ["./src/assets/fonts/GoogleSansDisplay-Regular.ttf"],
+            },
+            {
+              weight: "700",
+              style: "normal",
+              src: ["./src/assets/fonts/GoogleSansDisplay-Bold.ttf"],
+            },
+          ],
+        },
       },
     ],
   },
