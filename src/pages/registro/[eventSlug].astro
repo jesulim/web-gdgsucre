@@ -33,11 +33,12 @@ if (registration?.status === "confirmed") {
 const formFields = await getFormFieldsByEvent(supabase, eventSlug)
 ---
 
-<BaseLayout theme="light" />
-<Header />
-<main class="mt-16 pt-12 flex">
-  <div class="mx-auto px-4 pb-16">
-    <h1 class="text-xl mb-4 font-medium">Regístrate al {event.name}</h1>
-    <RegisterForm formFields={formFields} profile={profile} event={event} client:load />
-  </div>
-</main>
+<BaseLayout theme="light">
+  <Header />
+  <main class="mt-16 pt-12 flex">
+    <div class="mx-auto px-4 pb-16">
+      <h1 class="text-xl mb-4 font-medium">Regístrate al {event.name}</h1>
+      <RegisterForm formFields={formFields} profile={profile} event={event} client:load />
+    </div>
+  </main>
+</BaseLayout>

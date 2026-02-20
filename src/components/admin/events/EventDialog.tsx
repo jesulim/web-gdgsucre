@@ -18,11 +18,10 @@ const formSchema = z.object({
   slug: z
     .string()
     .regex(/^[a-z0-9-]+$/, "El slug solo puede contener minúsculas, números y guiones."),
-  date: z.date(),
+  date: z.coerce.date(),
   registration_open: z.boolean().default(false),
 })
 
-import { Loader2Icon } from "lucide-react"
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field"
 
 interface Event {
@@ -35,7 +34,7 @@ interface Event {
 
 interface DialogProps {
   open: boolean
-  event: Event
+  event?: Event
   onCancel: () => void
 }
 
@@ -60,7 +59,6 @@ export function EventDialog({ open, event, onCancel }: DialogProps) {
     })
 
     if (response.ok) {
-      console.log("Evento actualizado")
       onCancel()
     } else {
       console.error("Error al actualizar evento")
