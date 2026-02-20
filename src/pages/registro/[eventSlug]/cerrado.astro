@@ -1,5 +1,5 @@
 ---
-import Header from "@/components/events/devfest-25/Header.astro"
+import Header from "@/components/events/iwd-26/Header.astro"
 import BaseLayout from "@/layout/BaseLayout.astro"
 
 import { getEvent } from "@/lib/services/eventService"
@@ -17,7 +17,7 @@ if (!user || !event) return Astro.redirect("/")
 if (event.registration_open === true) return Astro.redirect(`/registro/${eventSlug}`)
 ---
 
-<BaseLayout>
+<BaseLayout theme="light">
   <Header />
   <main class="mt-16 pt-12">
     <div class="mx-auto px-4">

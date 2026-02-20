@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Loader2Icon } from "lucide-react"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { Toaster, toast } from "sonner"
 import { z } from "zod"
 
 import { Button } from "@/components/ui/button"
@@ -56,6 +57,8 @@ export function RegisterForm({ formFields, profile, event }: RegisterFormProps) 
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setLoading(true)
+
     const formData = new FormData()
     formData.append("event_id", event.id)
     formData.append("event_slug", event.slug)
@@ -65,7 +68,6 @@ export function RegisterForm({ formFields, profile, event }: RegisterFormProps) 
       formData.append(key, value)
     }
 
-    setLoading(true)
     try {
       const res = await fetch("/api/register", {
         method: "POST",
@@ -73,9 +75,11 @@ export function RegisterForm({ formFields, profile, event }: RegisterFormProps) 
       })
       if (res.ok) {
         window.location.href = `/registro/${event.slug}/pendiente`
+      } else {
+        toast.error(await res.text())
       }
     } catch (error) {
-      console.error(error)
+      console.error("Error al registrar:", error)
     } finally {
       setLoading(false)
     }
@@ -83,12 +87,8 @@ export function RegisterForm({ formFields, profile, event }: RegisterFormProps) 
 
   return (
     <Form {...form}>
-      <form
-        className="space-y-4"
-        onSubmit={form.handleSubmit(onSubmit, errors => {
-          console.error("Errores de validacion:", errors)
-        })}
-      >
+      <Toaster position="top-right" richColors />
+      <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
         {profile?.last_name ? (
           <p className="text-lg">¡Nos alegra verte de nuevo, {profile.first_name}!</p>
         ) : (
@@ -136,10 +136,7 @@ export function RegisterForm({ formFields, profile, event }: RegisterFormProps) 
             )}
           />
         ))}
-        <Button
-          className="w-full bg-gradient-to-b from-red-500 to-red-700 dark:text-white"
-          type="submit"
-        >
+        <Button className="w-full bg-blue-500 dark:text-white" type="submit">
           {loading && <Loader2Icon className="animate-spin" />}
           Regístrate
         </Button>
