@@ -1,5 +1,5 @@
 ---
-import CredentialCard from "@/components/events/devfest-25/CredentialCard"
+import CredentialCard from "@/components/events/iwd-26/CredentialCard"
 import Header from "@/components/events/iwd-26/Header.astro"
 
 import BaseLayout from "@/layout/BaseLayout.astro"
@@ -32,7 +32,7 @@ if (registration?.status !== "confirmed")
         handle={profile.email}
         enableTilt={true}
         enableMobileTilt={false}
-        innerGradient={"/events/devfest-25/bg-credencial_v2.svg"}
+        innerGradient={"/events/iwd-26/bg-credencial.svg"}
         grainUrl="/grain.webp"
         qrUrl={registration?.qr_url}
       />
