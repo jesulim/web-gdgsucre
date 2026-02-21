@@ -2,12 +2,11 @@
 import patrones from "@/assets/events/iwd-26/patrones.jpg"
 import patrones2 from "@/assets/events/iwd-26/patrones_2.jpg"
 import wtmBanner from "@/assets/wtm_banner.jpg"
+import CTALink from "@/components/CTALink.astro"
 import { Timer } from "@/components/events/iwd-26/Timer"
 
-const eventDate = new Date("2026-03-07T08:00:00-04:00")
+const eventDate = new Date("2026-03-07T14:30:00-04:00")
 const initialTime = eventDate.getTime() - Date.now()
-const isLoggedIn = Astro.cookies.has("sb-refresh-token")
-const redirectHref = isLoggedIn ? "/registro/iwd-26" : "/api/auth/signin?next=/registro/iwd-26"
 ---
 
 <section id="hero" class="relative w-full bg-white mt-20">
@@ -23,12 +22,13 @@ const redirectHref = isLoggedIn ? "/registro/iwd-26" : "/api/auth/signin?next=/r
       <img src={wtmBanner.src} alt="Women Techmakers Sucre 2026" class="w-full h-auto" />
       <!-- Boton de Registro -->
       <div class="flex items-center justify-center">
-        <a
-          href={redirectHref}
+        <div
           class="bg-blue-500 flex items-center justify-center px-8 md:px-14 py-3 md:py-3.5 rounded-full text-white font-semibold text-[16px] md:text-[20px] tracking-[-0.1px] leading-6 md:leading-7 hover:bg-[#3367d6] transition-colors"
         >
-          {isLoggedIn ? "Credencial" : "Regístrate ahora"}
-        </a>
+          <CTALink server:defer eventSlug="iwd-26">
+            <span slot="fallback">Regístrate ahora</span>
+          </CTALink>
+        </div>
       </div>
 
       <!-- Contador -->
