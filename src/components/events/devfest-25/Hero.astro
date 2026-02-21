@@ -2,9 +2,8 @@
 import DevFest25Logo from "@/assets/events/devfest-25/DevFest25logo.svg"
 import CalendarIcon from "@/assets/logos/calendar-month.svg"
 import LocationIcon from "@/assets/logos/distance.svg"
-
+import CTALink from "@/components/CTALink.astro"
 import { Timer } from "@/components/events/devfest-25/Timer"
-import CTALink from "./CTALink.astro"
 
 const eventTitle = "DevFest Sucre 2025"
 const eventLocation = "Regimiento Campos 6 de Infantería 180, Sucre"
@@ -53,7 +52,7 @@ const mapsUrl = "https://maps.app.goo.gl/3PS7ysYJDmMUvNpg6"
   <div
     class="text-xl bg-linear-to-b from-red-500 to-red-700 flex items-center justify-center px-8 md:px-14 py-3 md:py-3.5 rounded-full text-white font-semibold hover:bg-red-500 transition-colors"
   >
-    <CTALink server:defer>
+    <CTALink server:defer eventSlug="devfest-25">
       <span slot="fallback">Regístrate ahora</span>
     </CTALink>
   </div>
