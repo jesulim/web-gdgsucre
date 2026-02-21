@@ -44,4 +44,8 @@ export default defineConfig({
   adapter: vercel({
     webAnalytics: { enabled: true },
   }),
+
+  security: {
+    checkOrigin: false,
+  },
 })
