@@ -2,7 +2,13 @@ import type { APIRoute } from "astro"
 import { supabase } from "@/lib/supabase"
 
 export const GET: APIRoute = async ({ request, url, redirect }) => {
-  const origin = request.headers.get("origin") ?? url.origin
+  const host = request.headers.get("x-forwarded-host") ?? request.headers.get("host")
+
+  const protocol =
+    request.headers.get("x-forwarded-proto") ?? (host?.includes("localhost") ? "http" : "https")
+
+  const origin = host ? `${protocol}://${host}` : url.origin
+
   const callbackRedirectUrl = new URL(`${origin}/api/auth/callback`)
 
   const next = url.searchParams?.get("next")
