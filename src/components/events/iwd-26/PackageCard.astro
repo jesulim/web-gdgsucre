@@ -1,5 +1,5 @@
 ---
-import { getImage } from "astro:assets"
+import { getImage, Image } from "astro:assets"
 import Background from "@/assets/events/iwd-26/packages/background.webp"
 
 export interface Props {
@@ -13,7 +13,6 @@ export interface Props {
 const { title, benefits, imageSrc, imageAlt, price } = Astro.props
 
 const optimizedBg = await getImage({ src: Background, format: "webp" })
-const optimizedImg = await getImage({ src: imageSrc, width: 360, height: 360, format: "webp" })
 ---
 
 <div
@@ -52,8 +51,8 @@ const optimizedImg = await getImage({ src: imageSrc, width: 360, height: 360, fo
         <div
           class="w-32 h-32 md:max-lg:w-[150px] md:max-lg:h-[150px] md:w-[220px] md:h-[220px] lg:max-xl:w-[180px] lg:max-xl:h-[180px] overflow-hidden"
         >
-          <img
-            src={optimizedImg.src}
+          <Image
+            src={imageSrc}
             alt={imageAlt}
             width={360}
             height={360}
