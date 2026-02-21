@@ -42,6 +42,7 @@ export default defineConfig({
 
   integrations: [react()],
   adapter: vercel({
+    imageService: true,
     webAnalytics: { enabled: true },
   }),
 
