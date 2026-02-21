@@ -28,6 +28,11 @@
       "trailingCommas": "es5"
     }
   },
+  "html": {
+    "parser": {
+      "interpolation": true
+    }
+  },
   "css": {
     "parser": {
       "tailwindDirectives": true
