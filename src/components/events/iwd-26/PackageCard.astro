@@ -1,5 +1,5 @@
 ---
-import { Image } from "astro:assets"
+import { getImage, Image } from "astro:assets"
 import Background from "@/assets/events/iwd-26/packages/background.webp"
 
 export interface Props {
@@ -11,11 +11,13 @@ export interface Props {
 }
 
 const { title, benefits, imageSrc, imageAlt, price } = Astro.props
+
+const optimizedBg = await getImage({ src: Background, format: "webp" })
 ---
 
 <div
   class="rounded-4xl p-6 flex flex-col justify-between h-[320px] w-[320px] md:max-lg:h-[360px] md:max-lg:w-[320px] md:h-[400px] md:w-[500px] lg:max-xl:h-[380px] lg:max-xl:w-[500px] bg-cover bg-center"
-  style={`background-image: url(${Background.src}); box-shadow: 4px 4px 12.1px 2px rgba(0, 0, 0, 0.25);`}
+  style={`background-image: url(${optimizedBg.src}); box-shadow: 4px 4px 12.1px 2px rgba(0, 0, 0, 0.25);`}
 >
   <!-- Card Title -->
   <div class="text-center mb-3 md:mb-4">
@@ -52,6 +54,8 @@ const { title, benefits, imageSrc, imageAlt, price } = Astro.props
           <Image
             src={imageSrc}
             alt={imageAlt}
+            width={360}
+            height={360}
             class="w-full h-full object-contain"
           />
         </div>
