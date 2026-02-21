@@ -49,8 +49,8 @@ const { title, benefits, imageSrc, imageAlt, price } = Astro.props
         <div
           class="w-32 h-32 md:max-lg:w-[150px] md:max-lg:h-[150px] md:w-[220px] md:h-[220px] lg:max-xl:w-[180px] lg:max-xl:h-[180px] overflow-hidden"
         >
-          <Image
-            src={imageSrc}
+          <img
+            src={imageSrc.src}
             alt={imageAlt}
             class="w-full h-full object-contain"
           />
