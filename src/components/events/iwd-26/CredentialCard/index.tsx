@@ -51,7 +51,6 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
   grainUrl,
   qrUrl,
 }) => {
-  let userInitials = ""
   const cardRef = useRef<HTMLDivElement>(null)
 
   const canHover = useMemo(() => {
@@ -61,12 +60,15 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
 
   const finalAvatar = avatarUrl && avatarUrl.trim() !== "" ? avatarUrl : "/avatar-default.webp"
 
-  const names = firstName.split(" ")
-  if (names?.length > 1) {
-    userInitials = (names[0][0] + names[1][0]).toUpperCase()
-  } else {
-    userInitials = firstName[0].toUpperCase()
-  }
+  const safeFirstName = firstName?.trim() || ""
+  const nameParts = safeFirstName.split(" ").filter(Boolean)
+
+  const userInitials =
+    nameParts.length >= 2
+      ? (nameParts[0][0] + nameParts[1][0]).toUpperCase()
+      : nameParts.length === 1
+        ? nameParts[0][0].toUpperCase()
+        : "?"
 
   const animationHandlers = useMemo(() => {
     if (!enableTilt) return null
@@ -323,7 +325,7 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
             <p className="text-2xl text-white font-bold">{`${role}`}</p>
           </div>
 
-          <div className="absolute left-1/2 -translate-x-2 top-[67%] sm:top-[67%] w-40 h-40 sm:w-40 sm:h-40 inline-block border-3 border-[#EBBA3C] rounded-2xl p-3">
+          <div className="absolute bottom-6 right-6 w-40 h-40 border-3 border-[#EBBA3C] rounded-2xl p-3">
             <img
               src={qrUrl}
               alt="Código QR de la credencial"
