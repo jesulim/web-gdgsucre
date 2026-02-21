@@ -1,0 +1,66 @@
+---
+import BreakPackage from "@/assets/iwd-26/packages/break.webp"
+import BuildPackage from "@/assets/iwd-26/packages/build.webp"
+
+import PackageCard from "./PackageCard.astro"
+---
+
+<section id="packages" class="bg-white relative overflow-hidden pb-24 md:pb-32">
+  <div class="relative z-10 max-w-7xl mx-auto px-6">
+    <div class="mb-20 relative pr-8 border-r-4 border-[#ebb842] text-right">
+      <div class="inline-block mb-4">
+        <span
+          class="text-[#ebb842] font-bold text-sm tracking-[0.3em] uppercase"
+          >02</span
+        >
+        <span class="mx-3 text-gray-300">//</span>
+        <span class="text-gray-400 font-medium text-sm tracking-wider uppercase"
+          >Paquetes</span
+        >
+      </div>
+      <h2
+        class="text-4xl md:text-6xl font-bold tracking-tighter leading-none mb-6"
+      >
+        <span class="text-[#1976D2]">NUESTROS PAQUETES</span>
+      </h2>
+      <p
+        class="text-xl md:text-2xl text-gray-600 max-w-3xl leading-relaxed ml-auto"
+      >
+        Elige el paquete de tu preferencia y disfruta de un día lleno de
+        actividades y experiencias únicas.
+      </p>
+    </div>
+    <div class="flex w-full lg:my-12 lg:py-4 relative z-10">
+      <div
+        class="flex flex-col lg:flex-row gap-6 lg:gap-24 mx-auto lg:items-end"
+      >
+        <div class="order-1 lg:order-first">
+          <PackageCard
+            title="Break Mode"
+            benefits={["Credencial", "Stickers", "Refrigerio"]}
+            imageSrc={BreakPackage}
+            imageAlt="Break Mode"
+            price="Bs 20"
+          />
+        </div>
+
+        <div class="order-2 lg:order-last">
+          <PackageCard
+            title="Build Mode"
+            benefits={[
+              "Credencial",
+              "Aretes",
+              "Taza",
+              "Portavaso",
+              "Stickers",
+              "Refrigerio",
+            ]}
+            imageSrc={BuildPackage}
+            imageAlt="Build Mode"
+            price="Bs 60"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

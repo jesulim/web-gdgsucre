@@ -1,0 +1,70 @@
+---
+import { Image } from "astro:assets"
+import Background from "@/assets/iwd-26/packages/background.webp"
+
+export interface Props {
+  title: string
+  benefits: string[]
+  imageSrc: ImageMetadata
+  imageAlt: string
+  price: string
+}
+
+const { title, benefits, imageSrc, imageAlt, price } = Astro.props
+---
+
+<div
+  class="rounded-4xl p-6 flex flex-col justify-between h-[320px] w-[320px] md:max-lg:h-[360px] md:max-lg:w-[320px] md:h-[400px] md:w-[500px] lg:max-xl:h-[380px] lg:max-xl:w-[500px] bg-cover bg-center"
+  style={`background-image: url(${Background.src}); box-shadow: 4px 4px 12.1px 2px rgba(0, 0, 0, 0.25);`}
+>
+  <!-- Card Title -->
+  <div class="text-center mb-3 md:mb-4">
+    <h3
+      class="text-[24px] md:max-lg:text-[28px] md:text-[32px] lg:max-xl:text-[30px] font-bold text-black tracking-tight leading-tight"
+    >
+      {title}
+    </h3>
+  </div>
+
+  <!-- Card Content -->
+  <div class="flex-1 flex flex-col justify-center items-center">
+    <div class="flex items-center gap-6">
+      <!-- Left Column - Text List -->
+      <div class="w-fit h-fit">
+        <ul class="space-y-2 md:space-y-3">
+          {
+            benefits.map((benefit) => (
+              <li class="flex items-center group">
+                <span class="text-[16px] md:max-lg:text-[18px] md:text-[22px] lg:max-xl:text-[21px] font-medium text-black leading-tight ">
+                  {benefit}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <!-- Right Column - Package Image -->
+      <div class="flex items-center justify-center flex-shrink-0">
+        <div
+          class="w-32 h-32 md:max-lg:w-[150px] md:max-lg:h-[150px] md:w-[220px] md:h-[220px] lg:max-xl:w-[180px] lg:max-xl:h-[180px] overflow-hidden"
+        >
+          <Image
+            src={imageSrc}
+            alt={imageAlt}
+            class="w-full h-full object-contain"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Price Button -->
+  <div class="text-center mt-3 md:mt-2">
+    <div
+      class="bg-[#1976D2] text-white px-4 md:px-8 py-2 md:py-3 rounded-full font-bold text-[24px] md:max-lg:text-[28px] md:text-[32px] lg:max-xl:text-[30px] inline-block"
+    >
+      {price}
+    </div>
+  </div>
+</div>
