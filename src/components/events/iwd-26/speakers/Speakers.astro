@@ -1,0 +1,44 @@
+---
+import speakers from "@/data/iwd-26/speakers.json"
+import { SpeakerCard } from "./SpeakerCard"
+---
+
+<!-- 
+<section id="speakers" class="w-full py-8 flex flex-col items-center gap-8">
+  <div class="mx-auto my-2 max-w-7xl px-4 md:my-8">
+    <div>
+      <h2 class="text-center text-3xl font-bold md:text-4xl lg:text-6xl mb-10">
+        Speakers
+      </h2>
+    </div>
+  </div>
+</section> -->
+<section id="packages" class="bg-white relative overflow-hidden pb-24 md:pb-32">
+  <div class="relative z-10 max-w-7xl mx-auto px-6">
+    <div class="mb-20 relative pl-8 border-l-4 border-[#ebb842]">
+      <div class="inline-block mb-4">
+        <span
+          class="text-[#ebb842] font-bold text-sm tracking-[0.3em] uppercase"
+          >03</span
+        >
+        <span class="mx-3 text-gray-300">//</span>
+        <span class="text-gray-400 font-medium text-sm tracking-wider uppercase"
+          >Speakers</span
+        >
+      </div>
+      <h2
+        class="text-4xl md:text-6xl font-bold tracking-tighter leading-none mb-6"
+      >
+        <span class="text-[#1976D2]">Conoce a los Speakers</span>
+      </h2>
+      <p class="text-xl md:text-2xl text-gray-600 max-w-3xl leading-relaxed">
+        Conoce a los expertos que compartirán sus conocimientos y experiencias
+        en este evento. Cada uno de ellos es líder en su campo y está listo para
+        inspirarte con sus historias y aprendizajes.
+      </p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
+      {speakers.map((data) => <SpeakerCard {...data} />)}
+    </div>
+  </div>
+</section>
