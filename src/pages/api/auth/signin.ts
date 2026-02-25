@@ -1,7 +1,9 @@
 import type { APIRoute } from "astro"
-import { supabase } from "@/lib/supabase"
+import { createSupabaseServerClient } from "@/lib/supabase"
 
-export const GET: APIRoute = async ({ request, url, redirect }) => {
+export const GET: APIRoute = async ({ request, url, cookies, redirect }) => {
+  const supabase = createSupabaseServerClient({ request, cookies })
+
   const host = request.headers.get("x-forwarded-host") ?? request.headers.get("host")
 
   const protocol =

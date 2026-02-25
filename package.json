@@ -22,6 +22,7 @@
     "@astrojs/react": "4.4.2",
     "@astrojs/vercel": "9.0.4",
     "@hookform/resolvers": "^5.2.2",
+    "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.97.0",
     "@tailwindcss/vite": "^4.2.0",
     "@tanstack/react-table": "^8.21.3",
