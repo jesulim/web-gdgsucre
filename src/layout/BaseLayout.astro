@@ -1,6 +1,14 @@
 ---
 import "../styles/global.css"
 
+import CommandMenu from "@/components/CommandMenu"
+import { getProfile } from "@/lib/services/profileService"
+import { createUserClient } from "@/lib/supabase"
+
+const supabase = await createUserClient(Astro.cookies)
+const profile = await getProfile(supabase)
+const isAdmin = !!profile?.is_admin
+
 const {
   theme,
   title = "Google Developer Group Sucre",
@@ -39,6 +47,7 @@ const {
   </head>
 
   <body class="min-h-screen flex flex-col font-google dark:bg-[#232323] dark:text-white">
+    {isAdmin && <CommandMenu isAdmin={isAdmin} client:load />}
     <slot />
   </body>
 </html>

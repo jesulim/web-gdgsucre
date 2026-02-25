@@ -33,6 +33,7 @@
     "astro": "5.17.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cmdk": "^1.1.1",
     "embla-carousel-react": "^8.6.0",
     "lucide-react": "^0.575.0",
     "motion": "^12.34.3",
