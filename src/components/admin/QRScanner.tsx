@@ -1,8 +1,7 @@
 import { type IDetectedBarcode, Scanner, useDevices } from "@yudiel/react-qr-scanner"
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { Toaster, toast } from "sonner"
 
-import EventSelector from "@/components/admin/EventSelector"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -21,7 +20,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import useEvents from "@/hooks/useEvents"
 
 const getActivityLabel = (activityKey: string) => {
   const labels: Record<string, string> = {
@@ -58,13 +56,11 @@ export function QRScanner() {
   const processedRef = useRef<Map<string, number>>(new Map())
   const COOLDOWN_MS = 2000
 
-  const { events } = useEvents()
   const devices = useDevices()
 
   const [isProcessing, setIsProcessing] = useState(false)
   const [selectedDevice, setSelectedDevice] = useState("")
   const [activity, setActivity] = useState("check_in")
-  const [eventSlug, setEventSlug] = useState("")
 
   const [pendingRegistration, setPendingRegistration] = useState(null)
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -76,12 +72,6 @@ export function QRScanner() {
     const response = await fetch(url)
     return await response.json()
   }
-
-  useEffect(() => {
-    if (events?.length > 0 && !eventSlug) {
-      setEventSlug(events[0].slug)
-    }
-  }, [events, eventSlug])
 
   const updateActivity = async () => {
     try {
@@ -169,10 +159,6 @@ export function QRScanner() {
   return (
     <div>
       <Toaster position="top-right" />
-
-      <div className="mb-4">
-        <EventSelector events={events} eventSlug={eventSlug} setEventSlug={setEventSlug} />
-      </div>
 
       <div className="flex gap-4 mb-8">
         <Select onValueChange={value => setActivity(value)} defaultValue="check_in">

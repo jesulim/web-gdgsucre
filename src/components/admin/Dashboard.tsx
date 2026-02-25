@@ -53,7 +53,8 @@ export function Dashboard({ userData }: { userData: UserData }) {
     if (typeof window === "undefined") {
       return "events"
     }
-    return (localStorage.getItem(VIEW_STORAGE_KEY) || "events") as ViewType
+    const stored = localStorage.getItem(VIEW_STORAGE_KEY)
+    return stored && stored in VIEWS ? (stored as ViewType) : "events"
   })
 
   // Guardar la vista actual en localStorage cuando cambie

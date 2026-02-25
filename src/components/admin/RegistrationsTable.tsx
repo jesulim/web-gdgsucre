@@ -76,7 +76,7 @@ export function RegistrationsTable() {
   const searchInputRef = useRef<HTMLInputElement>(null)
 
   const { events } = useEvents()
-  const { registrations, isLoading, refetch } = useRegistrations(eventSlug)
+  const { registrations, isLoading, isFetching, refetch } = useRegistrations(eventSlug)
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -344,7 +344,7 @@ export function RegistrationsTable() {
         />
 
         <Button className="bg-blue-500 rounded-sm" onClick={() => refetch()}>
-          {isLoading && <Loader2Icon className="animate-spin" />}
+          {isFetching && <Loader2Icon className="animate-spin" />}
           Actualizar
         </Button>
       </div>

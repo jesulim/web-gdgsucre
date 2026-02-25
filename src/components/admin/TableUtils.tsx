@@ -48,10 +48,14 @@ export function SearchInput({
 }
 
 export function TablePagination({ table }: { table: Table<RowData> }) {
+  const totalRows = table.getCoreRowModel().rows.length
+  if (totalRows === 0) {
+    return null
+  }
+
   const firstRow = table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1
   const currentPageRows = table.getRowModel().rows.length
   const lastRow = firstRow + currentPageRows - 1
-  const totalRows = table.getCoreRowModel().rows.length
 
   return (
     table && (

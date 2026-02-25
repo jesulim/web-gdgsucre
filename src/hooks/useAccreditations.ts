@@ -44,19 +44,17 @@ export function useUpdateAccreditation() {
 
     onMutate: async ({ id, eventSlug, field, value, params }) => {
       await queryClient.cancelQueries({ queryKey: ["activities", params] })
+      const previousData = queryClient.getQueryData(["activities", params])
 
       queryClient.setQueryData(["activities", params], (old: any) => {
         return old.map((item: any) => (item.id === id ? { ...item, [field]: value } : item))
       })
 
-      const previousData = queryClient.getQueryData(["activities", params])
-      console.log("previousData", previousData)
-
       return { previousData }
     },
 
-    onError: (error, newData, context) => {
-      queryClient.setQueryData(["activities"], context?.previousData)
+    onError: (error, { params }, context) => {
+      queryClient.setQueryData(["activities", params], context?.previousData)
     },
 
     onSettled: data => {

@@ -4,6 +4,7 @@ export default function useRegistrations(slug: string) {
   const {
     data: registrations,
     isLoading,
+    isFetching,
     refetch,
   } = useQuery({
     queryKey: ["registrations", slug],
@@ -18,5 +19,5 @@ export default function useRegistrations(slug: string) {
     enabled: !!slug,
   })
 
-  return { registrations, isLoading, refetch }
+  return { registrations, isLoading, isFetching, refetch }
 }

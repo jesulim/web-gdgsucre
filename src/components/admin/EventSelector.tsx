@@ -32,15 +32,15 @@ export default function EventSelector({ events, eventSlug, setEventSlug }: Event
         <SelectTrigger>
           <SelectValue placeholder="Cargando eventos" />
         </SelectTrigger>
-        <SelectGroup>
-          <SelectContent>
+        <SelectContent>
+          <SelectGroup>
             {events?.map(({ id, slug, name }) => (
               <SelectItem key={id} value={slug}>
                 {name}
               </SelectItem>
             ))}
-          </SelectContent>
-        </SelectGroup>
+          </SelectGroup>
+        </SelectContent>
       </Select>
     </div>
   )
