@@ -1,6 +1,4 @@
-"use client"
-
-import type { LucideIcon } from "lucide-react"
+import { List, type LucideIcon, ScanQrCode, Ticket, Users } from "lucide-react"
 
 import {
   SidebarGroup,
@@ -10,19 +8,42 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 
-type ViewType = "registrations" | "accreditation"
+import type { ViewType } from "../Dashboard"
+
+interface SidebarSection {
+  title: string
+  view: ViewType
+  icon?: LucideIcon
+}
+
+const sidebarSections: SidebarSection[] = [
+  {
+    title: "Eventos",
+    view: "events",
+    icon: Ticket,
+  },
+  {
+    title: "Registro de Participantes",
+    view: "registrations",
+    icon: List,
+  },
+  {
+    title: "Acreditación del Evento",
+    view: "accreditation",
+    icon: Users,
+  },
+  {
+    title: "Escanear QR",
+    view: "scanner",
+    icon: ScanQrCode,
+  },
+]
 
 export function NavMain({
-  items,
   currentView,
   onNavigate,
 }: {
-  items: {
-    title: string
-    view: ViewType
-    icon?: LucideIcon
-  }[]
-  currentView?: ViewType
+  currentView: ViewType
   onNavigate?: (view: ViewType) => void
 }) {
   const { isMobile, setOpenMobile } = useSidebar()
@@ -30,15 +51,13 @@ export function NavMain({
   const handleClick = (view: ViewType) => {
     onNavigate?.(view)
     // Cerrar el sidebar en móvil después de hacer clic
-    if (isMobile) {
-      setOpenMobile(false)
-    }
+    if (isMobile) setOpenMobile(false)
   }
 
   return (
     <SidebarGroup>
       <SidebarMenu>
-        {items.map(item => (
+        {sidebarSections.map(item => (
           <SidebarMenuItem key={item.title}>
             <SidebarMenuButton
               tooltip={item.title}

@@ -6,15 +6,13 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   type Row,
-  type Table as TanstackTable,
   useReactTable,
 } from "@tanstack/react-table"
-import { Loader2Icon, MoreHorizontal, SearchIcon, SendHorizonal, Trash2 } from "lucide-react"
+import { Loader2Icon, MoreHorizontal, SendHorizonal, Trash2 } from "lucide-react"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { toast } from "sonner"
-
 import EventSelector from "@/components/admin/EventSelector"
-
+import { customFilterFn, SearchInput, TablePagination } from "@/components/admin/TableUtils"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -23,9 +21,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-
-import { Input } from "@/components/ui/input"
-import { Kbd } from "@/components/ui/kbd"
 import {
   Select,
   SelectContent,
@@ -42,6 +37,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import useEvents from "@/hooks/useEvents"
+import useRegistrations from "@/hooks/useRegistrations"
 
 interface Registrations {
   id: number
@@ -62,19 +59,6 @@ const STATUS_STYLES: {
   confirmed: { colors: "bg-green-100 text-green-600", label: "Confirmado" },
 }
 
-function normalizeString(str: string) {
-  return str
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-}
-
-const customFilterFn = (rows: Row<Registrations>, columnId: string, filterValue: string) => {
-  const rowValue = rows.getValue(columnId)
-  if (typeof rowValue !== "string" || typeof filterValue !== "string") return false
-  return normalizeString(rowValue).includes(normalizeString(filterValue))
-}
-
 function StatusBadge({ row }: { row: Row<Registrations> }) {
   const status = String(row.getValue("status"))
   const { colors, label } = STATUS_STYLES[status] || {
@@ -84,12 +68,15 @@ function StatusBadge({ row }: { row: Row<Registrations> }) {
   return <span className={`rounded-sm py-1 px-2 ${colors}`}>{label}</span>
 }
 
+const defaultRegistrations: Registrations[] = []
+
 export function RegistrationsTable() {
-  const [loading, setLoading] = useState(false)
-  const [data, setData] = useState<Registrations[]>()
   const [globalFilter, setGlobalFilter] = useState("")
   const [eventSlug, setEventSlug] = useState("")
   const searchInputRef = useRef<HTMLInputElement>(null)
+
+  const { events } = useEvents()
+  const { registrations, isLoading, refetch } = useRegistrations(eventSlug)
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -103,30 +90,13 @@ export function RegistrationsTable() {
     return () => document.removeEventListener("keydown", handleKeyDown)
   }, [])
 
-  const fetchRegistrations = useCallback(async () => {
-    try {
-      setLoading(true)
-
-      const url = new URL("/api/registrations", window.location.origin)
-      url.searchParams.set("slug", eventSlug)
-
-      const response = await fetch(url.toString())
-
-      const result = await response.json()
-      setData(result.map((row, i) => ({ number: result.length - i, ...row })))
-    } catch {
-      setData([])
-    } finally {
-      setLoading(false)
-    }
-  }, [eventSlug])
-
   useEffect(() => {
-    if (!eventSlug) return
-    fetchRegistrations()
-  }, [fetchRegistrations, eventSlug])
+    if (events?.length > 0 && !eventSlug) {
+      setEventSlug(events[0].slug)
+    }
+  }, [events, eventSlug])
 
-  const sendConfirmationEmail = async (id: number, email: string, name: string) => {
+  const sendConfirmationEmail = useCallback(async (id: number, email: string, name: string) => {
     toast.info(`Enviando email de confirmación a ${email}...`)
 
     const response = await fetch("/api/sendPaymentConfirmation", {
@@ -143,13 +113,12 @@ export function RegistrationsTable() {
     const body = await response.json()
     if (body.success) {
       toast.success("Email enviado exitosamente")
-      await fetchRegistrations()
     } else {
       toast.error(body.details)
     }
-  }
+  }, [])
 
-  const switchRole = async (id: number, role: string) => {
+  const switchRole = useCallback(async (id: number, role: string) => {
     toast.info("Actualizando rol")
 
     const res = await fetch("/api/organizers", {
@@ -164,11 +133,10 @@ export function RegistrationsTable() {
       toast.success("Rol actualizado")
     } else {
       toast.error("Error al actualizar el rol")
-      await fetchRegistrations()
     }
-  }
+  }, [])
 
-  const deleteRegistration = async (id: number) => {
+  const deleteRegistration = useCallback(async (id: number) => {
     const confirmed = window.confirm(
       "¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer."
     )
@@ -182,18 +150,21 @@ export function RegistrationsTable() {
     const body = await response.json()
     if (body.success) {
       toast.success("Registro eliminado exitosamente")
-      await fetchRegistrations()
     } else {
       toast.error(body.message)
     }
-  }
+  }, [])
 
   const columns: ColumnDef<Registrations>[] = [
     {
       accessorKey: "number",
       header: "#",
       enableGlobalFilter: false,
-      cell: ({ row }) => <span className="text-gray-600">{row.getValue("number")}</span>,
+      cell: ({ row }) => {
+        const filteredRows = table.getFilteredRowModel().rows
+        const index = filteredRows.findIndex(r => r.id === row.id)
+        return <span className="text-gray-600">{index + 1}</span>
+      },
     },
     {
       accessorKey: "created_at",
@@ -338,7 +309,7 @@ export function RegistrationsTable() {
   ]
 
   const table = useReactTable({
-    data: data ?? [],
+    data: registrations ?? defaultRegistrations,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -355,36 +326,30 @@ export function RegistrationsTable() {
   })
 
   return (
-    <div className="w-full">
+    <div>
       <Toaster position="top-right" />
 
       <div className="flex flex-col md:flex-row justify-between mb-4">
-        <EventSelector eventSlug={eventSlug} setEventSlug={setEventSlug} />
+        <EventSelector events={events} eventSlug={eventSlug} setEventSlug={setEventSlug} />
 
         <PackageCount rows={table.getFilteredRowModel().rows} />
       </div>
 
       <div className="flex gap-4 mb-4">
-        <div className="relative flex-1">
-          <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            ref={searchInputRef}
-            placeholder="Buscar por nombre, apellido o correo electrónico..."
-            value={globalFilter ?? ""}
-            onChange={e => setGlobalFilter(e.target.value)}
-            className="pl-9 pr-20"
-          />
-          <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex gap-1">
-            <Kbd>Ctrl</Kbd>
-            <Kbd>K</Kbd>
-          </div>
-        </div>
+        <SearchInput
+          placeholder="Buscar por nombre, apellido o correo electrónico..."
+          searchInputRef={searchInputRef}
+          globalFilter={globalFilter}
+          setGlobalFilter={setGlobalFilter}
+        />
 
-        <Button className="bg-blue-500 rounded-sm" onClick={() => fetchRegistrations()}>
-          {loading && <Loader2Icon className="animate-spin" />}
+        <Button className="bg-blue-500 rounded-sm" onClick={() => refetch()}>
+          {isLoading && <Loader2Icon className="animate-spin" />}
           Actualizar
         </Button>
       </div>
+
+      <TablePagination table={table} />
 
       <div className="overflow-hidden rounded-md border">
         <Table>
@@ -404,7 +369,7 @@ export function RegistrationsTable() {
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {table.getRowModel()?.rows.length ? (
               table.getRowModel().rows.map(row => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
                   {row.getVisibleCells().map(cell => (
@@ -417,52 +382,14 @@ export function RegistrationsTable() {
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                  {loading ? "Obteniendo registros..." : "Sin resultados."}
+                  {isLoading ? "Obteniendo registros..." : "Sin resultados."}
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-
-      <TablePagination table={table} />
     </div>
-  )
-}
-
-function TablePagination({ table }: { table: TanstackTable<Registrations> }) {
-  const firstRow = table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1
-  const currentPageRows = table.getRowModel().rows.length
-  const lastRow = firstRow + currentPageRows - 1
-  const totalRows = table.getCoreRowModel().rows.length
-
-  return (
-    table && (
-      <div className="flex items-center justify-between space-x-2 py-4">
-        <p>
-          Mostrando {firstRow}-{lastRow} de {totalRows} registros.
-        </p>
-
-        <div className="flex flex-nowrap gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Anterior
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Siguiente
-          </Button>
-        </div>
-      </div>
-    )
   )
 }
 

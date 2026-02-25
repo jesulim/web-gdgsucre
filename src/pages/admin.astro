@@ -12,21 +12,13 @@ if (!profile?.is_admin) {
   return Astro.redirect("/")
 }
 
-const isAuthenticated = Astro.cookies.has("sb-refresh-token")
-
-const userData = profile
-  ? {
-      name: `${profile.first_name} ${profile.last_name}`.trim() || "Usuario",
-      email: profile.email || "",
-      avatar: profile.avatar_url || "/avatars/default.jpg",
-    }
-  : {
-      name: "Usuario",
-      email: "",
-      avatar: "/avatars/default.jpg",
-    }
+const userData = {
+  name: `${profile.first_name} ${profile.last_name}`.trim(),
+  email: profile.email,
+  avatar: profile.avatar_url,
+}
 ---
 
 <BaseLayout title="Admin GDG Sucre">
-  <Dashboard client:only="react" isAuthenticated={isAuthenticated} user={userData} />
+  <Dashboard client:only="react" userData={userData} />
 </BaseLayout>

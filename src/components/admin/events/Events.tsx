@@ -1,5 +1,3 @@
-"use client"
-
 import {
   type ColumnDef,
   flexRender,
@@ -7,12 +5,11 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  type Row,
-  type Table as TanstackTable,
   useReactTable,
 } from "@tanstack/react-table"
-import { useCallback, useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
+import { customFilterFn, SearchInput } from "@/components/admin/TableUtils"
 import { Button } from "@/components/ui/button"
 import {
   Table,
@@ -23,36 +20,40 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
+import useFetchEvents from "@/hooks/useEvents"
+
 import { EventDialog } from "./EventDialog"
 
+interface Event {
+  id: number
+  name: string
+  slug: string
+  date: string
+  registration_open: boolean
+  packages: string[]
+}
+
 export function Events() {
-  const [loading, setLoading] = useState(false)
-  const [data, setData] = useState<any[]>()
+  const searchInputRef = useRef<HTMLInputElement>(null)
+  const [globalFilter, setGlobalFilter] = useState("")
+
   const [dialogOpen, setDialogOpen] = useState(false)
 
-  const fetchData = useCallback(async () => {
-    setLoading(true)
-    try {
-      const url = new URL("/api/events", window.location.origin)
-      url.searchParams.set("order", "desc")
-
-      const response = await fetch(url.toString())
-      const result = await response.json()
-
-      const dataArray = Object.values(result)
-      setData(dataArray)
-    } catch (error) {
-      console.error("Error fetching events data:", error)
-    } finally {
-      setLoading(false)
-    }
-  }, [])
+  const { events, isLoading } = useFetchEvents()
 
   useEffect(() => {
-    fetchData()
-  }, [fetchData])
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+        e.preventDefault()
+        searchInputRef.current?.focus()
+      }
+    }
 
-  const columns: ColumnDef<any>[] = [
+    document.addEventListener("keydown", handleKeyDown)
+    return () => document.removeEventListener("keydown", handleKeyDown)
+  }, [])
+
+  const columns: ColumnDef<Event>[] = [
     {
       accessorKey: "name",
       header: "Nombre",
@@ -83,25 +84,37 @@ export function Events() {
   ]
 
   const table = useReactTable({
-    data: data ?? [],
+    data: events,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    globalFilterFn: customFilterFn,
     initialState: {
       pagination: { pageSize: 12 },
     },
+    state: {
+      globalFilter,
+    },
+    onGlobalFilterChange: setGlobalFilter,
   })
 
   return (
-    <div className="w-full p-4 lg:p-8">
-      <div className="flex justify-between mb-4">
-        <h2>Eventos</h2>
+    <div>
+      <div className="flex mb-4 gap-2">
+        <SearchInput
+          placeholder="Buscar por nombre o slug..."
+          searchInputRef={searchInputRef}
+          globalFilter={globalFilter}
+          setGlobalFilter={setGlobalFilter}
+        />
+
         <Button className="bg-blue-500 rounded-sm" onClick={() => setDialogOpen(true)}>
           Nuevo Evento
         </Button>
       </div>
+
       <div className="overflow-hidden rounded-md border">
         <Table>
           <TableHeader>
@@ -133,7 +146,7 @@ export function Events() {
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                  {loading ? "Obteniendo eventos..." : "Sin resultados."}
+                  {isLoading ? "Obteniendo eventos..." : "Sin resultados."}
                 </TableCell>
               </TableRow>
             )}

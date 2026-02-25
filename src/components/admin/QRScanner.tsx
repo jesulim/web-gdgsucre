@@ -1,5 +1,5 @@
 import { type IDetectedBarcode, Scanner, useDevices } from "@yudiel/react-qr-scanner"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Toaster, toast } from "sonner"
 
 import EventSelector from "@/components/admin/EventSelector"
@@ -21,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import useEvents from "@/hooks/useEvents"
 
 const getActivityLabel = (activityKey: string) => {
   const labels: Record<string, string> = {
@@ -53,10 +54,11 @@ function ConfirmDialog({ open, onConfirm, onCancel, title, description }) {
   )
 }
 
-export default function QRScanner() {
+export function QRScanner() {
   const processedRef = useRef<Map<string, number>>(new Map())
   const COOLDOWN_MS = 2000
 
+  const { events } = useEvents()
   const devices = useDevices()
 
   const [isProcessing, setIsProcessing] = useState(false)
@@ -68,11 +70,18 @@ export default function QRScanner() {
   const [dialogOpen, setDialogOpen] = useState(false)
 
   const fetchRegistration = async (token: string, activity: string) => {
-    const response = await fetch(`/api/registrationByToken?token=${token}&activity=${activity}`)
-    const body = await response.json()
+    const url = new URL("/api/registrationByToken", window.location.origin)
+    url.search = new URLSearchParams({ token, activity }).toString()
 
-    return body
+    const response = await fetch(url)
+    return await response.json()
   }
+
+  useEffect(() => {
+    if (events?.length > 0 && !eventSlug) {
+      setEventSlug(events[0].slug)
+    }
+  }, [events, eventSlug])
 
   const updateActivity = async () => {
     try {
@@ -158,16 +167,16 @@ export default function QRScanner() {
   }
 
   return (
-    <div className="w-full p-4">
+    <div>
       <Toaster position="top-right" />
 
       <div className="mb-4">
-        <EventSelector eventSlug={eventSlug} setEventSlug={setEventSlug} />
+        <EventSelector events={events} eventSlug={eventSlug} setEventSlug={setEventSlug} />
       </div>
 
       <div className="flex gap-4 mb-8">
         <Select onValueChange={value => setActivity(value)} defaultValue="check_in">
-          <SelectTrigger className="w-[200px]">
+          <SelectTrigger className="w-50">
             <SelectValue placeholder="Selecciona una actividad" />
           </SelectTrigger>
           <SelectContent>
