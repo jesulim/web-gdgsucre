@@ -80,7 +80,7 @@ export function QRScanner() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           id: pendingRegistration?.id,
-          eventSlug,
+          eventSlug: pendingRegistration?.slug,
           field: activity,
           value: true,
         }),
@@ -102,11 +102,6 @@ export function QRScanner() {
 
   const handleOnScan = async (result: IDetectedBarcode[]) => {
     if (!result.length || isProcessing) return
-
-    if (!eventSlug) {
-      toast.error("Selecciona un evento primero")
-      return
-    }
 
     setIsProcessing(true)
     const token = result[0].rawValue
