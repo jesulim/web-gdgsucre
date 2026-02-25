@@ -8,7 +8,7 @@ interface Event {
   registration_open: boolean
 }
 
-export async function getAllEvents(supabase: SupabaseClient, ascending = false) {
+export async function getAllEvents(supabase: SupabaseClient) {
   const { data: events, error } = await supabase
     .from("events")
     .select(
@@ -17,8 +17,7 @@ export async function getAllEvents(supabase: SupabaseClient, ascending = false) 
         form_fields(label), options
       )`
     )
-    // .eq("event_form_fields.form_fields.label", "Paquete")
-    .order("date", { ascending })
+    .order("date", { ascending: false })
 
   if (error) throw new Error(error.message)
 

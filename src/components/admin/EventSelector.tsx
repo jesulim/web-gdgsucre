@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react"
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -13,38 +13,16 @@ interface EventOption {
   slug: string
 }
 
-export default function EventSelector({
-  eventSlug,
-  setEventSlug,
-}: {
+interface EventSelectorProps {
+  events: EventOption[]
   eventSlug: string
   setEventSlug: (value: string) => void
-}) {
-  const [events, setEvents] = useState<EventOption[]>([])
+}
 
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const response = await fetch("/api/events")
-        if (!response.ok) {
-          throw new Error(`Error ${response.status}: ${response.statusText}`)
-        }
-        const result = await response.json()
-
-        setEvents(result)
-        setEventSlug(result[0]?.slug)
-      } catch (error) {
-        console.error("Error al cargar eventos:", error)
-        setEvents([])
-      }
-    }
-
-    fetchEvents()
-  }, [setEventSlug])
-
+export default function EventSelector({ events, eventSlug, setEventSlug }: EventSelectorProps) {
   return (
     <div className="flex gap-2 items-center">
-      <span className="text-lg font-medium">Evento</span>
+      <span className=" font-medium">Evento</span>
 
       <Select
         onValueChange={value => setEventSlug(value)}
@@ -55,11 +33,13 @@ export default function EventSelector({
           <SelectValue placeholder="Cargando eventos" />
         </SelectTrigger>
         <SelectContent>
-          {events?.map(({ id, slug, name }) => (
-            <SelectItem key={id} value={slug}>
-              {name}
-            </SelectItem>
-          ))}
+          <SelectGroup>
+            {events?.map(({ id, slug, name }) => (
+              <SelectItem key={id} value={slug}>
+                {name}
+              </SelectItem>
+            ))}
+          </SelectGroup>
         </SelectContent>
       </Select>
     </div>

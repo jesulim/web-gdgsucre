@@ -2,7 +2,6 @@ import { type IDetectedBarcode, Scanner, useDevices } from "@yudiel/react-qr-sca
 import { useRef, useState } from "react"
 import { Toaster, toast } from "sonner"
 
-import EventSelector from "@/components/admin/EventSelector"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -53,7 +52,7 @@ function ConfirmDialog({ open, onConfirm, onCancel, title, description }) {
   )
 }
 
-export default function QRScanner() {
+export function QRScanner() {
   const processedRef = useRef<Map<string, number>>(new Map())
   const COOLDOWN_MS = 2000
 
@@ -62,16 +61,16 @@ export default function QRScanner() {
   const [isProcessing, setIsProcessing] = useState(false)
   const [selectedDevice, setSelectedDevice] = useState("")
   const [activity, setActivity] = useState("check_in")
-  const [eventSlug, setEventSlug] = useState("")
 
   const [pendingRegistration, setPendingRegistration] = useState(null)
   const [dialogOpen, setDialogOpen] = useState(false)
 
   const fetchRegistration = async (token: string, activity: string) => {
-    const response = await fetch(`/api/registrationByToken?token=${token}&activity=${activity}`)
-    const body = await response.json()
+    const url = new URL("/api/registrationByToken", window.location.origin)
+    url.search = new URLSearchParams({ token, activity }).toString()
 
-    return body
+    const response = await fetch(url)
+    return await response.json()
   }
 
   const updateActivity = async () => {
@@ -81,7 +80,7 @@ export default function QRScanner() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           id: pendingRegistration?.id,
-          eventSlug,
+          eventSlug: pendingRegistration?.slug,
           field: activity,
           value: true,
         }),
@@ -103,11 +102,6 @@ export default function QRScanner() {
 
   const handleOnScan = async (result: IDetectedBarcode[]) => {
     if (!result.length || isProcessing) return
-
-    if (!eventSlug) {
-      toast.error("Selecciona un evento primero")
-      return
-    }
 
     setIsProcessing(true)
     const token = result[0].rawValue
@@ -158,16 +152,12 @@ export default function QRScanner() {
   }
 
   return (
-    <div className="w-full p-4">
+    <div>
       <Toaster position="top-right" />
-
-      <div className="mb-4">
-        <EventSelector eventSlug={eventSlug} setEventSlug={setEventSlug} />
-      </div>
 
       <div className="flex gap-4 mb-8">
         <Select onValueChange={value => setActivity(value)} defaultValue="check_in">
-          <SelectTrigger className="w-[200px]">
+          <SelectTrigger className="w-50">
             <SelectValue placeholder="Selecciona una actividad" />
           </SelectTrigger>
           <SelectContent>

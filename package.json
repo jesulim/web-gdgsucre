@@ -25,6 +25,7 @@
     "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.97.0",
     "@tailwindcss/vite": "^4.2.0",
+    "@tanstack/react-query": "^5.90.21",
     "@tanstack/react-table": "^8.21.3",
     "@types/nodemailer": "^7.0.10",
     "@types/react": "^19.2.14",
@@ -52,6 +53,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.3",
+    "baseline-browser-mapping": "^2.10.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7"
   }

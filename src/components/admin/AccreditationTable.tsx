@@ -1,3 +1,4 @@
+import { useMutation } from "@tanstack/react-query"
 import {
   type ColumnDef,
   flexRender,
@@ -5,18 +6,15 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  type Row,
-  type Table as TanstackTable,
   useReactTable,
 } from "@tanstack/react-table"
-import { Loader2Icon, SearchIcon } from "lucide-react"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { Loader2Icon } from "lucide-react"
+import { useEffect, useRef, useState } from "react"
 import { toast } from "sonner"
-
+import EventSelector from "@/components/admin/EventSelector"
+import { customFilterFn, SearchInput, TablePagination } from "@/components/admin/TableUtils"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Input } from "@/components/ui/input"
-import { Kbd } from "@/components/ui/kbd"
 import {
   Select,
   SelectContent,
@@ -34,7 +32,8 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import EventSelector from "./EventSelector"
+import useAccreditations, { useUpdateAccreditation } from "@/hooks/useAccreditations"
+import useEvents from "@/hooks/useEvents"
 
 interface AccreditationData {
   id: number
@@ -51,23 +50,18 @@ interface AccreditationData {
   package_delivered: boolean
 }
 
-function normalizeString(str: string) {
-  return str.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase()
-}
-
-const customFilterFn = (rows: Row<AccreditationData>, columnId: string, filterValue: string) => {
-  const rowValue = rows.getValue(columnId)
-  if (typeof rowValue !== "string" || typeof filterValue !== "string") return false
-  return normalizeString(rowValue).includes(normalizeString(filterValue))
-}
+const defaultAccreditations: AccreditationData[] = []
 
 export function AccreditationTable() {
-  const [loading, setLoading] = useState(false)
-  const [data, setData] = useState<AccreditationData[]>()
-  const [globalFilter, setGlobalFilter] = useState("")
-  const [eventSlug, setEventSlug] = useState("")
-  const [roleFilter, setRoleFilter] = useState<string>("Todos")
   const searchInputRef = useRef<HTMLInputElement>(null)
+  const [globalFilter, setGlobalFilter] = useState("")
+
+  const [eventSlug, setEventSlug] = useState("")
+  const [role, setRole] = useState<string>("Todos")
+
+  const { events } = useEvents()
+  const { accreditations, isLoading, refetch } = useAccreditations({ slug: eventSlug, role })
+  const { mutateAsync: updateAccreditation } = useUpdateAccreditation()
 
   // Agregar atajo de teclado Ctrl+K para enfocar el buscador
   useEffect(() => {
@@ -82,30 +76,11 @@ export function AccreditationTable() {
     return () => window.removeEventListener("keydown", handleKeyDown)
   }, [])
 
-  const fetchData = useCallback(async () => {
-    setLoading(true)
-    try {
-      const url = new URL("/api/activities", window.location.origin)
-      url.searchParams.set("slug", eventSlug)
-      url.searchParams.set("role", roleFilter)
-
-      const response = await fetch(url.toString())
-      const result = await response.json()
-
-      const dataArray = Object.values(result) as AccreditationData[]
-      setData(dataArray)
-    } catch (error) {
-      toast.error("Error al cargar los datos de acreditación")
-      console.error("Error fetching accreditation data:", error)
-    } finally {
-      setLoading(false)
-    }
-  }, [eventSlug, roleFilter])
-
   useEffect(() => {
-    if (!eventSlug) return
-    fetchData()
-  }, [fetchData, eventSlug])
+    if (events?.length > 0 && !eventSlug) {
+      setEventSlug(events[0].slug)
+    }
+  }, [events, eventSlug])
 
   const updateCheckbox = async (
     id: number,
@@ -114,38 +89,9 @@ export function AccreditationTable() {
     value: boolean
   ) => {
     // Actualización optimista: actualizar UI inmediatamente
-    setData(prevData =>
-      prevData?.map(item => (item.id === id ? { ...item, [field]: value } : item))
-    )
-
     try {
-      const response = await fetch("/api/activities", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id,
-          eventSlug,
-          field,
-          value,
-        }),
-      })
-
-      if (!response.ok) {
-        const body = await response.json()
-        // Revertir cambio si falla
-        setData(prevData =>
-          prevData?.map(item => (item.id === id ? { ...item, [field]: !value } : item))
-        )
-        toast.error(body.error || "Error al actualizar")
-        return
-      }
+      await updateAccreditation({ id, eventSlug, field, value, params: { slug: eventSlug, role } })
     } catch (error) {
-      // Revertir cambio si falla
-      setData(prevData =>
-        prevData?.map(item => (item.id === id ? { ...item, [field]: !value } : item))
-      )
       toast.error("Error al actualizar")
       console.error("Error updating checkbox:", error)
     }
@@ -272,7 +218,7 @@ export function AccreditationTable() {
   ]
 
   const table = useReactTable({
-    data: data ?? [],
+    data: accreditations ?? defaultAccreditations,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -289,39 +235,31 @@ export function AccreditationTable() {
   })
 
   const stats = {
-    total: data?.length || 0,
-    checkedIn: data?.filter(item => item.check_in).length || 0,
-    packagesDelivered: data?.filter(item => item.package_delivered).length || 0,
-    lunchDelivered: data?.filter(item => item.lunch).length || 0,
-    refreshmentDelivered: data?.filter(item => item.refreshment).length || 0,
+    total: accreditations?.length || 0,
+    checkedIn: accreditations?.filter(item => item.check_in).length || 0,
+    packagesDelivered: accreditations?.filter(item => item.package_delivered).length || 0,
+    lunchDelivered: accreditations?.filter(item => item.lunch).length || 0,
+    refreshmentDelivered: accreditations?.filter(item => item.refreshment).length || 0,
   }
 
   return (
-    <div className="w-full">
+    <div>
       <Toaster position="top-right" />
 
       <div className="flex flex-col md:flex-row justify-between mb-4">
-        <EventSelector eventSlug={eventSlug} setEventSlug={setEventSlug} />
+        <EventSelector events={events} eventSlug={eventSlug} setEventSlug={setEventSlug} />
         <AccreditationStats stats={stats} />
       </div>
 
       <div className="flex gap-2 mb-4">
-        <div className="relative flex-1">
-          <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            ref={searchInputRef}
-            placeholder="Buscar por nombre o apellido..."
-            value={globalFilter ?? ""}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setGlobalFilter(e.target.value)}
-            className="pl-9 pr-20"
-          />
-          <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex gap-1">
-            <Kbd>Ctrl</Kbd>
-            <Kbd>K</Kbd>
-          </div>
-        </div>
+        <SearchInput
+          placeholder="Buscar por nombre o apellido..."
+          searchInputRef={searchInputRef}
+          globalFilter={globalFilter}
+          setGlobalFilter={setGlobalFilter}
+        />
 
-        <Select onValueChange={value => setRoleFilter(value)} defaultValue="Todos">
+        <Select onValueChange={value => setRole(value)} defaultValue="Todos">
           <SelectTrigger>
             <SelectValue placeholder="Rol" />
           </SelectTrigger>
@@ -332,11 +270,13 @@ export function AccreditationTable() {
           </SelectContent>
         </Select>
 
-        <Button className="bg-blue-500 rounded-sm" onClick={() => fetchData()}>
-          {loading && <Loader2Icon className="animate-spin" />}
+        <Button className="bg-blue-500 rounded-sm" onClick={() => refetch()}>
+          {isLoading && <Loader2Icon className="animate-spin" />}
           Actualizar
         </Button>
       </div>
+
+      <TablePagination table={table} />
 
       <div className="overflow-hidden rounded-md border">
         <Table>
@@ -369,52 +309,14 @@ export function AccreditationTable() {
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                  {loading ? "Obteniendo datos de acreditación..." : "Sin resultados."}
+                  {isLoading ? "Obteniendo datos de acreditación..." : "Sin resultados."}
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-
-      <TablePagination table={table} />
     </div>
-  )
-}
-
-function TablePagination({ table }: { table: TanstackTable<AccreditationData> }) {
-  const firstRow = table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1
-  const currentPageRows = table.getRowModel().rows.length
-  const lastRow = firstRow + currentPageRows - 1
-  const totalRows = table.getCoreRowModel().rows.length
-
-  return (
-    table && (
-      <div className="flex items-center justify-between space-x-2 py-4">
-        <p>
-          Mostrando {firstRow}-{lastRow} de {totalRows} registros.
-        </p>
-
-        <div className="flex flex-nowrap gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Anterior
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Siguiente
-          </Button>
-        </div>
-      </div>
-    )
   )
 }
 
