@@ -1,50 +1,50 @@
 [
   {
     "id": "1",
-    "title": "Flutter + Firebase + SQL = DataConnect con Flutter",
-    "img": "/events/devfest-25/speakers/speaker-1.webp",
-    "name": "Fabián Varela Bonett",
-    "description": "Firebase & Flutter",
-    "skills": ["Flutter", "Firebase", "SQL", "DataConnect"]
+    "title": "Inteligencia Artificial con propósito: de usuaria a creadora del futuro",
+    "img": "/events/iwd-26/speakers/speaker-1.webp",
+    "name": "Sara Oneydi Salazar Paredes",
+    "description": "Soy ingeniera y AI Engineer con más de cinco años de experiencia profesional en el sector tecnológico, la mayoría de ellos trabajando en proyectos para empresas en Estados Unidos. A lo largo de mi trayectoria he diseñado e implementado soluciones basadas en Inteligencia Artificial y sistemas inteligentes que transforman datos complejos en herramientas estratégicas para la toma de decisiones. He participado en el desarrollo de arquitecturas orientadas a la automatización, análisis avanzado de información y generación de insights en tiempo real, colaborando con equipos internacionales y contribuyendo en proyectos de alto impacto. Mi enfoque combina visión técnica, pensamiento estratégico y orientación a resultados. Además de mi experiencia profesional, soy fundadora y líder de comunidades tecnológicas como AWS Girls Bolivia y AWS User Group La Paz, donde promuevo espacios de formación, mentoría y liderazgo para mujeres en tecnología. He sido ponente en eventos internacionales sobre inteligencia artificial y computación en la nube en Latinoamérica. Creo profundamente en la tecnología como motor de transformación social y en la importancia de construir comunidad para abrir más oportunidades a otras mujeres. Mi propósito es inspirar a más mujeres a verse como creadoras, líderes y arquitectas del futuro digital.",
+    "skills": ["IA"]
   },
   {
     "id": "3",
-    "title": "Frontend en la era del edge",
-    "img": "/events/devfest-25/speakers/speaker-3.webp",
-    "name": "Nataly Paz",
-    "description": "Desarrollo Web",
-    "skills": ["Frontend", "Web Development"]
+    "title": "Del \"No vas a poder\" al \"¡Mira cómo lo hago!\"",
+    "img": "/events/iwd-26/speakers/speaker-2.webp",
+    "name": "Melvy Rocío Ancieta Alvarado",
+    "description": "Soy Comunicadora Social, Diseñadora Gráfica y Docente Universitaria, apasionada por la intersección entre la tecnología y el impacto social, mi enfoque se centra en la convergencia del Diseño UX/UI y la comunicación estratégica, utilizando metodologías como Design Thinking para crear soluciones digitales que realmente resuelvan problemas humanos.Como WTM Ambassador y fundadora de la comunidad \"Mujeres que Inspiran\", he asumido el reto de liderar en espacios tradicionalmente cerrados, rompiendo el patrón establecido por la sociedad que dicta que las mujeres —y especialmente aquellas que no provienen de áreas técnicas puras— no pueden destacar en la tecnología, mi trayectoria es la prueba de que el liderazgo femenino no tiene moldes: he transformado mi formación en ciencias sociales en una ventaja competitiva para humanizar la innovación y la IA Generativa. No solo diseño interfaces o estrategias, diseño puentes que conectan el conocimiento universitario con la práctica técnica, mi misión es demostrar que el talento no conoce de prejuicios de género ni de etiquetas académicas, utilizando la comunicación como la herramienta más poderosa para transformar nuestra realidad y construir un futuro donde ninguna mujer se sienta fuera de lugar.",
+    "skills": ["Productividad"]
   },
   {
     "id": "2",
-    "title": "Como hacer despliegue a producción sin morir en el intento",
-    "img": "/events/devfest-25/speakers/speaker-2.webp",
-    "name": "Daniel Santiago Silva",
-    "description": "DevOps & Cloud",
-    "skills": ["Despliegue", "Producción", "DevOps", "Cloud"]
+    "title": "Liderazgo Femenino Cuando Eres Minoría en el mundo de la Tecnología",
+    "img": "/events/iwd-26/speakers/speaker-3.webp",
+    "name": "Maria Belen Camargo Aramayo",
+    "description": "Soy ingeniera de sistemas y durante gran parte de mi carrera universitaria fui la única o una de las pocas mujeres en el aula. Esa experiencia me enseñó que sobrevivir en espacios donde somos minoría requiere más que talento técnico: requiere estrategia. Hoy trabajo en desarrollo de software en zekiri S.R.L. y mi misión es compartir las estrategias concretas que me permitieron pasar de sentirme aislada a liderar con confianza.",
+    "skills": ["Productividad"]
   },
   {
     "id": "5",
-    "title": "People + AI Research (PAIR) Principles for AI Products",
-    "img": "/events/devfest-25/speakers/speaker-5.webp",
-    "name": "Gustavo Pacchi Villarroel",
-    "description": "UX/UI",
-    "skills": ["UX", "UI", "AI", "PAIR Principles"]
+    "title": "Liderazgo No-Lineal",
+    "img": "/events/iwd-26/speakers/speaker-4.webp",
+    "name": "Nataly Alejandra Gemio Morales",
+    "description": "Nataly Alejandra Gemio Morales es estudiante de Informática en la Universidad Mayor de San Andrés (UMSA) y desarrolladora Full Stack, con experiencia en accesibilidad digital y gestión con metodologías ágiles. Fue Local Lead del NASA Space Apps Challenge el 2025 y actualmente es Subdirectora Nacional de Medios Web en CienciaLink Bolivia y mentora en Google for Startups Accelerator. Participa activamente en comunidades como TechnoLatinas, GDG El Alto, Women Techmakers, Microsoft Education Hub y Notion La Paz – El Alto, impulsando la inclusión, el liderazgo juvenil y el acceso a la tecnología. Fuera del ámbito académico y profesional, practica voleibol, levantamiento de pesas y gaming, y es amante de los gatos, integrando disciplina, curiosidad y equilibrio en su vida diaria.",
+    "skills": ["Productividad"]
   },
   {
     "id": "6",
-    "title": "Android XR compose for XR Devices",
-    "img": "/events/devfest-25/speakers/speaker-6.webp",
-    "name": "Irvin Cossio Chavalier",
-    "description": "Android, Desarrollo Web & XR - 5",
-    "skills": ["Android", "Desarrollo Web", "XR"]
+    "title": "De la idea a la acción: productividad estratégica para mujeres en entornos digitales",
+    "img": "/events/iwd-26/speakers/speaker-5.webp",
+    "name": "Sharon Lourdes Alvarado C.",
+    "description": "Soy docente y emprendedora apasionada por la comunicación estratégica, el marketing digital y el liderazgo femenino. Mi experiencia integra educación universitaria, desarrollo de proyectos y acompañamiento en la construcción de marcas con propósito. Trabajo en la intersección entre innovación, tecnología y emprendimiento, impulsando a mujeres a estructurar sus ideas, comunicar con claridad y posicionarse con seguridad en entornos competitivos. Creo en el aprendizaje continuo, en el liderazgo consciente y en el poder de la tecnología para democratizar oportunidades.",
+    "skills": ["Internet de las cosas IOT"]
   },
   {
     "id": "4",
-    "title": "Protegiendo y aprovechando la privacidad de la data: Federated Learning para Redes Neuronales",
-    "img": "/events/devfest-25/speakers/speaker-4.webp",
-    "name": "Diego Angulo Ramirez",
-    "description": "IA/ML",
-    "skills": ["IA", "ML", "Federated Learning", "Redes Neuronales"]
+    "title": "Bug en el Sistema: La edad es un error de código",
+    "img": "/events/iwd-26/speakers/speaker-6.webp",
+    "name": "Nair Perez Poppe",
+    "description": "Nair Perez Poppe es administradora de empresas con un MBA en Dirección de Empresas Industriales y Tecnológicas por la Universidad de Cádiz y una especialización en Competitividad Global de la Universidad de Georgetown. Es CEO de 10Minds, una EdTech con presencia en Bolivia y Estados Unidos, y directora de la Fundación NAPP. Ha sido reconocida por MIT Technology Review como Innovadora Menor de 35 y por Bloomberg Línea como una de las 100 Innovadoras de América Latina. También es docente universitaria, mentora certificada y referente en educación, tecnología e inclusión digital.",
+    "skills": ["Productividad"]
   }
 ]
