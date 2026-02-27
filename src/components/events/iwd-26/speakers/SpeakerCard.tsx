@@ -6,19 +6,10 @@ export interface Props {
   name: string
   description: string
   description_summarize: string
-  skills?: string[]
+  skills?: { id: string; name: string }[]
 }
 
-export const SpeakerCard = ({
-  id,
-  title,
-  ciudad,
-  img,
-  name,
-  description,
-  description_summarize,
-  skills,
-}: Props) => {
+export const SpeakerCard = ({ ciudad, img, name, description_summarize, skills }: Props) => {
   return (
     <div className="card-speaker flex flex-col rounded-lg overflow-hidden shadow-lg h-full">
       <div className="relative">
@@ -26,21 +17,21 @@ export const SpeakerCard = ({
           src={img}
           alt={name}
           className="w-full object-cover h-[330px] object-center rounded-t-lg"
-          width="auto"
+          width="400"
           height="330"
           loading="lazy"
           decoding="async"
         />
       </div>
       <div className="p-4">
-        <div className="text-sm text-[#1976D2] font-semibold mb-1" id="skills">
+        <div className="text-sm text-[#1976D2] font-semibold mb-1">
           {skills &&
-            skills.map(skill => (
+            skills.map(skills => (
               <span
-                key={skill}
+                key={skills.id}
                 className="inline-block bg-white rounded-full px-2 py-1 text-xs mr-2 mb-1 border border-blue-500"
               >
-                {skill}
+                {skills.name}
               </span>
             ))}
         </div>
