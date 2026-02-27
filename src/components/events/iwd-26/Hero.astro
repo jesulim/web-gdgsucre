@@ -1,7 +1,7 @@
 ---
 import patrones from "@/assets/events/iwd-26/patrones.jpg"
 import patrones2 from "@/assets/events/iwd-26/patrones_2.jpg"
-import wtmBanner from "@/assets/wtm_banner.jpg"
+import wtmBanner from "@/assets/wtm_banner.webp"
 import CTALink from "@/components/CTALink.astro"
 import { Timer } from "@/components/events/iwd-26/Timer"
 
@@ -19,7 +19,11 @@ const initialTime = eventDate.getTime() - Date.now()
   <div class="md:flex md:items-center md:justify-center md:min-h-screen">
     <!-- Banner principal con contador -->
     <div class="w-full md:max-w-5xl lg:max-w-7xl flex flex-col">
-      <img src={wtmBanner.src} alt="Women Techmakers Sucre 2026" class="w-full h-auto" />
+      <img
+        src={wtmBanner.src}
+        alt="Women Techmakers Sucre 2026"
+        class="w-full h-auto"
+      />
       <!-- Boton de Registro -->
       <div class="flex items-center justify-center">
         <div
@@ -32,7 +36,9 @@ const initialTime = eventDate.getTime() - Date.now()
       </div>
 
       <!-- Contador -->
-      <div class="w-full py-8 md:py-12 px-4 flex items-center justify-center bg-white">
+      <div
+        class="w-full py-8 md:py-12 px-4 flex items-center justify-center bg-white"
+      >
         <Timer initialTime={initialTime} targetDate={eventDate} client:load />
       </div>
     </div>
