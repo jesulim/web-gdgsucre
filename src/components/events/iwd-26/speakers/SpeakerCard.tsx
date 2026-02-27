@@ -1,16 +1,26 @@
 export interface Props {
   id: string
   title: string
+  ciudad: string
   img: string
   name: string
   description: string
+  description_summarize: string
   skills?: string[]
 }
 
-export const SpeakerCard = ({ id, title, img, name, description, skills }: Props) => {
+export const SpeakerCard = ({
+  id,
+  title,
+  ciudad,
+  img,
+  name,
+  description,
+  description_summarize,
+  skills,
+}: Props) => {
   return (
-    <div className="card-speaker flex flex-col rounded-lg overflow-hidden shadow-lg ">
-      <div className="mb-2 flex flex-col h-full overflow-hidden"></div>
+    <div className="card-speaker flex flex-col rounded-lg overflow-hidden shadow-lg h-full">
       <div className="relative">
         <img
           src={img}
@@ -22,7 +32,7 @@ export const SpeakerCard = ({ id, title, img, name, description, skills }: Props
           decoding="async"
         />
       </div>
-      <div className="p-4 ">
+      <div className="p-4">
         <div className="text-sm text-[#1976D2] font-semibold mb-1" id="skills">
           {skills &&
             skills.map(skill => (
@@ -35,8 +45,10 @@ export const SpeakerCard = ({ id, title, img, name, description, skills }: Props
             ))}
         </div>
         <h1 className="text-xl font-semibold">{name}</h1>
-        <h2 className="text-sm text-gray-800">@CTO TechFlow</h2>
-        <p className="text-sm text-gray-500 mt-2 line-clamp-3 leading-relaxed">{description}</p>
+        <h2 className="text-sm text-gray-800">{ciudad}</h2>
+        <p className="text-sm text-gray-500 mt-2 line-clamp-10 leading-relaxed">
+          {description_summarize}
+        </p>
       </div>
     </div>
   )
