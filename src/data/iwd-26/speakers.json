@@ -15,7 +15,7 @@
     "img": "/events/iwd-26/speakers/speaker-2.webp",
     "ciudad": "Cochabamba",
     "name": "Melvy Rocío Ancieta Alvarado",
-    "description_summarize": "Comunicadora Social y Diseñadora Gráfica, enfocada en la intersección entre tecnología y impacto social. Como WTM Ambassador, lidero en espacios cerrados, demostrando que el liderazgo femenino no tiene moldes. Utilizo la comunicación para transformar realidades y construir un futuro inclusivo en tecnología.",
+    "description_summarize": "Comunicadora Social y Diseñadora Gráfica, enfocada en la intersección entre tecnología e impacto social. Como WTM Ambassador, lidera en espacios cerrados, demostrando que el liderazgo femenino no tiene moldes. Utiliza la comunicación para transformar realidades y construir un futuro inclusivo en tecnología.",
     "description": "Comunicadora Social, Diseñadora Gráfica y Docente Universitaria, apasionada por la intersección entre la tecnología y el impacto social, mi enfoque se centra en la convergencia del Diseño UX/UI y la comunicación estratégica, utilizando metodologías como Design Thinking para crear soluciones digitales que realmente resuelvan problemas humanos.Como WTM Ambassador y fundadora de la comunidad \"Mujeres que Inspiran\", he asumido el reto de liderar en espacios tradicionalmente cerrados, rompiendo el patrón establecido por la sociedad que dicta que las mujeres —y especialmente aquellas que no provienen de áreas técnicas puras— no pueden destacar en la tecnología, mi trayectoria es la prueba de que el liderazgo femenino no tiene moldes: he transformado mi formación en ciencias sociales en una ventaja competitiva para humanizar la innovación y la IA Generativa. No solo diseño interfaces o estrategias, diseño puentes que conectan el conocimiento universitario con la práctica técnica, mi misión es demostrar que el talento no conoce de prejuicios de género ni de etiquetas académicas, utilizando la comunicación como la herramienta más poderosa para transformar nuestra realidad y construir un futuro donde ninguna mujer se sienta fuera de lugar.",
     "skills": [{ "id": "2", "name": "Productividad" }]
   },
@@ -25,7 +25,7 @@
     "img": "/events/iwd-26/speakers/speaker-3.webp",
     "ciudad": "Cochabamba",
     "name": "Maria Belen Camargo Aramayo",
-    "description_summarize": "Ingeniera de sistemas y he aprendido que ser minoría en tecnología requiere más que talento: se necesita estrategia. Trabajo en desarrollo de software y quiero compartir las estrategias que me ayudaron a pasar de sentirme aislada a liderar con confianza.",
+    "description_summarize": "Ingeniera de sistemas que ha aprendido que ser minoría en tecnología requiere más que talento: se necesita estrategia. Trabaja en desarrollo de software y comparte las estrategias que le ayudaron a pasar de sentirse aislada a liderar con confianza.",
     "description": "Ingeniera de sistemas y durante gran parte de mi carrera universitaria fui la única o una de las pocas mujeres en el aula. Esa experiencia me enseñó que sobrevivir en espacios donde somos minoría requiere más que talento técnico: requiere estrategia. Hoy trabajo en desarrollo de software en zekiri S.R.L. y mi misión es compartir las estrategias concretas que me permitieron pasar de sentirme aislada a liderar con confianza.",
     "skills": [{ "id": "3", "name": "Productividad" }]
   },
