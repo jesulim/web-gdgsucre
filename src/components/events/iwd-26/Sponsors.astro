@@ -1,0 +1,142 @@
+---
+import logo10minds from "@/assets/events/iwd-26/sponsors/10minds.webp"
+import logoNapp from "@/assets/events/iwd-26/sponsors/napp.webp"
+import logoSarita from "@/assets/events/iwd-26/sponsors/SaritaSport.webp"
+
+const sponsors = [
+  { name: "10Minds", logo: logo10minds, alt: "10Minds" },
+  { name: "Napp", logo: logoNapp, alt: "Napp" },
+  { name: "Sarita Sport", logo: logoSarita, alt: "Sarita Sport" },
+]
+---
+
+<section id="sponsors" class="bg-white relative overflow-hidden py-24 md:py-32">
+    <div class="relative z-10 max-w-7xl mx-auto px-6">
+        <div class="mb-20 relative pl-8 border-l-4 border-[#ebb842]">
+            <div class="inline-block mb-4">
+                <span
+                    class="text-[#ebb842] font-bold text-sm tracking-[0.3em] uppercase"
+                    >04</span
+                >
+                <span class="mx-3 text-gray-300">//</span>
+                <span
+                    class="text-gray-400 font-medium text-sm tracking-wider uppercase"
+                    >Sponsors</span
+                >
+            </div>
+            <h2
+                class="text-4xl md:text-6xl font-bold tracking-tighter leading-none mb-6"
+            >
+                <span class="text-[#1976D2]">SPONSORS</span>
+            </h2>
+            <p class="text-xl md:text-2xl text-gray-600 leading-relaxed">
+                Gracias a las organizaciones que hacen posible este evento.
+                Juntos estamos rompiendo el patrón.
+            </p>
+        </div>
+
+        <div
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center"
+        >
+            {
+                sponsors.map((sponsor) => (
+                    <div
+                        class="sponsor-card-wrapper"
+                        tabindex="0"
+                        role="button"
+                        aria-label={`Ver logo de ${sponsor.name}`}
+                    >
+                        <div class="sponsor-card">
+                            <div class="sponsor-face sponsor-front">
+                                <span class="text-2xl md:text-3xl text-gray-400 font-bold max-w-3xl leading-relaxed">
+                                    {sponsor.name}
+                                </span>
+                            </div>
+                            <div class="sponsor-face sponsor-back">
+                                <img
+                                    src={sponsor.logo.src}
+                                    alt={sponsor.alt}
+                                    class="sponsor-logo"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</section>
+
+<style>
+    .sponsor-card-wrapper {
+        width: 100%;
+        max-width: 360px;
+        height: 210px;
+        perspective: 1000px;
+    }
+
+    .sponsor-card {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+    }
+
+    .sponsor-card-wrapper:hover .sponsor-card,
+    .sponsor-card-wrapper:focus-within .sponsor-card,
+    .sponsor-card-wrapper.flipped .sponsor-card {
+        transform: rotateY(180deg);
+    }
+
+    .sponsor-face {
+        position: absolute;
+        inset: 0;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1.5px solid #e5e7eb;
+        background: #fff;
+        box-shadow: 0 2px 12px 0 rgba(25, 118, 210, 0.06);
+    }
+
+    .sponsor-front {
+        /* default state */
+    }
+
+    .sponsor-back {
+        transform: rotateY(180deg);
+        background: #f8fafc;
+    }
+
+    .sponsor-logo {
+        max-width: 75%;
+        max-height: 75%;
+        object-fit: contain;
+        filter: grayscale(0.1);
+    }
+    .sponsor-card-wrapper:focus-visible {
+        outline: 2px solid #1976d2;
+        outline-offset: 4px;
+        border-radius: 16px;
+    }
+</style>
+
+<script>
+    document.querySelectorAll(".sponsor-card-wrapper").forEach((card) => {
+        card.addEventListener("click", () => {
+            card.classList.toggle("flipped");
+        });
+        card.addEventListener("keydown", (e: Event) => {
+            const ke = e as KeyboardEvent;
+            if (ke.key === "Enter" || ke.key === " ") {
+                e.preventDefault();
+                card.classList.toggle("flipped");
+            }
+        });
+    });
+</script>
