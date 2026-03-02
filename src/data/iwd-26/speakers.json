@@ -48,15 +48,5 @@
     "description_summarize": "Docente y emprendedora en comunicación estratégica y marketing digital. Experta en desarrollo de proyectos y construcción de marcas con propósito. Impulsa a mujeres a estructurar ideas y posicionarse en entornos competitivos. Defensora del aprendizaje continuo y liderazgo consciente. Cree en la tecnología como herramienta para democratizar oportunidades.",
     "description": "Docente y emprendedora apasionada por la comunicación estratégica, el marketing digital y el liderazgo femenino. Mi experiencia integra educación universitaria, desarrollo de proyectos y acompañamiento en la construcción de marcas con propósito. Trabajo en la intersección entre innovación, tecnología y emprendimiento, impulsando a mujeres a estructurar sus ideas, comunicar con claridad y posicionarse con seguridad en entornos competitivos. Creo en el aprendizaje continuo, en el liderazgo consciente y en el poder de la tecnología para democratizar oportunidades.",
     "skills": [{ "id": "5", "name": "Internet de las cosas IOT" }]
-  },
-  {
-    "id": "6",
-    "title": "Bug en el Sistema: La edad es un error de código",
-    "img": "/events/iwd-26/speakers/speaker-6.webp",
-    "ciudad": "Sucre",
-    "name": "Nair Perez Poppe",
-    "description_summarize": "Administradora de empresas con un MBA en Dirección de Empresas. Es CEO de 10Minds, una EdTech reconocida por MIT Technology Review como Innovadora Menor de 35. También es docente universitaria y mentora certificada, enfocada en educación, tecnología e inclusión digital. Su trabajo promueve la innovación y el desarrollo en el ámbito educativo.",
-    "description": "Nair Perez Poppe es administradora de empresas con un MBA en Dirección de Empresas Industriales y Tecnológicas por la Universidad de Cádiz y una especialización en Competitividad Global de la Universidad de Georgetown. Es CEO de 10Minds, una EdTech con presencia en Bolivia y Estados Unidos, y directora de la Fundación NAPP. Ha sido reconocida por MIT Technology Review como Innovadora Menor de 35 y por Bloomberg Línea como una de las 100 Innovadoras de América Latina. También es docente universitaria, mentora certificada y referente en educación, tecnología e inclusión digital.",
-    "skills": [{ "id": "6", "name": "Productividad" }]
   }
 ]
