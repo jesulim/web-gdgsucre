@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 
 import { AccreditationTable } from "@/components/admin/AccreditationTable"
 import { QRScanner } from "@/components/admin/QRScanner"
-import { RegistrationsTable } from "@/components/admin/RegistrationsTable"
+import { RegistrationsTable } from "@/components/admin/registrations/RegistrationsTable"
 import { AdminSidebar } from "@/components/admin/sidebar/AdminSidebar"
 import { SiteHeader } from "@/components/admin/sidebar/SiteHeader"
 

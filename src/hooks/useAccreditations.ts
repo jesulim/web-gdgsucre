@@ -1,11 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
 export default function useAccreditations(params = {}) {
-  const {
-    data: accreditations,
-    isLoading,
-    refetch,
-  } = useQuery({
+  return useQuery({
     queryKey: ["activities", params],
     queryFn: async ({ signal }) => {
       const url = new URL("/api/activities", window.location.origin)
@@ -17,8 +13,6 @@ export default function useAccreditations(params = {}) {
     },
     enabled: !!params?.slug,
   })
-
-  return { accreditations, isLoading, refetch }
 }
 
 export function useUpdateAccreditation() {

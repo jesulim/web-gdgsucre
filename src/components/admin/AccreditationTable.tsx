@@ -1,6 +1,5 @@
-import { useMutation } from "@tanstack/react-query"
 import {
-  type ColumnDef,
+  createColumnHelper,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -9,8 +8,9 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import { Loader2Icon } from "lucide-react"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { toast } from "sonner"
+
 import EventSelector from "@/components/admin/EventSelector"
 import { customFilterFn, SearchInput, TablePagination } from "@/components/admin/TableUtils"
 import { Button } from "@/components/ui/button"
@@ -54,7 +54,6 @@ interface AccreditationData {
 const defaultAccreditations: AccreditationData[] = []
 
 export function AccreditationTable() {
-  const searchInputRef = useRef<HTMLInputElement>(null)
   const [globalFilter, setGlobalFilter] = useState("")
 
   const [columnVisibility, setColumnVisibility] = useState({
@@ -68,21 +67,13 @@ export function AccreditationTable() {
   const [role, setRole] = useState<string>("Todos")
 
   const { events } = useEvents()
-  const { accreditations, isLoading, refetch } = useAccreditations({ slug: eventSlug, role })
+  const {
+    data: accreditations,
+    isLoading,
+    isFetching,
+    refetch,
+  } = useAccreditations({ slug: eventSlug, role })
   const { mutateAsync: updateAccreditation } = useUpdateAccreditation()
-
-  // Agregar atajo de teclado Ctrl+K para enfocar el buscador
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if ((event.ctrlKey || event.metaKey) && event.key === "k") {
-        event.preventDefault()
-        searchInputRef.current?.focus()
-      }
-    }
-
-    window.addEventListener("keydown", handleKeyDown)
-    return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [])
 
   useEffect(() => {
     if (events?.length > 0 && !eventSlug) {
@@ -118,29 +109,20 @@ export function AccreditationTable() {
     }
   }
 
-  const columns: ColumnDef<AccreditationData>[] = [
-    {
-      id: "number",
+  const columnHelper = createColumnHelper<AccreditationData>()
+  const columns = [
+    columnHelper.display({
+      id: "rowNumber",
       header: "#",
-      enableGlobalFilter: false,
       cell: ({ row }) => {
         const filteredRows = table.getFilteredRowModel().rows
         const index = filteredRows.findIndex(r => r.id === row.id)
         return <span className="text-gray-600">{index + 1}</span>
       },
-    },
-    {
-      accessorKey: "first_name",
-      header: "Nombre(s)",
-      filterFn: "includesString",
-    },
-    {
-      accessorKey: "last_name",
-      header: "Apellido(s)",
-      filterFn: "includesString",
-    },
-    {
-      accessorKey: "role",
+    }),
+    columnHelper.accessor("first_name", { header: "Nombre(s)", filterFn: "includesString" }),
+    columnHelper.accessor("last_name", { header: "Apellido(s)", filterFn: "includesString" }),
+    columnHelper.accessor("role", {
       header: "Rol",
       enableGlobalFilter: false,
       cell: ({ row }) => {
@@ -155,87 +137,81 @@ export function AccreditationTable() {
           </span>
         )
       },
-    },
-    {
-      id: "package",
+    }),
+    columnHelper.accessor("package", {
       header: "Paquete",
       enableGlobalFilter: false,
-      cell: ({ row }) => <span>{row.original.package?.split(" (")[0]}</span>,
-    },
-    {
-      accessorKey: "dietary_restriction",
+      cell: info => info.getValue()?.split(" (")[0] ?? info.getValue(),
+    }),
+    columnHelper.accessor("dietary_restriction", {
       header: "Restricción alimentaria",
       enableGlobalFilter: false,
-      cell: ({ row }) => {
-        const restriction = row.getValue("dietary_restriction") as string
+      cell: info => {
+        const restriction = info.getValue() as string
         if (!restriction || restriction === "Ninguna") return <span>-</span>
 
         return (
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <span className="block max-w-[200px] truncate">{restriction}</span>
+                <span className="block max-w-50 truncate">{restriction}</span>
               </TooltipTrigger>
-              <TooltipContent className="max-w-[300px]">
+              <TooltipContent className="max-w-75">
                 <p>{restriction}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
         )
       },
-    },
-    {
-      id: "check_in",
+    }),
+    columnHelper.accessor("check_in", {
       header: "Check-in",
       enableGlobalFilter: false,
-      cell: ({ row }) => (
+      cell: info => (
         <Checkbox
-          checked={row.original.check_in}
+          checked={info.getValue()}
           onCheckedChange={checked =>
-            updateCheckbox(row.original.id, eventSlug, "check_in", !!checked)
+            updateCheckbox(info.row.original.id, eventSlug, "check_in", !!checked)
           }
         />
       ),
-    },
-    {
-      id: "package_delivered",
+    }),
+    columnHelper.accessor("package_delivered", {
       header: "Paquete entregado",
       enableGlobalFilter: false,
-      cell: ({ row }) => (
+      cell: info => (
         <Checkbox
-          checked={row.original.package_delivered}
+          checked={info.getValue()}
           onCheckedChange={checked =>
-            updateCheckbox(row.original.id, eventSlug, "package_delivered", !!checked)
+            updateCheckbox(info.row.original.id, eventSlug, "package_delivered", !!checked)
           }
         />
       ),
-    },
-    {
-      id: "lunch",
+    }),
+    columnHelper.accessor("lunch", {
       header: "Almuerzo entregado",
       enableGlobalFilter: false,
-      cell: ({ row }) => (
+      cell: info => (
         <Checkbox
-          checked={row.original.lunch}
+          checked={info.getValue()}
           onCheckedChange={checked =>
-            updateCheckbox(row.original.id, eventSlug, "lunch", !!checked)
+            updateCheckbox(info.row.original.id, eventSlug, "lunch", !!checked)
           }
         />
       ),
-    },
-    {
-      id: "refreshment",
+    }),
+    columnHelper.accessor("refreshment", {
       header: "Refrigerio entregado",
       enableGlobalFilter: false,
-      cell: ({ row }) => (
+      cell: info => (
         <Checkbox
-          checked={row.original.refreshment}
+          checked={info.getValue()}
           onCheckedChange={checked =>
-            updateCheckbox(row.original.id, eventSlug, "refreshment", !!checked)
+            updateCheckbox(info.row.original.id, eventSlug, "refreshment", !!checked)
           }
         />
       ),
-    },
+    }),
   ]
 
   const table = useReactTable({
@@ -256,27 +232,28 @@ export function AccreditationTable() {
     onGlobalFilterChange: setGlobalFilter,
   })
 
-  const stats = {
-    total: accreditations?.length || 0,
-    checkedIn: accreditations?.filter(item => item.check_in).length || 0,
-    packagesDelivered: accreditations?.filter(item => item.package_delivered).length || 0,
-    lunchDelivered: accreditations?.filter(item => item.lunch).length || 0,
-    refreshmentDelivered: accreditations?.filter(item => item.refreshment).length || 0,
-  }
+  const stats = accreditations?.reduce(
+    (acc, item: AccreditationData) => ({
+      total: acc.total + 1,
+      checkedIn: acc.checkedIn + (item.check_in ? 1 : 0),
+      packagesDelivered: acc.packagesDelivered + (item.package_delivered ? 1 : 0),
+      lunchDelivered: acc.lunchDelivered + (item.lunch ? 1 : 0),
+      refreshmentDelivered: acc.refreshmentDelivered + (item.refreshment ? 1 : 0),
+    }),
+    { total: 0, checkedIn: 0, packagesDelivered: 0, lunchDelivered: 0, refreshmentDelivered: 0 }
+  ) ?? { total: 0, checkedIn: 0, packagesDelivered: 0, lunchDelivered: 0, refreshmentDelivered: 0 }
 
   return (
     <div>
       <Toaster position="top-right" />
 
-      <div className="flex flex-col md:flex-row justify-between mb-4">
-        <EventSelector events={events} eventSlug={eventSlug} setEventSlug={setEventSlug} />
-        <AccreditationStats stats={stats} />
-      </div>
+      <div className="grid grid-2 md:grid-cols-[1fr_1fr_auto_auto] gap-2 mb-4">
+        <div className="col-span-2 md:col-span-1">
+          <EventSelector events={events} eventSlug={eventSlug} setEventSlug={setEventSlug} />
+        </div>
 
-      <div className="flex gap-2 mb-4">
         <SearchInput
           placeholder="Buscar por nombre o apellido..."
-          searchInputRef={searchInputRef}
           globalFilter={globalFilter}
           setGlobalFilter={setGlobalFilter}
         />
@@ -292,8 +269,11 @@ export function AccreditationTable() {
           </SelectContent>
         </Select>
 
-        <Button className="bg-blue-500 rounded-sm" onClick={() => refetch()}>
-          {isLoading && <Loader2Icon className="animate-spin" />}
+        <Button
+          className="bg-blue-500 rounded-sm col-span-2 md:col-span-1"
+          onClick={() => refetch()}
+        >
+          {isFetching && <Loader2Icon className="animate-spin" />}
           Actualizar
         </Button>
       </div>
@@ -338,6 +318,8 @@ export function AccreditationTable() {
           </TableBody>
         </Table>
       </div>
+
+      <AccreditationStats stats={stats} />
     </div>
   )
 }
@@ -354,8 +336,8 @@ function AccreditationStats({
   }
 }) {
   return (
-    <div className="flex flex-wrap text-nowrap gap-2 items-center text-sm">
-      <span>Total: {stats.total}</span>
+    <div className="flex flex-col sm:flex-row sm:items-center text-nowrap sm:gap-2 my-4 text-sm">
+      <span className="font-medium">Total registros: {stats.total}</span>
       <span>Check-in: {stats.checkedIn}</span>
       <span>Paquetes: {stats.packagesDelivered}</span>
       <span>Almuerzos: {stats.lunchDelivered}</span>
