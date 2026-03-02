@@ -1,6 +1,6 @@
 import type { Row } from "@tanstack/react-table"
-import { MoreHorizontal, SendHorizonal, Trash2 } from "lucide-react"
-import { useCallback } from "react"
+import { MoreHorizontal, SendHorizontal, Trash2 } from "lucide-react"
+
 import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
@@ -14,8 +14,13 @@ import {
 
 import type { Registrations } from "./RegistrationsTable"
 
-export default function RegistrationRowActions({ row }: { row: Row<Registrations> }) {
-  const sendConfirmationEmail = useCallback(async (id: number, email: string, name: string) => {
+const sendConfirmationEmail = async (
+  id: number,
+  eventName: string,
+  email: string,
+  name: string
+) => {
+  try {
     toast.info(`Enviando email de confirmación a ${email}...`)
 
     const response = await fetch("/api/sendPaymentConfirmation", {
@@ -23,38 +28,49 @@ export default function RegistrationRowActions({ row }: { row: Row<Registrations
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         registrationId: id,
+        eventName: eventName,
         userEmail: email,
         userName: name,
-        eventName: "International Women's Day 2026",
       }),
     })
 
-    const body = await response.json()
-    if (body.success) {
-      toast.success("Email enviado exitosamente")
-    } else {
-      toast.error(body.details)
-    }
-  }, [])
-  const deleteRegistration = useCallback(async (id: number) => {
-    const confirmed = window.confirm(
-      "¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer."
-    )
-    if (!confirmed) return
+    if (!response.ok) throw new Error("Error HTTP al enviar la confirmación")
 
+    const body = await response.json()
+    body.success ? toast.success("Email enviado exitosamente") : toast.error(body.details)
+  } catch {
+    toast.error("Error enviando email de confirmación")
+  }
+}
+
+const deleteRegistration = async (id: number) => {
+  const confirmed = window.confirm(
+    "¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer."
+  )
+  if (!confirmed) return
+
+  try {
     toast.info("Eliminando registro")
     const response = await fetch("/api/registrations", {
       method: "DELETE",
       body: JSON.stringify({ registrationId: id }),
     })
-    const body = await response.json()
-    if (body.success) {
-      toast.success("Registro eliminado exitosamente")
-    } else {
-      toast.error(body.message)
-    }
-  }, [])
+    if (!response.ok) throw new Error("Error HTTP al eliminar el registro")
 
+    const body = await response.json()
+    body.success ? toast.success("Registro eliminado exitosamente") : toast.error(body.details)
+  } catch {
+    toast.error("Error eliminando el registro")
+  }
+}
+
+export default function RegistrationRowActions({
+  row,
+  eventName,
+}: {
+  row: Row<Registrations>
+  eventName: string
+}) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -67,10 +83,15 @@ export default function RegistrationRowActions({ row }: { row: Row<Registrations
         <DropdownMenuLabel>Acciones</DropdownMenuLabel>
         <DropdownMenuItem
           onClick={() =>
-            sendConfirmationEmail(row.original.id, row.original.email, row.original.first_name)
+            sendConfirmationEmail(
+              row.original.id,
+              eventName,
+              row.original.email,
+              row.original.first_name
+            )
           }
         >
-          <SendHorizonal />
+          <SendHorizontal />
           {row.original.status === "pending" ? "Enviar confirmación" : "Reenviar confirmación"}
         </DropdownMenuItem>
 

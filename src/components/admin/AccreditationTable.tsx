@@ -83,12 +83,14 @@ export function AccreditationTable() {
     // show columns based on event activities
     if (eventSlug) {
       const event = events.find(event => event.slug === eventSlug)
-      if (event) {
+      const activities = event?.activities ?? []
+
+      if (activities) {
         setColumnVisibility({
-          check_in: event.activities.includes("check_in"),
-          package_delivered: event.activities.includes("package_delivered"),
-          refreshment: event.activities.includes("refreshment"),
-          lunch: event.activities.includes("lunch"),
+          check_in: activities.includes("check_in"),
+          package_delivered: activities.includes("package_delivered"),
+          refreshment: activities.includes("refreshment"),
+          lunch: activities.includes("lunch"),
         })
       }
     }
@@ -247,8 +249,8 @@ export function AccreditationTable() {
     <div>
       <Toaster position="top-right" />
 
-      <div className="grid grid-2 md:grid-cols-[1fr_1fr_auto_auto] gap-2 mb-4">
-        <div className="col-span-2 md:col-span-1">
+      <div className="grid sm:grid-cols-[1fr_auto_auto] md:grid-cols-[1fr_1fr_auto_auto] gap-2 mb-4">
+        <div className="col-span-2 sm:col-span-3 md:col-span-1">
           <EventSelector events={events} eventSlug={eventSlug} setEventSlug={setEventSlug} />
         </div>
 
@@ -270,7 +272,7 @@ export function AccreditationTable() {
         </Select>
 
         <Button
-          className="bg-blue-500 rounded-sm col-span-2 md:col-span-1"
+          className="bg-blue-500 rounded-sm col-span-2 sm:col-span-1"
           onClick={() => refetch()}
         >
           {isFetching && <Loader2Icon className="animate-spin" />}

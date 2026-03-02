@@ -64,6 +64,8 @@ export function SearchInput({
 }
 export function DateCell({ value }: { value: string }) {
   const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return <span>-</span>
+
   const formatter = new Intl.DateTimeFormat("es-BO", {
     day: "2-digit",
     month: "2-digit",
@@ -93,22 +95,24 @@ export function TablePagination({ table }: { table: Table<RowData> }) {
 
       <div className="flex flex-nowrap gap-2">
         <Button
+          aria-label="Página Anterior"
           variant="outline"
           size={isMobile ? "icon" : "sm"}
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
         >
-          <ChevronLeft />
+          <ChevronLeft aria-hidden="true" />
           <span className="hidden md:inline">Anterior</span>
         </Button>
         <Button
+          aria-label="Página Siguiente"
           variant="outline"
           size={isMobile ? "icon" : "sm"}
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
         >
           <span className="hidden md:inline">Siguiente</span>
-          <ChevronRight />
+          <ChevronRight aria-hidden="true" />
         </Button>
       </div>
     </div>

@@ -64,7 +64,7 @@ const STATUS_STYLES: {
 
 function StatusBadge({ status }: { status: string }) {
   const { colors, label } = STATUS_STYLES[status] || {
-    color: "bg-gray-100 text-gray-600",
+    colors: "bg-gray-100 text-gray-600",
     label: "Desconocido",
   }
   return <span className={`rounded-sm py-1 px-2 ${colors}`}>{label}</span>
@@ -85,23 +85,28 @@ export function RegistrationsTable() {
     }
   }, [events, eventSlug])
 
-  const switchRole = useCallback(async (id: number, role: string) => {
-    toast.info("Actualizando rol")
+  const switchRole = useCallback(
+    async (id: number, role: string) => {
+      try {
+        toast.info("Actualizando rol")
 
-    const res = await fetch("/api/organizers", {
-      method: role === "Organizer" ? "POST" : "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ registrationId: id }),
-    })
+        const res = await fetch("/api/organizers", {
+          method: role === "Organizer" ? "POST" : "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ registrationId: id }),
+        })
+        if (!res.ok) throw new Error("Error HTTP al actualizar el rol")
 
-    if (res.ok) {
-      toast.success("Rol actualizado")
-    } else {
-      toast.error("Error al actualizar el rol")
-    }
-  }, [])
+        toast.success("Rol actualizado")
+        await refetch()
+      } catch {
+        toast.error("Error al actualizar el rol")
+      }
+    },
+    [refetch]
+  )
 
   const columnHelper = createColumnHelper<Registrations>()
 
@@ -163,24 +168,29 @@ export function RegistrationsTable() {
       header: "Comprobante",
       cell: info => {
         const voucher = info.getValue()
+        if (typeof voucher !== "string" || !voucher || voucher === "undefined") return null
+
         return (
-          voucher !== "undefined" && (
-            <a
-              href={`/api/getSignedUrl?bucket=event-uploads&url=${voucher}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 hover:underline"
-            >
-              Revisar
-            </a>
-          )
+          <a
+            href={`/api/getSignedUrl?bucket=event-uploads&url=${encodeURIComponent(voucher)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-500 hover:underline"
+          >
+            Revisar
+          </a>
         )
       },
     }),
     columnHelper.display({
       id: "actions",
       header: "Acciones",
-      cell: ({ row }) => <RegistrationRowActions row={row} />,
+      cell: ({ row }) => (
+        <RegistrationRowActions
+          row={row}
+          eventName={events.find(e => e.slug === eventSlug)?.name}
+        />
+      ),
     }),
   ]
 

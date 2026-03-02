@@ -28,7 +28,7 @@ export async function getAllEvents(supabase: SupabaseClient) {
 
     return {
       packages: event_form_fields?.find(field => field.form_fields?.label === "Paquete")?.options,
-      activities: activities?.map(activity => activity.name),
+      activities: (activities ?? []).map(activity => activity.name),
       ...rest,
     }
   })
