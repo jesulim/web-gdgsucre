@@ -32,6 +32,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+
 import useAccreditations, { useUpdateAccreditation } from "@/hooks/useAccreditations"
 import useEvents from "@/hooks/useEvents"
 
@@ -44,10 +45,10 @@ interface AccreditationData {
   status: string
   package?: string
   dietary_restriction?: string
-  lunch: boolean
   check_in: boolean
-  refreshment: boolean
-  package_delivered: boolean
+  package_delivered?: boolean
+  refreshment?: boolean
+  lunch?: boolean
 }
 
 const defaultAccreditations: AccreditationData[] = []
@@ -55,6 +56,13 @@ const defaultAccreditations: AccreditationData[] = []
 export function AccreditationTable() {
   const searchInputRef = useRef<HTMLInputElement>(null)
   const [globalFilter, setGlobalFilter] = useState("")
+
+  const [columnVisibility, setColumnVisibility] = useState({
+    check_in: true,
+    package_delivered: true,
+    refreshment: true,
+    lunch: true,
+  })
 
   const [eventSlug, setEventSlug] = useState("")
   const [role, setRole] = useState<string>("Todos")
@@ -79,6 +87,19 @@ export function AccreditationTable() {
   useEffect(() => {
     if (events?.length > 0 && !eventSlug) {
       setEventSlug(events[0].slug)
+    }
+
+    // show columns based on event activities
+    if (eventSlug) {
+      const event = events.find(event => event.slug === eventSlug)
+      if (event) {
+        setColumnVisibility({
+          check_in: event.activities.includes("check_in"),
+          package_delivered: event.activities.includes("package_delivered"),
+          refreshment: event.activities.includes("refreshment"),
+          lunch: event.activities.includes("lunch"),
+        })
+      }
     }
   }, [events, eventSlug])
 
@@ -230,6 +251,7 @@ export function AccreditationTable() {
     },
     state: {
       globalFilter,
+      columnVisibility,
     },
     onGlobalFilterChange: setGlobalFilter,
   })
