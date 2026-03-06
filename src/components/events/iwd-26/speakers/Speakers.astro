@@ -27,9 +27,12 @@ import { SpeakerCard } from "./SpeakerCard"
         que transformarán tu perspectiva.
       </p>
     </div>
-    <!-- <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12"> -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-18">
-      {speakers.map((data) => <SpeakerCard {...data} />)}
+    <div class="flex flex-wrap justify-center gap-18">
+      {speakers.map((data) => (
+        <div class="w-full sm:w-[calc(50%-2.25rem)] lg:w-[calc(33.33%-3rem)]">
+          <SpeakerCard {...data} />
+        </div>
+      ))}
     </div>
   </div>
 </section>
