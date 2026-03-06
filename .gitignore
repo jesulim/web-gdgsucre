@@ -27,4 +27,4 @@ pnpm-debug.log*
 .env*.local
 
 #skills
-.agents/
+.agents/package-lock.json
