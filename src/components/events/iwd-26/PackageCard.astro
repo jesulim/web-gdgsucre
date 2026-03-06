@@ -13,6 +13,12 @@ export interface Props {
 const { title, benefits, imageSrc, imageAlt, price } = Astro.props
 
 const optimizedBg = await getImage({ src: Background, format: "webp" })
+
+// Logic for early bird pricing: until March 3, 2026
+const currentDate = new Date()
+const deadline = new Date("2026-03-04T00:00:00-04:00") // Midnight of March 4
+const isEarlyBird = currentDate < deadline
+const showEarlyBird = title === "Build Mode" && isEarlyBird
 ---
 
 <div
@@ -65,10 +71,56 @@ const optimizedBg = await getImage({ src: Background, format: "webp" })
 
   <!-- Price Button -->
   <div class="text-center mt-3 md:mt-2">
-    <div
-      class="bg-[#1976D2] text-white px-4 md:px-8 py-2 md:py-3 rounded-full font-bold text-[24px] md:max-lg:text-[28px] md:text-[32px] lg:max-xl:text-[30px] inline-block"
-    >
-      {price}
-    </div>
+    {
+      showEarlyBird ? (
+        <div class="flex items-center justify-center gap-2 md:gap-4 scale-90 md:scale-100">
+          {/* Original Price with X */}
+          <div class="relative bg-[#ebb842] text-white px-4 md:px-6 py-2 md:py-3 rounded-full font-bold text-[20px] md:text-[28px] inline-block isolate">
+            <span class="text-white">60 Bs</span>
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+              <svg
+                viewBox="0 0 100 100"
+                class="w-full h-full text-[#1976D2] scale-110 drop-shadow-sm"
+              >
+                <line
+                  x1="10"
+                  y1="10"
+                  x2="90"
+                  y2="90"
+                  stroke="currentColor"
+                  stroke-width="8"
+                  stroke-linecap="round"
+                />
+                <line
+                  x1="90"
+                  y1="10"
+                  x2="10"
+                  y2="90"
+                  stroke="currentColor"
+                  stroke-width="8"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </div>
+          </div>
+
+          {/* Arrow Icon */}
+          <div class="text-[#1976D2]">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M13 5L11.59 6.41L16.17 11H4V13H16.17L11.59 17.59L13 19L20 12L13 5Z" />
+            </svg>
+          </div>
+
+          {/* New Price */}
+          <div class="bg-[#1976D2] text-white px-4 md:px-8 py-2 md:py-3 rounded-full font-bold text-[24px] md:max-lg:text-[28px] md:text-[32px] lg:max-xl:text-[30px] inline-block shadow-lg">
+            50 Bs
+          </div>
+        </div>
+      ) : (
+        <div class="bg-[#1976D2] text-white px-4 md:px-8 py-2 md:py-3 rounded-full font-bold text-[24px] md:max-lg:text-[28px] md:text-[32px] lg:max-xl:text-[30px] inline-block">
+          {price}
+        </div>
+      )
+    }
   </div>
 </div>

@@ -1,9 +1,11 @@
 ---
 import About from "@/components/events/iwd-26/About.astro"
+import Agenda from "@/components/events/iwd-26/agenda/Agenda.astro"
 import Footer from "@/components/events/iwd-26/Footer.astro"
 import Header from "@/components/events/iwd-26/Header.astro"
 import Hero from "@/components/events/iwd-26/Hero.astro"
 import PackageSection from "@/components/events/iwd-26/PackageSection.astro"
+import Sponsors from "@/components/events/iwd-26/Sponsors.astro"
 import SpeakersSection from "@/components/events/iwd-26/speakers/Speakers.astro"
 import BaseLayout from "@/layout/BaseLayout.astro"
 ---
@@ -18,7 +20,9 @@ import BaseLayout from "@/layout/BaseLayout.astro"
     <Hero />
     <About />
     <PackageSection />
-    <SpeakersSection></SpeakersSection>
+    <SpeakersSection />
+    <Agenda />
+    <Sponsors />
   </main>
   <Footer />
 </BaseLayout>

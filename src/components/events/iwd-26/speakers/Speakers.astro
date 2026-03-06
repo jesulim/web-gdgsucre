@@ -21,15 +21,18 @@ import { SpeakerCard } from "./SpeakerCard"
       >
         <span class="text-[#1976D2]">CONOCE NUESTROS SPEAKERS</span>
       </h2>
-      <p class="text-xl md:text-2xl text-gray-600 max-w-3xl leading-relaxed">
+      <p class="text-xl md:text-2xl text-gray-600 leading-relaxed">
         Descubre a las speakers que te inspirarán con sus conocimientos y
         experiencias. Prepárate para aprender de las mejores y llevarte ideas
         que transformarán tu perspectiva.
       </p>
     </div>
-    <!-- <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12"> -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-18">
-      {speakers.map((data) => <SpeakerCard {...data} />)}
+    <div class="flex flex-wrap justify-center gap-18">
+      {speakers.map((data) => (
+        <div class="w-full sm:w-[calc(50%-2.25rem)] lg:w-[calc(33.33%-3rem)]">
+          <SpeakerCard {...data} />
+        </div>
+      ))}
     </div>
   </div>
 </section>

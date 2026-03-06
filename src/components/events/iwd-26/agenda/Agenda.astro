@@ -1,0 +1,30 @@
+---
+import { AgendaList } from "./AgendaList"
+import { agendaData } from "./agendaData"
+---
+
+<section id="agenda" class="w-full flex justify-center mt-24 px-6">
+  <div class="w-full max-w-7xl self-center">
+    <div class="w-full mb-20 relative pl-8 border-l-4 border-[#ebb842]">
+      <div class="inline-block mb-4">
+        <span
+          class="text-[#ebb842] font-bold text-sm tracking-[0.3em] uppercase"
+          >04</span
+        >
+        <span class="mx-3 text-gray-300">//</span>
+        <span class="text-gray-400 font-medium text-sm tracking-wider uppercase"
+          >AGENDA</span
+        >
+      </div>
+      <h2
+        class="text-4xl md:text-6xl font-bold tracking-tighter leading-none mb-6"
+      >
+        <span class="text-[#1976D2]">CONOCE NUESTRA AGENDA</span>
+      </h2>
+      <p class="text-xl md:text-2xl text-gray-600 leading-relaxed">
+        Un día lleno de inspiración y aprendizaje.
+      </p>
+    </div>
+    <AgendaList client:load items={agendaData} />
+  </div>
+</section>

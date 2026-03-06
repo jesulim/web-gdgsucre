@@ -1,0 +1,54 @@
+---
+import logo10minds from "@/assets/events/iwd-26/sponsors/10minds.webp"
+import logoNapp from "@/assets/events/iwd-26/sponsors/napp.webp"
+import logoSarita from "@/assets/events/iwd-26/sponsors/SaritaSport.webp"
+
+const sponsors = [
+  { name: "10Minds", logo: logo10minds, alt: "10Minds" },
+  { name: "Napp", logo: logoNapp, alt: "Napp" },
+  { name: "Sarita Sport", logo: logoSarita, alt: "Sarita Sport" },
+]
+---
+
+<section id="sponsors" class="bg-white relative overflow-hidden py-24 md:py-32">
+    <div class="relative z-10 max-w-7xl mx-auto px-6">
+        <div class="mb-20 relative pl-8 border-l-4 border-[#ebb842]">
+            <div class="inline-block mb-4">
+                <span
+                    class="text-[#ebb842] font-bold text-sm tracking-[0.3em] uppercase"
+                    >05</span
+                >
+                <span class="mx-3 text-gray-300">//</span>
+                <span
+                    class="text-gray-400 font-medium text-sm tracking-wider uppercase"
+                    >Sponsors</span
+                >
+            </div>
+            <h2
+                class="text-4xl md:text-6xl font-bold tracking-tighter leading-none mb-6"
+            >
+                <span class="text-[#1976D2]">SPONSORS</span>
+            </h2>
+            <p class="text-xl md:text-2xl text-gray-600 leading-relaxed">
+                Gracias a las organizaciones que hacen posible este evento.
+                Juntos estamos rompiendo el patrón.
+            </p>
+        </div>
+
+        <div
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center"
+        >
+            {
+                sponsors.map((sponsor) => (
+                    <div class="w-full max-w-[360px] h-[210px] border-[1.5px] border-[#e5e7eb] rounded-2xl flex items-center justify-center shadow-[0_2px_12px_0_rgba(25,118,210,0.06)] transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] cursor-pointer hover:-translate-y-[5px] hover:shadow-[0_8px_20px_0_rgba(25,118,210,0.1)] group">
+                        <img
+                            src={sponsor.logo.src}
+                            alt={sponsor.alt}
+                            class="max-w-[75%] max-h-[75%] object-contain grayscale-[0.1] transition-all duration-300 group-hover:grayscale-0"
+                        />
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</section>
