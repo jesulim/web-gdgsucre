@@ -29,7 +29,7 @@ export default function OrganizersSlider({ organizers }: Props) {
   if (!organizers?.length) return null
 
   return (
-    <section className="relative w-full px-4 md:px-8 my-8">
+    <section className="relative w-full overflow-hidden px-4 md:px-8 my-8">
       <button
         type="button"
         onClick={() => scroll("left")}
