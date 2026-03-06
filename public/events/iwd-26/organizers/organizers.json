@@ -1,0 +1,145 @@
+[
+  {
+    "Nombre Completo": "JOSE ALDRIN LIMON CARBALLO",
+    "Carrera": "Ingeniería de Sistemas",
+    "fotografia": "https://drive.google.com/open?id=1CaxxCRnOY9v25cKb53uaOSDz2VpphQT2",
+    "area": ["LOGÍSTICA"]
+  },
+  {
+    "Nombre Completo": "Max Jherzon Rodas Palacios",
+    "Carrera": "Ciencias de la Computacion",
+    "fotografia": "https://drive.google.com/open?id=1xLK4NzkIGs1D60RKe3Pjv8JgFooeazWt",
+    "area": ["LOGÍSTICA", "WEB"]
+  },
+
+  {
+    "Nombre Completo": "Noemi Noelia Gonzales Pereira ",
+    "Carrera": "Ingeniería de sistemas ",
+    "fotografia": "https://drive.google.com/open?id=1qY3gn7vJDSLkGYqS_Q0zBKGSxyaC5rPf",
+    "area": ["LOGÍSTICA", "ESCENOGRAFÍA"]
+  },
+
+  {
+    "Nombre Completo": "Juan Agustín Apaza Guzman",
+    "Carrera": "Ing de Sistemas",
+    "fotografia": "https://drive.google.com/open?id=1NqvOPYYvTYH6f1P072XfBEoF-vp0QQxo",
+    "area": ["LOGÍSTICA"]
+  },
+  {
+    "Nombre Completo": "Alejandro Olguin ",
+    "Carrera": "Ingeniería Mecatrónica ",
+    "fotografia": "https://drive.google.com/open?id=1exn-LpeUtXduNsy5hC9v0MW6B_Dv0nbX",
+    "area": ["LOGÍSTICA"]
+  },
+
+  {
+    "Nombre Completo": "Zahir Bari Rivero Teco",
+    "Carrera": "Ing. Ciencias de la Computación",
+    "fotografia": "https://drive.google.com/open?id=13Mybd3QHXx8X7YkaWO526WY9RyrhmxcM",
+    "area": ["LOGÍSTICA"]
+  },
+
+  {
+    "Nombre Completo": "Emily Peñaranda Anagua ",
+    "Carrera": "Ingeniería en sistemas ",
+    "fotografia": "https://drive.google.com/open?id=1FE9yOxfOqehwCQWBpfOM0stdoU1qUV45",
+    "area": ["LOGÍSTICA"]
+  },
+
+  {
+    "Nombre Completo": "Chelsea Melany Espinoza Cava ",
+    "Carrera": "Ingeniería de sistemas",
+    "fotografia": "https://drive.google.com/open?id=1Xi23eBIk2kYHqL6CIoB_4BevptO1rXJS",
+    "area": ["ACREDITACIÓN"]
+  },
+  {
+    "Nombre Completo": "Juan Sebastian Delgadillo Llanos ",
+    "Carrera": "Ingeniería de sistemas",
+    "fotografia": "https://drive.google.com/open?id=1fsm8MRbPlumv06mP0pKtDbm8HUTI9Y7V",
+    "area": ["ACREDITACIÓN"]
+  },
+  {
+    "Nombre Completo": "Álvaro Doria Medina Portugal ",
+    "Carrera": "Ingeniería de telecomunicaciones",
+    "fotografia": "https://drive.google.com/open?id=1fEiNDgWxZEPCutjFlRCtcl-wuOLaDlk5",
+    "area": ["ACREDITACIÓN"]
+  },
+  {
+    "Nombre Completo": "Belén Céspedes Calani",
+    "Carrera": "Ingeniería en Telecomunicaciones",
+    "fotografia": "https://drive.google.com/open?id=16iOVtVjaFcyrFOLIySN4zMYhyz9i_kxg",
+    "area": ["ACREDITACIÓN"]
+  },
+  {
+    "Nombre Completo": "Karen Amurrio Huaygua",
+    "Carrera": "Ingeniería en Ciencias de la Computación ",
+    "fotografia": "https://drive.google.com/open?id=10c6LBhRgYZ3Q6jUD7paer3y7_S4Gmt6z",
+    "area": ["DISEÑO"]
+  },
+  {
+    "Nombre Completo": "Ángela Alicia Fernández Durán",
+    "Carrera": "Arte y diseño grafico",
+    "fotografia": "https://drive.google.com/open?id=1Cilu0fga7TJzCtOcItHEN1-tLsZOFQh2",
+    "area": ["DISEÑO"]
+  },
+  {
+    "Nombre Completo": "Oscar",
+    "Carrera": "Ing. Diseño y Animación Digital",
+    "fotografia": "https://drive.google.com/open?id=1TdOKZDMlNXJoQxBOmuQ1VV-or1za-JjV",
+    "area": ["DISEÑO", "AUDIO Y VIDEO"]
+  },
+  {
+    "Nombre Completo": "Jhamil Crespo Rejas",
+    "Carrera": "Ingeniería en Ciencias de la Computación ",
+    "fotografia": "https://drive.google.com/open?id=1hq6E9rz222PN1llBvaSC1cVFceWkg9cC",
+    "area": ["DISEÑO", "WEB"]
+  },
+  {
+    "Nombre Completo": "Sara Stefany Reynaga Carpio ",
+    "Carrera": "Ingeniería de sistemas",
+    "fotografia": "https://drive.google.com/open?id=1avMVVsOuwgnHsIR13re25lwa6gqjKHt6",
+    "area": ["WEB"]
+  },
+  {
+    "Nombre Completo": "Daniel Quispe Taboada ",
+    "Carrera": "Ingeniería de sistemas ",
+    "fotografia": "https://drive.google.com/open?id=1JPDS1yRfMgHbSAHVif6Xssm4Y_noKKUX",
+    "area": ["MARKETING"]
+  },
+  {
+    "Nombre Completo": "Nelva Adalit Mora Barrionuevo",
+    "Carrera": "Ingeniería de Sistemas",
+    "fotografia": "https://drive.google.com/open?id=1ayDL6PYOM6bHFsaiBgmVXhRVkdTBC6Sk",
+    "area": ["MARKETING"]
+  },
+  {
+    "Nombre Completo": "Karen Quispe Chavez ",
+    "Carrera": "Informatica",
+    "fotografia": "https://drive.google.com/open?id=1oK8waPFO0jCtFhxokFTu7lzPKRYeq920",
+    "area": ["MARKETING"]
+  },
+  {
+    "Nombre Completo": "Laura Abigail Humérez Martínez ",
+    "Carrera": "Ingenieria de Sistemas",
+    "fotografia": "https://drive.google.com/open?id=1_PeE0-riNxI_rbZh8XdZmDWLr3HVky1O",
+    "area": ["ESCENOGRAFÍA"]
+  },
+  {
+    "Nombre Completo": "Marcela Miranda Veniz",
+    "Carrera": "Ingenieria de Sistemas",
+    "fotografia": "https://drive.google.com/open?id=1VpALuLSvznomZ9UN5fqYsZQuubkwWjrO",
+    "area": ["ESCENOGRAFÍA"]
+  },
+  {
+    "Nombre Completo": "Andrés Alejandro Torres González",
+    "Carrera": "Ingeniero en Ciencias de la Computación ",
+    "fotografia": "https://drive.google.com/file/d/1t5wQ6V-AjgwybC5-riVW88qY90NeHEWV/view?usp=drivesdk",
+    "area": ["ESCENOGRAFÍA"]
+  },
+  {
+    "Nombre Completo": "Jharif Nelson Aparicio Casillas ",
+    "Carrera": "Ingeniero en Ciencias de la Computación ",
+    "fotografia": "https://drive.google.com/open?id=1ACjSUB5p0KNaAQO-dO1_JP1X-3Dc82Mh",
+    "area": ["AUDIO Y VIDEO"]
+  }
+]
