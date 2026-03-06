@@ -33,10 +33,10 @@ import { OrganizerCard } from "./OrganizerCard"
       >
         &#8249;
       </button>
-      <div class="flex overflow-x-auto gap-4 scroll-smooth">
+      <div class="flex overflow-x-auto gap-4 scroll-smooth organizers-container">
         {
           organizers.map((data) => (
-            <div class="flex-shrink-0 w-80 p-4">
+            <div class="flex-shrink-0 w-[300px] md:w-80 p-4">
               <OrganizerCard {...data} />
             </div>
           ))
@@ -51,3 +51,20 @@ import { OrganizerCard } from "./OrganizerCard"
     </div>
   </div>
 </section>
+
+<style>
+  @media (max-width: 768px) {
+    #organizers {
+      max-width: 600px;
+      overflow: hidden;
+    }
+
+    .organizers-container {
+      max-width: 300px;
+    }
+
+    .organizers-container > div {
+      width: 100%;
+    }
+  }
+</style>

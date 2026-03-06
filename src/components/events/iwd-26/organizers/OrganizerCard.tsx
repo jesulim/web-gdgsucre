@@ -15,7 +15,7 @@ export const OrganizerCard = ({ img, full_name, areas }: Props) => {
         <img
           src={img}
           alt={full_name}
-          className="w-full object-cover h-[300px] object-center rounded-t-lg"
+          className="w-full object-cover h-[300px] md:h-[400px] object-center rounded-t-lg"
           width="400"
           height="400"
           loading="lazy"
@@ -25,8 +25,8 @@ export const OrganizerCard = ({ img, full_name, areas }: Props) => {
           }}
         />
       </div>
-      <div className="pt-1 pb-8 flex flex-col items-center gap-2 text-center">
-        <h1 className="text-xl font-semibold">
+      <div className="pt-1 pb-8 flex flex-col items-center gap-2 md:gap-4 text-center">
+        <h1 className="text-xl md:text-2xl font-semibold">
           {full_name.split(" ").length > 2 ? (
             <>
               {full_name.split(" ").slice(0, 2).join(" ")} <br />
@@ -44,12 +44,12 @@ export const OrganizerCard = ({ img, full_name, areas }: Props) => {
             </>
           )}
         </h1>
-        <div className="text-sm text-[#1976D2] font-semibold mb-1">
+        <div className="text-sm md:text-base text-[#1976D2] font-semibold mb-1">
           {areas &&
             areas.map(area => (
               <span
                 key={area}
-                className="inline-block bg-[#0333AB] rounded-full px-2 py-1 text-xs mr-2 mb-1 border border-[#0333AB] text-white"
+                className="inline-block bg-[#0333AB] rounded-full px-2 py-1 text-xs md:text-sm mr-2 mb-1 border border-[#0333AB] text-white"
               >
                 {area}
               </span>
