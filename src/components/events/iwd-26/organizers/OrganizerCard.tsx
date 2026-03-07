@@ -26,7 +26,7 @@ export const OrganizerCard = ({ img, full_name, areas }: Props) => {
         />
       </div>
       <div className="pt-1 pb-8 flex flex-col items-center gap-2 md:gap-4 text-center">
-        <h1 className="text-xl md:text-2xl font-semibold">
+        <h3 className="text-xl md:text-2xl font-semibold">
           {full_name.split(" ").length > 2 ? (
             <>
               {full_name.split(" ").slice(0, 2).join(" ")} <br />
@@ -43,7 +43,7 @@ export const OrganizerCard = ({ img, full_name, areas }: Props) => {
               {"\u200B"}
             </>
           )}
-        </h1>
+        </h3>
         <div className="text-sm md:text-base text-[#1976D2] font-semibold mb-1">
           {areas &&
             areas.map(area => (
@@ -59,7 +59,8 @@ export const OrganizerCard = ({ img, full_name, areas }: Props) => {
       <div>
         <img
           src={MarcoSVG.src}
-          alt="Marco decorativo"
+          alt=""
+          aria-hidden="true"
           className="absolute bottom-0 left-0 w-full"
         />
       </div>
