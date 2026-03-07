@@ -51,8 +51,8 @@ export function useUpdateAccreditation() {
       queryClient.setQueryData(["activities", params], context?.previousData)
     },
 
-    onSettled: data => {
-      queryClient.invalidateQueries({ queryKey: ["activities"] })
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["activities"], refetchType: "none" })
     },
   })
 }
