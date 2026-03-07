@@ -15,7 +15,7 @@ export const OrganizerCard = ({ img, full_name, areas }: Props) => {
         <img
           src={img}
           alt={full_name}
-          className="w-full object-cover h-[300px] md:h-[400px] object-center rounded-t-lg"
+          className="w-full object-cover h-[300px] md:h-[300px] object-center rounded-t-lg"
           width="400"
           height="400"
           loading="lazy"

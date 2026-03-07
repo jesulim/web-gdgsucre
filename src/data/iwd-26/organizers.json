@@ -1,5 +1,75 @@
 [
   {
+    "full_name": "Susan Jhoseline Terán Cruz",
+    "carrera": "",
+    "imageUrl": "https://drive.google.com/open?id=1ARajeAe3aDiRjGWdUWZ9bJ4QRNHcUEM9",
+    "img": "/events/iwd-26/organizers/Susan_Jhoseline_Teran_Cruz.webp",
+    "areas": ["MARKETING", "ACREDITACIÓN"]
+  },
+  {
+    "full_name": "Pablo Daniel Noya Quiroz",
+    "carrera": "",
+    "imageUrl": "https://drive.google.com/open?id=1fjNFMKPVuYTdX9JrvTNwsfl_jkzaADyW",
+    "img": "/events/iwd-26/organizers/Pablo_Daniel_Noya_Quiroz.webp",
+    "areas": ["WEB"]
+  },
+  {
+    "full_name": "Davinia Salguero",
+    "carrera": "",
+    "imageUrl": "https://agknhsuhxjmwooffdacr.supabase.co/storage/v1/object/public/assets/profile_pics/Davinia%20Osmara%20Salguero%20Mencias.webp",
+    "img": "https://agknhsuhxjmwooffdacr.supabase.co/storage/v1/object/public/assets/profile_pics/Davinia%20Osmara%20Salguero%20Mencias.webp",
+    "areas": ["ACREDITACIÓN"]
+  },
+  {
+    "full_name": "Heidy Riosseth Paco Cruz",
+    "carrera": "",
+    "imageUrl": "https://agknhsuhxjmwooffdacr.supabase.co/storage/v1/object/public/assets/profile_pics/Heidy%20Rio%20Paco.webp",
+    "img": "https://agknhsuhxjmwooffdacr.supabase.co/storage/v1/object/public/assets/profile_pics/Heidy%20Rio%20Paco.webp",
+    "areas": ["LOGÍSTICA"]
+  },
+  {
+    "full_name": "Ivan Martinez",
+    "carrera": "",
+    "imageUrl": "https://agknhsuhxjmwooffdacr.supabase.co/storage/v1/object/public/assets/profile_pics/Ivan%20Martinez.webp",
+    "img": "https://agknhsuhxjmwooffdacr.supabase.co/storage/v1/object/public/assets/profile_pics/Ivan%20Martinez.webp",
+    "areas": ["WEB"]
+  },
+  {
+    "full_name": "Madizon Lauren Gonzales Arancibia",
+    "carrera": "",
+    "imageUrl": "https://agknhsuhxjmwooffdacr.supabase.co/storage/v1/object/public/assets/profile_pics/Madizon%20Lauren%20Gonzales%20Arancibia.webp",
+    "img": "https://agknhsuhxjmwooffdacr.supabase.co/storage/v1/object/public/assets/profile_pics/Madizon%20Lauren%20Gonzales%20Arancibia.webp",
+    "areas": ["ESCENOGRAFÍA"]
+  },
+  {
+    "full_name": "Samantha Mikaela Hinojosa Yucra",
+    "carrera": "",
+    "imageUrl": "https://agknhsuhxjmwooffdacr.supabase.co/storage/v1/object/public/assets/profile_pics/Mikaela.webp",
+    "img": "https://agknhsuhxjmwooffdacr.supabase.co/storage/v1/object/public/assets/profile_pics/Mikaela.webp",
+    "areas": ["AUDIO Y VIDEO"]
+  },
+  {
+    "full_name": "Andrea Cornejo",
+    "carrera": "",
+    "imageUrl": "https://lh3.googleusercontent.com/a/ACg8ocL_Iv6UKza7YdoDBm4pQZM2GqkKZEIDe1hGuP4j2yDC7Jpy2jMl=s96-c",
+    "img": "https://lh3.googleusercontent.com/a/ACg8ocL_Iv6UKza7YdoDBm4pQZM2GqkKZEIDe1hGuP4j2yDC7Jpy2jMl=s96-c",
+    "areas": ["SPEAKERS"]
+  },
+  {
+    "full_name": "Aylin Oropeza",
+    "carrera": "",
+    "imageUrl": "https://lh3.googleusercontent.com/a/ACg8ocLFnIQ7b9l2kFhapFX8y7nZs563kHZZpeTx8zbNdCYm-1DJ_MkCAQ=s96-c",
+    "img": "https://lh3.googleusercontent.com/a/ACg8ocLFnIQ7b9l2kFhapFX8y7nZs563kHZZpeTx8zbNdCYm-1DJ_MkCAQ=s96-c",
+    "areas": ["WEB"]
+  },
+  {
+    "full_name": "Andrea Chumacero",
+    "carrera": "",
+    "imageUrl": "https://drive.google.com/file/d/1Bv-Evth4WpZPpoDYTxyeWWaDANWPOEgP/view?usp=drive_link",
+    "img": "/events/iwd-26/organizers/Andrea_Chumacero.webp",
+    "areas": ["LOGÍSTICA"]
+  },
+  {
     "full_name": "Jose Aldrin Limon Carballo",
     "carrera": "Ingeniería de Sistemas",
     "imageUrl": "https://drive.google.com/open?id=1CaxxCRnOY9v25cKb53uaOSDz2VpphQT2",
