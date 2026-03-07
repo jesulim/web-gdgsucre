@@ -1,0 +1,74 @@
+---
+import organizers from "@/data/iwd-26/organizers.json"
+import { OrganizerCard } from "./OrganizerCard"
+---
+
+<section id="organizers" class="w-full py-8 flex flex-col items-center gap-8">
+  <div class="relative z-10 max-w-7xl mx-auto px-6">
+    <div class="mb-20 relative pl-8 border-l-4 border-[#ebb842]">
+      <div class="inline-block mb-4">
+        <span
+          class="text-[#ebb842] font-bold text-sm tracking-[0.3em] uppercase"
+          >06</span
+        >
+        <span class="mx-3 text-gray-300">//</span>
+        <span class="text-gray-400 font-medium text-sm tracking-wider uppercase"
+          >Organizers</span
+        >
+      </div>
+      <h2
+        class="text-4xl md:text-6xl font-bold tracking-tighter leading-none mb-6"
+      >
+        <span class="text-[#1976D2]">NUESTROS ORGANIZADORES</span>
+      </h2>
+      <p class="text-xl md:text-2xl text-gray-600 leading-relaxed">
+        Un agradecimiento a nuestros organizadores por su dedicación y esfuerzo.
+      </p>
+    </div>
+
+    <div class="relative flex items-center">
+      <button
+        aria-label="Desplazar a la Izquierda"
+        class="
+        hidden md:flex absolute left-[-60px] z-20 p-2 bg-[#0333AB99] rounded-full shadow-md hover:bg-[#0333AB] focus:outline-none h-[40px] w-[40px] items-center justify-center"
+        onclick="this.nextElementSibling.scrollBy({ left: -300, behavior: 'smooth' })"
+      >
+        &#8249;
+      </button>
+      <div class="flex overflow-x-auto gap-4 scroll-smooth organizers-container">
+        {
+          organizers.map((data) => (
+            <div class="flex-shrink-0 w-[300px] md:w-80 p-4">
+              <OrganizerCard {...data} />
+            </div>
+          ))
+        }
+      </div>
+      <button
+        class="
+        hidden md:flex absolute right-[-60px] z-20 p-2 bg-[#0333AB99] rounded-full shadow-md hover:bg-[#0333AB] focus:outline-none h-[40px] w-[40px] items-center justify-center"
+        aria-label="Desplazar a la Derecha"
+        onclick="this.previousElementSibling.scrollBy({ left: 300, behavior: 'smooth' })"
+      >
+        &#8250;
+      </button>
+    </div>
+  </div>
+</section>
+
+<style>
+  @media (max-width: 768px) {
+    #organizers {
+      max-width: 600px;
+      overflow: hidden;
+    }
+
+    .organizers-container {
+      max-width: 360px;
+    }
+
+    .organizers-container > div {
+      width: 100%;
+    }
+  }
+</style>
