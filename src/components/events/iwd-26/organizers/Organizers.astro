@@ -29,7 +29,8 @@ import { OrganizerCard } from "./OrganizerCard"
     <div class="relative flex items-center">
       <button
         aria-label="Desplazar a la Izquierda"
-        class="absolute left-[-60px] z-20 p-2 bg-[#0333AB99] rounded-full shadow-md hover:bg-[#0333AB] focus:outline-none h-[40px] w-[40px] flex items-center justify-center"
+        class="
+        hidden md:flex absolute left-[-60px] z-20 p-2 bg-[#0333AB99] rounded-full shadow-md hover:bg-[#0333AB] focus:outline-none h-[40px] w-[40px] items-center justify-center"
         onclick="this.nextElementSibling.scrollBy({ left: -300, behavior: 'smooth' })"
       >
         &#8249;
@@ -44,7 +45,8 @@ import { OrganizerCard } from "./OrganizerCard"
         }
       </div>
       <button
-        class="absolute right-[-60px] z-20 p-2 bg-[#0333AB99] rounded-full shadow-md hover:bg-[#0333AB] focus:outline-none h-[40px] w-[40px] flex items-center justify-center"
+        class="
+        hidden md:flex absolute right-[-60px] z-20 p-2 bg-[#0333AB99] rounded-full shadow-md hover:bg-[#0333AB] focus:outline-none h-[40px] w-[40px] flex items-center justify-center"
         aria-label="Desplazar a la Derecha"
         onclick="this.previousElementSibling.scrollBy({ left: 300, behavior: 'smooth' })"
       >
