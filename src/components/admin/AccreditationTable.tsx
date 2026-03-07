@@ -224,6 +224,7 @@ export function AccreditationTable() {
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     globalFilterFn: customFilterFn,
+    autoResetPageIndex: false,
     initialState: {
       pagination: { pageSize: 12 },
     },
