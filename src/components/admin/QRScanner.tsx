@@ -165,7 +165,7 @@ export function QRScanner() {
               <SelectLabel>Actividad</SelectLabel>
               <SelectItem value="check_in">Check-in</SelectItem>
               <SelectItem value="package_delivered">Paquete</SelectItem>
-              <SelectItem value="lunch">Almuerzo</SelectItem>
+              {/* <SelectItem value="lunch">Almuerzo</SelectItem> */}
               <SelectItem value="refreshment">Refrigerio</SelectItem>
             </SelectGroup>
           </SelectContent>

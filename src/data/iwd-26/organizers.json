@@ -7,13 +7,6 @@
     "areas": ["MARKETING", "ACREDITACIÓN"]
   },
   {
-    "full_name": "Pablo Daniel Noya Quiroz",
-    "carrera": "",
-    "imageUrl": "https://drive.google.com/open?id=1fjNFMKPVuYTdX9JrvTNwsfl_jkzaADyW",
-    "img": "/events/iwd-26/organizers/Pablo_Daniel_Noya_Quiroz.webp",
-    "areas": ["WEB"]
-  },
-  {
     "full_name": "Davinia Salguero",
     "carrera": "",
     "imageUrl": "https://agknhsuhxjmwooffdacr.supabase.co/storage/v1/object/public/assets/profile_pics/Davinia%20Osmara%20Salguero%20Mencias.webp",
@@ -60,6 +53,13 @@
     "carrera": "",
     "imageUrl": "https://lh3.googleusercontent.com/a/ACg8ocLFnIQ7b9l2kFhapFX8y7nZs563kHZZpeTx8zbNdCYm-1DJ_MkCAQ=s96-c",
     "img": "https://lh3.googleusercontent.com/a/ACg8ocLFnIQ7b9l2kFhapFX8y7nZs563kHZZpeTx8zbNdCYm-1DJ_MkCAQ=s96-c",
+    "areas": ["WEB"]
+  },
+  {
+    "full_name": "Pablo Daniel Noya Quiroz",
+    "carrera": "",
+    "imageUrl": "https://drive.google.com/open?id=1fjNFMKPVuYTdX9JrvTNwsfl_jkzaADyW",
+    "img": "/events/iwd-26/organizers/Pablo_Daniel_Noya_Quiroz.webp",
     "areas": ["WEB"]
   },
   {
@@ -167,7 +167,7 @@
     "areas": ["DISEÑO"]
   },
   {
-    "full_name": "Oscar",
+    "full_name": "Oscar Taboada",
     "carrera": "Ing. Diseño y Animación Digital",
     "imageUrl": "https://drive.google.com/open?id=1TdOKZDMlNXJoQxBOmuQ1VV-or1za-JjV",
     "img": "/events/iwd-26/organizers/Oscar.webp",
