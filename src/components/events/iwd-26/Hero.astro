@@ -25,7 +25,12 @@ const initialTime = eventDate.getTime() - Date.now()
         class="w-full h-auto"
       />
       <!-- Boton de Registro -->
-      <div class="flex items-center justify-center">
+      <div
+        class:list={[
+          "items-center justify-center",
+          initialTime > 0 ? "flex" : "hidden",
+        ]}
+      >
         <div
           class="bg-blue-500 flex items-center justify-center px-8 md:px-14 py-3 md:py-3.5 rounded-full text-white font-semibold text-[16px] md:text-[20px] tracking-[-0.1px] leading-6 md:leading-7 hover:bg-[#3367d6] transition-colors"
         >
