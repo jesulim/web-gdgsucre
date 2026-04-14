@@ -1,35 +1,27 @@
 # Web GDG Sucre
 
-## 🚀 Project Structure
+![Bun](https://img.shields.io/badge/Bun-%23000000.svg?style=for-the-badge&logo=bun&logoColor=white)
+![Astro](https://img.shields.io/badge/astro-%232C2052.svg?style=for-the-badge&logo=astro&logoColor=white)
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-%233ECF8E.svg?style=for-the-badge&logo=supabase&logoColor=white)
+![Biome](https://img.shields.io/badge/biome-%2360A5FA.svg?style=for-the-badge&logo=biome&logoColor=white)
 
-Inside of your Astro project, you'll see the following folders and files:
+Página y aplicación web oficial del capítulo **GDG Sucre** 🇧🇴.
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+## 📖 Documentación
+Accede a la documentación técnica en: **[docs.gdgsucre.com](https://docs.gdgsucre.com/)**
+
+## 🚀 Inicio Rápido
+```bash
+bun install
+bun dev
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `bun install`             | Installs dependencies                            |
-| `bun dev`                 | Starts local dev server at `localhost:4321`      |
-| `bun run build`           | Build your production site to `./dist/`          |
-| `bun run preview`         | Preview your build locally, before deploying     |
-| `bun run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `bun run astro -- --help` | Get help using the Astro CLI                     |
-
-![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/jesulim/web-gdgsucre?utm_source=oss&utm_medium=github&utm_campaign=jesulim%2Fweb-gdgsucre&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
+## 🧞 Comandos
+| Comando | Acción |
+| :--- | :--- |
+| `bun dev` | Inicia el servidor de desarrollo |
+| `bun run build` | Compila para producción |
+| `bunx biome check --write` | Ejecuta Lint & Format |
