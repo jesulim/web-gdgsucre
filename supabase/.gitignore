@@ -8,5 +8,4 @@
 .env.*.local
 
 # Linked data
-migrations/
 *.sql
