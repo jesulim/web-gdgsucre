@@ -1,29 +1,36 @@
 ---
-import About from "@/components/events/devfest-25/About.astro"
-import Footer from "@/components/events/devfest-25/Footer.astro"
-import Header from "@/components/events/devfest-25/Header.astro"
-import Hero from "@/components/events/devfest-25/Hero.astro"
-import Organizers from "@/components/events/devfest-25/organizers/Organizers.astro"
-import Schedule from "@/components/events/devfest-25/Schedule.astro"
-import Sponsors from "@/components/events/devfest-25/Sponsors.astro"
-import Speakers from "@/components/events/devfest-25/speaker/Speakers.astro"
-
+import About from "@/components/events/bwai-26/About.astro"
+import Countdown from "@/components/events/bwai-26/Countdown.astro"
+import Footer from "@/components/events/bwai-26/Footer.astro"
+import Header from "@/components/events/bwai-26/Header.astro"
+import Hero from "@/components/events/bwai-26/Hero.astro"
+import Info from "@/components/events/bwai-26/Info.astro"
 import BaseLayout from "@/layout/BaseLayout.astro"
 ---
 
 <BaseLayout
-  theme="dark"
-  title="DevFest 2025"
-  description="Celebra la cultura de GDG en el DevFest 2025."
+  theme="light"
+  title="Build With AI Sucre 2026"
+  description="Build with AI es la serie global de Google Developer Groups donde developers, estudiantes y curiosos nos juntamos para aprender IA en modo hands-on."
 >
-  <Header />
-  <main class="flex-1">
-    <Hero />
-    <About />
-    <Speakers />
-    <Schedule />
-    <Sponsors />
-    <Organizers />
-  </main>
-  <Footer />
+  <div class="w-full min-h-screen bg-white font-sans">
+    <Header />
+    <main>
+      <Hero />
+      <!-- Info handles its own desktop layout (including countdown in sidebar) -->
+      <Info />
+      <!-- Countdown is mobile-only; desktop version is rendered inside Info.astro -->
+      <Countdown />
+      <About />
+    </main>
+    <Footer />
+  </div>
 </BaseLayout>
+
+<style>
+  html, body {
+    scroll-behavior: smooth;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+</style>

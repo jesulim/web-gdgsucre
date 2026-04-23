@@ -1,0 +1,121 @@
+---
+// Desktop Footer Figma node 79:321
+// bg-[#fafaf6] border-t-2 border-[#1e1e1e]
+// flex flex-col gap-[24px] items-center pb-[36px] pt-[32px] px-[120px]
+// Logo: w-[288px] h-[48px]
+// Text: text-[21px] whitespace-nowrap
+// Links: flex items-start justify-between w-full, text-[24px] bold headers, text-[16px] body
+// Bottom: w-[346px] text-center text-[15px] text-[#8c8c8c]
+
+// Mobile logo assets
+const imgGroupMobileMask =
+  "http://localhost:3845/assets/b73da96cdb2a60ae1d6973bf21758ffa625c813d.svg"
+const imgGroupMobileFill =
+  "http://localhost:3845/assets/0ef8da955b56c4dc168c3569daa76723e5896fd6.svg"
+
+// Desktop footer logo assets (exact from Figma node 79:327)
+const imgGroupDesktopMask =
+  "http://localhost:3845/assets/bfde572fc93be6a46576098364d683f91e135ecc.svg"
+const imgGroupDesktopFill =
+  "http://localhost:3845/assets/5e70a45d5aad921f093f25c39bb65ac642960b75.svg"
+---
+
+<footer class="bg-[#fafaf6] border-[#1e1e1e] border-t-2 w-full">
+
+  <!-- ===== MOBILE FOOTER ===== -->
+  <div class="md:hidden flex flex-col gap-[18px] items-start px-[22px] pt-[32px] pb-[36px]">
+    <!-- Mobile Logo (143×24) -->
+    <div class="flex items-center overflow-clip shrink-0" style="height: 24px; width: 143px;">
+      <div class="flex flex-1 flex-col h-full items-start min-w-px overflow-clip relative">
+        <div class="flex-1 inline-grid leading-[0] place-items-start relative w-full min-h-px" style="grid-rows: max-content;">
+          <div class="col-1 row-1 relative mask-alpha mask-intersect mask-no-clip mask-no-repeat" style="height: 14.381px; mask-image: url('http://localhost:3845/assets/b73da96cdb2a60ae1d6973bf21758ffa625c813d.svg'); mask-position: -3.275px -4.525px; mask-size: 143px 24px; margin-left: 3.27px; margin-top: 4.53px; width: 136.113px;">
+            <div class="absolute" style="inset: 0 -0.18% 0 0;">
+              <img alt="GDG Sucre Build with AI" class="block max-w-none size-full" src={imgGroupMobileFill} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[13px] leading-[19px] max-w-[346px]">
+      Hecho por GDG Sucre y la comunidad developer de Chuquisaca.
+    </p>
+
+    <div class="flex gap-[32px] items-start text-[12px] w-full flex-wrap">
+      <div class="flex flex-col gap-[8px] items-start whitespace-nowrap">
+        <p class="font-['Google_Sans',sans-serif] font-black text-[#1e1e1e]">EVENTO</p>
+        <a href="#" class="font-['Google_Sans',sans-serif] text-[#3b3b3b] hover:underline">¿Qué es?</a>
+        <a href="#" class="font-['Google_Sans',sans-serif] text-[#3b3b3b] hover:underline">Agenda</a>
+        <a href="#" class="font-['Google_Sans',sans-serif] text-[#3b3b3b] hover:underline">Speakers</a>
+        <a href="#" class="font-['Google_Sans',sans-serif] text-[#3b3b3b] hover:underline">FAQ</a>
+      </div>
+      <div class="flex flex-col gap-[8px] items-start whitespace-nowrap">
+        <p class="font-['Google_Sans',sans-serif] font-black text-[#1e1e1e]">ORGANIZA</p>
+        <a href="#" class="font-['Google_Sans',sans-serif] text-[#3b3b3b] hover:underline">GDG Sucre</a>
+        <a href="#" class="font-['Google_Sans',sans-serif] text-[#3b3b3b] hover:underline">SIB Chuquisaca</a>
+        <a href="#" class="font-['Google_Sans',sans-serif] text-[#3b3b3b] hover:underline">CISICH</a>
+      </div>
+      <div class="flex flex-col gap-[8px] items-start">
+        <p class="font-['Google_Sans',sans-serif] font-black text-[#1e1e1e] whitespace-nowrap">CONTACTO</p>
+        <a href="mailto:hola@gdgsucre.dev" class="font-['Google_Sans',sans-serif] text-[#3b3b3b] hover:underline">hola@gdgsucre.dev</a>
+        <a href="#" class="font-['Google_Sans',sans-serif] text-[#3b3b3b] whitespace-nowrap hover:underline">Instagram</a>
+        <a href="#" class="font-['Google_Sans',sans-serif] text-[#3b3b3b] whitespace-nowrap hover:underline">LinkedIn</a>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-[4px] text-[#8c8c8c] text-[10px] pt-[12px] w-full">
+      <p class="leading-[15px] max-w-[346px]">© 2026 GDG Sucre · Build with AI es una iniciativa de Google Developer Groups.</p>
+      <p class="whitespace-nowrap">Sucre, Bolivia 🇧🇴</p>
+    </div>
+  </div>
+
+  <!-- ===== DESKTOP FOOTER — exact Figma node 79:321 ===== -->
+  <div class="hidden md:flex flex-col gap-[24px] items-center pb-[36px] pt-[32px] px-[120px]">
+
+    <!-- Logo 288×48 -->
+    <div class="flex items-center overflow-clip shrink-0" style="height: 48px; width: 288px;">
+      <div class="flex flex-1 flex-col h-full items-start min-w-px overflow-clip relative">
+        <div class="flex-1 inline-grid leading-[0] place-items-start relative w-full min-h-px" style="grid-rows: max-content;">
+          <div class="col-1 row-1 relative mask-alpha mask-intersect mask-no-clip mask-no-repeat" style="height: 28.762px; mask-image: url('http://localhost:3845/assets/bfde572fc93be6a46576098364d683f91e135ecc.svg'); mask-position: -6.596px -9.051px; mask-size: 288px 48px; margin-left: 2.29%; margin-top: 9.05px; width: 95.18%;">
+            <img alt="GDG Sucre Build with AI" class="absolute block inset-0 max-w-none size-full" src={imgGroupDesktopFill} />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tagline -->
+    <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[21px] leading-[19px] text-center whitespace-nowrap shrink-0">
+      Hecho por GDG Sucre y la comunidad developer de Chuquisaca.
+    </p>
+
+    <!-- Links: justify-between full width -->
+    <div class="flex items-start justify-between overflow-clip shrink-0 w-full whitespace-nowrap">
+      <div class="flex flex-col gap-[8px] items-start overflow-clip shrink-0">
+        <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[24px]">EVENTO</p>
+        <a href="#" class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[16px] hover:underline">¿Qué es?</a>
+        <a href="#" class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[16px] hover:underline">Agenda</a>
+        <a href="#" class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[16px] hover:underline">Speakers</a>
+        <a href="#" class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[16px] hover:underline">FAQ</a>
+      </div>
+      <div class="flex flex-col gap-[8px] items-start overflow-clip shrink-0">
+        <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[24px]">ORGANIZA</p>
+        <a href="#" class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[16px] hover:underline">GDG Sucre</a>
+        <a href="#" class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[16px] hover:underline">SIB Chuquisaca</a>
+        <a href="#" class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[16px] hover:underline">CISICH</a>
+      </div>
+      <div class="flex flex-col gap-[8px] items-start overflow-clip shrink-0">
+        <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[24px]">CONTACTO</p>
+        <a href="mailto:hola@gdgsucre.dev" class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[16px] hover:underline">hola@gdgsucre.dev</a>
+        <a href="#" class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[16px] hover:underline">Instagram</a>
+        <a href="#" class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[16px] hover:underline">LinkedIn</a>
+      </div>
+    </div>
+
+    <!-- Bottom copyright -->
+    <div class="flex flex-col gap-[8px] items-center justify-center overflow-clip pt-[12px] shrink-0 text-[#8c8c8c] text-[15px]" style="width: 346px;">
+      <p class="leading-[15px] text-center" style="width: 346px;">© 2026 GDG Sucre · Build with AI es una iniciativa de Google Developer Groups.</p>
+      <p class="leading-normal whitespace-nowrap">Sucre, Bolivia 🇧🇴</p>
+    </div>
+
+  </div>
+</footer>

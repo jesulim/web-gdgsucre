@@ -1,0 +1,58 @@
+---
+// Desktop Nav Figma node 79:182
+// bg-white border-b border-[rgba(30,30,30,0.08)]
+// flex items-center justify-between px-[18px] py-[14px]
+// Logo: 247×41 (clip path group)
+// CTA: h-[53px] w-[157px] rounded-[999px] bg-[#1e1e1e] text-white text-[20px] font-bold px-[14px] py-[9px]
+
+const imgGroupDesktopMask =
+  "http://localhost:3845/assets/269d89182711489f1ffd31fc43f4d02ade8ff510.svg"
+const imgGroupDesktopFill =
+  "http://localhost:3845/assets/e4ad344be2fd1ccd4d8774be158be18c32d75eb5.svg"
+
+const imgGroupMobileMask =
+  "http://localhost:3845/assets/b73da96cdb2a60ae1d6973bf21758ffa625c813d.svg"
+const imgGroupMobileFill =
+  "http://localhost:3845/assets/0ef8da955b56c4dc168c3569daa76723e5896fd6.svg"
+---
+
+<header class="bg-white border-b border-[rgba(30,30,30,0.08)] flex items-center justify-between px-[18px] py-[14px] w-full z-50 relative">
+
+  <!-- Mobile Logo (143×24) -->
+  <div class="md:hidden flex items-center overflow-clip shrink-0" style="height: 24px; width: 143px;">
+    <div class="flex flex-1 flex-col h-full items-start min-w-px overflow-clip relative">
+      <div class="flex-1 inline-grid leading-[0] place-items-start relative w-full min-h-px" style="grid-rows: max-content;">
+        <div class="col-1 row-1 relative mask-alpha mask-intersect mask-no-clip mask-no-repeat" style="height: 14.381px; mask-image: url('http://localhost:3845/assets/b73da96cdb2a60ae1d6973bf21758ffa625c813d.svg'); mask-position: -3.275px -4.525px; mask-size: 143px 24px; margin-left: 3.27px; margin-top: 4.53px; width: 136.113px;">
+          <div class="absolute" style="inset: 0 -0.18% 0 0;">
+            <img alt="GDG Sucre Build with AI" class="block max-w-none size-full" src={imgGroupMobileFill} />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Desktop Logo (247×41) — exact Figma node 79:183 -->
+  <div class="hidden md:flex flex-col items-start overflow-clip shrink-0" style="height: 41px; width: 247px;">
+    <div class="flex flex-1 flex-col h-full items-start min-w-px overflow-clip relative w-full">
+      <div class="flex-1 inline-grid leading-[0] place-items-start relative w-full min-h-px" style="grid-rows: max-content;">
+        <div class="col-1 row-1 relative mask-alpha mask-intersect mask-no-clip mask-no-repeat" style="height: 24.567px; mask-image: url('http://localhost:3845/assets/269d89182711489f1ffd31fc43f4d02ade8ff510.svg'); mask-position: -5.657px -7.731px; mask-size: 247px 41px; margin-left: 2.29%; margin-top: 7.73px; width: 95.18%;">
+          <div class="absolute" style="inset: 0 -0.11% 0 0;">
+            <img alt="GDG Sucre Build with AI" class="block max-w-none size-full" src={imgGroupDesktopFill} />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA button — same for mobile and desktop (Figma: h-53px w-157px desktop, smaller mobile) -->
+  <a
+    href="#registro"
+    class="bg-[#1e1e1e] border-2 border-[#1e1e1e] flex items-start overflow-clip px-[14px] py-[9px] rounded-[999px] shrink-0 hover:bg-[#333] transition-colors"
+    style="height: 53px; width: 157px;"
+  >
+    <div class="flex flex-1 flex-col justify-center h-full min-w-px text-center">
+      <p class="font-['Google_Sans',sans-serif] font-bold text-white text-[20px] leading-normal">Registrarme</p>
+    </div>
+  </a>
+
+</header>

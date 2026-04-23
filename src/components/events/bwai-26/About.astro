@@ -1,0 +1,149 @@
+---
+// Desktop-3 About Figma node 79:296
+// Frame 1440×1397, bg-white
+// Eyebrow: absolute left-[58px] top-[77px], h-[66px] w-[263px]
+// Title: absolute left-[78px] top-[191px] text-64px
+// Body: absolute left-[78px] top-[283px] w-[724px] text-24px
+// Features (absolute positioned → converted to grid):
+//   Código real:    left-[78px]  top-[451px] w-[495px] h-[229px]
+//   Charlas clave:  left-[78px]  top-[695px] w-[495px] h-[229px]
+//   Comunidad:      left-[649px] top-[451px] w-[495px] h-[229px]
+//   Hecho en Sucre: left-[649px] top-[695px] w-[495px] h-[229px]
+// Grid total width: 649 + 495 = 1144px, left-start 78px
+// Gap between cards: 649 - (78 + 495) = 76px
+// Decorations:
+//   imgVector (half-circle): absolute left-[-75px] top-[695px] w-[346px] h-[702px] rotate-180
+//   imgVector1 (hash): absolute inset-[10.74% -7.57% 26.56% 62.22%]
+
+const imgVector = "http://localhost:3845/assets/fcd5150aa2ac855184e8a6d71bdd10b930969d2e.svg"
+const imgVector1 = "http://localhost:3845/assets/a93824e103e6a596e9dda2b02293cce404ba1e07.svg"
+const imgFrame11 = "http://localhost:3845/assets/25fa6f2ec330ca82cc95ed739f17608f042f2cd1.svg"
+const imgVector2 = "http://localhost:3845/assets/b2d47073e64fc9b9e2deb21ae51e238454dee982.svg" // charlas icon
+const imgVector3 = "http://localhost:3845/assets/b237cd880d82dd7045df2032b2be5f68737c56d4.svg" // comunidad icon
+const imgVector4 = "http://localhost:3845/assets/46d6a10d60e2901a8167dab2bba206d12b097912.svg" // hecho en sucre icon
+---
+
+<!-- ======================== MOBILE ABOUT ======================== -->
+<section class="md:hidden flex flex-col gap-[16px] items-start px-[22px] py-[30px] w-full bg-white">
+  <div class="bg-white border-2 border-[#1e1e1e] flex items-center px-[9px] py-[5px] rounded-[6px]">
+    <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[11px] tracking-[0.88px] whitespace-nowrap">¿QUÉ ES?</p>
+  </div>
+  <h2 class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[42px] tracking-[-1.26px] leading-[44px]">Build with AI</h2>
+  <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[15px] leading-[22px] w-full">
+    Build with AI es la serie global de Google Developer Groups donde developers, estudiantes y curiosos nos juntamos para aprender IA en modo hands-on: desde prompt engineering hasta desplegar agentes con Gemini.
+  </p>
+  <div class="flex flex-col gap-[12px] pt-[10px] w-full">
+    <div class="bg-white border-2 border-[#1e1e1e] flex flex-col gap-[10px] items-start p-[20px] rounded-[22px] w-full">
+      <div class="h-[36px] relative shrink-0 w-[68px]"><div class="absolute inset-[-2.78%_-1.47%]"><img alt="" class="block max-w-none size-full" src={imgFrame11} /></div></div>
+      <h3 class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[19px] tracking-[-0.19px]">Código real</h3>
+      <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[14px] leading-[20px] w-full">Talleres prácticos con Gemini, AI Studio y Genkit que puedes llevar a tu proyecto el lunes.</p>
+    </div>
+    <div class="bg-white border-2 border-[#1e1e1e] flex flex-col gap-[10px] items-start p-[20px] rounded-[22px] w-full">
+      <div class="relative shrink-0 size-[36px]"><div class="absolute inset-[-2.78%]"><img alt="" class="block max-w-none size-full" src={imgVector2} /></div></div>
+      <h3 class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[19px] tracking-[-0.19px]">Charlas clave</h3>
+      <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[14px] leading-[20px] w-full">Speakers locales e invitados compartiendo lo que aprendieron construyendo con IA.</p>
+    </div>
+    <div class="bg-white border-2 border-[#1e1e1e] flex flex-col gap-[10px] items-start p-[20px] rounded-[22px] w-full">
+      <div class="h-[29px] relative shrink-0 w-[80px]"><div class="absolute inset-[-3.45%_-1.25%]"><img alt="" class="block max-w-none size-full" src={imgVector3} /></div></div>
+      <h3 class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[19px] tracking-[-0.19px]">Comunidad</h3>
+      <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[14px] leading-[20px] w-full">Dos días para conectar con la comunidad dev de Sucre y la región. Networking real.</p>
+    </div>
+    <div class="bg-white border-2 border-[#1e1e1e] flex flex-col gap-[10px] items-start p-[20px] rounded-[22px] w-full">
+      <div class="h-[49px] relative shrink-0 w-[80px]"><div class="absolute inset-[-2.04%_-1.25%]"><img alt="" class="block max-w-none size-full" src={imgVector4} /></div></div>
+      <h3 class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[19px] tracking-[-0.19px]">Hecho en Sucre</h3>
+      <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[14px] leading-[20px] w-full">Organizado por la comunidad, con el apoyo de SIB Chuquisaca y CISICH. Gratis y abierto.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== DESKTOP ABOUT ======================== -->
+<!--
+  Figma frame is 1440×1397 with absolute positioning.
+  We convert to normal flow but keep the exact measurements.
+  Left padding 78px matches Figma left-[78px] for all content.
+  Cards are a 2-col grid with gap of 76px (649-78-495=76).
+-->
+<section class="hidden md:block bg-white w-full relative overflow-hidden" style="min-height: 1020px;">
+
+  <!-- Decoration: half-circle bottom-left, rotate-180 -->
+  <div class="absolute pointer-events-none flex items-center justify-center" style="left: -75px; top: 695px; width: 346px; height: 702px;">
+    <div class="flex-none rotate-180" style="width: 346px; height: 702px;">
+      <div class="relative w-full h-full">
+        <div class="absolute" style="inset: -1.78% -3.61%;">
+          <img alt="" class="block max-w-none size-full" src={imgVector} />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Decoration: hash top-right -->
+  <div class="absolute pointer-events-none" style="inset: 10.74% -7.57% 26.56% 62.22%;">
+    <div class="absolute" style="inset: -1.95% -1.91%;">
+      <img alt="" class="block max-w-none size-full" src={imgVector1} />
+    </div>
+  </div>
+
+
+  <!-- Eyebrow — absolute left-58px top-77px (matches Figma) -->
+  <div class="absolute bg-white border-2 border-[#1e1e1e] rounded-[6px] flex items-center justify-center" style="left: 58px; top: 77px; height: 66px; width: 263px;">
+    <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[31px] tracking-[2.56px] text-center">¿QUÉ ES?</p>
+  </div>
+
+  <!-- Title — absolute left-78px top-191px -->
+  <p class="absolute font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[63px] tracking-[-1.92px] leading-[44px] whitespace-nowrap" style="left: 78px; top: 191px;">
+    Build with AI
+  </p>
+
+  <!-- Body text — absolute left-78px top-283px -->
+  <p class="absolute font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[23px] leading-[30px]" style="left: 78px; top: 283px; width: 724px;">
+    Build with AI es la serie global de Google Developer Groups donde developers, estudiantes y curiosos nos juntamos para aprender IA en modo hands-on: desde prompt engineering hasta desplegar agentes con Gemini.
+  </p>
+
+  <!--
+    Feature cards: 2×2 grid.
+    Grid width = 495 + 76 + 495 = 1066px.
+    Centered at any viewport: left: calc(50% - 533px)
+    top: 451px (Figma value)
+  -->
+  <div class="absolute" style="left: calc(50% - 533px); top: 451px; display: grid; grid-template-columns: 495px 495px; gap: 15px 76px;">
+
+    <!-- Código real -->
+    <div class="bg-white border-4 border-[#1e1e1e] flex flex-col gap-[10px] items-start p-[20px] rounded-[22px]" style="height: 229px; width: 495px;">
+      <div class="relative shrink-0" style="height: 36px; width: 68px;">
+        <div class="absolute" style="inset: -2.78% -1.47%;"><img alt="" class="block max-w-none size-full" src={imgFrame11} /></div>
+      </div>
+      <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[31px] tracking-[-0.31px] whitespace-nowrap shrink-0">Código real</p>
+      <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[23px] leading-[29px] min-w-full w-min">Talleres prácticos con Gemini, AI Studio y Genkit que puedes llevar a tu proyecto el lunes.</p>
+    </div>
+
+    <!-- Comunidad -->
+    <div class="bg-white border-4 border-[#1e1e1e] flex flex-col gap-[10px] items-start p-[20px] rounded-[22px]" style="height: 229px; width: 495px;">
+      <div class="relative shrink-0" style="height: 40px; width: 112px;">
+        <div class="absolute" style="inset: -2.5% -0.89%;"><img alt="" class="block max-w-none size-full" src={imgVector3} /></div>
+      </div>
+      <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[31px] tracking-[-0.31px] whitespace-nowrap shrink-0">Comunidad</p>
+      <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[23px] leading-[29px] min-w-full w-min shrink-0">Dos días para conectar con la comunidad dev de Sucre y la región. Networking real.</p>
+    </div>
+
+    <!-- Charlas clave -->
+    <div class="bg-white border-4 border-[#1e1e1e] flex flex-col gap-[10px] items-start p-[20px] rounded-[22px]" style="height: 229px; width: 495px;">
+      <div class="relative shrink-0" style="height: 38px; width: 38px;">
+        <div class="absolute" style="inset: -2.63%;"><img alt="" class="block max-w-none size-full" src={imgVector2} /></div>
+      </div>
+      <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[31px] tracking-[-0.31px] whitespace-nowrap shrink-0">Charlas clave</p>
+      <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[23px] leading-[29px] min-w-full w-min">Speakers locales e invitados compartiendo lo que aprendieron construyendo con IA.</p>
+    </div>
+
+    <!-- Hecho en Sucre -->
+    <div class="bg-white border-4 border-[#1e1e1e] flex flex-col gap-[10px] items-start p-[20px] rounded-[22px]" style="height: 229px; width: 495px;">
+      <div class="relative shrink-0" style="height: 39px; width: 63px;">
+        <div class="absolute" style="inset: -2.56% -1.59%;"><img alt="" class="block max-w-none size-full" src={imgVector4} /></div>
+      </div>
+      <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[31px] tracking-[-0.31px] whitespace-nowrap shrink-0">Hecho en Sucre</p>
+      <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[23px] leading-[29px] min-w-full w-min">Organizado por la comunidad, con el apoyo de SIB Chuquisaca y CISICH. Gratis y abierto.</p>
+    </div>
+
+  </div>
+
+</section>
+

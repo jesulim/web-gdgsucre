@@ -1,0 +1,30 @@
+---
+import { Timer } from "./Timer"
+
+const targetDate = new Date("2026-05-09T09:00:00-04:00")
+const initialTime = targetDate.getTime() - Date.now()
+---
+
+<!-- Mobile-only countdown (desktop is inside Info.astro) -->
+<section class="md:hidden w-full px-[22px] py-[30px]" id="countdown">
+  <div class="relative w-full">
+    <div class="absolute inset-0 bg-[#ff4d4f] rounded-[20px] border-2 border-[#1e1e1e] translate-y-[6px] translate-x-[6px]"></div>
+    <div class="relative bg-[#f8f9fa] rounded-[20px] border-2 border-[#1e1e1e] overflow-hidden flex flex-col z-10">
+      <div class="flex items-center gap-2 px-4 py-3 border-b-2 border-[#1e1e1e] bg-white">
+        <div class="size-[14px] rounded-full border-2 border-[#1e1e1e] bg-[#4ade80]"></div>
+        <div class="size-[14px] rounded-full border-2 border-[#1e1e1e] bg-[#facc15]"></div>
+        <div class="size-[14px] rounded-full border-2 border-[#1e1e1e] bg-[#f87171]"></div>
+      </div>
+      <div class="p-6 flex flex-col gap-3">
+        <div class="flex items-center gap-2">
+          <div class="size-2.5 rounded-full bg-[#ff4d4f]"></div>
+          <p class="font-['Google_Sans',sans-serif] font-bold text-[11px] tracking-[1.5px] text-[#1e1e1e] uppercase">Cuenta Regresiva</p>
+        </div>
+        <h3 class="font-['Google_Sans',sans-serif] font-bold text-[24px] tracking-tight text-[#1e1e1e]">Faltan para comenzar</h3>
+        <div class="mt-2 w-full">
+          <Timer client:load initialTime={initialTime} targetDate={targetDate} />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
