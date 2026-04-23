@@ -13,9 +13,9 @@ import BaseLayout from "@/layout/BaseLayout.astro"
   title="Build With AI Sucre 2026"
   description="Build with AI es la serie global de Google Developer Groups donde developers, estudiantes y curiosos nos juntamos para aprender IA en modo hands-on."
 >
-  <div class="w-full min-h-screen bg-white font-sans">
+  <div class="w-full min-h-screen bg-white font-sans overflow-x-hidden">
     <Header />
-    <main>
+    <main class="overflow-x-hidden">
       <Hero />
       <!-- Info handles its own desktop layout (including countdown in sidebar) -->
       <Info />
@@ -30,7 +30,6 @@ import BaseLayout from "@/layout/BaseLayout.astro"
 <style>
   html, body {
     scroll-behavior: smooth;
-    max-width: 100%;
     overflow-x: hidden;
   }
 </style>

@@ -63,7 +63,7 @@ const imgVector4 = "http://localhost:3845/assets/46d6a10d60e2901a8167dab2bba206d
   Left padding 78px matches Figma left-[78px] for all content.
   Cards are a 2-col grid with gap of 76px (649-78-495=76).
 -->
-<section class="hidden md:block bg-white w-full relative overflow-hidden" style="min-height: 1020px;">
+<section class="hidden md:block bg-white w-full relative overflow-hidden" style="min-height: 1397px;">
 
   <!-- Decoration: half-circle bottom-left, rotate-180 -->
   <div class="absolute pointer-events-none flex items-center justify-center" style="left: -75px; top: 695px; width: 346px; height: 702px;">
@@ -83,67 +83,61 @@ const imgVector4 = "http://localhost:3845/assets/46d6a10d60e2901a8167dab2bba206d
     </div>
   </div>
 
-
-  <!-- Eyebrow — absolute left-58px top-77px (matches Figma) -->
-  <div class="absolute bg-white border-2 border-[#1e1e1e] rounded-[6px] flex items-center justify-center" style="left: 58px; top: 77px; height: 66px; width: 263px;">
-    <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[31px] tracking-[2.56px] text-center">¿QUÉ ES?</p>
+  <!-- Eyebrow — exact Figma position -->
+  <div class="absolute bg-white border-2 border-[#1e1e1e] overflow-clip rounded-[6px] flex items-center justify-center" style="left: 58px; top: 77px; height: 66px; width: 263px;">
+    <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[32px] tracking-[2.56px] text-center">¿QUÉ ES?</p>
   </div>
 
-  <!-- Title — absolute left-78px top-191px -->
-  <p class="absolute font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[63px] tracking-[-1.92px] leading-[44px] whitespace-nowrap" style="left: 78px; top: 191px;">
+  <!-- Title — exact Figma position -->
+  <p class="absolute font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[64px] tracking-[-1.92px] leading-[44px] whitespace-nowrap" style="left: 78px; top: 191px;">
     Build with AI
   </p>
 
-  <!-- Body text — absolute left-78px top-283px -->
-  <p class="absolute font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[23px] leading-[30px]" style="left: 78px; top: 283px; width: 724px;">
+  <!-- Body text — exact Figma position -->
+  <p class="absolute font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[24px] leading-[30px]" style="left: 78px; top: 283px; width: 724px;">
     Build with AI es la serie global de Google Developer Groups donde developers, estudiantes y curiosos nos juntamos para aprender IA en modo hands-on: desde prompt engineering hasta desplegar agentes con Gemini.
   </p>
 
-  <!--
-    Feature cards: 2×2 grid.
-    Grid width = 495 + 76 + 495 = 1066px.
-    Centered at any viewport: left: calc(50% - 533px)
-    top: 451px (Figma value)
-  -->
-  <div class="absolute" style="left: calc(50% - 533px); top: 451px; display: grid; grid-template-columns: 495px 495px; gap: 15px 76px;">
+  <!-- Feature cards — converted from absolute to 2×2 grid preserving exact dimensions -->
+  <!-- Figma cards: w-495px h-229px, col-gap = 649-78-495 = 76px, row-gap = 695-451-229 = 15px -->
+  <div class="absolute" style="left: 78px; top: 451px; display: grid; grid-template-columns: 495px 495px; gap: 15px 76px;">
 
     <!-- Código real -->
-    <div class="bg-white border-4 border-[#1e1e1e] flex flex-col gap-[10px] items-start p-[20px] rounded-[22px]" style="height: 229px; width: 495px;">
+    <div class="bg-white border-4 border-[#1e1e1e] flex flex-col gap-[10px] items-start overflow-clip p-[20px] rounded-[22px]" style="height: 229px; width: 495px;">
       <div class="relative shrink-0" style="height: 36px; width: 68px;">
         <div class="absolute" style="inset: -2.78% -1.47%;"><img alt="" class="block max-w-none size-full" src={imgFrame11} /></div>
       </div>
-      <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[31px] tracking-[-0.31px] whitespace-nowrap shrink-0">Código real</p>
-      <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[23px] leading-[29px] min-w-full w-min">Talleres prácticos con Gemini, AI Studio y Genkit que puedes llevar a tu proyecto el lunes.</p>
+      <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[32px] tracking-[-0.32px] whitespace-nowrap shrink-0">Código real</p>
+      <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[24px] leading-[30px] flex-1 min-h-px min-w-full w-min">Talleres prácticos con Gemini, AI Studio y Genkit que puedes llevar a tu proyecto el lunes.</p>
     </div>
 
     <!-- Comunidad -->
-    <div class="bg-white border-4 border-[#1e1e1e] flex flex-col gap-[10px] items-start p-[20px] rounded-[22px]" style="height: 229px; width: 495px;">
+    <div class="bg-white border-4 border-[#1e1e1e] flex flex-col gap-[10px] items-start overflow-clip p-[20px] rounded-[22px]" style="height: 229px; width: 495px;">
       <div class="relative shrink-0" style="height: 40px; width: 112px;">
         <div class="absolute" style="inset: -2.5% -0.89%;"><img alt="" class="block max-w-none size-full" src={imgVector3} /></div>
       </div>
-      <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[31px] tracking-[-0.31px] whitespace-nowrap shrink-0">Comunidad</p>
-      <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[23px] leading-[29px] min-w-full w-min shrink-0">Dos días para conectar con la comunidad dev de Sucre y la región. Networking real.</p>
+      <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[32px] tracking-[-0.32px] whitespace-nowrap shrink-0">Comunidad</p>
+      <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[24px] leading-[30px] min-w-full w-min shrink-0">Dos días para conectar con la comunidad dev de Sucre y la región. Networking real.</p>
     </div>
 
     <!-- Charlas clave -->
-    <div class="bg-white border-4 border-[#1e1e1e] flex flex-col gap-[10px] items-start p-[20px] rounded-[22px]" style="height: 229px; width: 495px;">
+    <div class="bg-white border-4 border-[#1e1e1e] flex flex-col gap-[10px] items-start overflow-clip p-[20px] rounded-[22px]" style="height: 229px; width: 495px;">
       <div class="relative shrink-0" style="height: 38px; width: 38px;">
         <div class="absolute" style="inset: -2.63%;"><img alt="" class="block max-w-none size-full" src={imgVector2} /></div>
       </div>
-      <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[31px] tracking-[-0.31px] whitespace-nowrap shrink-0">Charlas clave</p>
-      <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[23px] leading-[29px] min-w-full w-min">Speakers locales e invitados compartiendo lo que aprendieron construyendo con IA.</p>
+      <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[32px] tracking-[-0.32px] whitespace-nowrap shrink-0">Charlas clave</p>
+      <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[24px] leading-[30px] flex-1 min-h-px min-w-full w-min">Speakers locales e invitados compartiendo lo que aprendieron construyendo con IA.</p>
     </div>
 
     <!-- Hecho en Sucre -->
-    <div class="bg-white border-4 border-[#1e1e1e] flex flex-col gap-[10px] items-start p-[20px] rounded-[22px]" style="height: 229px; width: 495px;">
+    <div class="bg-white border-4 border-[#1e1e1e] flex flex-col gap-[10px] items-start overflow-clip p-[20px] rounded-[22px]" style="height: 229px; width: 495px;">
       <div class="relative shrink-0" style="height: 39px; width: 63px;">
         <div class="absolute" style="inset: -2.56% -1.59%;"><img alt="" class="block max-w-none size-full" src={imgVector4} /></div>
       </div>
-      <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[31px] tracking-[-0.31px] whitespace-nowrap shrink-0">Hecho en Sucre</p>
-      <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[23px] leading-[29px] min-w-full w-min">Organizado por la comunidad, con el apoyo de SIB Chuquisaca y CISICH. Gratis y abierto.</p>
+      <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[32px] tracking-[-0.32px] whitespace-nowrap shrink-0">Hecho en Sucre</p>
+      <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[24px] leading-[30px] flex-1 min-h-px min-w-full w-min">Organizado por la comunidad, con el apoyo de SIB Chuquisaca y CISICH. Gratis y abierto.</p>
     </div>
 
   </div>
 
 </section>
-
