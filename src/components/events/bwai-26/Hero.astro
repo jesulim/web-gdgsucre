@@ -10,6 +10,9 @@ const imgVector4 = "/assets/figma/062060ef03ed1a1b0bf212f66385ddc68d0fed28.svg" 
 const imgVector5 = "/assets/figma/d4be59c59d8e565974d7b1222bc609199519a479.svg" // star (top-right)
 const imgEllipse = "/assets/figma/244fd603fd9f83afa7c4c0768a3146c6cdf653f7.svg" // red dot kicker
 
+// Mobile hero bg decoration
+const imgMobileStar = "/assets/figma/a2af351351b06fc599d1adeca756d453aeee293a.svg" // star decoration right
+
 // Desktop Hero logo assets (node 79:208, Logo-2, 854×302)
 const imgGroup = "/assets/figma/30334e9582af89652768945bca2b65df85a779d1.svg" // full logo group
 const imgGroup1 = "/assets/figma/f3f64bd4e9976cfe6b443ef578e490a1c29b9715.svg" // logo text
@@ -36,6 +39,12 @@ const imgMobileEllipse = "/assets/figma/84e737b6b6c81cb770ef39e0477b194da1ec192d
 
 <!-- ===================== MOBILE HERO ===================== -->
 <section class="md:hidden relative overflow-hidden bg-white w-full min-h-screen flex flex-col items-center justify-center px-[22px] py-[36px] gap-[18px]">
+  <!-- Background star decoration — Figma node 70:20, absolute left-[250px] top-[244px] size-[187px] -->
+  <div class="absolute pointer-events-none" style="left: 250px; top: 244px; width: 187px; height: 187px;">
+    <div class="absolute" style="inset: -6.68%;">
+      <img alt="" class="block max-w-none size-full" src={imgMobileStar} />
+    </div>
+  </div>
   <!-- Kicker -->
   <div class="bg-white border-2 border-[#1e1e1e] flex gap-[8px] items-center px-[14px] py-[7px] rounded-[999px] z-10">
     <div class="relative shrink-0 size-[8px]">

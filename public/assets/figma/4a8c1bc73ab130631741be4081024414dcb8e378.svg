@@ -1,0 +1,13 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 158.682 438.66" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group" opacity="0.3" filter="url(#filter0_f_70_258)">
+<path id="Vector" d="M79.3415 146.182C116.257 146.182 146.182 116.256 146.182 79.341C146.182 42.4257 116.257 12.5 79.3415 12.5C42.4262 12.5 12.5003 42.4257 12.5003 79.341C12.5003 116.256 42.4262 146.182 79.3415 146.182Z" fill="var(--fill-0, #FFD427)" stroke="var(--stroke-0, #1E1E1E)" stroke-width="5" stroke-miterlimit="10"/>
+<path id="Vector_2" d="M146.182 241.004C146.182 204.089 116.255 174.163 79.3412 174.163C42.4269 174.163 12.5 204.089 12.5 241.004C12.5 268.663 29.2947 292.383 53.2453 302.558C57.827 304.719 60.3246 309.117 56.2179 315.583L13.9252 392.109C12.5614 394.254 13.159 397.104 15.289 398.498L53.9041 425.391C56.0494 426.801 58.9303 426.219 60.3554 424.073C60.3554 424.073 132.958 287.342 138.03 276.094C140.466 270.67 142.321 265.123 143.592 259.453C145.278 253.6 146.182 247.409 146.182 241.019V241.004Z" fill="var(--fill-0, #FFD427)" stroke="var(--stroke-0, #1E1E1E)" stroke-width="5" stroke-miterlimit="10"/>
+</g>
+<defs>
+<filter id="filter0_f_70_258" x="0" y="2.38419e-07" width="158.682" height="438.66" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="5" result="effect1_foregroundBlur_70_258"/>
+</filter>
+</defs>
+</svg>

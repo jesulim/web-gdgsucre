@@ -19,12 +19,31 @@ const imgVectorDiag = "/assets/figma/142b29fa59e70aeddf0a30daa8a49cb9db01d572.sv
 // Repeating bottom bg decoration
 const imgVectorBg = "/assets/figma/b9c79608a384972a5a69e904ce221f638866b56c.svg"
 
+// Mobile decorations
+const imgInfoBracket = "/assets/figma/9394006c410457442a23560b3cf1b58ac83b2b60.svg" // bracket deco Info mobile (node 70:58)
+const imgCountdownHalfMoon = "/assets/figma/bf6b94039f61e4e47a8a9922b3633c82caef3b20.svg" // half-moon deco Countdown mobile (node 70:84)
+// Mobile Countdown window SVGs
+const imgCdShadow = "/assets/figma/142298dd366ab19cbe3f93edb36f93d8ca045635.svg" // red shadow (node 70:86)
+const imgCdTitleLine = "/assets/figma/88394439b07d08c970f7410a1405620e1a131ff4.svg" // title bar line (node 70:87)
+const imgCdFrame = "/assets/figma/c8d0b5251dbeb2a16762a26363e717ed633b81c8.svg" // white frame (node 70:88)
+const imgCdDotRed = "/assets/figma/96cd6a701cfab9f8cdef94667c0c30be33f0bfb1.svg" // red dot head (node 70:91)
+const imgCdBottomLine = "/assets/figma/bf2ded5319d5075760f368c4d44a91ae955d12cb.svg" // bottom separator (node 70:107)
+const imgCdGreen = "/assets/figma/7e31803f1ccad2cd6e11b26f15b63497a11afcc3.svg" // green traffic light (node 70:108)
+const imgCdYellow = "/assets/figma/1c91673b9194a84b7265325dd3093c9307571fa2.svg" // yellow traffic light (node 70:109)
+const imgCdRed = "/assets/figma/9daf74a11fd5b590dd08eb1de4bdca749baaa78d.svg" // red traffic light (node 70:110)
+
 const targetDate = new Date("2026-05-09T09:00:00-04:00")
 const initialTime = targetDate.getTime() - Date.now()
 ---
 
 <!-- ===================== MOBILE INFO (stacked) ===================== -->
-<section class="md:hidden bg-white flex flex-col gap-[16px] items-start px-[22px] pb-[8px] pt-[16px] w-full" id="info">
+<section class="md:hidden bg-white flex flex-col gap-[16px] items-start px-[22px] pb-[8px] pt-[16px] w-full relative overflow-hidden" id="info">
+  <!-- Background bracket decoration — Figma node 70:58: absolute h-350px left-243px top-27.55px w-173px -->
+  <div class="absolute pointer-events-none" style="height: 350px; left: 243px; top: 27.55px; width: 173px;">
+    <div class="absolute" style="inset: -3.57% -7.23%;">
+      <img alt="" class="block max-w-none size-full" src={imgInfoBracket} />
+    </div>
+  </div>
   <div class="bg-white border-2 border-[#1e1e1e] flex items-center px-[9px] py-[5px] rounded-[6px]">
     <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[11px] tracking-[0.88px] whitespace-nowrap">FECHA Y LUGAR</p>
   </div>
