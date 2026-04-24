@@ -1,0 +1,45 @@
+---
+import Header from "@/components/events/bwai-26/Header.astro"
+import { CreateTeamForm } from "@/components/registration/teams/CreateTeamForm"
+import BaseLayout from "@/layout/BaseLayout.astro"
+
+import { getEvent } from "@/lib/services/eventService"
+import { getFormFieldsByEvent } from "@/lib/services/formService"
+import { getProfile } from "@/lib/services/profileService"
+import { getEventRegistration } from "@/lib/services/registrationService"
+
+import { createUserClient } from "@/lib/supabase"
+
+const supabase = await createUserClient(Astro.cookies)
+
+const eventSlug = Astro.params.eventSlug || ""
+const event = await getEvent(supabase, eventSlug)
+if (!event) return Astro.redirect("/")
+
+const profile = await getProfile(supabase)
+const registration = await getEventRegistration(supabase, profile?.id, eventSlug)
+
+if (!registration && event.registration_open === false)
+  return Astro.redirect(`/registro/${eventSlug}/cerrado`)
+
+if (registration?.status === "pending") {
+  return Astro.redirect(`/registro/${eventSlug}/pendiente`)
+}
+
+if (registration?.status === "confirmed") {
+  return Astro.redirect(`/registro/${eventSlug}/confirmado`)
+}
+
+const formFields = await getFormFieldsByEvent(supabase, eventSlug)
+---
+
+<BaseLayout theme="light">
+  <Header />
+  <main class="mt-16 pt-12 flex">
+    <div class="mx-auto px-4 pb-16 w-full max-w-md">
+      <h1 class="text-xl mb-4 font-medium">{event.name}</h1>
+      <h2 class="text-xl mb-4 font-medium">Crear un equipo</h2>
+      <CreateTeamForm formFields={formFields} profile={profile} event={event} client:load />
+    </div>
+  </main>
+</BaseLayout>
