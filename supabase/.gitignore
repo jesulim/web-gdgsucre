@@ -8,4 +8,4 @@
 .env.*.local
 
 # Linked data
-*.sql
+*seed.sql
