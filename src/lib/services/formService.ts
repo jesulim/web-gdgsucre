@@ -14,8 +14,8 @@ export async function getFormFieldsByEvent(
       label,
       type,
       required,
-      options,
       image_url,
+      options,
       events!inner(slug)
     `
     )
