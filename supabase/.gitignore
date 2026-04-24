@@ -8,4 +8,5 @@
 .env.*.local
 
 # Linked data
-*seed.sql
+*.sql
+!migrations/*.sql
