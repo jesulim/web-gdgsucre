@@ -28,3 +28,9 @@ pnpm-debug.log*
 
 #skills
 .agents/package-lock.json
+
+# vscode
+.vscode
+
+# opencode
+opencode.json
