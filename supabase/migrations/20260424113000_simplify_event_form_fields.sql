@@ -2,36 +2,26 @@ ALTER TABLE public.event_form_fields
   ADD COLUMN IF NOT EXISTS name text,
   ADD COLUMN IF NOT EXISTS label text,
   ADD COLUMN IF NOT EXISTS type text,
-  ADD COLUMN IF NOT EXISTS required boolean;
+  ADD COLUMN IF NOT EXISTS required boolean DEFAULT true;
 
+-- Migrate data from form_fields to event_form_fields
 DO $$
 BEGIN
   IF EXISTS (
-    SELECT 1
-    FROM information_schema.columns
+    SELECT 1 FROM information_schema.columns
     WHERE table_schema = 'public'
-      AND table_name = 'event_form_fields'
-      AND column_name = 'form_field_id'
+    AND table_name = 'form_fields'
   ) THEN
-    UPDATE public.event_form_fields AS eff
+    UPDATE "public"."event_form_fields" eff
     SET
-      name = COALESCE(eff.name, ff.name::text),
-      label = COALESCE(eff.label, ff.label::text),
-      type = COALESCE(eff.type, ff.type::text),
-      required = COALESCE(eff.required, ff.required, true)
-    FROM public.form_fields AS ff
-    WHERE eff.form_field_id = ff.id
-      AND (
-        eff.name IS NULL
-        OR eff.label IS NULL
-        OR eff.type IS NULL
-        OR eff.required IS NULL
-      );
+        "name"     = ff."name",
+        "label"    = ff."label",
+        "type"     = ff."type",
+        "required" = ff."required"
+    FROM "public"."form_fields" ff
+    WHERE eff."form_field_id" = ff."id";
   END IF;
 END $$;
-
-ALTER TABLE public.event_form_fields
-  ALTER COLUMN required SET DEFAULT true;
 
 UPDATE public.event_form_fields
 SET required = true
@@ -90,10 +80,10 @@ BEGIN
 END $$;
 
 ALTER TABLE public.event_form_fields
-  ALTER COLUMN name SET NOT NULL,
-  ALTER COLUMN label SET NOT NULL,
-  ALTER COLUMN type SET NOT NULL,
-  ALTER COLUMN required SET NOT NULL;
+    ALTER COLUMN name SET NOT NULL,
+    ALTER COLUMN label SET NOT NULL,
+    ALTER COLUMN type SET NOT NULL,
+    ALTER COLUMN required SET NOT NULL;
 
 DO $$
 BEGIN
@@ -207,3 +197,5 @@ BEGIN
       DROP COLUMN form_field_id;
   END IF;
 END $$;
+
+DROP TABLE IF EXISTS public.form_fields;
