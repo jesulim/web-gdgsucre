@@ -55,6 +55,27 @@ ALTER TABLE ONLY "public"."team_registrations"
 ALTER TABLE ONLY "public"."team_registrations"
     ADD CONSTRAINT "team_registrations_registration_id_fkey" FOREIGN KEY ("registration_id") REFERENCES "public"."registrations"("id") ON DELETE CASCADE;
 
+CREATE INDEX IF NOT EXISTS "teams_event_id_idx"
+    ON "public"."teams" ("event_id");
+
+CREATE INDEX IF NOT EXISTS "team_registrations_team_id_idx"
+    ON "public"."team_registrations" ("team_id")
+
+-- Constraints
+ALTER TABLE ONLY "public"."teams"
+    ADD CONSTRAINT "teams_event_id_code_key" UNIQUE ("event_id", "code");
+
+ALTER TABLE ONLY "public"."team_registrations"
+    ADD CONSTRAINT "team_registrations_unique_key"
+    UNIQUE ("team_id", "registration_id");
+
+ALTER TABLE ONLY "public"."team_registrations"
+    ADD CONSTRAINT "team_registrations_registration_id_key" UNIQUE ("registration_id");
+
+CREATE UNIQUE INDEX IF NOT EXISTS "team_registrations_one_leader_per_team_idx"
+    ON "public"."team_registrations" ("team_id")
+    WHERE "leader";
+
 -- Triggers para updated_at automático
 CREATE OR REPLACE TRIGGER "update_updated_at_teams"
     BEFORE UPDATE ON "public"."teams"
@@ -67,3 +88,6 @@ CREATE OR REPLACE TRIGGER "update_updated_at_team_registrations"
 -- RLS
 ALTER TABLE "public"."teams" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "public"."team_registrations" ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Allow all to authenticated users" ON "public"."teams" TO "authenticated" USING (true);
+CREATE POLICY "Allow all to authenticated users" ON "public"."team_registrations" TO "authenticated" USING (true);
