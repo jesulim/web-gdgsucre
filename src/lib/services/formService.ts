@@ -10,14 +10,12 @@ export async function getFormFieldsByEvent(
     .select(
       `
       id,
+      name,
+      label,
+      type,
+      required,
       options,
       image_url,
-      form_fields (
-        name,
-        label,
-        type,
-        required
-      ),
       events!inner(slug)
     `
     )
@@ -26,12 +24,5 @@ export async function getFormFieldsByEvent(
 
   if (error) throw error
 
-  return data.map(row =>
-    formFieldSchema.parse({
-      id: row.id,
-      options: row.options,
-      image_url: row.image_url,
-      ...row.form_fields,
-    })
-  )
+  return data.map(({ events: _events, ...row }) => formFieldSchema.parse(row))
 }
