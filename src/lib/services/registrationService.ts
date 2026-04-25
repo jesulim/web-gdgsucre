@@ -417,3 +417,20 @@ export async function getRegistrationByToken(
 
   return registration
 }
+
+export async function getRegistrationByUser(
+  supabase: SupabaseClient,
+  user_id: string,
+  event_slug: string
+) {
+  const { data, error } = await supabase
+    .from("registrations")
+    .select("id, status, events!inner(slug)")
+    .eq("user_id", user_id)
+    .eq("events.slug", event_slug)
+    .maybeSingle()
+
+  if (error || !data) return null
+
+  return data
+}
