@@ -1,0 +1,237 @@
+---
+// Desktop Hero Figma node 79:195 — 1440×1024 frame
+// Decorations use exact left/top/size values from Figma code
+
+const imgVector = "/assets/figma/b9c79608a384972a5a69e904ce221f638866b56c.svg" // bottom rotated BG
+const imgVector1 = "/assets/figma/c16da647df00ff46b018e2f0a32b2954771e2ba6.svg" // bracket rotate-135 (right)
+const imgVector2 = "/assets/figma/bb9d3b1aa18f4c8c9f5da82369e9a61bb65de042.svg" // cross -rotate-30 (left mid)
+const imgVector3 = "/assets/figma/f0498913075e3a627c6501a3f88710affa1587e4.svg" // cross -rotate-15 (top-left & bottom-right)
+const imgVector4 = "/assets/figma/062060ef03ed1a1b0bf212f66385ddc68d0fed28.svg" // bracket rotate-180 left (left bottom)
+const imgVector5 = "/assets/figma/d4be59c59d8e565974d7b1222bc609199519a479.svg" // star (top-right)
+const imgEllipse = "/assets/figma/244fd603fd9f83afa7c4c0768a3146c6cdf653f7.svg" // red dot kicker
+
+// Mobile hero bg decoration
+const imgMobileStar = "/assets/figma/a2af351351b06fc599d1adeca756d453aeee293a.svg" // star decoration right
+
+// Desktop Hero logo assets (node 79:208, Logo-2, 854×302)
+const imgGroup = "/assets/figma/30334e9582af89652768945bca2b65df85a779d1.svg" // full logo group
+const imgGroup1 = "/assets/figma/f3f64bd4e9976cfe6b443ef578e490a1c29b9715.svg" // logo text
+const imgGroup2 = "/assets/figma/28eedcca877248f5cfd715b04a173bb659924f29.svg" // logo gem
+
+// Mobile hero assets (same as before)
+const imgMobileVector1 = "/assets/figma/cade7a25e69eb247351acf8b0f0672863184484d.svg"
+const imgMobileVector2 = "/assets/figma/aa67d472cb2bd09a9403a1a4bafcc71d761afc54.svg"
+const imgMobileVector3 = "/assets/figma/656521454218fab7809034d20e9781fd9a2941a8.svg"
+const imgMobileVector4 = "/assets/figma/c5024eb58a07122ff70e76b62a7bcb6b4422472c.svg"
+const imgMobileVector5 = "/assets/figma/f27af619267714c0ab4c06f0410a2101ae37acd0.svg"
+const imgMobileVector6 = "/assets/figma/cfcd8c49c022af33f3136127ed113ffbdaf25bf5.svg"
+const imgMobileVector7 = "/assets/figma/84c2c4ff69dbe1b04410cd206e71b9c9517e67e6.svg"
+const imgMobileVector8 = "/assets/figma/7c2df6dcc74d066220ce0d354f6bdd978ae58b9a.svg"
+const imgMobileVector9 = "/assets/figma/a90c22bccc6759741143554208615a9975e30adb.svg"
+const imgMobileVector10 = "/assets/figma/c3b3e31692afd432f57c52c50f2b0475d0842d2d.svg"
+const imgMobileVector11 = "/assets/figma/cf39d68c18364d66c709a8350c032b5b9a947087.svg"
+const imgMobileVector12 = "/assets/figma/e99c26133944c2748c608f05b2bf8e1a4cda3b77.svg"
+const imgMobileVector13 = "/assets/figma/e5e97763cd64839b09205b95affbbe2bca15800c.svg"
+const imgMobileVector14 = "/assets/figma/ab504c3cc819bae6f30e23ba3208510bac3e3170.svg"
+const imgMobileVector15 = "/assets/figma/588699deab290e0653c8add1baf831656706728e.svg"
+const imgMobileEllipse = "/assets/figma/84e737b6b6c81cb770ef39e0477b194da1ec192d.svg"
+---
+
+<!-- ===================== MOBILE HERO ===================== -->
+<section class="md:hidden relative overflow-hidden bg-white w-full min-h-screen flex flex-col items-center justify-center px-[22px] py-[36px] gap-[18px]">
+  <!-- Background star decoration — Figma node 70:20, absolute left-[250px] top-[244px] size-[187px] -->
+  <div class="absolute pointer-events-none" style="left: 250px; top: 244px; width: 187px; height: 187px;">
+    <div class="absolute" style="inset: -6.68%;">
+      <img alt="" class="block max-w-none size-full" src={imgMobileStar} />
+    </div>
+  </div>
+  <!-- Kicker -->
+  <div class="bg-white border-2 border-[#1e1e1e] flex gap-[8px] items-center px-[14px] py-[7px] rounded-[999px] z-10">
+    <div class="relative shrink-0 size-[8px]">
+      <img alt="" class="absolute block inset-0 max-w-none size-full" src={imgMobileEllipse} />
+    </div>
+    <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[11px] tracking-[0.22px] whitespace-nowrap">GDG Sucre presenta</p>
+  </div>
+
+  <!-- Mobile Logo -->
+  <div class="w-full max-w-[346px] z-10">
+    <div class="aspect-[2058.6/728.4] overflow-clip relative w-full">
+      <div class="absolute inset-[0.69%_0.24%_1.27%_0.24%]">
+        <div class="absolute inset-[0.69%_88.19%_1.27%_0.24%]">
+          <div class="absolute inset-[-0.83%_-2.5%]"><img alt="" class="block max-w-none size-full" src={imgMobileVector1} /></div>
+        </div>
+        <div class="absolute inset-[0.69%_0.24%_1.27%_88.19%]">
+          <div class="absolute inset-[-0.83%_-2.5%]"><img alt="" class="block max-w-none size-full" src={imgMobileVector2} /></div>
+        </div>
+      </div>
+      <div class="absolute inset-[1.16%_70.02%_56.17%_18.91%]"><img alt="" class="absolute block inset-0 max-w-none size-full" src={imgMobileVector3} /></div>
+      <div class="absolute inset-[14.28%_58.95%_55.21%_31.16%]"><img alt="" class="absolute block inset-0 max-w-none size-full" src={imgMobileVector4} /></div>
+      <div class="absolute inset-[0.69%_53.85%_56.16%_42.59%]"><img alt="" class="absolute block inset-0 max-w-none size-full" src={imgMobileVector5} /></div>
+      <div class="absolute inset-[1.16%_49.55%_56.17%_47.69%]"><img alt="" class="absolute block inset-0 max-w-none size-full" src={imgMobileVector6} /></div>
+      <div class="absolute inset-[1.16%_37.51%_55.21%_51.53%]"><img alt="" class="absolute block inset-0 max-w-none size-full" src={imgMobileVector7} /></div>
+      <div class="absolute inset-[69.49%_64.41%_0.95%_18.63%]"><img alt="" class="absolute block inset-0 max-w-none size-full" src={imgMobileVector8} /></div>
+      <div class="absolute inset-[55.9%_60.49%_0.95%_35.95%]"><img alt="" class="absolute block inset-0 max-w-none size-full" src={imgMobileVector9} /></div>
+      <div class="absolute inset-[60.66%_52.58%_0_40.21%]"><img alt="" class="absolute block inset-0 max-w-none size-full" src={imgMobileVector10} /></div>
+      <div class="absolute inset-[56.37%_41.24%_0.95%_48.85%]"><img alt="" class="absolute block inset-0 max-w-none size-full" src={imgMobileVector11} /></div>
+      <div class="absolute inset-[56.37%_22.6%_0.95%_62.81%]"><img alt="" class="absolute block inset-0 max-w-none size-full" src={imgMobileVector12} /></div>
+      <div class="absolute inset-[56.37%_18.63%_0.95%_78.52%]"><img alt="" class="absolute block inset-0 max-w-none size-full" src={imgMobileVector13} /></div>
+      <div class="absolute inset-[1.16%_18.63%_56.16%_67.83%]">
+        <div class="absolute inset-[-1.91%_-2.13%]"><img alt="" class="block max-w-none size-full" src={imgMobileVector14} /></div>
+      </div>
+      <div class="absolute inset-[11.54%_21.53%_66.55%_70.72%]">
+        <div class="absolute inset-[-3.73%]"><img alt="" class="block max-w-none size-full" src={imgMobileVector15} /></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sucre 2026 pill -->
+  <div class="bg-white border-2 border-[#1e1e1e] flex items-center px-[22px] pb-[12px] pt-[10px] rounded-[999px] z-10">
+    <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[22px] tracking-[0.22px] whitespace-nowrap">Sucre 2026</p>
+  </div>
+
+  <!-- Description -->
+  <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[15px] leading-[22px] text-center w-full max-w-[346px] z-10">
+    Dos días para aprender, construir y conectar con la comunidad que está armando el futuro con IA en Bolivia.
+  </p>
+
+  <!-- CTAs -->
+  <div class="flex flex-col gap-[10px] w-full max-w-[346px] z-10">
+    <a href="#registro" class="bg-[#1e1e1e] border-2 border-[#1e1e1e] flex gap-[10px] items-center justify-center px-[22px] py-[20px] rounded-[999px] text-white w-full hover:bg-[#333] transition-colors">
+      <p class="font-['Google_Sans',sans-serif] font-bold text-[15px]">Quiero mi lugar</p>
+      <p class="font-['Inter',sans-serif] font-bold text-[16px]">→</p>
+    </a>
+    <a href="#agenda" class="bg-white border-2 border-[#1e1e1e] flex gap-[10px] items-center justify-center px-[22px] py-[20px] rounded-[999px] text-[#1e1e1e] w-full hover:bg-[#f0f0f0] transition-colors">
+      <p class="font-['Google_Sans',sans-serif] font-bold text-[15px]">Ver agenda</p>
+      <p class="font-['Inter',sans-serif] font-bold text-[16px]">→</p>
+    </a>
+  </div>
+</section>
+
+<!-- ===================== DESKTOP HERO ===================== -->
+<!--
+  Figma Desktop-1: 1440×1024, bg-white, absolute decoration elements
+  Content: absolute left-[60px] right-[60px] top-[20px] h-[964px]
+           flex flex-col gap-[25px] items-center justify-center
+-->
+<section class="hidden md:block bg-white w-full relative overflow-hidden" style="height: 1024px;" data-name="Desktop-1-Hero">
+
+  <!-- Decoration: bottom arc/blob, inset percentage -->
+  <div class="absolute pointer-events-none flex items-center justify-center" style="inset: 75.2% 28.77% -23.04% 37.21%; container-type: size;">
+    <div class="flex-none rotate-15" style="height: hypot(-21.1325cqw, 78.8675cqh); width: hypot(78.8675cqw, 21.1325cqh);">
+      <div class="relative size-full">
+        <div class="absolute" style="inset: -3.12%;"><img alt="" class="block max-w-none size-full" src={imgVector} /></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Decoration: bracket right, rotate-135 -->
+  <div class="absolute pointer-events-none flex items-center justify-center" style="left: 1230px; top: 462px; width: 154.088px; height: 154.088px;">
+    <div class="flex-none rotate-135">
+      <div class="relative" style="height: 57.024px; width: 160.889px;">
+        <div class="absolute" style="inset: -21.92% -7.77%;"><img alt="" class="block max-w-none size-full" src={imgVector1} /></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Decoration: cross left-middle, -rotate-30 -->
+  <div class="absolute pointer-events-none flex items-center justify-center" style="left: 50.35px; top: 432.72px; width: 163.491px; height: 162.67px;">
+    <div class="flex-none -rotate-30">
+      <div class="relative" style="height: 118.262px; width: 120.504px;">
+        <div class="absolute" style="inset: -10.57% -10.37%;"><img alt="" class="block max-w-none size-full" src={imgVector2} /></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Decoration: cross top-left, -rotate-15 -->
+  <div class="absolute pointer-events-none flex items-center justify-center" style="left: -46.67px; top: 76.33px; width: 214.33px; height: 214.33px;">
+    <div class="flex-none -rotate-15">
+      <div class="relative" style="width: 175px; height: 175px;">
+        <div class="absolute" style="inset: -7.14%;"><img alt="" class="block max-w-none size-full" src={imgVector3} /></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Decoration: cross bottom-right, -rotate-15 -->
+  <div class="absolute pointer-events-none flex items-center justify-center" style="left: 1270px; top: 789px; width: 214.33px; height: 214.33px;">
+    <div class="flex-none -rotate-15">
+      <div class="relative" style="width: 175px; height: 175px;">
+        <div class="absolute" style="inset: -7.14%;"><img alt="" class="block max-w-none size-full" src={imgVector3} /></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Decoration: bracket left-bottom, rotate-180 -->
+  <div class="absolute pointer-events-none flex items-center justify-center" style="left: 0; top: 760px; width: 173px; height: 350px;">
+    <div class="flex-none rotate-180">
+      <div class="relative" style="width: 173px; height: 350px;">
+        <div class="absolute" style="inset: -3.57% -7.23%;"><img alt="" class="block max-w-none size-full" src={imgVector4} /></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Decoration: star top-right -->
+  <div class="absolute pointer-events-none" style="left: 1177px; top: 33px; width: 187px; height: 187px;">
+    <div class="absolute" style="inset: -6.68%;"><img alt="" class="block max-w-none size-full" src={imgVector5} /></div>
+  </div>
+
+  <!-- Content column: left-[60px] right-[60px] top-[20px] h-[964px] -->
+  <div class="absolute flex flex-col gap-[25px] items-center justify-center" style="left: 60px; right: 60px; top: 20px; height: 964px;">
+
+    <!-- Kicker pill -->
+    <div class="bg-white border-2 border-[#1e1e1e] flex gap-[8px] items-center overflow-clip px-[14px] py-[7px] rounded-[999px] shrink-0" style="height: 37px; width: 234px;">
+      <div class="relative shrink-0 size-[15px]">
+        <img alt="" class="absolute block inset-0 max-w-none size-full" src={imgEllipse} />
+      </div>
+      <div class="flex flex-1 flex-col justify-center min-w-px text-center">
+        <p class="font-['Inter',sans-serif] font-bold text-[#1e1e1e] text-[16px] tracking-[0.32px] leading-normal">GDG Sucre presenta</p>
+      </div>
+    </div>
+
+    <!-- Logo 854×302 -->
+    <div class="flex flex-col items-center justify-center shrink-0 overflow-clip" style="height: 374.342px;">
+      <div class="overflow-clip relative shrink-0" style="height: 302px; width: 854px;">
+        <div class="absolute" style="inset: 0.69% 0.24% 1.27% 0.24%;">
+          <div class="absolute" style="inset: -0.68% -0.24%;">
+            <img alt="" class="block max-w-none size-full" src={imgGroup} />
+          </div>
+        </div>
+        <div class="absolute" style="inset: 0.69% 18.63% 0 18.63%;">
+          <img alt="" class="absolute block inset-0 max-w-none size-full" src={imgGroup1} />
+        </div>
+        <div class="absolute" style="inset: 1.16% 18.63% 56.16% 67.83%;">
+          <div class="absolute" style="inset: -1.55% -1.73%;">
+            <img alt="" class="block max-w-none size-full" src={imgGroup2} />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- City pill -->
+    <div class="bg-white border-2 border-[#1e1e1e] flex items-center overflow-clip pb-[12px] pt-[10px] px-[22px] rounded-[999px] shrink-0" style="height: 61px; width: 216px;">
+      <div class="flex flex-1 flex-col justify-center h-full min-w-px text-center">
+        <p class="font-['Inter',sans-serif] font-bold text-[#1e1e1e] text-[25px] tracking-[0.25px] leading-normal">Sucre 2026</p>
+      </div>
+    </div>
+
+    <!-- Lead text -->
+    <div class="flex flex-col items-start overflow-clip relative shrink-0 w-full">
+      <div class="flex flex-col justify-center leading-[22px] not-italic relative shrink-0 text-[#3b3b3b] text-[25px] text-center w-full">
+        <p>Dos días para aprender, construir y conectar con la comunidad que está armando el futuro con IA en Bolivia.</p>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex flex-col gap-[15px] items-start not-italic relative shrink-0 whitespace-nowrap" style="height: 156px; width: 420px;">
+      <a href="#registro" class="bg-[#1e1e1e] border-2 border-[#1e1e1e] flex gap-[10px] items-center justify-center overflow-clip px-[22px] py-[20px] rounded-[999px] shrink-0 text-white w-full hover:bg-[#333] transition-colors" style="height: 71px;">
+        <p class="font-['Google_Sans',sans-serif] font-bold text-[25px] text-center leading-normal">Quiero mi lugar</p>
+        <p class="font-['Inter',sans-serif] font-bold text-[20px] leading-normal">→</p>
+      </a>
+      <a href="#agenda" class="bg-white border-2 border-[#1e1e1e] flex gap-[10px] items-center justify-center overflow-clip px-[22px] py-[20px] rounded-[999px] shrink-0 text-[#1e1e1e] w-full hover:bg-[#f0f0f0] transition-colors">
+        <p class="font-['Google_Sans',sans-serif] font-bold text-[25px] text-center leading-normal">Ver agenda</p>
+        <p class="font-['Inter',sans-serif] font-bold text-[20px] leading-normal">→</p>
+      </a>
+    </div>
+
+  </div>
+
+</section>
