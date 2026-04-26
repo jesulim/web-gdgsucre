@@ -3,47 +3,21 @@ import { Timer } from "./Timer"
 
 const imgMdiCalendar = "/assets/figma/7a1c156f96ab2633796c12bb6993712de5465a6b.svg"
 const imgIcBaselinePlace = "/assets/figma/fa69afda4d4860d1e050c2b9dca4939ee7fabb75.svg"
-
-// Desktop-2 Figma SVGs for countdown window
-const imgVector1 = "/assets/figma/00b418171200120574c8ea1488674910abdda8c9.svg" // window frame
-const imgVector2 = "/assets/figma/85eed0ec502ec5da032666c9f09e2eed21c1b2fb.svg" // line under title bar
-const imgVector3 = "/assets/figma/fc7ba8f2d8f3d0e28fb5bac213ca695de817d77d.svg" // red window shadow
-const imgEllipse = "/assets/figma/4bff42089f38c209a5e31a2ff67237487e39c6b4.svg" // red dot
-const imgVector4 = "/assets/figma/5eff9c4fac8d535c3e9b43b20aa637d1836e046d.svg" // separator line bottom
-const imgVector5 = "/assets/figma/5129035b0fa206b4f5440ab0bc38640fddb748a7.svg" // green dot
-const imgVector6 = "/assets/figma/b949718919af09915bb57ff801a36a8b7759b652.svg" // yellow dot
-const imgVector7 = "/assets/figma/26b2c0230bf5f87234f474af1d6f28814f947db6.svg" // red/close dot
-
-// Diagonal decoration for Desktop-2 bg
-const imgVectorDiag = "/assets/figma/142b29fa59e70aeddf0a30daa8a49cb9db01d572.svg"
-// Repeating bottom bg decoration
-const imgVectorBg = "/assets/figma/b9c79608a384972a5a69e904ce221f638866b56c.svg"
-
-// Mobile decorations
-const imgInfoBracket = "/assets/figma/9394006c410457442a23560b3cf1b58ac83b2b60.svg" // bracket deco Info mobile (node 70:58)
-const imgCountdownHalfMoon = "/assets/figma/bf6b94039f61e4e47a8a9922b3633c82caef3b20.svg" // half-moon deco Countdown mobile (node 70:84)
-// Mobile Countdown window SVGs
-const imgCdShadow = "/assets/figma/142298dd366ab19cbe3f93edb36f93d8ca045635.svg" // red shadow (node 70:86)
-const imgCdTitleLine = "/assets/figma/88394439b07d08c970f7410a1405620e1a131ff4.svg" // title bar line (node 70:87)
-const imgCdFrame = "/assets/figma/c8d0b5251dbeb2a16762a26363e717ed633b81c8.svg" // white frame (node 70:88)
-const imgCdDotRed = "/assets/figma/96cd6a701cfab9f8cdef94667c0c30be33f0bfb1.svg" // red dot head (node 70:91)
-const imgCdBottomLine = "/assets/figma/bf2ded5319d5075760f368c4d44a91ae955d12cb.svg" // bottom separator (node 70:107)
-const imgCdGreen = "/assets/figma/7e31803f1ccad2cd6e11b26f15b63497a11afcc3.svg" // green traffic light (node 70:108)
-const imgCdYellow = "/assets/figma/1c91673b9194a84b7265325dd3093c9307571fa2.svg" // yellow traffic light (node 70:109)
-const imgCdRed = "/assets/figma/9daf74a11fd5b590dd08eb1de4bdca749baaa78d.svg" // red traffic light (node 70:110)
+const imgVector1 = "/assets/figma/00b418171200120574c8ea1488674910abdda8c9.svg"
+const imgVector2 = "/assets/figma/85eed0ec502ec5da032666c9f09e2eed21c1b2fb.svg"
+const imgVector3 = "/assets/figma/fc7ba8f2d8f3d0e28fb5bac213ca695de817d77d.svg"
+const imgEllipse = "/assets/figma/4bff42089f38c209a5e31a2ff67237487e39c6b4.svg"
+const imgVector4 = "/assets/figma/5eff9c4fac8d535c3e9b43b20aa637d1836e046d.svg"
+const imgVector5 = "/assets/figma/5129035b0fa206b4f5440ab0bc38640fddb748a7.svg"
+const imgVector6 = "/assets/figma/b949718919af09915bb57ff801a36a8b7759b652.svg"
+const imgVector7 = "/assets/figma/26b2c0230bf5f87234f474af1d6f28814f947db6.svg"
 
 const targetDate = new Date("2026-05-09T09:00:00-04:00")
 const initialTime = targetDate.getTime() - Date.now()
 ---
 
-<!-- ===================== MOBILE INFO (stacked) ===================== -->
-<section class="md:hidden bg-white flex flex-col gap-[16px] items-start px-[22px] pb-[8px] pt-[16px] w-full relative overflow-hidden" id="info">
-  <!-- Background bracket decoration — Figma node 70:58: absolute h-350px left-243px top-27.55px w-173px -->
-  <div class="absolute pointer-events-none" style="height: 350px; left: 243px; top: 27.55px; width: 173px;">
-    <div class="absolute" style="inset: -3.57% -7.23%;">
-      <img alt="" class="block max-w-none size-full" src={imgInfoBracket} />
-    </div>
-  </div>
+<!-- MOBILE INFO -->
+<section class="md:hidden flex flex-col gap-[16px] items-start px-[22px] pb-[8px] pt-[16px] w-full relative overflow-hidden" id="info">
   <div class="bg-white border-2 border-[#1e1e1e] flex items-center px-[9px] py-[5px] rounded-[6px]">
     <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[11px] tracking-[0.88px] whitespace-nowrap">FECHA Y LUGAR</p>
   </div>
@@ -81,56 +55,23 @@ const initialTime = targetDate.getTime() - Date.now()
   </div>
 </section>
 
-<!-- ===================== DESKTOP: Info + Countdown ===================== -->
-<!--
-  Figma Desktop-2 specs:
-  - Frame: 1440×1024, bg-white
-  - Eyebrow: absolute left-[58px] top-[77px], h-[55px] w-[264px]
-  - Main content row: absolute left-[99px] top-[229px], flex gap-[84px] items-center
-    - Left col: flex flex-col gap-[68px] w-[476px]
-    - Right col (countdown section): flex flex-col h-[434px] w-[669px] pb-[24px] pt-[8px] px-[20px]
-  - Diagonal decor: absolute left-[756px] top-[-141px], rotate-45
--->
-<section class="hidden md:block bg-white w-full relative overflow-hidden" style="min-height: 1024px;" id="info-desktop">
+<!-- DESKTOP INFO + COUNTDOWN -->
+<section class="hidden md:block w-full relative overflow-hidden" style="min-height: 1024px;" id="info-desktop">
 
-  <!-- Diagonal bg decoration (rotate-45 positioned at right) -->
-  <div class="absolute pointer-events-none overflow-hidden" style="left: 756.81px; top: -141.9px; width: 1135.973px; height: 1135.973px;">
-    <div class="flex items-center justify-center w-full h-full" style="transform: rotate(45deg);">
-      <div class="relative" style="width: 530.846px; height: 1075.662px;">
-        <div class="absolute" style="inset: -1.16% -2.35%;">
-          <img alt="" class="block max-w-none size-full" src={imgVectorDiag} />
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Bottom-left bg decoration  -->
-  <div class="absolute pointer-events-none flex items-center justify-center" style="inset: 75.2% 28.77% -23.04% 37.21%; container-type: size;">
-    <div class="flex-none rotate-15" style="height: hypot(-21.1325cqw, 78.8675cqh); width: hypot(78.8675cqw, 21.1325cqh);">
-      <div class="relative size-full">
-        <div class="absolute" style="inset: -3.12%;">
-          <img alt="" class="block max-w-none size-full" src={imgVectorBg} />
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Eyebrow pill — exact Figma position -->
+  <!-- Eyebrow -->
   <div class="absolute bg-white border-2 border-[#1e1e1e] overflow-clip rounded-[6px] flex items-center justify-center" style="left: 58px; top: 77px; height: 55px; width: 264px;">
     <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[24px] tracking-[1.92px] text-center">FECHA Y LUGAR</p>
   </div>
 
-  <!-- Main content: left col (info cards) + right col (countdown) -->
+  <!-- Main content row -->
   <div class="absolute flex gap-[84px] items-center" style="left: 99px; top: 229px;">
 
-    <!-- LEFT: Title + Cards (476px wide) -->
+    <!-- LEFT: Title + Cards -->
     <div class="flex flex-col gap-[68px] items-start shrink-0" style="width: 476px;">
       <p class="font-['Google_Sans',sans-serif] font-bold leading-[42px] text-[#1e1e1e] text-[64px] tracking-[-1.92px] w-min min-w-full">
         Cuándo y dónde
       </p>
-
       <div class="flex flex-col gap-[32px] items-start shrink-0" style="width: 433px;">
-        <!-- Card Fecha -->
         <div class="bg-[#e7effe] border-2 border-[#1e1e1e] flex flex-col gap-[6px] items-start overflow-clip px-[32px] py-[22px] rounded-[24px] shrink-0 w-full">
           <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[24px] tracking-[3.84px] whitespace-nowrap">FECHAS</p>
           <div class="flex gap-[10px] items-end pt-[6px] overflow-clip whitespace-nowrap">
@@ -145,8 +86,6 @@ const initialTime = targetDate.getTime() - Date.now()
             <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[20px] leading-[20px] whitespace-pre">9:00 a 18:00  ·  Hora Bolivia (GMT-4)</p>
           </div>
         </div>
-
-        <!-- Card Lugar -->
         <div class="bg-[#ffe5e6] border-2 border-[#1e1e1e] flex flex-col gap-[10px] items-start overflow-clip px-[32px] py-[22px] rounded-[24px] shrink-0 w-full">
           <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[24px] tracking-[3.84px] whitespace-nowrap">LUGAR</p>
           <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[36px] tracking-[-0.36px] whitespace-nowrap">SIB Chuquisaca</p>
@@ -165,42 +104,34 @@ const initialTime = targetDate.getTime() - Date.now()
       </div>
     </div>
 
-    <!-- RIGHT: Countdown Section (669px × 434px) — Figma SVG window design -->
+    <!-- RIGHT: Countdown window -->
     <div class="flex flex-col items-start overflow-clip shrink-0 relative" style="width: 669px; height: 434px; padding: 8px 20px 24px 20px;">
-      <!-- SVG stacked grid: window frame (shadow, title bar, content area) -->
       <div class="flex-1 inline-grid leading-[0] place-items-start relative w-full min-h-px" style="grid-rows: max-content;">
-        <!-- FIRST: Red shadow frame (00b418 = shadow offset) -->
         <div class="col-1 row-1 relative" style="height: 380.357px; margin-left: 4.15%; margin-top: 21.64px; width: 95.85%;">
           <div class="absolute" style="inset: -0.26% -0.17%;">
             <img alt="" class="block max-w-none size-full" src={imgVector1} />
           </div>
         </div>
-        <!-- SECOND: Title bar line (85eed0) -->
         <div class="col-1 row-1 relative" style="height: 0; margin-left: 3.66%; margin-top: 86.35px; width: 96.34%;">
           <div class="absolute" style="inset: -1px 0;">
             <img alt="" class="block max-w-none size-full" src={imgVector2} />
           </div>
         </div>
-        <!-- THIRD: Main white window frame (fc7ba8 = white frame ON TOP) -->
         <div class="col-1 row-1 relative" style="height: 380.357px; margin-left: 0; margin-top: 0; width: 95.85%;">
           <div class="absolute" style="inset: -0.26% -0.17%;">
             <img alt="" class="block max-w-none size-full" src={imgVector3} />
           </div>
         </div>
-        <!-- Content overlay -->
         <div class="col-1 row-1 flex flex-col gap-[30px] items-start relative" style="height: 256.445px; margin-left: 4.34%; margin-top: 91.99px; width: 87.28%;">
-          <!-- Head: red dot + CUENTA REGRESIVA -->
           <div class="flex gap-[10px] items-center overflow-clip shrink-0">
             <div class="relative shrink-0 size-[16px]">
               <img alt="" class="absolute block inset-0 max-w-none size-full" src={imgEllipse} />
             </div>
             <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[20px] tracking-[3.6px] whitespace-nowrap">CUENTA REGRESIVA</p>
           </div>
-          <!-- Title -->
           <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[40px] tracking-[-0.4px] min-w-full w-min leading-normal">
             Faltan para comenzar
           </p>
-          <!-- Timer grid -->
           <div class="w-full">
             <Timer
               client:load
@@ -211,25 +142,21 @@ const initialTime = targetDate.getTime() - Date.now()
             />
           </div>
         </div>
-        <!-- Bottom separator -->
         <div class="col-1 row-1 relative" style="height: 0; margin-left: 0; margin-top: 64.71px; width: 95.85%;">
           <div class="absolute" style="inset: -1px 0;">
             <img alt="" class="block max-w-none size-full" src={imgVector4} />
           </div>
         </div>
-        <!-- Traffic lights: green -->
         <div class="col-1 row-1 relative" style="height: 21.825px; margin-left: 3.76%; margin-top: 21.06px; width: 3.47%;">
           <div class="absolute" style="inset: -4.58%;">
             <img alt="" class="block max-w-none size-full" src={imgVector5} />
           </div>
         </div>
-        <!-- Traffic lights: yellow -->
         <div class="col-1 row-1 relative" style="height: 21.825px; margin-left: 9.54%; margin-top: 21.06px; width: 3.47%;">
           <div class="absolute" style="inset: -4.58%;">
             <img alt="" class="block max-w-none size-full" src={imgVector6} />
           </div>
         </div>
-        <!-- Traffic lights: red/close -->
         <div class="col-1 row-1 relative" style="height: 21.825px; margin-left: 15.61%; margin-top: 21.06px; width: 3.47%;">
           <div class="absolute" style="inset: -4.58%;">
             <img alt="" class="block max-w-none size-full" src={imgVector7} />

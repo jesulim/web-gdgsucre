@@ -1,70 +1,33 @@
 ---
 import { Timer } from "./Timer"
 
-// Mobile Countdown Figma node 70:83 — Countdown Section mobile
-// Exact SVGs from Figma Design
-const imgCountdownHalfMoon = "/assets/figma/bf6b94039f61e4e47a8a9922b3633c82caef3b20.svg" // half-moon bg deco (node 70:84)
-const imgCdDotRed = "/assets/figma/96cd6a701cfab9f8cdef94667c0c30be33f0bfb1.svg" // red dot kicker (node 70:91)
-const imgCdGreen = "/assets/figma/7e31803f1ccad2cd6e11b26f15b63497a11afcc3.svg" // green traffic light (node 70:108)
-const imgCdYellow = "/assets/figma/1c91673b9194a84b7265325dd3093c9307571fa2.svg" // yellow traffic light (node 70:109)
-const imgCdRed = "/assets/figma/9daf74a11fd5b590dd08eb1de4bdca749baaa78d.svg" // red traffic light (node 70:110)
+const imgCdDotRed = "/assets/figma/96cd6a701cfab9f8cdef94667c0c30be33f0bfb1.svg"
+const imgCdGreen = "/assets/figma/7e31803f1ccad2cd6e11b26f15b63497a11afcc3.svg"
+const imgCdYellow = "/assets/figma/1c91673b9194a84b7265325dd3093c9307571fa2.svg"
+const imgCdRed = "/assets/figma/9daf74a11fd5b590dd08eb1de4bdca749baaa78d.svg"
 
 const targetDate = new Date("2026-05-09T09:00:00-04:00")
 const initialTime = targetDate.getTime() - Date.now()
 ---
 
-<!-- Mobile-only countdown (desktop is inside Info.astro) -->
-<!--
-  Figma node 70:83 — flex flex-col gap-14px items-start pb-24px pt-8px px-20px w-390px
-  Decoration: absolute h-178px left-[-4px] top-[-81.42px] w-181px (half-moon)
-  Window: inline-grid col-1/row-1 stacked SVGs
-    - shadow: h-209.13px ml-14.36px mt-11.9px w-331.637px (node 70:86)
-    - title line: h-0 ml-12.66px mt-47.48px w-333.342px (node 70:87)
-    - white frame: h-209.13px ml-0 mt-0 w-331.637px (node 70:88)
-    - content: flex col gap-8px ml-15px mt-50.58px w-302px (node 70:89)
-    - bottom line: h-0 ml-0 mt-35.58px w-331.637px (node 70:107)
-    - green dot: ml-13px mt-11.58px size-12px (node 70:108)
-    - yellow dot: ml-33px mt-11.58px size-12px (node 70:109)
-    - red dot: ml-54px mt-11.58px size-12px (node 70:110)
--->
+<!-- Mobile-only countdown -->
 <section class="md:hidden flex flex-col gap-[14px] items-start pb-[24px] pt-[8px] px-[20px] relative w-full overflow-hidden" id="countdown">
-
-  <!-- Half-moon background decoration -->
-  <div class="absolute pointer-events-none" style="height: 178px; left: -4px; top: -81.42px; width: 181px;">
-    <div class="absolute" style="inset: -7.02% -6.91%;">
-      <img alt="" class="block max-w-none size-full" src={imgCountdownHalfMoon} />
-    </div>
-  </div>
-
-  <!-- Responsive HTML/CSS Window replacing rigid SVG stack -->
   <div class="relative w-full max-w-[340px] mx-auto mt-[40px]">
-    <!-- Red shadow -->
     <div class="absolute inset-0 bg-[#ff4d4f] border-[1.5px] border-[#1e1e1e] translate-x-[4px] translate-y-[6px]" style="border-radius: 12px;"></div>
-    
-    <!-- White frame -->
     <div class="relative bg-white border-[1.5px] border-[#1e1e1e] flex flex-col z-10 overflow-hidden" style="border-radius: 12px;">
-      
-      <!-- Window Title Bar -->
       <div class="border-b-[1.5px] border-[#1e1e1e] h-[35px] flex items-center px-[12px] gap-[6px]">
         <img alt="green" class="size-[12px]" src={imgCdGreen} />
         <img alt="yellow" class="size-[12px]" src={imgCdYellow} />
         <img alt="red" class="size-[12px]" src={imgCdRed} />
       </div>
-
-      <!-- Window Content -->
       <div class="flex flex-col gap-[8px] items-start p-[16px]">
-        <!-- Red dot + label -->
         <div class="flex gap-[10px] items-center">
           <div class="relative shrink-0 size-[8px]">
             <img alt="" class="absolute inset-0 max-w-none size-full" src={imgCdDotRed} />
           </div>
           <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[10px] tracking-[1.8px] whitespace-nowrap">CUENTA REGRESIVA</p>
         </div>
-        
-        <!-- Title -->
         <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[22px] tracking-[-0.22px] leading-tight">Faltan para comenzar</p>
-        
-        <!-- Timer -->
         <div class="w-full mt-[4px]">
           <Timer
             client:load
