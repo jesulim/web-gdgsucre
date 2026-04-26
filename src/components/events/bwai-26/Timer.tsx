@@ -62,7 +62,7 @@ const TimeUnit = memo<TimeUnitProps>(({ label, value, large = false }) => (
   >
     <div className={`relative w-full text-center ${large ? "h-[60px]" : "h-[40px]"}`}>
       <div
-        className={`relative h-full w-full font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] ${
+        className={`relative h-full w-full font-bold text-[#1e1e1e] ${
           large ? "text-[60px] tracking-[-1.8px]" : "text-[36px] tracking-tight"
         }`}
       >
@@ -70,7 +70,7 @@ const TimeUnit = memo<TimeUnitProps>(({ label, value, large = false }) => (
       </div>
     </div>
     <span
-      className={`font-['Google_Sans',sans-serif] font-bold uppercase ${
+      className={`font-bold uppercase ${
         large
           ? "text-[16px] tracking-[2.88px] opacity-75 mt-0"
           : "text-[10px] tracking-[1.5px] opacity-75 mt-1"

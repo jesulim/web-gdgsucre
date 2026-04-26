@@ -1,6 +1,5 @@
 ---
 import About from "@/components/events/bwai-26/About.astro"
-import Countdown from "@/components/events/bwai-26/Countdown.astro"
 import Footer from "@/components/events/bwai-26/Footer.astro"
 import Header from "@/components/events/bwai-26/Header.astro"
 import Hero from "@/components/events/bwai-26/Hero.astro"
@@ -44,10 +43,10 @@ const ABOUT_TOP = INFO_TOP + 1024
   title="Build With AI Sucre 2026"
   description="Build with AI es la serie global de Google Developer Groups donde developers, estudiantes y curiosos nos juntamos para aprender IA en modo hands-on."
 >
-  <div class="w-full min-h-screen font-sans overflow-x-hidden relative bg-white">
+  <div class="w-full min-h-screen font-sans overflow-x-hidden relative">
 
     <!-- ===== CAPA DE FONDO GLOBAL ===== -->
-    <div class="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+    <div class="absolute inset-0 pointer-events-none overflow-hidden -z-10" aria-hidden="true">
 
       <!-- ============ HERO DESKTOP ============ -->
 
@@ -185,7 +184,6 @@ const ABOUT_TOP = INFO_TOP + 1024
     <main class="overflow-x-hidden">
       <Hero />
       <Info />
-      <Countdown />
       <About />
     </main>
     <Footer />

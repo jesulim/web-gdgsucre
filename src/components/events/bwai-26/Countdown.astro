@@ -1,40 +1,75 @@
 ---
 import { Timer } from "./Timer"
 
-const imgCdDotRed = "/assets/figma/96cd6a701cfab9f8cdef94667c0c30be33f0bfb1.svg"
-const imgCdGreen = "/assets/figma/7e31803f1ccad2cd6e11b26f15b63497a11afcc3.svg"
-const imgCdYellow = "/assets/figma/1c91673b9194a84b7265325dd3093c9307571fa2.svg"
-const imgCdRed = "/assets/figma/9daf74a11fd5b590dd08eb1de4bdca749baaa78d.svg"
-
 const targetDate = new Date("2026-05-09T09:00:00-04:00")
 const initialTime = targetDate.getTime() - Date.now()
 ---
 
-<!-- Mobile-only countdown -->
-<section class="md:hidden flex flex-col gap-[14px] items-start pb-[24px] pt-[8px] px-[20px] relative w-full overflow-hidden" id="countdown">
-  <div class="relative w-full max-w-[340px] mx-auto mt-[40px]">
-    <div class="absolute inset-0 bg-[#ff4d4f] border-[1.5px] border-[#1e1e1e] translate-x-[4px] translate-y-[6px]" style="border-radius: 12px;"></div>
-    <div class="relative bg-white border-[1.5px] border-[#1e1e1e] flex flex-col z-10 overflow-hidden" style="border-radius: 12px;">
-      <div class="border-b-[1.5px] border-[#1e1e1e] h-[35px] flex items-center px-[12px] gap-[6px]">
-        <img alt="green" class="size-[12px]" src={imgCdGreen} />
-        <img alt="yellow" class="size-[12px]" src={imgCdYellow} />
-        <img alt="red" class="size-[12px]" src={imgCdRed} />
+<section class="flex flex-col items-start w-full" id="countdown">
+  <div class="relative w-full pb-2 pr-2 lg:pr-3">
+    <div
+      class="absolute inset-0 bg-red-500 border-2 lg:border-3 border-black rounded-2xl lg:rounded-3xl translate-x-2 translate-y-2.5 lg:translate-y-4 lg:translate-x-4"
+    >
+      <div class="border-b-2 lg:border-b-3 border-black h-15"></div>
+    </div>
+
+    <div
+      class="relative bg-white border-2 lg:border-3 border-black rounded-2xl lg:rounded-3xl overflow-hidden z-10"
+    >
+      <div
+        class="border-b-2 lg:border-b-3 border-black h-15 flex items-center px-5 gap-1.5"
+      >
+        <span
+          class="size-3 lg:size-5 rounded-full bg-red-500 border-2 border-black"
+        ></span>
+        <span
+          class="size-3 lg:size-5 rounded-full bg-yellow-500 border-2 border-black"
+        ></span>
+        <span
+          class="size-3 lg:size-5 rounded-full bg-green-500 border-2 border-black"
+        ></span>
       </div>
-      <div class="flex flex-col gap-[8px] items-start p-[16px]">
-        <div class="flex gap-[10px] items-center">
-          <div class="relative shrink-0 size-[8px]">
-            <img alt="" class="absolute inset-0 max-w-none size-full" src={imgCdDotRed} />
-          </div>
-          <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[10px] tracking-[1.8px] whitespace-nowrap">CUENTA REGRESIVA</p>
+      <div class="flex flex-col gap-2 p-4 lg:gap-8 lg:p-8">
+        <div class="flex gap-2 items-center">
+          <span class="size-2 rounded-full bg-red-500 lg:size-4"></span>
+          <p class="font-bold text-[10px] lg:text-xl tracking-[1.8px]">
+            CUENTA REGRESIVA
+          </p>
         </div>
-        <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[22px] tracking-[-0.22px] leading-tight">Faltan para comenzar</p>
-        <div class="w-full mt-[4px]">
-          <Timer
-            client:load
-            initialTime={initialTime}
-            targetDate={targetDate}
-            labels={{ days: "DÍAS", hours: "HRS", minutes: "MIN", seconds: "SEG" }}
-          />
+        <p
+          class="font-bold text-[22px] tracking-tight leading-tight lg:text-[40px]"
+        >
+          Faltan para comenzar
+        </p>
+        <div class="w-full mt-1">
+          <div class="lg:hidden">
+            <Timer
+              client:load
+              initialTime={initialTime}
+              targetDate={targetDate}
+              labels={{
+                days: "DÍAS",
+                hours: "HRS",
+                minutes: "MIN",
+                seconds: "SEG",
+              }}
+            />
+          </div>
+
+          <div class="hidden lg:block">
+            <Timer
+              client:load
+              large={true}
+              initialTime={initialTime}
+              targetDate={targetDate}
+              labels={{
+                days: "DÍAS",
+                hours: "HRS",
+                minutes: "MIN",
+                seconds: "SEG",
+              }}
+            />
+          </div>
         </div>
       </div>
     </div>

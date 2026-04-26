@@ -46,7 +46,7 @@ const {
     <meta property="twitter:image" content={new URL(ogImage, Astro.url)} />
   </head>
 
-  <body class="min-h-screen flex flex-col font-google dark:bg-[#232323] dark:text-white">
+  <body class="min-h-screen flex flex-col font-google bg-white dark:bg-[#232323] dark:text-white">
     {isAdmin && <CommandMenu isAdmin={isAdmin} client:load />}
     <slot />
   </body>

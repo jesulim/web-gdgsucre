@@ -1,169 +1,78 @@
 ---
-import { Timer } from "./Timer"
+import Countdown from "@/components/events/bwai-26/Countdown.astro"
 
 const imgMdiCalendar = "/assets/figma/7a1c156f96ab2633796c12bb6993712de5465a6b.svg"
 const imgIcBaselinePlace = "/assets/figma/fa69afda4d4860d1e050c2b9dca4939ee7fabb75.svg"
-const imgVector1 = "/assets/figma/00b418171200120574c8ea1488674910abdda8c9.svg"
-const imgVector2 = "/assets/figma/85eed0ec502ec5da032666c9f09e2eed21c1b2fb.svg"
-const imgVector3 = "/assets/figma/fc7ba8f2d8f3d0e28fb5bac213ca695de817d77d.svg"
-const imgEllipse = "/assets/figma/4bff42089f38c209a5e31a2ff67237487e39c6b4.svg"
-const imgVector4 = "/assets/figma/5eff9c4fac8d535c3e9b43b20aa637d1836e046d.svg"
-const imgVector5 = "/assets/figma/5129035b0fa206b4f5440ab0bc38640fddb748a7.svg"
-const imgVector6 = "/assets/figma/b949718919af09915bb57ff801a36a8b7759b652.svg"
-const imgVector7 = "/assets/figma/26b2c0230bf5f87234f474af1d6f28814f947db6.svg"
-
-const targetDate = new Date("2026-05-09T09:00:00-04:00")
-const initialTime = targetDate.getTime() - Date.now()
 ---
 
-<!-- MOBILE INFO -->
-<section class="md:hidden flex flex-col gap-[16px] items-start px-[22px] pb-[8px] pt-[16px] w-full relative overflow-hidden" id="info">
-  <div class="bg-white border-2 border-[#1e1e1e] flex items-center px-[9px] py-[5px] rounded-[6px]">
-    <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[11px] tracking-[0.88px] whitespace-nowrap">FECHA Y LUGAR</p>
-  </div>
-  <h2 class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[38px] tracking-[-1.14px] leading-[42px]">Cuándo y dónde</h2>
-
-  <div class="bg-[#e7effe] border-2 border-[#1e1e1e] flex flex-col gap-[6px] items-start px-[20px] py-[22px] rounded-[24px] w-full">
-    <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[11px] tracking-[1.76px]">FECHAS</p>
-    <div class="flex gap-[10px] items-end pt-[6px]">
-      <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[52px] tracking-[-1.56px] leading-none">9 & 10</p>
-      <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[18px] pb-2 leading-none">de mayo</p>
-    </div>
-    <p class="font-['Google_Sans',sans-serif] font-medium text-[#3b3b3b] text-[14px]">Sábado y domingo · 2026</p>
-    <div class="flex gap-[6px] items-center mt-2">
-      <div class="relative shrink-0 size-[20px]">
-        <img alt="" class="absolute block inset-0 max-w-none size-full" src={imgMdiCalendar} />
-      </div>
-      <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[13px] leading-[20px]">9:00 a 18:00  ·  Hora Bolivia (GMT-4)</p>
-    </div>
-  </div>
-
-  <div class="bg-[#ffe5e6] border-2 border-[#1e1e1e] flex flex-col gap-[6px] items-start px-[20px] py-[22px] rounded-[24px] w-full">
-    <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[11px] tracking-[1.76px]">LUGAR</p>
-    <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[26px] tracking-[-0.26px]">SIB Chuquisaca</p>
-    <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[13px] leading-[18px]">Sociedad de Ingenieros de Bolivia — Filial Chuquisaca</p>
-    <div class="flex gap-[6px] items-center mt-2">
-      <div class="relative shrink-0 size-[20px]">
-        <img alt="" class="absolute block inset-0 max-w-none size-full" src={imgIcBaselinePlace} />
-      </div>
-      <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[14px]">Sucre, Bolivia</p>
-    </div>
-    <a href="#" target="_blank" class="flex gap-[6px] items-center pt-[6px] text-[#1e1e1e] hover:text-blue-600">
-      <p class="font-['Google_Sans',sans-serif] font-bold text-[13px] underline">Ver en el mapa</p>
-      <p class="font-['Inter',sans-serif] font-bold text-[13px]">↗</p>
-    </a>
-  </div>
-</section>
-
-<!-- DESKTOP INFO + COUNTDOWN -->
-<section class="hidden md:block w-full relative overflow-hidden" style="min-height: 1024px;" id="info-desktop">
-
-  <!-- Eyebrow -->
-  <div class="absolute bg-white border-2 border-[#1e1e1e] overflow-clip rounded-[6px] flex items-center justify-center" style="left: 58px; top: 77px; height: 55px; width: 264px;">
-    <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[24px] tracking-[1.92px] text-center">FECHA Y LUGAR</p>
-  </div>
-
-  <!-- Main content row -->
-  <div class="absolute flex gap-[84px] items-center" style="left: 99px; top: 229px;">
-
-    <!-- LEFT: Title + Cards -->
-    <div class="flex flex-col gap-[68px] items-start shrink-0" style="width: 476px;">
-      <p class="font-['Google_Sans',sans-serif] font-bold leading-[42px] text-[#1e1e1e] text-[64px] tracking-[-1.92px] w-min min-w-full">
-        Cuándo y dónde
-      </p>
-      <div class="flex flex-col gap-[32px] items-start shrink-0" style="width: 433px;">
-        <div class="bg-[#e7effe] border-2 border-[#1e1e1e] flex flex-col gap-[6px] items-start overflow-clip px-[32px] py-[22px] rounded-[24px] shrink-0 w-full">
-          <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[24px] tracking-[3.84px] whitespace-nowrap">FECHAS</p>
-          <div class="flex gap-[10px] items-end pt-[6px] overflow-clip whitespace-nowrap">
-            <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[52px] tracking-[-1.56px] leading-none shrink-0">9 & 10</p>
-            <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[32px] leading-none shrink-0 pb-1">de mayo</p>
-          </div>
-          <p class="font-['Google_Sans',sans-serif] font-medium text-[#3b3b3b] text-[24px] whitespace-nowrap">Sábado y domingo · 2026</p>
-          <div class="flex gap-[6px] items-start shrink-0">
-            <div class="relative shrink-0 size-[20px]">
-              <img alt="" class="absolute block inset-0 max-w-none size-full" src={imgMdiCalendar} />
-            </div>
-            <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[20px] leading-[20px] whitespace-pre">9:00 a 18:00  ·  Hora Bolivia (GMT-4)</p>
-          </div>
-        </div>
-        <div class="bg-[#ffe5e6] border-2 border-[#1e1e1e] flex flex-col gap-[10px] items-start overflow-clip px-[32px] py-[22px] rounded-[24px] shrink-0 w-full">
-          <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[24px] tracking-[3.84px] whitespace-nowrap">LUGAR</p>
-          <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[36px] tracking-[-0.36px] whitespace-nowrap">SIB Chuquisaca</p>
-          <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[20px] leading-[1.2] min-w-full w-min">Sociedad de Ingenieros de Bolivia — Filial Chuquisaca</p>
-          <div class="flex gap-[6px] items-center overflow-clip shrink-0">
-            <div class="relative shrink-0 size-[20px]">
-              <img alt="" class="absolute block inset-0 max-w-none size-full" src={imgIcBaselinePlace} />
-            </div>
-            <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[20px] whitespace-nowrap">Sucre, Bolivia</p>
-          </div>
-          <div class="flex gap-[6px] items-center overflow-clip pt-[6px] whitespace-nowrap text-[#1e1e1e]">
-            <p class="font-['Google_Sans',sans-serif] font-bold text-[24px] underline decoration-solid">Ver en el mapa</p>
-            <p class="font-['Inter',sans-serif] font-bold text-[13px]">↗</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- RIGHT: Countdown window -->
-    <div class="flex flex-col items-start overflow-clip shrink-0 relative" style="width: 669px; height: 434px; padding: 8px 20px 24px 20px;">
-      <div class="flex-1 inline-grid leading-[0] place-items-start relative w-full min-h-px" style="grid-rows: max-content;">
-        <div class="col-1 row-1 relative" style="height: 380.357px; margin-left: 4.15%; margin-top: 21.64px; width: 95.85%;">
-          <div class="absolute" style="inset: -0.26% -0.17%;">
-            <img alt="" class="block max-w-none size-full" src={imgVector1} />
-          </div>
-        </div>
-        <div class="col-1 row-1 relative" style="height: 0; margin-left: 3.66%; margin-top: 86.35px; width: 96.34%;">
-          <div class="absolute" style="inset: -1px 0;">
-            <img alt="" class="block max-w-none size-full" src={imgVector2} />
-          </div>
-        </div>
-        <div class="col-1 row-1 relative" style="height: 380.357px; margin-left: 0; margin-top: 0; width: 95.85%;">
-          <div class="absolute" style="inset: -0.26% -0.17%;">
-            <img alt="" class="block max-w-none size-full" src={imgVector3} />
-          </div>
-        </div>
-        <div class="col-1 row-1 flex flex-col gap-[30px] items-start relative" style="height: 256.445px; margin-left: 4.34%; margin-top: 91.99px; width: 87.28%;">
-          <div class="flex gap-[10px] items-center overflow-clip shrink-0">
-            <div class="relative shrink-0 size-[16px]">
-              <img alt="" class="absolute block inset-0 max-w-none size-full" src={imgEllipse} />
-            </div>
-            <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[20px] tracking-[3.6px] whitespace-nowrap">CUENTA REGRESIVA</p>
-          </div>
-          <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[40px] tracking-[-0.4px] min-w-full w-min leading-normal">
-            Faltan para comenzar
+<section
+  class="w-full flex flex-col items-start p-5 lg:px-20 lg:py-24 gap-4 lg:gap-14"
+  id="info"
+>
+  <h2
+    class="bg-white border-2 border-black rounded-[6px] px-2 py-1 text-xs font-bold lg:px-4 lg:py-3 lg:text-2xl"
+  >
+    FECHA Y LUGAR
+  </h2>
+  <div
+    class="w-full flex flex-col gap-12 lg:gap-24 lg:items-center lg:justify-center lg:flex-row"
+  >
+    <div class="w-full flex flex-col gap-4 lg:gap-16 lg:max-w-lg">
+      <h3 class="text-4xl font-bold lg:text-6xl">Cuándo y dónde</h3>
+      <div>
+        <div
+          class="w-full flex flex-col p-5 border-2 lg:border-3 border-black rounded-3xl gap-1 bg-[#E7EFFE] mb-4 lg:mb-8 lg:px-8 lg:py-6"
+        >
+          <p class="text-xs font-bold lg:text-2xl">FECHAS</p>
+          <p class="flex gap-2.5 font-bold items-end">
+            <span class="text-[52px] lead">9 & 10</span>
+            <span class="text-[18px] lg:text-[32px]">de mayo</span>
           </p>
-          <div class="w-full">
-            <Timer
-              client:load
-              initialTime={initialTime}
-              targetDate={targetDate}
-              large={true}
-              labels={{ days: "DÍAS", hours: "HRS", minutes: "MIN", seconds: "SEG" }}
+          <p class="text-[14px] text-[#3B3B3B] lg:text-2xl">
+            Sábado y domingo · 2026
+          </p>
+          <div class="flex items-center gap-1.5">
+            <img
+              src={imgMdiCalendar}
+              alt=""
+              width="15px"
+              height="16px"
+              class="w-3.75 h-4 lg:size-5"
             />
+            <p class="text-base font-bold lg:text-xl">
+              9:00 a 18:00 · Hora Bolivia (GMT-4)
+            </p>
           </div>
         </div>
-        <div class="col-1 row-1 relative" style="height: 0; margin-left: 0; margin-top: 64.71px; width: 95.85%;">
-          <div class="absolute" style="inset: -1px 0;">
-            <img alt="" class="block max-w-none size-full" src={imgVector4} />
+
+        <div
+          class="w-full flex flex-col p-5 border-2 lg:border-3 border-black rounded-3xl gap-1.5 bg-[#FFE5E6] lg:px-8 lg:py-6"
+        >
+          <p class="text-xs font-bold lg:text-2xl">LUGAR</p>
+          <p class="font-bold text-[26px] lg:text-4xl lg:mt-2">
+            SIB Chuquisaca
+          </p>
+          <p class="text-[14px] text-[#3B3B3B] lg:text-xl">
+            Sociedad de Ingenieros de Bolivia — Filial Chuquisaca
+          </p>
+          <div class="flex items-center gap-1.5">
+            <img
+              src={imgIcBaselinePlace}
+              alt=""
+              width="15px"
+              height="16px"
+              class="w-3.75 h-4 lg:size-5"
+            />
+            <p class="text-base font-bold lg:text-xl">Sucre, Bolivia</p>
           </div>
-        </div>
-        <div class="col-1 row-1 relative" style="height: 21.825px; margin-left: 3.76%; margin-top: 21.06px; width: 3.47%;">
-          <div class="absolute" style="inset: -4.58%;">
-            <img alt="" class="block max-w-none size-full" src={imgVector5} />
-          </div>
-        </div>
-        <div class="col-1 row-1 relative" style="height: 21.825px; margin-left: 9.54%; margin-top: 21.06px; width: 3.47%;">
-          <div class="absolute" style="inset: -4.58%;">
-            <img alt="" class="block max-w-none size-full" src={imgVector6} />
-          </div>
-        </div>
-        <div class="col-1 row-1 relative" style="height: 21.825px; margin-left: 15.61%; margin-top: 21.06px; width: 3.47%;">
-          <div class="absolute" style="inset: -4.58%;">
-            <img alt="" class="block max-w-none size-full" src={imgVector7} />
-          </div>
+          <a href="" class="text-base font-bold lg:text-2xl underline"
+            >Ver en el mapa ↗</a
+          >
         </div>
       </div>
     </div>
-
+    <div class="lg:w-152">
+      <Countdown />
+    </div>
   </div>
 </section>
