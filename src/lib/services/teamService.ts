@@ -18,11 +18,13 @@ interface JoinTeamParams {
 }
 
 async function assertNotInTeam(supabase: SupabaseClient, registration_id: number): Promise<void> {
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("team_registrations")
     .select("id")
     .eq("registration_id", registration_id)
     .maybeSingle()
+
+  if (error) throw new Error(`Error al obtener el equipo: ${error.message}`)
 
   if (data) {
     throw new Error("Ya perteneces a otro equipo en este evento")
@@ -35,9 +37,9 @@ export async function getTeamByCode(supabase: SupabaseClient, code: string, even
     .select("id, name, code, event_id")
     .eq("code", code)
     .eq("event_id", event_id)
-    .single()
+    .maybeSingle()
 
-  if (error) return null
+  if (error) throw new Error(`Error al obtener el equipo: ${error.message}`)
 
   return data
 }
@@ -52,9 +54,10 @@ export async function getTeamByRegistration(supabase: SupabaseClient, registrati
       )`
     )
     .eq("registration_id", registration_id)
-    .single()
+    .maybeSingle()
 
-  if (error) return null
+  if (error) throw new Error(`Error al obtener el equipo: ${error.message}`)
+  if (!data) return null
 
   return {
     leader: data.leader,
@@ -106,15 +109,21 @@ export async function createTeam(supabase: SupabaseClient, { event_id, name }: C
   return { success: true, team }
 }
 
-export async function joinTeam(supabase: SupabaseClient, { code, event_id }: JoinTeamParams) {
+async function checkTeamAvailable(supabase: SupabaseClient, code: string, event_id: number) {
   const team = await getTeamByCode(supabase, code, event_id)
-  if (!team) throw new Error("Código de equipo inválido o no pertenece a este evento")
+  if (!team) {
+    return { team: null, error: "Código de equipo inválido o no pertenece a este evento" }
+  }
 
   const memberCount = await getTeamMembersCount(supabase, team.id)
   if (memberCount >= MAX_TEAM_MEMBERS) {
-    throw new Error("El equipo está lleno")
+    return { team: null, error: "El equipo está lleno" }
   }
 
+  return { team, error: null }
+}
+
+export async function joinTeam(supabase: SupabaseClient, { code, event_id }: JoinTeamParams) {
   const user = await getUser(supabase)
   if (!user) throw new Error("No se pudo obtener el usuario")
 
@@ -122,6 +131,14 @@ export async function joinTeam(supabase: SupabaseClient, { code, event_id }: Joi
   if (!registration) throw new Error("Debes registrarte al evento antes de unirte a un equipo")
 
   await assertNotInTeam(supabase, registration.id)
+
+  const { team, error } = await checkTeamAvailable(supabase, code, event_id)
+
+  // Eliminar registro si el equipo no está disponible
+  if (error || !team) {
+    await supabase.from("team_registrations").delete().eq("registration_id", registration.id)
+    throw new Error(error)
+  }
 
   // Asociar al usuario como miembro del equipo
   const { error: teamRegistrationError } = await supabase
