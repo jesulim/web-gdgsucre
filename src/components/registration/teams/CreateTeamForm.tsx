@@ -77,7 +77,7 @@ export function CreateTeamForm({ formFields, profile, event }: CreateTeamFormPro
     }
 
     try {
-      const res = await fetch("/api/createTeam", {
+      const res = await fetch("/api/teams/create", {
         method: "POST",
         body: formData,
       })
@@ -102,6 +102,22 @@ export function CreateTeamForm({ formFields, profile, event }: CreateTeamFormPro
         ) : (
           <ProfileFormFields form={form} />
         )}
+
+        <FormField
+          control={form.control}
+          name="team_name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Nombre del Equipo <span className="text-destructive">*</span>
+              </FormLabel>
+              <FormControl>
+                <Input placeholder="Ej. Tech Innovators..." {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         {formFields.map(formField => (
           <FormField
@@ -145,24 +161,6 @@ export function CreateTeamForm({ formFields, profile, event }: CreateTeamFormPro
           />
         ))}
 
-        <div className="pt-4 mt-8 border-t border-border">
-          <h3 className="text-lg font-medium mb-4">Datos del Equipo</h3>
-          <FormField
-            control={form.control}
-            name="team_name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  Nombre del Equipo <span className="text-destructive">*</span>
-                </FormLabel>
-                <FormControl>
-                  <Input placeholder="Ej. Tech Innovators..." {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
         <Button className="w-full bg-blue-500 dark:text-white" type="submit">
           {loading && <Loader2Icon className="animate-spin" />}
           Crear Equipo y Registrame

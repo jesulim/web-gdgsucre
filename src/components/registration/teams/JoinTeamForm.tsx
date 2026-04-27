@@ -77,7 +77,7 @@ export function JoinTeamForm({ formFields, profile, event, teamCode }: JoinTeamF
     }
 
     try {
-      const res = await fetch("/api/registerTeam", {
+      const res = await fetch("/api/teams/join", {
         method: "POST",
         body: formData,
       })
@@ -102,6 +102,38 @@ export function JoinTeamForm({ formFields, profile, event, teamCode }: JoinTeamF
         ) : (
           <ProfileFormFields form={form} />
         )}
+
+        <FormField
+          control={form.control}
+          name="team_code"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Código del equipo <span className="text-destructive">*</span>
+              </FormLabel>
+              <FormControl>
+                <InputOTP
+                  maxLength={6}
+                  readOnly={!!teamCode}
+                  disabled={!!teamCode}
+                  // TODO: use onComplete={} to fetch team name
+                  {...field}
+                >
+                  <InputOTPGroup>
+                    <InputOTPSlot index={0} />
+                    <InputOTPSlot index={1} />
+                    <InputOTPSlot index={2} />
+                    <InputOTPSeparator />
+                    <InputOTPSlot index={3} />
+                    <InputOTPSlot index={4} />
+                    <InputOTPSlot index={5} />
+                  </InputOTPGroup>
+                </InputOTP>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         {formFields.map(formField => (
           <FormField
@@ -145,43 +177,9 @@ export function JoinTeamForm({ formFields, profile, event, teamCode }: JoinTeamF
           />
         ))}
 
-        <div className="pt-4 mt-8 border-t border-border">
-          <h3 className="text-lg font-medium mb-4">Código de Equipo</h3>
-          <FormField
-            control={form.control}
-            name="team_code"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  Ingresa el código <span className="text-destructive">*</span>
-                </FormLabel>
-                <FormControl>
-                  <InputOTP
-                    maxLength={6}
-                    readOnly={!!teamCode}
-                    disabled={!!teamCode}
-                    // TODO: use onComplete={} to fetch team name
-                    {...field}
-                  >
-                    <InputOTPGroup>
-                      <InputOTPSlot index={0} />
-                      <InputOTPSlot index={1} />
-                      <InputOTPSlot index={2} />
-                      <InputOTPSeparator />
-                      <InputOTPSlot index={3} />
-                      <InputOTPSlot index={4} />
-                      <InputOTPSlot index={5} />
-                    </InputOTPGroup>
-                  </InputOTP>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
         <Button className="w-full bg-blue-500 dark:text-white" type="submit">
           {loading && <Loader2Icon className="animate-spin" />}
-          Regístrate
+          Registrarme y Unirme al Equipo
         </Button>
       </form>
     </Form>
