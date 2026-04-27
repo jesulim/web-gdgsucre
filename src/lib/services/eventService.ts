@@ -14,7 +14,7 @@ export async function getAllEvents(supabase: SupabaseClient) {
     .select(
       `id, name, slug, date, registration_open,
       event_form_fields(
-        form_fields(label), options
+        name, options
       ),
       activities(name)
       `
@@ -25,9 +25,13 @@ export async function getAllEvents(supabase: SupabaseClient) {
 
   return events.map(event => {
     const { event_form_fields, activities, ...rest } = event
+    const packageOptions = event_form_fields?.find(field => field.name === "package")?.options
+    const packages = Array.isArray(packageOptions)
+      ? packageOptions.filter((option): option is string => typeof option === "string")
+      : []
 
     return {
-      packages: event_form_fields?.find(field => field.form_fields?.label === "Paquete")?.options,
+      packages,
       activities: (activities ?? []).map(activity => activity.name),
       ...rest,
     }

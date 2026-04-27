@@ -59,7 +59,7 @@ CREATE INDEX IF NOT EXISTS "teams_event_id_idx"
     ON "public"."teams" ("event_id");
 
 CREATE INDEX IF NOT EXISTS "team_registrations_team_id_idx"
-    ON "public"."team_registrations" ("team_id")
+    ON "public"."team_registrations" ("team_id");
 
 -- Constraints
 ALTER TABLE ONLY "public"."teams"
