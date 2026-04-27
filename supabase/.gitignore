@@ -9,3 +9,4 @@
 
 # Linked data
 *.sql
+!migrations/*.sql
