@@ -1,5 +1,9 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
 
+type EventStaffRoleRow = {
+  role: string | null
+}
+
 export async function getUser(supabase: SupabaseClient) {
   const {
     data: { user },
@@ -8,7 +12,7 @@ export async function getUser(supabase: SupabaseClient) {
   return user
 }
 
-export async function getProfile(supabase: SupabaseClient) {
+export async function getProfile(supabase: SupabaseClient, eventId?: number) {
   const user = await getUser(supabase)
   if (!user) return null
 
@@ -16,12 +20,26 @@ export async function getProfile(supabase: SupabaseClient) {
     .from("profiles")
     .select("id, first_name, last_name, avatar_url, is_admin")
     .eq("id", user.id)
+    .maybeSingle()
 
   if (error) {
     return null
   }
 
-  if (!profile || profile.length === 0) {
+  let role: string | null = null
+  if (eventId !== undefined) {
+    const { data: staffData } = await supabase
+      .from("event_staff")
+      .select("role")
+      .eq("user_id", user.id)
+      .eq("event_id", eventId)
+      .maybeSingle()
+
+    const staffRole = staffData as EventStaffRoleRow | null
+    role = staffRole?.role ?? null
+  }
+
+  if (!profile) {
     return {
       id: user.id,
       first_name: user.user_metadata.full_name,
@@ -29,12 +47,14 @@ export async function getProfile(supabase: SupabaseClient) {
       avatar_url: user?.user_metadata?.avatar_url,
       email: user?.user_metadata.email,
       is_admin: false,
+      role,
     }
   }
 
   return {
-    ...profile[0],
+    ...profile,
     email: user?.user_metadata.email,
+    role,
   }
 }
 
