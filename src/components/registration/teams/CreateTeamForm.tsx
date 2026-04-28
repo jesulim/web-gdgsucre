@@ -103,22 +103,6 @@ export function CreateTeamForm({ formFields, profile, event }: CreateTeamFormPro
           <ProfileFormFields form={form} />
         )}
 
-        <FormField
-          control={form.control}
-          name="team_name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                Nombre del Equipo <span className="text-destructive">*</span>
-              </FormLabel>
-              <FormControl>
-                <Input placeholder="Ej. Tech Innovators..." {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
         {formFields.map(formField => (
           <FormField
             key={formField.id}
@@ -160,6 +144,22 @@ export function CreateTeamForm({ formFields, profile, event }: CreateTeamFormPro
             )}
           />
         ))}
+
+        <FormField
+          control={form.control}
+          name="team_name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Nombre del Equipo <span className="text-destructive">*</span>
+              </FormLabel>
+              <FormControl>
+                <Input placeholder="Ej. Tech Innovators..." {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <Button className="w-full bg-blue-500 dark:text-white" type="submit">
           {loading && <Loader2Icon className="animate-spin" />}

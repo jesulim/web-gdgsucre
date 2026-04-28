@@ -103,38 +103,6 @@ export function JoinTeamForm({ formFields, profile, event, teamCode }: JoinTeamF
           <ProfileFormFields form={form} />
         )}
 
-        <FormField
-          control={form.control}
-          name="team_code"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                Código del equipo <span className="text-destructive">*</span>
-              </FormLabel>
-              <FormControl>
-                <InputOTP
-                  maxLength={6}
-                  readOnly={!!teamCode}
-                  disabled={!!teamCode}
-                  // TODO: use onComplete={} to fetch team name
-                  {...field}
-                >
-                  <InputOTPGroup>
-                    <InputOTPSlot index={0} />
-                    <InputOTPSlot index={1} />
-                    <InputOTPSlot index={2} />
-                    <InputOTPSeparator />
-                    <InputOTPSlot index={3} />
-                    <InputOTPSlot index={4} />
-                    <InputOTPSlot index={5} />
-                  </InputOTPGroup>
-                </InputOTP>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
         {formFields.map(formField => (
           <FormField
             key={formField.id}
@@ -176,6 +144,39 @@ export function JoinTeamForm({ formFields, profile, event, teamCode }: JoinTeamF
             )}
           />
         ))}
+
+        <FormField
+          control={form.control}
+          name="team_code"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Código del equipo <span className="text-destructive">*</span>
+              </FormLabel>
+              <FormControl>
+                <InputOTP
+                  maxLength={6}
+                  readOnly={!!teamCode}
+                  disabled={!!teamCode}
+                  inputMode="text"
+                  // TODO: use onComplete={} to fetch team name
+                  {...field}
+                >
+                  <InputOTPGroup>
+                    <InputOTPSlot index={0} />
+                    <InputOTPSlot index={1} />
+                    <InputOTPSlot index={2} />
+                    <InputOTPSeparator />
+                    <InputOTPSlot index={3} />
+                    <InputOTPSlot index={4} />
+                    <InputOTPSlot index={5} />
+                  </InputOTPGroup>
+                </InputOTP>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <Button className="w-full bg-blue-500 dark:text-white" type="submit">
           {loading && <Loader2Icon className="animate-spin" />}
