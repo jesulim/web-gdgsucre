@@ -36,10 +36,11 @@ const teamCode = Astro.url.searchParams.get("code") || undefined
 
 <BaseLayout theme="light">
   <Header />
-  <main class="mt-16 pt-12 flex">
+  <main class="mt-4 flex">
     <div class="mx-auto px-4 pb-16 w-full max-w-md">
       <h1 class="text-xl mb-4 font-medium">{event.name}</h1>
-      <h2 class="text-xl mb-4 font-medium">Únete a un equipo</h2>
+      <h2 class="text-xl font-medium">Únete a un equipo</h2>
+      <p class="mb-4">Si tienes un código de invitación, puedes unirte a un equipo ya creado.</p>
       <JoinTeamForm
         formFields={formFields}
         profile={profile}

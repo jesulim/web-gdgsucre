@@ -35,9 +35,16 @@ const formFields = await getFormFieldsByEvent(supabase, eventSlug)
 
 <BaseLayout theme="light">
   <Header />
-  <main class="mt-16 pt-12 flex">
+  <main class="mt-4 flex">
     <div class="mx-auto px-4 pb-16">
       <h1 class="text-xl mb-4 font-medium">Regístrate al {event.name}</h1>
+      {
+        eventSlug == "bwai-26" && (
+          <p class="mb-4">
+            Al registrarte de manera individual, te asignaremos un equipo el día del evento.
+          </p>
+        )
+      }
       <RegisterForm formFields={formFields} profile={profile} event={event} client:load />
     </div>
   </main>
