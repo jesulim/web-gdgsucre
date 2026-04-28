@@ -1,6 +1,6 @@
 ---
 import Header from "@/components/events/bwai-26/Header.astro"
-import { JoinTeamForm } from "@/components/registration/teams/JoinTeamForm"
+import { RegisterForm } from "@/components/registration/RegisterForm"
 import BaseLayout from "@/layout/BaseLayout.astro"
 
 import { getEvent } from "@/lib/services/eventService"
@@ -31,22 +31,14 @@ if (registration?.status === "confirmed") {
 }
 
 const formFields = await getFormFieldsByEvent(supabase, eventSlug)
-const teamCode = Astro.url.searchParams.get("code") || undefined
 ---
 
 <BaseLayout theme="light">
   <Header />
   <main class="mt-16 pt-12 flex">
-    <div class="mx-auto px-4 pb-16 w-full max-w-md">
-      <h1 class="text-xl mb-4 font-medium">{event.name}</h1>
-      <h2 class="text-xl mb-4 font-medium">Únete a un equipo</h2>
-      <JoinTeamForm
-        formFields={formFields}
-        profile={profile}
-        event={event}
-        teamCode={teamCode}
-        client:load
-      />
+    <div class="mx-auto px-4 pb-16">
+      <h1 class="text-xl mb-4 font-medium">Regístrate al {event.name}</h1>
+      <RegisterForm formFields={formFields} profile={profile} event={event} client:load />
     </div>
   </main>
 </BaseLayout>
