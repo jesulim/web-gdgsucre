@@ -20,6 +20,7 @@ export async function getProfile(supabase: SupabaseClient, eventId?: number) {
     .from("profiles")
     .select("id, first_name, last_name, avatar_url, is_admin")
     .eq("id", user.id)
+    .maybeSingle()
 
   if (error) {
     return null
@@ -38,7 +39,7 @@ export async function getProfile(supabase: SupabaseClient, eventId?: number) {
     role = staffRole?.role ?? null
   }
 
-  if (!profile || profile.length === 0) {
+  if (!profile) {
     return {
       id: user.id,
       first_name: user.user_metadata.full_name,
@@ -51,7 +52,7 @@ export async function getProfile(supabase: SupabaseClient, eventId?: number) {
   }
 
   return {
-    ...profile[0],
+    ...profile,
     email: user?.user_metadata.email,
     role,
   }
