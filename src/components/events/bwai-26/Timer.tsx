@@ -56,13 +56,13 @@ const TimeUnit = memo<TimeUnitProps>(({ label, value, large = false }) => (
   <div
     className={
       large
-        ? "bg-[rgba(255,255,255,0.08)] border-[#1e1e1e] border-[1.5px] border-solid flex flex-col flex-1 items-center overflow-hidden px-[6px] py-[14px] relative rounded-[14px]"
-        : "bg-white border-[#1e1e1e] border-[1.5px] border-solid flex flex-col flex-1 items-center overflow-hidden py-3 px-1 relative rounded-[14px]"
+        ? "bg-[rgba(255,255,255,0.08)] border-black border-2 border-solid flex flex-col flex-1 items-center overflow-hidden px-1.5 py-3.5 relative rounded-[14px]"
+        : "bg-white border-black border-[1.5px] border-solid flex flex-col flex-1 items-center overflow-hidden py-3 px-1 relative rounded-[14px]"
     }
   >
-    <div className={`relative w-full text-center ${large ? "h-[60px]" : "h-[40px]"}`}>
+    <div className={`relative w-full text-center ${large ? "h-15" : "h-10"}`}>
       <div
-        className={`relative h-full w-full font-bold text-[#1e1e1e] ${
+        className={`relative h-full w-full font-bold text-black ${
           large ? "text-[60px] tracking-[-1.8px]" : "text-[36px] tracking-tight"
         }`}
       >

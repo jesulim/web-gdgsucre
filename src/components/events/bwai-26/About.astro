@@ -1,89 +1,61 @@
 ---
-const imgVector = "/assets/figma/fcd5150aa2ac855184e8a6d71bdd10b930969d2e.svg"
-const imgVector1 = "/assets/figma/a93824e103e6a596e9dda2b02293cce404ba1e07.svg"
 const imgFrame11 = "/assets/figma/25fa6f2ec330ca82cc95ed739f17608f042f2cd1.svg"
 const imgVector2 = "/assets/figma/b2d47073e64fc9b9e2deb21ae51e238454dee982.svg"
 const imgVector3 = "/assets/figma/b237cd880d82dd7045df2032b2be5f68737c56d4.svg"
 const imgVector4 = "/assets/figma/46d6a10d60e2901a8167dab2bba206d12b097912.svg"
-const imgMobileCharlas = "/assets/figma/b2935dca4c22b312a37ff21ae04585b77fb6696c.svg"
-const imgMobileComunidad = "/assets/figma/8579992ff614027282dcee0df3e9f64126962d0b.svg"
-const imgMobileHecho = "/assets/figma/ee49ddc5b4545539d5b292896a7485cb982dc47c.svg"
+
+const features = [
+  {
+    icon: imgFrame11,
+    iconClass: "w-17 h-9",
+    title: "Código real",
+    desc: "Talleres prácticos con Gemini, AI Studio y Genkit que puedes llevar a tu proyecto el lunes.",
+  },
+  {
+    icon: imgVector2,
+    iconClass: "w-9 h-9",
+    title: "Charlas clave",
+    desc: "Speakers locales e invitados compartiendo lo que aprendieron construyendo con IA.",
+  },
+  {
+    icon: imgVector3,
+    iconClass: "w-20 h-8 lg:w-28 lg:h-10",
+    title: "Comunidad",
+    desc: "Dos días para conectar con la comunidad dev de Sucre y la región. Networking real.",
+  },
+  {
+    icon: imgVector4,
+    iconClass: "w-20 h-12 lg:w-16 lg:h-10",
+    title: "Hecho en Sucre",
+    desc: "Organizado por la comunidad, con el apoyo de SIB Chuquisaca y CISICH. Gratis y abierto.",
+  },
+]
 ---
 
-<!-- MOBILE ABOUT -->
-<section class="md:hidden flex flex-col gap-[16px] items-start px-[22px] py-[30px] w-full relative overflow-hidden">
-  <div class="bg-white border-2 border-[#1e1e1e] flex items-center px-[9px] py-[5px] rounded-[6px] relative z-10">
-    <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[11px] tracking-[0.88px] whitespace-nowrap">¿QUÉ ES?</p>
-  </div>
-  <h2 class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[42px] tracking-[-1.26px] leading-[44px] relative z-10">Build with AI</h2>
-  <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[15px] leading-[22px] w-full relative z-10">
-    Build with AI es la serie global de Google Developer Groups donde developers, estudiantes y curiosos nos juntamos para aprender IA en modo hands-on: desde prompt engineering hasta desplegar agentes con Gemini.
-  </p>
-  <div class="flex flex-col gap-[12px] pt-[10px] w-full relative z-10">
-    <div class="bg-white border-2 border-[#1e1e1e] flex flex-col gap-[10px] items-start p-[20px] rounded-[22px] w-full">
-      <div class="h-[36px] relative shrink-0 w-[68px]"><div class="absolute inset-[-2.78%_-1.47%]"><img alt="" class="block max-w-none size-full" src={imgFrame11} /></div></div>
-      <h3 class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[19px] tracking-[-0.19px]">Código real</h3>
-      <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[14px] leading-[20px] w-full">Talleres prácticos con Gemini, AI Studio y Genkit que puedes llevar a tu proyecto el lunes.</p>
-    </div>
-    <div class="bg-white border-2 border-[#1e1e1e] flex flex-col gap-[10px] items-start p-[20px] rounded-[22px] w-full">
-      <div class="relative shrink-0 size-[36px]"><div class="absolute inset-[-2.78%]"><img alt="" class="block max-w-none size-full" src={imgMobileCharlas} /></div></div>
-      <h3 class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[19px] tracking-[-0.19px]">Charlas clave</h3>
-      <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[14px] leading-[20px] w-full">Speakers locales e invitados compartiendo lo que aprendieron construyendo con IA.</p>
-    </div>
-    <div class="bg-white border-2 border-[#1e1e1e] flex flex-col gap-[10px] items-start p-[20px] rounded-[22px] w-full">
-      <div class="h-[29px] relative shrink-0 w-[80px]"><div class="absolute inset-[-3.45%_-1.25%]"><img alt="" class="block max-w-none size-full" src={imgMobileComunidad} /></div></div>
-      <h3 class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[19px] tracking-[-0.19px]">Comunidad</h3>
-      <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[14px] leading-[20px] w-full">Dos días para conectar con la comunidad dev de Sucre y la región. Networking real.</p>
-    </div>
-    <div class="bg-white border-2 border-[#1e1e1e] flex flex-col gap-[10px] items-start p-[20px] rounded-[22px] w-full">
-      <div class="h-[49px] relative shrink-0 w-[80px]"><div class="absolute inset-[-2.04%_-1.25%]"><img alt="" class="block max-w-none size-full" src={imgMobileHecho} /></div></div>
-      <h3 class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[19px] tracking-[-0.19px]">Hecho en Sucre</h3>
-      <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[14px] leading-[20px] w-full">Organizado por la comunidad, con el apoyo de SIB Chuquisaca y CISICH. Gratis y abierto.</p>
-    </div>
-  </div>
-</section>
+<section class="w-full flex flex-col items-start px-5 py-8 gap-4 lg:px-20 lg:py-24 lg:gap-16">
 
-<!-- DESKTOP ABOUT -->
-<section class="hidden md:block w-full relative overflow-hidden">
-  <div class="relative z-10 flex flex-col items-start mx-auto pt-[77px] pb-[100px]" style="max-width: 1066px;">
-    <div class="bg-white border-2 border-[#1e1e1e] overflow-clip rounded-[6px] flex items-center justify-center mb-[68px]" style="height: 66px; width: 263px;">
-      <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[32px] tracking-[2.56px] text-center">¿QUÉ ES?</p>
+  <h2 class="bg-white border-2 border-black rounded-xs md:rounded-lg px-2 py-1 text-xs font-bold lg:px-10 lg:py-4 lg:text-4xl">
+    ¿QUÉ ES?
+  </h2>
+
+  <div class="flex flex-col gap-4 lg:gap-16 w-full">
+
+    <div class="flex flex-col gap-2 lg:gap-6">
+      <h2 class="font-bold text-4xl tracking-tight leading-tight lg:text-6xl">Build with AI</h2>
+      <p class="text-[#3b3b3b] text-base leading-5.5 lg:text-2xl lg:leading-7.5 lg:max-w-4xl">
+        Build with AI es la serie global de Google Developer Groups donde developers, estudiantes y curiosos nos juntamos para aprender IA en modo hands-on: desde prompt engineering hasta desplegar agentes con Gemini.
+      </p>
     </div>
-    <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[64px] tracking-[-1.92px] leading-[44px] whitespace-nowrap mb-[36px]">
-      Build with AI
-    </p>
-    <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[24px] leading-[30px] mb-[92px]" style="max-width: 724px;">
-      Build with AI es la serie global de Google Developer Groups donde developers, estudiantes y curiosos nos juntamos para aprender IA en modo hands-on: desde prompt engineering hasta desplegar agentes con Gemini.
-    </p>
-    <div style="display: grid; grid-template-columns: 495px 495px; gap: 15px 76px; width: 1066px;">
-      <div class="bg-white border-4 border-[#1e1e1e] flex flex-col gap-[10px] items-start overflow-clip p-[20px] rounded-[22px]" style="height: 229px;">
-        <div class="relative shrink-0" style="height: 36px; width: 68px;">
-          <div class="absolute" style="inset: -2.78% -1.47%;"><img alt="" class="block max-w-none size-full" src={imgFrame11} /></div>
+
+    <div class="grid grid-cols-1 gap-3 md:grid-cols-2 lg:gap-y-4 lg:gap-x-22 lg:max-w-300">
+      {features.map(f => (
+        <div class="bg-white border-2 lg:border-4 border-black flex flex-col gap-2 lg:gap-3 items-start p-5 lg:p-6 rounded-2xl lg:rounded-3xl">
+          <img alt="" class={`${f.iconClass}`} src={f.icon} />
+          <h3 class="font-bold text-xl lg:text-3xl tracking-tight">{f.title}</h3>
+          <p class="text-[#3b3b3b] text-xs leading-5 lg:text-2xl lg:leading-7.5">{f.desc}</p>
         </div>
-        <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[32px] tracking-[-0.32px] whitespace-nowrap shrink-0">Código real</p>
-        <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[24px] leading-[30px] flex-1 min-h-px min-w-full w-min">Talleres prácticos con Gemini, AI Studio y Genkit que puedes llevar a tu proyecto el lunes.</p>
-      </div>
-      <div class="bg-white border-4 border-[#1e1e1e] flex flex-col gap-[10px] items-start overflow-clip p-[20px] rounded-[22px]" style="height: 229px;">
-        <div class="relative shrink-0" style="height: 40px; width: 112px;">
-          <div class="absolute" style="inset: -2.5% -0.89%;"><img alt="" class="block max-w-none size-full" src={imgVector3} /></div>
-        </div>
-        <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[32px] tracking-[-0.32px] whitespace-nowrap shrink-0">Comunidad</p>
-        <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[24px] leading-[30px] min-w-full w-min shrink-0">Dos días para conectar con la comunidad dev de Sucre y la región. Networking real.</p>
-      </div>
-      <div class="bg-white border-4 border-[#1e1e1e] flex flex-col gap-[10px] items-start overflow-clip p-[20px] rounded-[22px]" style="height: 229px;">
-        <div class="relative shrink-0" style="height: 38px; width: 38px;">
-          <div class="absolute" style="inset: -2.63%;"><img alt="" class="block max-w-none size-full" src={imgVector2} /></div>
-        </div>
-        <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[32px] tracking-[-0.32px] whitespace-nowrap shrink-0">Charlas clave</p>
-        <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[24px] leading-[30px] flex-1 min-h-px min-w-full w-min">Speakers locales e invitados compartiendo lo que aprendieron construyendo con IA.</p>
-      </div>
-      <div class="bg-white border-4 border-[#1e1e1e] flex flex-col gap-[10px] items-start overflow-clip p-[20px] rounded-[22px]" style="height: 229px;">
-        <div class="relative shrink-0" style="height: 39px; width: 63px;">
-          <div class="absolute" style="inset: -2.56% -1.59%;"><img alt="" class="block max-w-none size-full" src={imgVector4} /></div>
-        </div>
-        <p class="font-['Google_Sans',sans-serif] font-bold text-[#1e1e1e] text-[32px] tracking-[-0.32px] whitespace-nowrap shrink-0">Hecho en Sucre</p>
-        <p class="font-['Google_Sans',sans-serif] text-[#3b3b3b] text-[24px] leading-[30px] flex-1 min-h-px min-w-full w-min">Organizado por la comunidad, con el apoyo de SIB Chuquisaca y CISICH. Gratis y abierto.</p>
-      </div>
+      ))}
     </div>
+
   </div>
 </section>
