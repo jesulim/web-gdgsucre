@@ -1,54 +1,98 @@
 ---
-// Desktop Nav Figma node 79:182
-// bg-white border-b border-[rgba(30,30,30,0.08)]
-// flex items-center justify-between px-[18px] py-[14px]
-// Logo: 247×41 (clip path group)
-// CTA: h-[53px] w-[157px] rounded-[999px] bg-[#1e1e1e] text-white text-[20px] font-bold px-[14px] py-[9px]
+import UserSignIn from "@/assets/icons/social/user-round-plus.svg"
+import Avatar from "@/components/Avatar.astro"
+import { getProfile } from "@/lib/services/profileService"
+import { getEventRegistration } from "@/lib/services/registrationService"
+import { createUserClient } from "@/lib/supabase"
 
-const imgGroupDesktopMask = "/assets/figma/269d89182711489f1ffd31fc43f4d02ade8ff510.svg"
-const imgGroupDesktopFill = "/assets/figma/e4ad344be2fd1ccd4d8774be158be18c32d75eb5.svg"
+const imgLogo = "/assets/figma/logotipo.svg"
 
-const imgGroupMobileMask = "/assets/figma/b73da96cdb2a60ae1d6973bf21758ffa625c813d.svg"
-const imgGroupMobileFill = "/assets/figma/0ef8da955b56c4dc168c3569daa76723e5896fd6.svg"
+const eventSlug = Astro.params.eventSlug || "bwai-26"
+const registroPath = "/registro/" + eventSlug
+const isOnRegistroPage = Astro.url.pathname === registroPath
+
+const accessToken = Astro.cookies.has("sb-access-token")
+
+const supabase = await createUserClient(Astro.cookies)
+const profile = await getProfile(supabase)
+const registration = await getEventRegistration(supabase, profile?.id, eventSlug)
+const hasRegistration = !!registration
 ---
 
-<header class="bg-white border-b border-[rgba(30,30,30,0.08)] flex items-center justify-between px-[18px] py-[14px] w-full z-50 relative">
+<header class="sticky top-0 z-50 bg-white border-b border-gray-200 flex items-center justify-between px-5 h-15 lg:h-20 w-full">
 
-  <!-- Mobile Logo (143×24) -->
-  <div class="md:hidden flex items-center overflow-clip shrink-0" style="height: 24px; width: 143px;">
-    <div class="flex flex-1 flex-col h-full items-start min-w-px overflow-clip relative">
-      <div class="flex-1 inline-grid leading-[0] place-items-start relative w-full min-h-px" style="grid-rows: max-content;">
-        <div class="col-1 row-1 relative mask-alpha mask-intersect mask-no-clip mask-no-repeat" style="height: 14.381px; mask-image: url('/assets/figma/b73da96cdb2a60ae1d6973bf21758ffa625c813d.svg'); mask-position: -3.275px -4.525px; mask-size: 143px 24px; margin-left: 3.27px; margin-top: 4.53px; width: 136.113px;">
-          <div class="absolute" style="inset: 0 -0.18% 0 0;">
-            <img alt="GDG Sucre Build with AI" class="block max-w-none size-full" src={imgGroupMobileFill} />
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Desktop Logo (247×41) — exact Figma node 79:183 -->
-  <div class="hidden md:flex flex-col items-start overflow-clip shrink-0" style="height: 41px; width: 247px;">
-    <div class="flex flex-1 flex-col h-full items-start min-w-px overflow-clip relative w-full">
-      <div class="flex-1 inline-grid leading-[0] place-items-start relative w-full min-h-px" style="grid-rows: max-content;">
-        <div class="col-1 row-1 relative mask-alpha mask-intersect mask-no-clip mask-no-repeat" style="height: 24.567px; mask-image: url('/assets/figma/269d89182711489f1ffd31fc43f4d02ade8ff510.svg'); mask-position: -5.657px -7.731px; mask-size: 247px 41px; margin-left: 2.29%; margin-top: 7.73px; width: 95.18%;">
-          <div class="absolute" style="inset: 0 -0.11% 0 0;">
-            <img alt="GDG Sucre Build with AI" class="block max-w-none size-full" src={imgGroupDesktopFill} />
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- CTA button — same for mobile and desktop (Figma: h-53px w-157px desktop, smaller mobile) -->
-  <a
-    href="#registro"
-    class="bg-[#1e1e1e] border-2 border-[#1e1e1e] flex items-start overflow-clip px-[14px] py-[9px] rounded-[999px] shrink-0 hover:bg-[#333] transition-colors"
-    style="height: 53px; width: 157px;"
-  >
-    <div class="flex flex-1 flex-col justify-center h-full min-w-px text-center">
-      <p class="font-['Google_Sans',sans-serif] font-bold text-white text-[20px] leading-normal">Registrarme</p>
-    </div>
+  <a href="/">
+    <img alt="GDG Sucre Build with AI" class="w-36 h-6 lg:w-62 lg:h-10" src={imgLogo} />
   </a>
 
+  <div class="flex items-center gap-3">
+    {accessToken && hasRegistration ? (
+      <Avatar server:defer eventSlug={eventSlug}>
+        <div class="bg-gray-200 rounded-full size-12" slot="fallback" />
+      </Avatar>
+    ) : (
+      <>
+        {!isOnRegistroPage && (
+          <a href={registroPath} class="hidden md:block border-2 border-black bg-black text-white font-bold text-sm lg:text-xl px-4 py-2 lg:px-5 lg:py-3 rounded-full hover:bg-[#333] transition-colors">
+            Registrarme
+          </a>
+        )}
+        {!accessToken && (
+          <a
+            href="/api/auth/signin"
+            class="hidden md:inline-flex items-center gap-2 bg-white hover:bg-black text-black hover:text-white px-5 py-2.5 rounded-full transition-colors border-2 border-black text-sm lg:text-xl font-bold"
+          >
+            <UserSignIn class="w-5 h-5" />
+            Iniciar sesión
+          </a>
+        )}
+      </>
+    )}
+
+    <button id="menu-toggle" class="md:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors" aria-label="Abrir menú">
+      <svg class="size-6 stroke-current" fill="none" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
+
+  <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-white border-t border-gray-100 shadow-xl">
+    <div class="p-4 flex flex-col gap-3">
+      {!isOnRegistroPage && (
+        <a href={registroPath} class="w-full text-center bg-black text-white font-bold text-sm px-4 py-3 border-2 border-black rounded-full hover:bg-[#333] transition-colors">
+          Registrarme
+        </a>
+      )}
+      {!accessToken && (
+        <a href="/api/auth/signin" class="w-full text-center flex items-center justify-center gap-2 bg-white text-black font-bold px-4 py-3 rounded-full hover:bg-black hover:text-white border-2 border-black transition-colors text-sm">
+          <UserSignIn class="w-4 h-4" />
+          Iniciar sesión
+        </a>
+      )}
+    </div>
+  </div>
+
 </header>
+
+<script>
+  const menuToggle = document.getElementById("menu-toggle")
+  const mobileMenu = document.getElementById("mobile-menu")
+
+  menuToggle?.addEventListener("click", (e) => {
+    e.stopPropagation()
+    mobileMenu?.classList.toggle("hidden")
+  })
+
+  document.addEventListener("click", (event) => {
+    const target = event.target as Node
+    if (mobileMenu && !mobileMenu.classList.contains("hidden") && !mobileMenu.contains(target) && menuToggle && !menuToggle.contains(target)) {
+      mobileMenu.classList.add("hidden")
+    }
+  })
+
+  mobileMenu?.querySelectorAll("a")?.forEach(link => {
+    link.addEventListener("click", () => {
+      mobileMenu?.classList.add("hidden")
+    })
+  })
+</script>

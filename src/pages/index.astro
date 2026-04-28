@@ -1,11 +1,31 @@
 ---
 import About from "@/components/events/bwai-26/About.astro"
-import Countdown from "@/components/events/bwai-26/Countdown.astro"
 import Footer from "@/components/events/bwai-26/Footer.astro"
 import Header from "@/components/events/bwai-26/Header.astro"
 import Hero from "@/components/events/bwai-26/Hero.astro"
 import Info from "@/components/events/bwai-26/Info.astro"
 import BaseLayout from "@/layout/BaseLayout.astro"
+
+const imgBlob = "/assets/figma/b9c79608a384972a5a69e904ce221f638866b56c.svg"
+const imgBracketR = "/assets/figma/c16da647df00ff46b018e2f0a32b2954771e2ba6.svg"
+const imgNumeral = "/assets/figma/bb9d3b1aa18f4c8c9f5da82369e9a61bb65de042.svg"
+const imgCross = "/assets/figma/f0498913075e3a627c6501a3f88710affa1587e4.svg"
+const imgBracketL = "/assets/figma/062060ef03ed1a1b0bf212f66385ddc68d0fed28.svg"
+const imgDiag = "/assets/figma/142b29fa59e70aeddf0a30daa8a49cb9db01d572.svg"
+const imgHalfCircle = "/assets/figma/fcd5150aa2ac855184e8a6d71bdd10b930969d2e.svg"
+const imgHash = "/assets/figma/a93824e103e6a596e9dda2b02293cce404ba1e07.svg"
+
+const HEADER = 69
+const HERO_TOP = HEADER
+const INFO_TOP = HERO_TOP + 1024
+const ABOUT_TOP = INFO_TOP + 1024
+
+// Mobile
+const M_HERO_TOP = 60
+const M_HERO_H = 600
+const M_INFO_TOP = M_HERO_TOP + M_HERO_H
+const M_INFO_H = 850
+const M_ABOUT_TOP = M_INFO_TOP + M_INFO_H
 ---
 
 <BaseLayout
@@ -13,14 +33,192 @@ import BaseLayout from "@/layout/BaseLayout.astro"
   title="Build With AI Sucre 2026"
   description="Build with AI es la serie global de Google Developer Groups donde developers, estudiantes y curiosos nos juntamos para aprender IA en modo hands-on."
 >
-  <div class="w-full min-h-screen bg-white font-sans overflow-x-hidden">
+  <div class="w-full min-h-screen font-sans relative">
+
+    <div class="absolute inset-0 pointer-events-none overflow-hidden -z-10" aria-hidden="true">
+
+      <!-- ============ HERO MOBILE ============ -->
+
+      <!-- estrella abajo a la derecha -->
+      <div class="md:hidden absolute opacity-40"
+        style={`right: -40px; top: ${M_HERO_TOP + 250}px; width: 160px; height: 160px;`}>
+        <div class="absolute" style="inset: -6.68%;">
+          <img alt="" class="block max-w-none size-full" src={imgBlob} />
+        </div>
+      </div>
+
+      <!-- ============ INFO MOBILE ============ -->
+
+      <!-- medio círculo a la derecha -->
+      <div class="md:hidden absolute"
+        style={`right: -20px; top: ${M_INFO_TOP + 10}px; width: 160px; height: 320px;`}>
+        <div style="width: 160px; height: 320px;">
+          <div class="relative w-full h-full">
+            <div class="absolute" style="inset: -1.78% -3.61%;">
+              <img alt="" class="block max-w-none size-full" src={imgHalfCircle} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- numeral abajo a la izquierda -->
+      <div class="md:hidden absolute opacity-60"
+        style={`left: -20px; top: ${M_INFO_TOP + 500}px; width: 120px; height: 120px;`}>
+        <div class="flex-none -rotate-30">
+          <div class="relative" style="height: 180px; width: 180px;">
+            <div class="absolute" style="inset: -10.57% -10.37%;">
+              <img alt="" class="block max-w-none size-full" src={imgNumeral} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ ABOUT MOBILE ============ -->
+
+      <!-- estrella a la derecha un poco abajo del top -->
+      <div class="md:hidden absolute opacity-60"
+        style={`right: -80px; top: ${M_ABOUT_TOP + 150}px; width: 320px; height: 320px;`}>
+        <div class="absolute" style="inset: -6.68%;">
+          <img alt="" class="block max-w-none size-full" src={imgBlob} />
+        </div>
+      </div>
+
+      <!-- tres puntos abajo a la izquierda rotate-90 -->
+      <div class="md:hidden absolute"
+        style={`left: 40px; top: ${M_ABOUT_TOP + 500}px; width: 154px; height: 154px;`}>
+        <div class="flex-none rotate-140">
+          <div class="relative" style="height: 300px; width: 200px;">
+            <div class="absolute" style="inset: -21.92% -7.77%;">
+              <img alt="" class="block max-w-none size-full" src={imgHalfCircle} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ HERO DESKTOP ============ -->
+
+      <!-- estrella abajo del hero -->
+      <div class="hidden md:flex absolute items-center justify-center"
+        style={`right: 600px; top: ${HERO_TOP + 770}px; width: 491px; height: 490px;`}>
+        <div class="flex-none" style="transform: rotate(15deg); width: 401px; height: 400px;">
+          <div class="relative size-full">
+            <div class="absolute" style="inset: -3.12%;">
+              <img alt="" class="block max-w-none size-full" src={imgBlob} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- tres puntos a la derecha del hero -->
+      <div class="hidden md:flex absolute items-center justify-center"
+        style={`right: 150px; top: ${HERO_TOP + 500}px; width: 154px; height: 154px;`}>
+        <div class="flex-none rotate-135">
+          <div class="relative" style="height: 57px; width: 161px;">
+            <div class="absolute" style="inset: -21.92% -7.77%;">
+              <img alt="" class="block max-w-none size-full" src={imgBracketR} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- numeral izquierda abajo del hero -->
+      <div class="hidden md:flex absolute items-center justify-center"
+        style={`left: 150px; top: ${HERO_TOP + 433}px; width: 163px; height: 163px;`}>
+        <div class="flex-none -rotate-30">
+          <div class="relative" style="height: 118px; width: 121px;">
+            <div class="absolute" style="inset: -10.57% -10.37%;">
+              <img alt="" class="block max-w-none size-full" src={imgNumeral} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- x arriba a la izquierda del hero -->
+      <div class="hidden md:flex absolute items-center justify-center"
+        style={`left: -50px; top: ${HERO_TOP + 76}px; width: 214px; height: 214px;`}>
+        <div class="flex-none -rotate-15">
+          <div class="relative" style="width: 175px; height: 175px;">
+            <div class="absolute" style="inset: -7.14%;">
+              <img alt="" class="block max-w-none size-full" src={imgCross} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- x abajo a la derecha del hero -->
+      <div class="hidden md:flex absolute items-center justify-center"
+        style={`right: -50px; top: ${HERO_TOP + 789}px; width: 214px; height: 214px;`}>
+        <div class="flex-none -rotate-15">
+          <div class="relative" style="width: 175px; height: 175px;">
+            <div class="absolute" style="inset: -7.14%;">
+              <img alt="" class="block max-w-none size-full" src={imgCross} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- c izquierda abajo del hero -->
+      <div class="hidden md:flex absolute items-center justify-center"
+        style={`left: 0; top: ${HERO_TOP + 760}px; width: 173px; height: 350px;`}>
+        <div class="flex-none rotate-180">
+          <div class="relative" style="width: 173px; height: 350px;">
+            <div class="absolute" style="inset: -3.57% -7.23%;">
+              <img alt="" class="block max-w-none size-full" src={imgBracketL} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- estrella arriba a la derecha del hero -->
+      <div class="hidden md:block absolute opacity-40"
+        style={`right: 170px; top: ${HERO_TOP + 33}px; width: 187px; height: 187px;`}>
+        <div class="absolute" style="inset: -6.68%;">
+          <img alt="" class="block max-w-none size-full" src={imgBlob} />
+        </div>
+      </div>
+
+      <!-- ============ INFO DESKTOP ============ -->
+
+      <!-- c grande a la derecha de info-->
+      <div class="hidden md:block absolute overflow-hidden"
+        style={`right: -400px; top: ${INFO_TOP - 142}px; width: 1136px; height: 1136px;`}>
+        <div class="flex items-center justify-center w-full h-full" style="transform: rotate(45deg);">
+          <div class="relative" style="width: 531px; height: 1076px;">
+            <div class="absolute" style="inset: -1.16% -2.35%;">
+              <img alt="" class="block max-w-none size-full" src={imgDiag} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ ABOUT DESKTOP ============ -->
+
+      <!-- c abajo a la izquierda del about -->
+      <div class="hidden md:block absolute"
+        style={`left: -75px; top: ${ABOUT_TOP + 695}px; width: 346px; height: 702px;`}>
+        <div class="flex-none rotate-180" style="width: 346px; height: 702px;">
+          <div class="relative w-full h-full">
+            <div class="absolute" style="inset: -1.78% -3.61%;">
+              <img alt="" class="block max-w-none size-full" src={imgHalfCircle} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- numeral a la derecha del about -->
+      <div class="hidden md:block absolute"
+        style={`right: -100px; top: ${ABOUT_TOP + 100}px; width: 653px; height: 642px;`}>
+        <div class="absolute" style="inset: -1.95% -1.91%;">
+          <img alt="" class="block max-w-none size-full" src={imgHash} />
+        </div>
+      </div>
+
+    </div>
+
     <Header />
     <main class="overflow-x-hidden">
       <Hero />
-      <!-- Info handles its own desktop layout (including countdown in sidebar) -->
       <Info />
-      <!-- Countdown is mobile-only; desktop version is rendered inside Info.astro -->
-      <Countdown />
       <About />
     </main>
     <Footer />

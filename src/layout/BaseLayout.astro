@@ -23,7 +23,7 @@ const {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/WTM_Logo_Icon_32x32.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
 
     <!-- <ThemeScript /> -->
@@ -46,7 +46,7 @@ const {
     <meta property="twitter:image" content={new URL(ogImage, Astro.url)} />
   </head>
 
-  <body class="min-h-screen flex flex-col font-google dark:bg-[#232323] dark:text-white">
+  <body class="min-h-screen flex flex-col font-google bg-white dark:bg-[#232323] dark:text-white">
     {isAdmin && <CommandMenu isAdmin={isAdmin} client:load />}
     <slot />
   </body>
