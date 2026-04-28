@@ -1,13 +1,21 @@
 ---
 const imgLogo = "/assets/figma/logotipo.svg"
+
+const eventSlug = Astro.params.eventSlug || ""
+const registroPath = "/registro/" + eventSlug
+const isOnRegistroPage = Astro.url.pathname === registroPath
 ---
 
 <header class="sticky top-0 z-50 bg-white border-b border-gray-200 flex items-center justify-between px-5 h-15 lg:h-20 w-full">
 
-  <img alt="GDG Sucre Build with AI" class="w-36 h-6 lg:w-62 lg:h-10" src={imgLogo} />
-
-  <a href="/registro/bwai-26" class="bg-black text-white font-bold text-sm lg:text-xl px-4 py-2 lg:px-5 lg:py-3 rounded-full hover:bg-[#333] transition-colors">
-    Registrarme
+  <a href="/">
+    <img alt="GDG Sucre Build with AI" class="w-36 h-6 lg:w-62 lg:h-10" src={imgLogo} />
   </a>
+
+  {!isOnRegistroPage && (
+    <a href={registroPath} class="bg-black text-white font-bold text-sm lg:text-xl px-4 py-2 lg:px-5 lg:py-3 rounded-full hover:bg-[#333] transition-colors">
+      Registrarme
+    </a>
+  )}
 
 </header>
