@@ -1,6 +1,6 @@
 ---
+import CredentialCard from "@/components/events/bwai-26/CredentialCard"
 import Header from "@/components/events/bwai-26/Header.astro"
-import CredentialCard from "@/components/events/iwd-26/CredentialCard"
 
 import BaseLayout from "@/layout/BaseLayout.astro"
 
@@ -32,7 +32,7 @@ if (registration?.status !== "confirmed")
         handle={profile.email}
         enableTilt={true}
         enableMobileTilt={false}
-        innerGradient={"/events/iwd-26/bg-credencial.svg"}
+        innerGradient={"/events/bwai-26/bg-credencial.svg"}
         grainUrl="/grain.webp"
         qrUrl={registration?.qr_url}
       />
