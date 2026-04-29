@@ -23,10 +23,11 @@ const registration = data?.claims
 if (!registration && event.registration_open === false)
   return Astro.redirect(`/registro/${eventSlug}/cerrado`)
 
-const team = await getTeamByRegistration(supabase, registration.id)
-
-if (team?.leader) {
-  return Astro.redirect(`/registro/${eventSlug}/invitar-miembros`)
+if (registration) {
+  const team = await getTeamByRegistration(supabase, registration.id)
+  if (team?.leader) {
+    return Astro.redirect(`/registro/${eventSlug}/invitar-miembros`)
+  }
 }
 
 if (registration?.status === "pending") {
