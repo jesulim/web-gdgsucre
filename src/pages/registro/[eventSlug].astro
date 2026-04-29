@@ -4,6 +4,7 @@ import BaseLayout from "@/layout/BaseLayout.astro"
 
 import { getEvent } from "@/lib/services/eventService"
 import { getEventRegistration } from "@/lib/services/registrationService"
+import { getTeamByRegistration } from "@/lib/services/teamService"
 
 import { createUserClient } from "@/lib/supabase"
 
@@ -21,6 +22,12 @@ const registration = data?.claims
 
 if (!registration && event.registration_open === false)
   return Astro.redirect(`/registro/${eventSlug}/cerrado`)
+
+const team = await getTeamByRegistration(supabase, registration.id)
+
+if (team?.leader) {
+  return Astro.redirect(`/registro/${eventSlug}/invitar-miembros`)
+}
 
 if (registration?.status === "pending") {
   return Astro.redirect(`/registro/${eventSlug}/pendiente`)

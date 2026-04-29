@@ -6,11 +6,12 @@ import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 
 interface TeamInviteCardProps {
+  teamName: string
   teamCode: string
   inviteUrl: string
 }
 
-export function TeamInviteCard({ teamCode, inviteUrl }: TeamInviteCardProps) {
+export function TeamInviteCard({ teamName, teamCode, inviteUrl }: TeamInviteCardProps) {
   const [copiedCode, setCopiedCode] = useState(false)
   const [copiedUrl, setCopiedUrl] = useState(false)
 
@@ -35,7 +36,7 @@ export function TeamInviteCard({ teamCode, inviteUrl }: TeamInviteCardProps) {
     <div className="bg-white border-2 lg:border-4 border-black flex flex-col gap-4 items-start p-5 lg:p-6 rounded-2xl lg:rounded-3xl w-full">
       <Toaster position="top-right" richColors />
       <h2 className="font-bold text-xl lg:text-3xl tracking-tight text-black">
-        ¡Tu equipo ha sido creado!
+        ¡Tu equipo {teamName} ha sido creado!
       </h2>
       <p className="text-[#3b3b3b] text-base leading-tight lg:text-lg">
         Comparte el siguiente código o enlace con los miembros de tu equipo para que puedan unirse.
