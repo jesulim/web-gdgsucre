@@ -1,9 +1,6 @@
 ---
 import UserSignIn from "@/assets/icons/social/user-round-plus.svg"
 import Avatar from "@/components/Avatar.astro"
-import { getProfile } from "@/lib/services/profileService"
-import { getEventRegistration } from "@/lib/services/registrationService"
-import { createUserClient } from "@/lib/supabase"
 
 const imgLogo = "/assets/figma/logotipo.svg"
 
@@ -12,80 +9,107 @@ const registroPath = "/registro/" + eventSlug
 const isOnRegistroPage = Astro.url.pathname === registroPath
 
 const accessToken = Astro.cookies.has("sb-access-token")
-
-const supabase = await createUserClient(Astro.cookies)
-const profile = await getProfile(supabase)
-const registration = await getEventRegistration(supabase, profile?.id, eventSlug)
-const hasRegistration = !!registration
 ---
 
-<header class="sticky top-0 z-50 bg-white border-b border-gray-200 flex items-center justify-between px-5 h-15 lg:h-20 w-full">
-
+<header
+  class="sticky top-0 z-50 bg-white border-b border-gray-200 flex items-center justify-between px-5 h-15 lg:h-20 w-full"
+>
   <a href="/">
     <img alt="GDG Sucre Build with AI" class="w-36 h-6 lg:w-62 lg:h-10" src={imgLogo} />
   </a>
 
   <div class="flex items-center gap-3">
-    {accessToken && hasRegistration ? (
-      <Avatar server:defer eventSlug={eventSlug}>
-        <div class="bg-gray-200 rounded-full size-12" slot="fallback" />
-      </Avatar>
-    ) : (
-      <>
-        {!isOnRegistroPage && (
-          <a href={registroPath} class="hidden md:block border-2 border-black bg-black text-white font-bold text-sm lg:text-xl px-4 py-2 lg:px-5 lg:py-3 rounded-full hover:bg-[#333] transition-colors">
-            Registrarme
-          </a>
-        )}
-        {!accessToken && (
-          <a
-            href="/api/auth/signin"
-            class="hidden md:inline-flex items-center gap-2 bg-white hover:bg-black text-black hover:text-white px-5 py-2.5 rounded-full transition-colors border-2 border-black text-sm lg:text-xl font-bold"
-          >
-            <UserSignIn class="w-5 h-5" />
-            Iniciar sesión
-          </a>
-        )}
-      </>
-    )}
+    {
+      accessToken ? (
+        <Avatar server:defer eventSlug={eventSlug}>
+          <div class="bg-gray-200 rounded-full size-12" slot="fallback" />
+        </Avatar>
+      ) : (
+        <>
+          {!isOnRegistroPage && (
+            <a
+              href={registroPath}
+              class="hidden md:block border-2 border-black bg-black text-white font-bold text-sm lg:text-xl px-4 py-2 lg:px-5 lg:py-3 rounded-full hover:bg-[#333] transition-colors"
+            >
+              Registrarme
+            </a>
+          )}
+          {!accessToken && (
+            <a
+              href="/api/auth/signin"
+              class="hidden md:inline-flex items-center gap-2 bg-white hover:bg-black text-black hover:text-white px-5 py-2.5 rounded-full transition-colors border-2 border-black text-sm lg:text-xl font-bold"
+            >
+              <UserSignIn class="w-5 h-5" />
+              Iniciar sesión
+            </a>
+          )}
+        </>
+      )
+    }
 
-    <button id="menu-toggle" class="md:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors" aria-label="Abrir menú">
+    <button
+      id="menu-toggle"
+      class="md:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+      aria-label="Abrir menú"
+    >
       <svg class="size-6 stroke-current" fill="none" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M4 6h16M4 12h16M4 18h16"></path>
       </svg>
     </button>
   </div>
 
-  <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-white border-t border-gray-100 shadow-xl">
+  <div
+    id="mobile-menu"
+    class="hidden absolute top-full left-0 w-full bg-white border-t border-gray-100 shadow-xl"
+  >
     <div class="p-4 flex flex-col gap-3">
-      {!isOnRegistroPage && (
-        <a href={registroPath} class="w-full text-center bg-black text-white font-bold text-sm px-4 py-3 border-2 border-black rounded-full hover:bg-[#333] transition-colors">
-          Registrarme
-        </a>
-      )}
-      {!accessToken && (
-        <a href="/api/auth/signin" class="w-full text-center flex items-center justify-center gap-2 bg-white text-black font-bold px-4 py-3 rounded-full hover:bg-black hover:text-white border-2 border-black transition-colors text-sm">
-          <UserSignIn class="w-4 h-4" />
-          Iniciar sesión
-        </a>
-      )}
+      {
+        !isOnRegistroPage && (
+          <a
+            href={registroPath}
+            class="w-full text-center bg-black text-white font-bold text-sm px-4 py-3 border-2 border-black rounded-full hover:bg-[#333] transition-colors"
+          >
+            Registrarme
+          </a>
+        )
+      }
+      {
+        !accessToken && (
+          <a
+            href="/api/auth/signin"
+            class="w-full text-center flex items-center justify-center gap-2 bg-white text-black font-bold px-4 py-3 rounded-full hover:bg-black hover:text-white border-2 border-black transition-colors text-sm"
+          >
+            <UserSignIn class="w-4 h-4" />
+            Iniciar sesión
+          </a>
+        )
+      }
     </div>
   </div>
-
 </header>
 
 <script>
   const menuToggle = document.getElementById("menu-toggle")
   const mobileMenu = document.getElementById("mobile-menu")
 
-  menuToggle?.addEventListener("click", (e) => {
+  menuToggle?.addEventListener("click", e => {
     e.stopPropagation()
     mobileMenu?.classList.toggle("hidden")
   })
 
-  document.addEventListener("click", (event) => {
+  document.addEventListener("click", event => {
     const target = event.target as Node
-    if (mobileMenu && !mobileMenu.classList.contains("hidden") && !mobileMenu.contains(target) && menuToggle && !menuToggle.contains(target)) {
+    if (
+      mobileMenu &&
+      !mobileMenu.classList.contains("hidden") &&
+      !mobileMenu.contains(target) &&
+      menuToggle &&
+      !menuToggle.contains(target)
+    ) {
       mobileMenu.classList.add("hidden")
     }
   })
