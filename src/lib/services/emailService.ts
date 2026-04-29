@@ -76,8 +76,11 @@ interface RegistrationEmailData extends BaseEmailData {
   eventSlug: string
 }
 
-export async function sendRegistrationConfirmationEmail(data: RegistrationEmailData) {
-  const htmlContent = await loadEmailTemplate("registrationEmail", data)
+export async function sendRegistrationConfirmationEmail(
+  template: string = "registrationEmail",
+  data: RegistrationEmailData
+) {
+  const htmlContent = await loadEmailTemplate(template, data)
 
   return await sendEmail({
     to: data.userEmail,

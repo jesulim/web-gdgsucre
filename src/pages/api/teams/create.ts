@@ -9,17 +9,20 @@ import { createUserClient } from "@/lib/supabase"
 const sendConfirmationEmail = async (
   supabase: SupabaseClient,
   event_name: string,
-  event_slug: string
+  event_slug: string,
+  team
 ) => {
   const userProfile = await getProfile(supabase)
 
   if (!userProfile || !("email" in userProfile)) return
 
-  await sendRegistrationConfirmationEmail({
+  await sendRegistrationConfirmationEmail("registrationEmailBWAILeader", {
     userEmail: userProfile.email,
     userName: userProfile.first_name ?? "",
     eventName: event_name,
     eventSlug: event_slug,
+    teamName: team.name,
+    teamCode: team.code,
   })
 }
 
@@ -49,13 +52,13 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       fields,
     })
 
-    await createTeam(supabase, {
+    const { team } = await createTeam(supabase, {
       event_id: Number(event_id),
       name: String(team_name),
     })
 
     try {
-      await sendConfirmationEmail(supabase, String(event_name), String(event_slug))
+      await sendConfirmationEmail(supabase, String(event_name), String(event_slug), team)
     } catch (error) {
       console.error("Error enviando email:", error)
     }
