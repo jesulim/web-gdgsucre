@@ -181,6 +181,7 @@ export function JoinTeamForm({
                   inputMode="text"
                   onComplete={value => checkTeam(value, event.id)}
                   {...field}
+                  onChange={value => field.onChange(value.toUpperCase())}
                 >
                   <InputOTPGroup>
                     <InputOTPSlot index={0} />
