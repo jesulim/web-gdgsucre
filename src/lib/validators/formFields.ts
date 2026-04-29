@@ -40,7 +40,7 @@ export function buildZodSchemaFromFields(fields: FormFieldSchema[]) {
         break
 
       case "file":
-        base = z.file()
+        base = z.file().max(5_000_000, "El archivo debe pesar menos de 5MB")
         break
 
       default:
