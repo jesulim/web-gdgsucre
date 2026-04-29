@@ -7,6 +7,15 @@ const nanoid = customAlphabet("ABCDEFGHJKLMNPQRSTUVWXYZ23456789", 6)
 
 export const MAX_TEAM_MEMBERS = 5
 
+export interface TeamMember {
+  registration_id: number
+  leader: boolean
+  user_id: string
+  first_name: string
+  last_name: string
+  email: string
+}
+
 interface CreateTeamParams {
   event_id: number
   name: string
@@ -150,4 +159,89 @@ export async function joinTeam(supabase: SupabaseClient, { code, event_id }: Joi
   }
 
   return { success: true, team }
+}
+
+export async function listMembers(supabase: SupabaseClient): Promise<TeamMember[]> {
+  const user = await getUser(supabase)
+  if (!user) throw new Error("No se pudo obtener el usuario")
+
+  // Obtener el registration del usuario autenticado
+  const { data: userRegistration, error: registrationError } = await supabase
+    .from("registrations")
+    .select("id")
+    .eq("user_id", user.id)
+    .single()
+
+  if (registrationError || !userRegistration) {
+    throw new Error("No se encontró el registro del usuario")
+  }
+
+  const team = await getTeamByRegistration(supabase, userRegistration.id)
+  if (!team) throw new Error("No pertenecés a ningún equipo")
+
+  if (!team.leader) throw new Error("Solo el líder puede ver los miembros del equipo")
+
+  // Obtener todos los miembros con sus perfiles
+  const { data, error } = await supabase
+    .from("team_registrations")
+    .select(
+      `registration_id,
+      leader,
+      registrations!inner(
+        user_id,
+        profiles!inner(
+          first_name,
+          last_name,
+          email
+        )
+      )`
+    )
+    .eq("team_id", team.id)
+    .order("leader", { ascending: false })
+
+  if (error) throw new Error(`Error obteniendo miembros: ${error.message}`)
+
+  return (
+    data?.map(member => ({
+      registration_id: member.registration_id,
+      leader: member.leader,
+      user_id: member.registrations.user_id,
+      first_name: member.registrations.profiles.first_name,
+      last_name: member.registrations.profiles.last_name,
+      email: member.registrations.profiles.email,
+    })) ?? []
+  )
+}
+
+export async function deleteMember(supabase: SupabaseClient, target_registration_id: number) {
+  const user = await getUser(supabase)
+  if (!user) throw new Error("No se pudo obtener el usuario")
+
+  // Obtener el registration del usuario autenticado (el líder)
+  const { data: leaderRegistration, error: leaderError } = await supabase
+    .from("registrations")
+    .select("id")
+    .eq("user_id", user.id)
+    .single()
+
+  if (leaderError || !leaderRegistration) {
+    throw new Error("No se encontró el registro del usuario")
+  }
+
+  // Obtener el equipo a partir del registration del líder
+  const team = await getTeamByRegistration(supabase, leaderRegistration.id)
+  if (!team) throw new Error("No pertenecés a ningún equipo")
+
+  if (!team.leader) throw new Error("Solo el líder puede eliminar miembros del equipo")
+
+  if (leaderRegistration.id === target_registration_id) {
+    throw new Error("No se puede eliminar al líder del equipo")
+  }
+
+  // Eliminar registration → CASCADE elimina team_registrations automáticamente
+  const { error } = await supabase.from("registrations").delete().eq("id", target_registration_id)
+
+  if (error) throw new Error(`Error eliminando miembro: ${error.message}`)
+
+  return { success: true }
 }
