@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Loader2Icon } from "lucide-react"
+import { Loader2Icon, UsersRound } from "lucide-react"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { Toaster, toast } from "sonner"
@@ -25,9 +25,17 @@ interface JoinTeamFormProps {
   formFields: FormFieldSchema[]
   profile: { id: string; first_name: string; last_name: string } | null
   teamCode?: string
+  initialTeamName?: string
 }
 
-export function JoinTeamForm({ formFields, profile, event, teamCode }: JoinTeamFormProps) {
+export function JoinTeamForm({
+  formFields,
+  profile,
+  event,
+  teamCode,
+  initialTeamName,
+}: JoinTeamFormProps) {
+  const [teamName, setTeamName] = useState<string | null>(initialTeamName || null)
   const [loading, setLoading] = useState(false)
 
   let formSchema = buildZodSchemaFromFields(formFields)
@@ -90,6 +98,18 @@ export function JoinTeamForm({ formFields, profile, event, teamCode }: JoinTeamF
       console.error("Error al registrar:", error)
     } finally {
       setLoading(false)
+    }
+  }
+
+  async function checkTeam(teamCode: string, eventId: string) {
+    const res = await fetch(`/api/teams/byCode?code=${teamCode}&event_id=${eventId}`)
+    if (res.ok) {
+      const data = await res.json()
+      toast.success(`Equipo encontrado`)
+      setTeamName(data.name)
+    } else {
+      toast.error("Código de equipo inválido")
+      setTeamName(null)
     }
   }
 
@@ -159,7 +179,7 @@ export function JoinTeamForm({ formFields, profile, event, teamCode }: JoinTeamF
                   readOnly={!!teamCode}
                   disabled={!!teamCode}
                   inputMode="text"
-                  // TODO: use onComplete={} to fetch team name
+                  onComplete={value => checkTeam(value, event.id)}
                   {...field}
                 >
                   <InputOTPGroup>
@@ -177,6 +197,12 @@ export function JoinTeamForm({ formFields, profile, event, teamCode }: JoinTeamF
             </FormItem>
           )}
         />
+
+        {teamName && (
+          <div className="flex items-center gap-2 text-green-500 bg-green-50 p-4 border border-green-500 rounded-md">
+            <UsersRound /> Te unirás al equipo: {teamName}.
+          </div>
+        )}
 
         <Button className="w-full bg-blue-500 dark:text-white" type="submit">
           {loading && <Loader2Icon className="animate-spin" />}

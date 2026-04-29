@@ -7,6 +7,7 @@ import { getEvent } from "@/lib/services/eventService"
 import { getFormFieldsByEvent } from "@/lib/services/formService"
 import { getProfile } from "@/lib/services/profileService"
 import { getEventRegistration } from "@/lib/services/registrationService"
+import { getTeamByCode } from "@/lib/services/teamService"
 
 import { createUserClient } from "@/lib/supabase"
 
@@ -32,6 +33,15 @@ if (registration?.status === "confirmed") {
 
 const formFields = await getFormFieldsByEvent(supabase, eventSlug)
 const teamCode = Astro.url.searchParams.get("code") || undefined
+
+let initialTeamName = ""
+
+if (teamCode) {
+  const team = await getTeamByCode(supabase, teamCode, event.id)
+  if (team) {
+    initialTeamName = team.name
+  }
+}
 ---
 
 <BaseLayout theme="light">
@@ -46,6 +56,7 @@ const teamCode = Astro.url.searchParams.get("code") || undefined
         profile={profile}
         event={event}
         teamCode={teamCode}
+        initialTeamName={initialTeamName}
         client:load
       />
     </div>
