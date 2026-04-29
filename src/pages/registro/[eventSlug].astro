@@ -19,16 +19,16 @@ const registration = data?.claims
   ? await getEventRegistration(supabase, data.claims.sub, eventSlug)
   : null
 
-if (!registration && event.registration_open === false)
-  return Astro.redirect(`/registro/${eventSlug}/cerrado`)
+// if (!registration && event.registration_open === false)
+//   return Astro.redirect(`/registro/${eventSlug}/cerrado`)
 
-if (registration?.status === "pending") {
-  return Astro.redirect(`/registro/${eventSlug}/pendiente`)
-}
+// if (registration?.status === "pending") {
+//   return Astro.redirect(`/registro/${eventSlug}/pendiente`)
+// }
 
-if (registration?.status === "confirmed") {
-  return Astro.redirect(`/registro/${eventSlug}/confirmado`)
-}
+// if (registration?.status === "confirmed") {
+//   return Astro.redirect(`/registro/${eventSlug}/confirmado`)
+// }
 
 // TODO: Add a DB field for events with alternative registration flow
 if (eventSlug !== "bwai-26") {
@@ -38,7 +38,7 @@ if (eventSlug !== "bwai-26") {
 
 <BaseLayout theme="light">
   <Header />
-  <main class="mt-16 pt-12 flex">
+  <main class="mt-4 flex">
     <div class="mx-auto px-4 pb-16 max-w-lg">
       <h1 class="text-xl mb-4 font-medium">Regístrate al {event.name}</h1>
 

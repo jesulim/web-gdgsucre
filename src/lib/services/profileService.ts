@@ -23,7 +23,7 @@ export async function getProfile(supabase: SupabaseClient, eventId?: number) {
     .maybeSingle()
 
   if (error) {
-    return null
+    console.error("Error getting progile", error)
   }
 
   let role: string | null = null
