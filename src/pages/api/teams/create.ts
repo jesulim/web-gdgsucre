@@ -16,14 +16,17 @@ const sendConfirmationEmail = async (
 
   if (!userProfile || !("email" in userProfile)) return
 
-  await sendRegistrationConfirmationEmail("registrationEmailBWAILeader", {
-    userEmail: userProfile.email,
-    userName: userProfile.first_name ?? "",
-    eventName: event_name,
-    eventSlug: event_slug,
-    teamName: team.name,
-    teamCode: team.code,
-  })
+  await sendRegistrationConfirmationEmail(
+    {
+      userEmail: userProfile.email,
+      userName: userProfile.first_name ?? "",
+      eventName: event_name,
+      eventSlug: event_slug,
+      teamName: team.name,
+      teamCode: team.code,
+    },
+    "registrationEmailBWAILeader"
+  )
 }
 
 export const POST: APIRoute = async ({ request, cookies }) => {
