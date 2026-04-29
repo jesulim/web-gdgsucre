@@ -136,7 +136,7 @@ export function RegisterForm({ formFields, profile, event }: RegisterFormProps) 
             )}
           />
         ))}
-        <Button className="w-full bg-blue-500 dark:text-white" type="submit">
+        <Button className="w-full bg-blue-500 dark:text-white" type="submit" disabled={loading}>
           {loading && <Loader2Icon className="animate-spin" />}
           Regístrate
         </Button>
