@@ -27,35 +27,38 @@ const features = [
     icon: imgVector4,
     iconClass: "w-20 h-12 lg:w-16 lg:h-10",
     title: "Hecho en Sucre",
-    desc: "Organizado por la comunidad, con el apoyo de SIB Chuquisaca y CISICH. Gratis y abierto.",
+    desc: "Organizado por la comunidad, con el apoyo de SIB Chuquisaca y CISICH.",
   },
 ]
 ---
 
 <section class="w-full flex flex-col items-start px-5 py-8 gap-4 lg:px-20 lg:py-24 lg:gap-16">
-
-  <h2 class="bg-white border-2 border-black rounded-xs md:rounded-lg px-2 py-1 text-xs font-bold lg:px-10 lg:py-4 lg:text-4xl">
+  <h2
+    class="bg-white border-2 border-black rounded-xs md:rounded-lg px-2 py-1 text-xs font-bold lg:px-10 lg:py-4 lg:text-4xl"
+  >
     ¿QUÉ ES?
   </h2>
 
   <div class="flex flex-col gap-4 lg:gap-16 w-full">
-
     <div class="flex flex-col gap-2 lg:gap-6">
       <h2 class="font-bold text-4xl tracking-tight leading-tight lg:text-6xl">Build with AI</h2>
       <p class="text-[#3b3b3b] text-base leading-5.5 lg:text-2xl lg:leading-7.5 lg:max-w-4xl">
-        Build with AI es la serie global de Google Developer Groups donde developers, estudiantes y curiosos nos juntamos para aprender IA en modo hands-on: desde prompt engineering hasta desplegar agentes con Gemini.
+        Build with AI es la serie global de Google Developer Groups donde developers, estudiantes y
+        curiosos nos juntamos para aprender IA en modo hands-on: desde prompt engineering hasta
+        desplegar agentes con Gemini.
       </p>
     </div>
 
     <div class="grid grid-cols-1 gap-3 md:grid-cols-2 lg:gap-y-4 lg:gap-x-22 lg:max-w-300">
-      {features.map(f => (
-        <div class="bg-white border-2 lg:border-4 border-black flex flex-col gap-2 lg:gap-3 items-start p-5 lg:p-6 rounded-2xl lg:rounded-3xl">
-          <img alt="" class={`${f.iconClass}`} src={f.icon} />
-          <h3 class="font-bold text-xl lg:text-3xl tracking-tight">{f.title}</h3>
-          <p class="text-[#3b3b3b] text-xs leading-5 lg:text-2xl lg:leading-7.5">{f.desc}</p>
-        </div>
-      ))}
+      {
+        features.map(f => (
+          <div class="bg-white border-2 lg:border-4 border-black flex flex-col gap-2 lg:gap-3 items-start p-5 lg:p-6 rounded-2xl lg:rounded-3xl">
+            <img alt="" class={`${f.iconClass}`} src={f.icon} />
+            <h3 class="font-bold text-xl lg:text-3xl tracking-tight">{f.title}</h3>
+            <p class="text-[#3b3b3b] text-xs leading-5 lg:text-2xl lg:leading-7.5">{f.desc}</p>
+          </div>
+        ))
+      }
     </div>
-
   </div>
 </section>
