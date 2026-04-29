@@ -1,0 +1,45 @@
+---
+import Header from "@/components/events/bwai-26/Header.astro"
+import { TeamInviteCard } from "@/components/registration/teams/TeamInviteCard"
+import BaseLayout from "@/layout/BaseLayout.astro"
+
+import { getProfile } from "@/lib/services/profileService"
+import { getEventRegistration } from "@/lib/services/registrationService"
+import { getTeamByRegistration } from "@/lib/services/teamService"
+import { createUserClient } from "@/lib/supabase"
+
+const supabase = await createUserClient(Astro.cookies)
+
+const profile = await getProfile(supabase)
+if (!profile) return Astro.redirect("/")
+
+const eventSlug = Astro.params.eventSlug || ""
+
+const registration = await getEventRegistration(supabase, profile?.id, eventSlug)
+
+if (!registration) return Astro.redirect("/")
+
+let team = null
+if (registration.id) {
+  team = await getTeamByRegistration(supabase, registration.id)
+}
+
+if (!team || !team.leader) {
+  return Astro.redirect(`/registro/${eventSlug}/pendiente`)
+}
+
+const inviteUrl = `${Astro.url.origin}/registro/${eventSlug}/unirse?code=${team.code}`
+---
+
+<BaseLayout theme="light">
+  <Header />
+  <main class="mt-16 pt-12 flex">
+    <div class="mx-auto px-4 max-w-md w-full pb-16">
+      <TeamInviteCard
+        teamCode={team.code}
+        inviteUrl={inviteUrl}
+        client:load
+      />
+    </div>
+  </main>
+</BaseLayout>

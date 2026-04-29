@@ -82,7 +82,7 @@ export function CreateTeamForm({ formFields, profile, event }: CreateTeamFormPro
         body: formData,
       })
       if (res.ok) {
-        window.location.href = `/registro/${event.slug}/pendiente`
+        window.location.href = `/registro/${event.slug}/invitar-miembros`
       } else {
         toast.error(await res.text())
       }

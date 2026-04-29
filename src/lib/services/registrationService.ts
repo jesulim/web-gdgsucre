@@ -60,7 +60,7 @@ export async function getEventRegistration(
 
   const { data, error } = await supabase
     .from("registrations")
-    .select("status, events!inner(slug), qr_url")
+    .select("id, status, events!inner(slug), qr_url")
     .eq("user_id", user_id)
     .eq("events.slug", eventSlug)
     .single()
