@@ -32,7 +32,7 @@ export function TeamInviteCard({ teamCode, inviteUrl }: TeamInviteCardProps) {
   }
 
   return (
-    <div className="bg-white border-2 lg:border-4 border-black flex flex-col gap-4 items-start p-5 lg:p-6 rounded-2xl lg:rounded-3xl mt-8 w-full">
+    <div className="bg-white border-2 lg:border-4 border-black flex flex-col gap-4 items-start p-5 lg:p-6 rounded-2xl lg:rounded-3xl w-full">
       <Toaster position="top-right" richColors />
       <h2 className="font-bold text-xl lg:text-3xl tracking-tight text-black">
         ¡Tu equipo ha sido creado!
