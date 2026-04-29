@@ -1,8 +1,6 @@
 ---
 import UserSignIn from "@/assets/icons/social/user-round-plus.svg"
 import Avatar from "@/components/Avatar.astro"
-import { getEventRegistration } from "@/lib/services/registrationService"
-import { createUserClient } from "@/lib/supabase"
 
 const imgLogo = "/assets/figma/logotipo.svg"
 
@@ -12,14 +10,7 @@ const isOnRegistroPage = Astro.url.pathname === registroPath
 
 const accessToken = Astro.cookies.has("sb-access-token")
 
-const supabase = await createUserClient(Astro.cookies)
-const token = Astro.cookies.get("sb-access-token")?.value
-const { data } = await supabase.auth.getClaims(token)
-const registration = data?.claims
-  ? await getEventRegistration(supabase, data.claims.sub, eventSlug)
-  : null
-
-const isRegistered = !!registration
+const { isRegistered = false } = Astro.props
 
 const hasMobileItems = (!isOnRegistroPage && !isRegistered) || !accessToken
 ---
