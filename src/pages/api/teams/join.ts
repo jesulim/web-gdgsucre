@@ -49,7 +49,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       fields,
     })
 
-    joinTeam(supabase, {
+    await joinTeam(supabase, {
       code: String(team_code),
       event_id: Number(event_id),
     })

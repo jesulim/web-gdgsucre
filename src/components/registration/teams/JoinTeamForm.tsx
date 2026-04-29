@@ -107,9 +107,14 @@ export function JoinTeamForm({
       const data = await res.json()
       toast.success(`Equipo encontrado`)
       setTeamName(data.name)
+      form.clearErrors("team_code")
     } else {
       toast.error("Código de equipo inválido")
       setTeamName(null)
+      form.setError("team_code", {
+        type: "manual",
+        message: "Código de equipo inválido",
+      })
     }
   }
 
@@ -205,7 +210,7 @@ export function JoinTeamForm({
           </div>
         )}
 
-        <Button className="w-full bg-blue-500 dark:text-white" type="submit">
+        <Button className="w-full bg-blue-500 dark:text-white" type="submit" disabled={loading}>
           {loading && <Loader2Icon className="animate-spin" />}
           Registrarme y Unirme al Equipo
         </Button>

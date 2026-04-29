@@ -135,8 +135,16 @@ export async function joinTeam(supabase: SupabaseClient, { code, event_id }: Joi
   const { team, error } = await checkTeamAvailable(supabase, code, event_id)
 
   // Eliminar registro si el equipo no está disponible
-  if (error || !team) {
-    await supabase.from("team_registrations").delete().eq("registration_id", registration.id)
+  if (!team || error) {
+    const { error: deleteError } = await supabase
+      .from("registrations")
+      .delete()
+      .eq("id", registration.id)
+
+    if (deleteError) {
+      console.error(`No se pudo eliminar el registro: ${deleteError.message}`)
+    }
+
     throw new Error(error)
   }
 
