@@ -31,7 +31,9 @@ export const onRequest = defineMiddleware(async (context, next) => {
   if (path.startsWith("/registro")) {
     const sessionToken = cookies.get("sb-access-token")?.value
     if (!sessionToken) {
-      return context.redirect(`/api/auth/signin?next=${path}`)
+      return context.redirect(
+        `/api/auth/signin?next=${encodeURIComponent(url.pathname + url.search)}`
+      )
     }
   }
 
