@@ -163,13 +163,22 @@ export async function joinTeam(supabase: SupabaseClient, { code, event_id }: Joi
 
 export async function listMembers(
   supabase: SupabaseClient,
-  event_id: number
+  registration_id: number
 ): Promise<TeamMember[]> {
   const user = await getUser(supabase)
   if (!user) throw new Error("No se pudo obtener el usuario")
 
-  const userRegistration = await getRegistrationByUser(supabase, user.id, event_id)
-  if (!userRegistration) throw new Error("No se encontró el registro del usuario para este evento")
+  // Verificar que el registration_id pertenece al usuario autenticado
+  const { data: userRegistration, error: registrationError } = await supabase
+    .from("registrations")
+    .select("id")
+    .eq("id", registration_id)
+    .eq("user_id", user.id)
+    .maybeSingle()
+
+  if (registrationError)
+    throw new Error(`Error verificando inscripción: ${registrationError.message}`)
+  if (!userRegistration) throw new Error("Inscripción no encontrada o no te pertenece")
 
   const team = await getTeamByRegistration(supabase, userRegistration.id)
   if (!team) throw new Error("No pertenecés a ningún equipo")
