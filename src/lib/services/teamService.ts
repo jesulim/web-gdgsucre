@@ -163,29 +163,36 @@ export async function joinTeam(supabase: SupabaseClient, { code, event_id }: Joi
 
 export async function listMembers(
   supabase: SupabaseClient,
+  team_id: number,
   registration_id: number
 ): Promise<TeamMember[]> {
   const user = await getUser(supabase)
   if (!user) throw new Error("No se pudo obtener el usuario")
 
+  // Verificar que el registration_id pertenece al usuario y es líder del team_id en una sola query
+  const { data: leaderCheck, error: leaderError } = await supabase
+    .from("team_registrations")
+    .select("registration_id")
+    .eq("team_id", team_id)
+    .eq("registration_id", registration_id)
+    .eq("leader", true)
+    .maybeSingle()
+
+  if (leaderError) throw new Error(`Error verificando liderazgo: ${leaderError.message}`)
+  if (!leaderCheck) throw new Error("No eres líder de este equipo")
+
   // Verificar que el registration_id pertenece al usuario autenticado
-  const { data: userRegistration, error: registrationError } = await supabase
+  const { data: registrationOwnership, error: ownershipError } = await supabase
     .from("registrations")
     .select("id")
     .eq("id", registration_id)
     .eq("user_id", user.id)
     .maybeSingle()
 
-  if (registrationError)
-    throw new Error(`Error verificando inscripción: ${registrationError.message}`)
-  if (!userRegistration) throw new Error("Inscripción no encontrada o no te pertenece")
+  if (ownershipError) throw new Error(`Error verificando propiedad: ${ownershipError.message}`)
+  if (!registrationOwnership) throw new Error("Esta inscripción no te pertenece")
 
-  const team = await getTeamByRegistration(supabase, userRegistration.id)
-  if (!team) throw new Error("No pertenecés a ningún equipo")
-
-  if (!team.leader) throw new Error("Solo el líder puede ver los miembros del equipo")
-
-  // Obtener todos los miembros con sus perfiles
+  // Obtener todos los miembros del equipo
   const { data, error } = await supabase
     .from("team_registrations")
     .select(
@@ -200,7 +207,7 @@ export async function listMembers(
         )
       )`
     )
-    .eq("team_id", team.id)
+    .eq("team_id", team_id)
     .order("leader", { ascending: false })
 
   if (error) throw new Error(`Error obteniendo miembros: ${error.message}`)
@@ -217,38 +224,41 @@ export async function listMembers(
   )
 }
 
-export async function deleteMember(
-  supabase: SupabaseClient,
-  target_registration_id: number,
-  event_id: number
-) {
+export async function deleteMember(supabase: SupabaseClient, target_registration_id: number) {
   const user = await getUser(supabase)
   if (!user) throw new Error("No se pudo obtener el usuario")
 
-  const leaderRegistration = await getRegistrationByUser(supabase, user.id, event_id)
-  if (!leaderRegistration)
-    throw new Error("No se encontró el registro del usuario para este evento")
-
-  // Obtener el equipo a partir del registration del líder
-  const team = await getTeamByRegistration(supabase, leaderRegistration.id)
-  if (!team) throw new Error("No pertenecés a ningún equipo")
-
-  if (!team.leader) throw new Error("Solo el líder puede eliminar miembros del equipo")
-
-  if (leaderRegistration.id === target_registration_id) {
-    throw new Error("No se puede eliminar al líder del equipo")
-  }
-
-  // Verificar que el target pertenece al mismo equipo
-  const { data: targetMembership, error: membershipError } = await supabase
+  // Encontrar el equipo del target y verificar que el usuario autenticado es líder del mismo equipo
+  const { data: teamInfo, error: teamError } = await supabase
     .from("team_registrations")
-    .select("registration_id")
-    .eq("team_id", team.id)
+    .select(`
+      team_id,
+      registration_id,
+      leader,
+      registrations!inner(user_id)
+    `)
     .eq("registration_id", target_registration_id)
     .maybeSingle()
 
-  if (membershipError) throw new Error(`Error verificando membresía: ${membershipError.message}`)
-  if (!targetMembership) throw new Error("El miembro no pertenece a tu equipo")
+  if (teamError) throw new Error(`Error obteniendo información del equipo: ${teamError.message}`)
+  if (!teamInfo) throw new Error("Registro no encontrado o no pertenece a ningún equipo")
+
+  // Verificar que el usuario autenticado es líder del mismo equipo
+  const { data: leaderCheck, error: leaderError } = await supabase
+    .from("team_registrations")
+    .select("registration_id, registrations!inner(user_id)")
+    .eq("team_id", teamInfo.team_id)
+    .eq("leader", true)
+    .maybeSingle()
+
+  if (leaderError) throw new Error(`Error verificando liderazgo: ${leaderError.message}`)
+  if (!leaderCheck || leaderCheck.registrations.user_id !== user.id) {
+    throw new Error("Solo el líder puede eliminar miembros del equipo")
+  }
+
+  if (leaderCheck.registration_id === target_registration_id) {
+    throw new Error("No se puede eliminar al líder del equipo")
+  }
 
   // Eliminar registration → CASCADE elimina team_registrations automáticamente
   const { error } = await supabase.from("registrations").delete().eq("id", target_registration_id)
