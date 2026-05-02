@@ -1,0 +1,75 @@
+---
+import { CheckCircle, Clock } from "lucide-react"
+import Header from "@/components/events/bwai-26/Header.astro"
+import { TeamInviteCard } from "@/components/registration/teams/TeamInviteCard"
+import { Badge } from "@/components/ui/badge"
+import BaseLayout from "@/layout/BaseLayout.astro"
+
+import { getProfile } from "@/lib/services/profileService"
+import { getEventRegistration } from "@/lib/services/registrationService"
+import { getTeamByRegistration } from "@/lib/services/teamService"
+import { createUserClient } from "@/lib/supabase"
+
+const supabase = await createUserClient(Astro.cookies)
+
+const profile = await getProfile(supabase)
+if (!profile) return Astro.redirect("/")
+
+const eventSlug = Astro.params.eventSlug || ""
+
+const registration = await getEventRegistration(supabase, profile?.id, eventSlug)
+
+if (!registration) return Astro.redirect("/")
+
+let team = null
+if (registration.id) {
+  team = await getTeamByRegistration(supabase, registration.id)
+}
+
+if (!team || !team.leader) {
+  return Astro.redirect(`/registro/${eventSlug}/pendiente`)
+}
+
+const host = Astro.request.headers.get("x-forwarded-host") ?? Astro.request.headers.get("host")
+const protocol =
+  Astro.request.headers.get("x-forwarded-proto") ?? (host?.includes("localhost") ? "http" : "https")
+const origin = host ? `${protocol}://${host}` : Astro.url.origin
+
+const inviteUrl = `${origin}/registro/${eventSlug}/unirse?code=${team.code}`
+---
+
+<BaseLayout theme="light">
+  <Header />
+  <main class="mt-16 pt-12 flex">
+    <div class="mx-auto px-4 max-w-md w-full pb-16 flex flex-col items-center gap-4 text-center">
+      {
+        registration.status === "pending" ? (
+          <Badge
+            variant="secondary"
+            className="bg-yellow-300 text-black hover:bg-yellow-400 border-2 border-black rounded-xl px-3 py-1 text-sm font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+          >
+            <Clock className="mr-2 size-4" />
+            Registro Pendiente
+          </Badge>
+        ) : (
+          <Badge
+            variant="default"
+            className="bg-green-400 text-black hover:bg-green-500 border-2 border-black rounded-xl px-3 py-1 text-sm font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+          >
+            <CheckCircle className="mr-2 size-4" />
+            Registro Confirmado
+          </Badge>
+        )
+      }
+      <p class="text-[#3b3b3b] text-base leading-tight lg:text-lg">
+        {
+          registration.status === "pending"
+            ? "Tu registro está en revisión, pero mientras esperas..."
+            : "¡Tu registro está confirmado! Ya eres parte oficial del evento."
+        }
+      </p>
+
+      <TeamInviteCard teamName={team.name} teamCode={team.code} inviteUrl={inviteUrl} client:load />
+    </div>
+  </main>
+</BaseLayout>

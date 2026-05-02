@@ -5,6 +5,10 @@ import { useForm } from "react-hook-form"
 import { Toaster, toast } from "sonner"
 import { z } from "zod"
 
+import { FormFileInput } from "@/components/registration/FormFileInput"
+import { FormSelect } from "@/components/registration/FormSelect"
+import ProfileFormFields from "@/components/registration/ProfileFormFields"
+
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -15,20 +19,15 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-
 import { buildZodSchemaFromFields, type FormFieldSchema } from "@/lib/validators/formFields"
 
-import { FormFileInput } from "./FormFileInput"
-import { FormSelect } from "./FormSelect"
-import ProfileFormFields from "./ProfileFormFields"
-
-interface RegisterFormProps {
+interface CreateTeamFormProps {
   event: { id: string; slug: string; name: string }
   formFields: FormFieldSchema[]
   profile: { id: string; first_name: string; last_name: string } | null
 }
 
-export function RegisterForm({ formFields, profile, event }: RegisterFormProps) {
+export function CreateTeamForm({ formFields, profile, event }: CreateTeamFormProps) {
   const [loading, setLoading] = useState(false)
 
   let formSchema = buildZodSchemaFromFields(formFields)
@@ -51,6 +50,15 @@ export function RegisterForm({ formFields, profile, event }: RegisterFormProps) 
     }
   }
 
+  formSchema = formSchema.extend({
+    team_name: z.string().trim().min(2, "El nombre del equipo debe tener al menos 2 caracteres"),
+  })
+
+  defaultValues = {
+    ...defaultValues,
+    team_name: "",
+  }
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues,
@@ -69,17 +77,17 @@ export function RegisterForm({ formFields, profile, event }: RegisterFormProps) 
     }
 
     try {
-      const res = await fetch("/api/register", {
+      const res = await fetch("/api/teams/create", {
         method: "POST",
         body: formData,
       })
       if (res.ok) {
-        window.location.href = `/registro/${event.slug}/pendiente`
+        window.location.href = `/registro/${event.slug}/invitar-miembros`
       } else {
         toast.error(await res.text())
       }
     } catch (error) {
-      console.error("Error al registrar:", error)
+      console.error("Error al crear equipo:", error)
     } finally {
       setLoading(false)
     }
@@ -136,9 +144,26 @@ export function RegisterForm({ formFields, profile, event }: RegisterFormProps) 
             )}
           />
         ))}
+
+        <FormField
+          control={form.control}
+          name="team_name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Nombre del Equipo <span className="text-destructive">*</span>
+              </FormLabel>
+              <FormControl>
+                <Input placeholder="Ej. Tech Innovators..." {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <Button className="w-full bg-blue-500 dark:text-white" type="submit" disabled={loading}>
           {loading && <Loader2Icon className="animate-spin" />}
-          Regístrate
+          Crear Equipo y Registrame
         </Button>
       </form>
     </Form>

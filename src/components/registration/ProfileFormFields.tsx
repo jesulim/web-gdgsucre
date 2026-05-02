@@ -48,7 +48,7 @@ export default function ProfileFormFields({ form }: RegisterFormProps) {
               Número de teléfono <span className="text-destructive">*</span>
             </FormLabel>
             <FormControl>
-              <Input {...field} />
+              <Input {...field} inputMode="tel" />
             </FormControl>
             <FormMessage />
           </FormItem>

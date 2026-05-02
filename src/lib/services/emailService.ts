@@ -52,7 +52,7 @@ async function sendEmail({ to, subject, html, text }: EmailOptions) {
   }
   try {
     const mailOptions = {
-      from: '"WTM Sucre" <wtmsucre@gmail.com>',
+      from: '"GDG Sucre" <gdgsucre@gmail.com>',
       to,
       subject,
       html,
@@ -76,8 +76,11 @@ interface RegistrationEmailData extends BaseEmailData {
   eventSlug: string
 }
 
-export async function sendRegistrationConfirmationEmail(data: RegistrationEmailData) {
-  const htmlContent = await loadEmailTemplate("registrationEmail", data)
+export async function sendRegistrationConfirmationEmail(
+  data: RegistrationEmailData,
+  template: string = "registrationEmail"
+) {
+  const htmlContent = await loadEmailTemplate(template, data)
 
   return await sendEmail({
     to: data.userEmail,

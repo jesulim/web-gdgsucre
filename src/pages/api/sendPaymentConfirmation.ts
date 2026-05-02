@@ -33,13 +33,16 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     await confirmRegistration(supabase, registrationId)
 
     const emailData = { userEmail, userName, eventName }
-    const result = await sendPaymentConfirmationEmail(emailData)
+    try {
+      const result = await sendPaymentConfirmationEmail(emailData)
+    } catch (error) {
+      console.error("Error enviando email de confirmación de pago:", error)
+    }
 
     return new Response(
       JSON.stringify({
         success: true,
         message: "Email de confirmación de pago enviado exitosamente y estado actualizado",
-        messageId: result.messageId,
       }),
       {
         status: 200,

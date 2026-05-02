@@ -1,10 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Loader2Icon } from "lucide-react"
+import { Loader2Icon, UsersRound } from "lucide-react"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { Toaster, toast } from "sonner"
 import { z } from "zod"
-
+import { FormFileInput } from "@/components/registration/FormFileInput"
+import { FormSelect } from "@/components/registration/FormSelect"
+import ProfileFormFields from "@/components/registration/ProfileFormFields"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -15,20 +17,25 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-
+import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "@/components/ui/input-otp"
 import { buildZodSchemaFromFields, type FormFieldSchema } from "@/lib/validators/formFields"
 
-import { FormFileInput } from "./FormFileInput"
-import { FormSelect } from "./FormSelect"
-import ProfileFormFields from "./ProfileFormFields"
-
-interface RegisterFormProps {
+interface JoinTeamFormProps {
   event: { id: string; slug: string; name: string }
   formFields: FormFieldSchema[]
   profile: { id: string; first_name: string; last_name: string } | null
+  teamCode?: string
+  initialTeamName?: string
 }
 
-export function RegisterForm({ formFields, profile, event }: RegisterFormProps) {
+export function JoinTeamForm({
+  formFields,
+  profile,
+  event,
+  teamCode,
+  initialTeamName,
+}: JoinTeamFormProps) {
+  const [teamName, setTeamName] = useState<string | null>(initialTeamName || null)
   const [loading, setLoading] = useState(false)
 
   let formSchema = buildZodSchemaFromFields(formFields)
@@ -51,6 +58,15 @@ export function RegisterForm({ formFields, profile, event }: RegisterFormProps) 
     }
   }
 
+  formSchema = formSchema.extend({
+    team_code: z.string().trim().length(6, "El código de equipo debe tener 6 caracteres"),
+  })
+
+  defaultValues = {
+    ...defaultValues,
+    team_code: teamCode || "",
+  }
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues,
@@ -69,7 +85,7 @@ export function RegisterForm({ formFields, profile, event }: RegisterFormProps) 
     }
 
     try {
-      const res = await fetch("/api/register", {
+      const res = await fetch("/api/teams/join", {
         method: "POST",
         body: formData,
       })
@@ -82,6 +98,23 @@ export function RegisterForm({ formFields, profile, event }: RegisterFormProps) 
       console.error("Error al registrar:", error)
     } finally {
       setLoading(false)
+    }
+  }
+
+  async function checkTeam(teamCode: string, eventId: string) {
+    const res = await fetch(`/api/teams/byCode?code=${teamCode}&event_id=${eventId}`)
+    if (res.ok) {
+      const data = await res.json()
+      toast.success(`Equipo encontrado`)
+      setTeamName(data.name)
+      form.clearErrors("team_code")
+    } else {
+      toast.error("Código de equipo inválido")
+      setTeamName(null)
+      form.setError("team_code", {
+        type: "manual",
+        message: "Código de equipo inválido",
+      })
     }
   }
 
@@ -136,9 +169,50 @@ export function RegisterForm({ formFields, profile, event }: RegisterFormProps) 
             )}
           />
         ))}
+
+        <FormField
+          control={form.control}
+          name="team_code"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Código del equipo <span className="text-destructive">*</span>
+              </FormLabel>
+              <FormControl>
+                <InputOTP
+                  maxLength={6}
+                  readOnly={!!teamCode}
+                  disabled={!!teamCode}
+                  inputMode="text"
+                  onComplete={value => checkTeam(value, event.id)}
+                  {...field}
+                  onChange={value => field.onChange(value.toUpperCase())}
+                >
+                  <InputOTPGroup>
+                    <InputOTPSlot index={0} />
+                    <InputOTPSlot index={1} />
+                    <InputOTPSlot index={2} />
+                    <InputOTPSeparator />
+                    <InputOTPSlot index={3} />
+                    <InputOTPSlot index={4} />
+                    <InputOTPSlot index={5} />
+                  </InputOTPGroup>
+                </InputOTP>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {teamName && (
+          <div className="flex items-center gap-2 text-green-500 bg-green-50 p-4 border border-green-500 rounded-md">
+            <UsersRound /> Te unirás al equipo: {teamName}.
+          </div>
+        )}
+
         <Button className="w-full bg-blue-500 dark:text-white" type="submit" disabled={loading}>
           {loading && <Loader2Icon className="animate-spin" />}
-          Regístrate
+          Registrarme y Unirme al Equipo
         </Button>
       </form>
     </Form>

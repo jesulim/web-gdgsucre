@@ -160,6 +160,7 @@ export function RegistrationsTable() {
       enableGlobalFilter: false,
       cell: info => {
         const packageName = info.getValue()
+        if (!packageName || packageName === "undefined") return null
         const packageParts = packageName.split(" (")
         return packageParts.length > 1 ? packageParts[0] : packageName
       },

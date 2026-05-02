@@ -27,5 +27,15 @@ export const onRequest = defineMiddleware(async (context, next) => {
     }
   }
 
+  // Registration pages need authentication
+  if (path.startsWith("/registro")) {
+    const sessionToken = cookies.get("sb-access-token")?.value
+    if (!sessionToken) {
+      return context.redirect(
+        `/api/auth/signin?next=${encodeURIComponent(url.pathname + url.search)}`
+      )
+    }
+  }
+
   return next()
 })

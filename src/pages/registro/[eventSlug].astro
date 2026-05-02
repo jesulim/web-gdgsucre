@@ -1,12 +1,10 @@
 ---
-import Header from "@/components/events/iwd-26/Header.astro"
-import { RegisterForm } from "@/components/registration/RegisterForm"
+import Header from "@/components/events/bwai-26/Header.astro"
 import BaseLayout from "@/layout/BaseLayout.astro"
 
 import { getEvent } from "@/lib/services/eventService"
-import { getFormFieldsByEvent } from "@/lib/services/formService"
-import { getProfile } from "@/lib/services/profileService"
 import { getEventRegistration } from "@/lib/services/registrationService"
+import { getTeamByRegistration } from "@/lib/services/teamService"
 
 import { createUserClient } from "@/lib/supabase"
 
@@ -16,11 +14,21 @@ const eventSlug = Astro.params.eventSlug || ""
 const event = await getEvent(supabase, eventSlug)
 if (!event) return Astro.redirect("/")
 
-const profile = await getProfile(supabase)
-const registration = await getEventRegistration(supabase, profile?.id, eventSlug)
+const accessToken = Astro.cookies.get("sb-access-token")?.value
+const { data } = await supabase.auth.getClaims(accessToken)
+const registration = data?.claims
+  ? await getEventRegistration(supabase, data.claims.sub, eventSlug)
+  : null
 
 if (!registration && event.registration_open === false)
   return Astro.redirect(`/registro/${eventSlug}/cerrado`)
+
+if (registration) {
+  const team = await getTeamByRegistration(supabase, registration.id)
+  if (team?.leader) {
+    return Astro.redirect(`/registro/${eventSlug}/invitar-miembros`)
+  }
+}
 
 if (registration?.status === "pending") {
   return Astro.redirect(`/registro/${eventSlug}/pendiente`)
@@ -30,15 +38,52 @@ if (registration?.status === "confirmed") {
   return Astro.redirect(`/registro/${eventSlug}/confirmado`)
 }
 
-const formFields = await getFormFieldsByEvent(supabase, eventSlug)
+// TODO: Add a DB field for events with alternative registration flow
+if (eventSlug !== "bwai-26") {
+  return Astro.redirect(`/registro/${eventSlug}/individual`)
+}
 ---
 
 <BaseLayout theme="light">
   <Header />
-  <main class="mt-16 pt-12 flex">
-    <div class="mx-auto px-4 pb-16">
-      <h1 class="text-xl mb-4 font-medium">Regístrate al {event.name}</h1>
-      <RegisterForm formFields={formFields} profile={profile} event={event} client:load />
-    </div>
+  <main class="mt-4 mx-auto px-4 pb-16 max-w-lg">
+    <h1 class="text-xl mb-4 font-medium">Regístrate al {event.name}</h1>
+
+    <p class="mb-4">
+      El evento se llevará a cabo en <b>equipos de 3 a 5 personas</b>, el registro es individual con
+      un costo de
+      <b>50 Bs.</b> por persona. Si no tienes un equipo, te asignaremos uno el día del evento.
+    </p>
+
+    <a href="/registro/bwai-26/crear-equipo">
+      <div
+        class="border-black border-2 rounded-2xl p-4 lg:p-4 hover:bg-green-500 hover:rounded-md transition-all mb-4"
+      >
+        <h2 class="text-xl mb-2 font-medium">Crear un equipo</h2>
+        <p>
+          Al crear un equipo, te registraremos como líder y obtendrás un código para unir a los
+          miembros a tu equipo.
+        </p>
+      </div>
+    </a>
+    <a href="/registro/bwai-26/unirse">
+      <div
+        class="border-black border-2 rounded-2xl p-4 lg:p-4 hover:bg-blue-500 hover:rounded-md transition-all mb-4"
+      >
+        <h2 class="text-xl mb-2 font-medium">Unirse a un equipo</h2>
+        <p>Si tienes un código, puedes unirte a un equipo ya creado.</p>
+      </div>
+    </a>
+    <a href="/registro/bwai-26/individual">
+      <div
+        class="border-black border-2 rounded-2xl p-4 lg:p-4 hover:bg-yellow-500 hover:rounded-md transition-all mb-4"
+      >
+        <h2 class="text-xl mb-2 font-medium">Registro individual</h2>
+        <p>
+          Si no tienes un equipo, puedes registrarte individualmente para participar en el evento. Te
+          asignaremos un equipo el día del evento.
+        </p>
+      </div>
+    </a>
   </main>
 </BaseLayout>

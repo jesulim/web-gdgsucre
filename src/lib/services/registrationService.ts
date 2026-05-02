@@ -60,7 +60,7 @@ export async function getEventRegistration(
 
   const { data, error } = await supabase
     .from("registrations")
-    .select("status, events!inner(slug), qr_url")
+    .select("id, status, events!inner(slug), qr_url")
     .eq("user_id", user_id)
     .eq("events.slug", eventSlug)
     .single()
@@ -416,4 +416,20 @@ export async function getRegistrationByToken(
   }
 
   return registration
+}
+
+export async function getRegistrationByUser(
+  supabase: SupabaseClient,
+  user_id: string,
+  event_id: number
+) {
+  const { data, error } = await supabase
+    .from("registrations")
+    .select("id")
+    .eq("event_id", event_id)
+    .eq("user_id", user_id)
+    .maybeSingle()
+
+  if (error) throw new Error(`Error al obtener registro: ${error.message}`)
+  return data ?? null
 }
