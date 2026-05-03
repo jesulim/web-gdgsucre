@@ -1,6 +1,17 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { CrownIcon, Trash2Icon, Loader2Icon } from "lucide-react"
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -80,24 +91,50 @@ function MemberListInner({ teamId, registrationId }: MemberListProps) {
               </Badge>
             )}
             {!member.leader && (
-              <Button
-                variant="destructive"
-                size="icon"
-                className="shrink-0 ml-2 rounded-xl border-2 border-black"
-                onClick={() => {
-                  if (confirm("¿Estás seguro de que quieres eliminar a este miembro del equipo?")) {
-                    deleteMutation.mutate({ registrationId: member.registration_id })
-                  }
-                }}
-                disabled={deleteMutation.isPending}
-              >
-                {deleteMutation.isPending &&
-                deleteMutation.variables?.registrationId === member.registration_id ? (
-                  <Loader2Icon className="w-4 h-4 animate-spin" />
-                ) : (
-                  <Trash2Icon className="w-4 h-4" />
-                )}
-              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    variant="destructive"
+                    size="icon"
+                    className="shrink-0 ml-2 rounded-xl border-2 border-black"
+                    disabled={deleteMutation.isPending}
+                  >
+                    {deleteMutation.isPending &&
+                    deleteMutation.variables?.registrationId === member.registration_id ? (
+                      <Loader2Icon className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <Trash2Icon className="w-4 h-4" />
+                    )}
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent className="border-2 lg:border-4 border-black rounded-2xl lg:rounded-3xl">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle className="font-bold text-xl lg:text-2xl text-black">
+                      ¿Estás seguro?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription className="text-base text-[#3b3b3b]">
+                      Esta acción eliminará a{" "}
+                      <strong>
+                        {member.first_name} {member.last_name}
+                      </strong>{" "}
+                      de tu equipo y no se puede deshacer.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter className="mt-4">
+                    <AlertDialogCancel className="rounded-xl border-2 border-black text-black hover:bg-gray-100 font-bold">
+                      Cancelar
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={() =>
+                        deleteMutation.mutate({ registrationId: member.registration_id })
+                      }
+                      className="bg-red-500 hover:bg-red-600 text-white rounded-xl border-2 border-black font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                    >
+                      Sí, eliminar
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             )}
           </div>
         ))}
