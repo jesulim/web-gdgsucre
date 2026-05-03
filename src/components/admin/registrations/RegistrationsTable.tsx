@@ -190,6 +190,7 @@ export function RegistrationsTable() {
         <RegistrationRowActions
           row={row}
           eventName={events.find(e => e.slug === eventSlug)?.name}
+          refetch={refetch}
         />
       ),
     }),
