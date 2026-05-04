@@ -1,34 +1,45 @@
 ---
+import { Image } from "astro:assets"
+
+import TenMINDS from "@/assets/sponsors/10minds.webp"
+import CISISH from "@/assets/sponsors/CISISH.webp"
+import NAPP from "@/assets/sponsors/napp.webp"
+import SIB from "@/assets/sponsors/SIB.webp"
+
 const sponsors = [
-  { src: "/assets/figma/SponsorSIB.svg", alt: "Sponsor SIB" },
-  { src: "/assets/figma/SponsorCISISH.svg", alt: "Sponsor CISISH" },
-  { src: "/assets/figma/SponsorNAPP.svg", alt: "Sponsor NAPP" },
-  { src: "/assets/figma/Sponsor10MINDS.svg", alt: "Sponsor 10MINDS" },
+  { src: SIB, alt: "SIB" },
+  { src: CISISH, alt: "CISISH" },
+  { src: NAPP, alt: "Fundación NAPP" },
+  { src: TenMINDS, alt: "10MINDS" },
 ]
 ---
 
 <section class="w-full flex flex-col items-start px-5 py-8 gap-4 lg:px-20 lg:py-24 lg:gap-16">
-    <h2 class="bg-white border-2 border-black rounded-xs md:rounded-lg px-2 py-1 text-xs font-bold lg:px-10 lg:py-4 lg:text-4xl uppercase">
-        Sponsors
-    </h2>
+  <h2
+    class="bg-white border-2 border-black rounded-xs md:rounded-lg px-2 py-1 text-xs font-bold lg:px-10 lg:py-4 lg:text-4xl uppercase"
+  >
+    Sponsors
+  </h2>
 
-    <div class="flex flex-col gap-4 lg:gap-16 w-full">
-        <div class="flex flex-col gap-2 lg:gap-6">
-            <h2 class="font-bold text-4xl tracking-tight leading-tight lg:text-6xl">
-                Quienes hacen esto posible
-            </h2>
+  <div class="flex flex-col gap-4 lg:gap-16 w-full">
+    <div class="flex flex-col gap-2 lg:gap-6">
+      <h2 class="font-bold text-4xl tracking-tight leading-tight lg:text-6xl">
+        Quienes hacen esto posible
+      </h2>
+    </div>
+  </div>
+
+  <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 w-full">
+    {
+      sponsors.map(sponsor => (
+        <div class="group">
+          <Image
+            class="w-32 h-32 md:w-52 md:h-52 object-contain"
+            src={sponsor.src}
+            alt={sponsor.alt}
+          />
         </div>
-    </div>
-
-    <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 w-full">
-        {sponsors.map((sponsor) => (
-            <div class="group">
-                <img 
-                    class="w-32 h-32 md:w-52 md:h-52 object-contain" 
-                    src={sponsor.src} 
-                    alt={sponsor.alt}
-                />
-            </div>
-        ))}
-    </div>
+      ))
+    }
+  </div>
 </section>
