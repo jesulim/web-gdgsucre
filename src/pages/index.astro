@@ -4,6 +4,7 @@ import Footer from "@/components/events/bwai-26/Footer.astro"
 import Header from "@/components/events/bwai-26/Header.astro"
 import Hero from "@/components/events/bwai-26/Hero.astro"
 import Info from "@/components/events/bwai-26/Info.astro"
+import Sponsors from "@/components/events/bwai-26/Sponsors.astro"
 import BaseLayout from "@/layout/BaseLayout.astro"
 
 import { getEventRegistration } from "@/lib/services/registrationService"
@@ -232,6 +233,7 @@ const M_ABOUT_TOP = M_INFO_TOP + M_INFO_H
       <Hero isRegistered={isRegistered} />
       <Info />
       <About />
+      <Sponsors />
     </main>
     <Footer />
   </div>
