@@ -1,0 +1,32 @@
+---
+import { hasRegistration } from "@/lib/services/registrationService"
+import { createUserClient } from "@/lib/supabase"
+
+const arrowIconWhite = "/assets/figma/arrow.svg"
+
+const eventSlug = "bwai-26"
+const accessToken = Astro.cookies.get("sb-access-token")?.value
+
+let redirectHref = accessToken
+  ? `/registro/${eventSlug}`
+  : `/api/auth/signin?next=/registro/${eventSlug}`
+
+let registered = false
+if (accessToken) {
+  const supabase = await createUserClient(Astro.cookies)
+  const { data } = await supabase.auth.getClaims(accessToken)
+  const claims = data?.claims
+  registered = await hasRegistration(supabase, claims?.sub ?? "", eventSlug)
+  if (registered) {
+    redirectHref = `/registro/${eventSlug}/confirmado`
+  }
+}
+---
+
+<a
+  href={redirectHref}
+  class="flex justify-center items-center gap-4 bg-black border-2 border-black px-6 py-5 rounded-full text-white w-full hover:bg-[#333] transition-colors text-center text-base lg:text-2xl font-bold"
+>
+  <span>{registered ? "Ver registro" : "Quiero mi lugar"}</span>
+  <img alt="" class="w-4 md:w-5" src={arrowIconWhite} />
+</a>
