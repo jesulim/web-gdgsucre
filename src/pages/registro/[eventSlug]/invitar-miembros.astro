@@ -1,9 +1,9 @@
 ---
-import { CheckCircle, Clock } from "lucide-react"
+import { CheckCircle, Clock, TicketIcon } from "lucide-react"
 import Header from "@/components/events/bwai-26/Header.astro"
-import { MemberList } from "@/components/events/bwai-26/teams/MemberList"
 import { TeamInviteCard } from "@/components/registration/teams/TeamInviteCard"
 import { Badge } from "@/components/ui/badge"
+import { buttonVariants } from "@/components/ui/button"
 import BaseLayout from "@/layout/BaseLayout.astro"
 
 import { getProfile } from "@/lib/services/profileService"
@@ -42,9 +42,9 @@ const inviteUrl = `${origin}/registro/${eventSlug}/unirse?code=${team.code}`
 <BaseLayout theme="light">
   <Header />
   <main class="mt-16 pt-12 flex">
-    <div class="mx-auto px-4 max-w-5xl w-full pb-16 grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-      
-      <div class="flex flex-col items-center gap-4 text-center w-full max-w-md mx-auto lg:max-w-none lg:col-start-1 lg:row-start-1">
+    <div class="mx-auto px-4 max-w-2xl w-full pb-16 flex flex-col gap-6 lg:gap-8">
+
+      <div class="flex flex-col items-center gap-4 text-center w-full">
         {
           registration.status === "pending" ? (
             <Badge
@@ -55,13 +55,13 @@ const inviteUrl = `${origin}/registro/${eventSlug}/unirse?code=${team.code}`
               Registro Pendiente
             </Badge>
           ) : (
-            <Badge
-              variant="default"
-              className="bg-green-400 text-black hover:bg-green-500 border-2 border-black rounded-xl px-3 py-1 text-sm font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            <a
+              href={`/registro/${eventSlug}/confirmado`}
+              class={buttonVariants({ variant: "ghost", className: "bg-green-400 text-black hover:bg-green-500 border-2 border-black rounded-xl px-3 py-1 text-sm font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] h-auto" })}
             >
-              <CheckCircle className="mr-2 size-4" />
-              Registro Confirmado
-            </Badge>
+              <TicketIcon />
+              Ver mi credencial
+            </a>
           )
         }
         <p class="text-[#3b3b3b] text-base leading-tight lg:text-lg">
@@ -71,14 +71,25 @@ const inviteUrl = `${origin}/registro/${eventSlug}/unirse?code=${team.code}`
               : "¡Tu registro está confirmado! Ya eres parte oficial del evento."
           }
         </p>
+
+        {
+          registration.status !== "confirmed" && (
+            <p class="text-sm text-[#6b6b6b] italic">
+              Cuando tu registro sea confirmado, podrás ver tu credencial.
+            </p>
+          )
+        }
       </div>
 
-      <div class="w-full max-w-md mx-auto lg:max-w-none lg:col-start-1 lg:row-start-2">
-        <TeamInviteCard teamName={team.name} teamCode={team.code} inviteUrl={inviteUrl} client:load />
-      </div>
-
-      <div class="w-full max-w-md mx-auto lg:max-w-none lg:col-start-2 lg:row-start-2">
-        <MemberList teamId={team.id} registrationId={registration.id} client:load />
+      <div class="w-full">
+        <TeamInviteCard
+          teamName={team.name}
+          teamCode={team.code}
+          inviteUrl={inviteUrl}
+          teamId={team.id}
+          registrationId={registration.id}
+          client:load
+        />
       </div>
 
     </div>
