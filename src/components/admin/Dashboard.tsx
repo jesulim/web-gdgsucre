@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { AccreditationTable } from "@/components/admin/AccreditationTable"
 import { QRScanner } from "@/components/admin/QRScanner"
 import { RegistrationsTable } from "@/components/admin/registrations/RegistrationsTable"
+import { RegistrationsTeamsTable } from "@/components/admin/registrations/RegistrationsTeamsTable"
 import { AdminSidebar } from "@/components/admin/sidebar/AdminSidebar"
 import { SiteHeader } from "@/components/admin/sidebar/SiteHeader"
 
@@ -11,12 +12,16 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 
 const VIEW_STORAGE_KEY = "admin_current_view"
 
-export type ViewType = "registrations" | "accreditation" | "scanner"
+export type ViewType = "registrations" | "registrationsTeams" | "accreditation" | "scanner"
 
 const VIEWS: Record<ViewType, { title: string; component: React.ReactNode }> = {
   registrations: {
     title: "Registro de Participantes",
     component: <RegistrationsTable />,
+  },
+  registrationsTeams: {
+    title: "Registro de Equipos",
+    component: <RegistrationsTeamsTable />,
   },
   accreditation: {
     title: "Acreditación del Evento",

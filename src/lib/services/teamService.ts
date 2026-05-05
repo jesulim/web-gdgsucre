@@ -232,6 +232,106 @@ export async function listMembers(
   )
 }
 
+export interface AdminTeamMember {
+  registration_id: number
+  first_name: string
+  last_name: string
+  email: string
+  status: string
+  leader: boolean
+}
+
+export interface AdminTeamGroup {
+  id: number
+  name: string
+  code: string
+  members: AdminTeamMember[]
+}
+
+export interface AdminTeamsData {
+  teams: AdminTeamGroup[]
+  sinEquipo: AdminTeamMember[]
+}
+
+export async function getTeamsWithMembersByEvent(
+  supabase: SupabaseClient,
+  eventSlug: string
+): Promise<AdminTeamsData> {
+  const { data: teamsData, error: teamsError } = await supabase
+    .from("teams")
+    .select(
+      `id, name, code,
+      team_registrations(
+        leader,
+        registration_id,
+        registrations!inner(
+          id, status,
+          profiles!inner(first_name, last_name, email)
+        )
+      ),
+      events!inner(slug)`
+    )
+    .eq("events.slug", eventSlug)
+    .order("name", { ascending: true })
+
+  if (teamsError) throw new Error(`Error obteniendo equipos: ${teamsError.message}`)
+  const teamRegistrationIds = new Set<number>()
+  const teams: AdminTeamGroup[] = (teamsData ?? []).map(team => {
+    const members: AdminTeamMember[] = (team.team_registrations ?? []).map(tr => {
+      teamRegistrationIds.add(tr.registration_id)
+      const reg = tr.registrations as unknown as {
+        id: number
+        status: string
+        profiles: { first_name: string; last_name: string; email: string }
+      }
+      return {
+        registration_id: tr.registration_id,
+        first_name: reg.profiles.first_name,
+        last_name: reg.profiles.last_name,
+        email: reg.profiles.email ?? "",
+        status: reg.status,
+        leader: tr.leader,
+      }
+    })
+    // ordenando para mostrar al lider primero
+    members.sort((a, b) => (b.leader ? 1 : 0) - (a.leader ? 1 : 0))
+    return { id: team.id, name: team.name, code: team.code, members }
+  })
+
+  // usuarios sin equipo
+  const { data: allRegs, error: allRegsError } = await supabase
+    .from("registrations")
+    .select(
+      `id, status,
+      profiles!inner(first_name, last_name, email),
+      events!inner(slug)`
+    )
+    .eq("events.slug", eventSlug)
+    .order("created_at", { ascending: true })
+
+  if (allRegsError) throw new Error(`Error obteniendo registros: ${allRegsError.message}`)
+
+  const sinEquipo: AdminTeamMember[] = (allRegs ?? [])
+    .filter(reg => !teamRegistrationIds.has(reg.id))
+    .map(reg => {
+      const profiles = reg.profiles as unknown as {
+        first_name: string
+        last_name: string
+        email: string
+      }
+      return {
+        registration_id: reg.id,
+        first_name: profiles.first_name,
+        last_name: profiles.last_name,
+        email: profiles.email ?? "",
+        status: reg.status,
+        leader: false as const,
+      }
+    })
+
+  return { teams, sinEquipo }
+}
+
 export async function deleteMember(supabase: SupabaseClient, target_registration_id: number) {
   const user = await getUser(supabase)
   if (!user) throw new Error("No se pudo obtener el usuario")
