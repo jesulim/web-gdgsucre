@@ -1,5 +1,5 @@
 ---
-import { CheckCircle, Clock, TicketIcon } from "lucide-react"
+import { Clock, TicketIcon } from "lucide-react"
 import Header from "@/components/events/bwai-26/Header.astro"
 import { TeamInviteCard } from "@/components/registration/teams/TeamInviteCard"
 import { Badge } from "@/components/ui/badge"
@@ -41,7 +41,7 @@ const inviteUrl = `${origin}/registro/${eventSlug}/unirse?code=${team.code}`
 
 <BaseLayout theme="light">
   <Header />
-  <main class="pt-12 flex">
+  <main class="pt-6 flex">
     <div class="mx-auto px-4 max-w-2xl w-full pb-16 flex flex-col gap-6 lg:gap-8">
 
       <div class="flex flex-col items-center gap-4 text-center w-full">
