@@ -40,6 +40,7 @@ interface AccreditationData {
   last_name: string
   role: string
   status: string
+  [key: string]: boolean | string | number
 }
 
 const defaultAccreditations: AccreditationData[] = []
@@ -63,12 +64,7 @@ export function AccreditationTable({
   } = useAccreditations({ slug: eventSlug, role })
   const { mutateAsync: updateAccreditation } = useUpdateAccreditation()
 
-  const updateCheckbox = async (
-    id: number,
-    eventSlug: string,
-    field: keyof AccreditationData,
-    value: boolean
-  ) => {
+  const updateCheckbox = async (id: number, eventSlug: string, field: string, value: boolean) => {
     // Actualización optimista: actualizar UI inmediatamente
     try {
       await updateAccreditation({ id, eventSlug, field, value, params: { slug: eventSlug, role } })

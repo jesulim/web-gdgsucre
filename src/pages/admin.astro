@@ -5,7 +5,7 @@ import BaseLayout from "@/layout/BaseLayout.astro"
 import { getEvents } from "@/lib/services/eventService"
 import { getProfile, getStaffRoles } from "@/lib/services/profileService"
 import { createUserClient } from "@/lib/supabase"
-;``
+
 const supabase = await createUserClient(Astro.cookies)
 const profile = await getProfile(supabase)
 
@@ -14,7 +14,7 @@ if (!profile?.is_admin) {
   staffRoles = await getStaffRoles(supabase, profile?.id)
 }
 
-if (!profile?.is_admin && !staffRoles) {
+if (!profile?.is_admin && Object.keys(staffRoles).length === 0) {
   return Astro.redirect("/")
 }
 

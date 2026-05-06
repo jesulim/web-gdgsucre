@@ -124,6 +124,7 @@ export function RegistrationsTable({ eventSlug }: { eventSlug: string }) {
       cell: ({ row }) => {
         return (
           <Select
+            key={row.original.id}
             onValueChange={value => {
               switchRole(row.original.id, value)
             }}

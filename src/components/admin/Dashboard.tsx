@@ -46,8 +46,8 @@ export interface DashboardProps {
   }[]
 }
 
-function DashboardContent({ userData, events }: DashboardProps) {
-  const [eventSlug, setEventSlug] = useState(events[0].slug)
+function DashboardContainer({ userData, events }: DashboardProps) {
+  const [eventSlug, setEventSlug] = useState(events[0]?.slug ?? "")
   const selectedEvent = events.find(e => e.slug === eventSlug)
   const currentRole = userData.staffRoles[eventSlug]
 
@@ -114,7 +114,7 @@ function DashboardContent({ userData, events }: DashboardProps) {
 export function Dashboard({ userData, events }: { userData: UserData; events: any[] }) {
   return (
     <QueryClientProvider client={queryClient}>
-      <DashboardContent userData={userData} events={events} />
+      <DashboardContainer userData={userData} events={events} />
     </QueryClientProvider>
   )
 }

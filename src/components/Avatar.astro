@@ -27,7 +27,7 @@ const staffRoles = await getStaffRoles(supabase, profile?.id)
   userName={profile?.first_name}
   userInitials={userInitials}
   email={profile?.email}
-  admin={profile?.is_admin || !!staffRoles}
+  admin={profile?.is_admin || Object.keys(staffRoles).length > 0}
   registered={!!registration}
   eventSlug={eventSlug}
   client:load

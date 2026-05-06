@@ -65,9 +65,9 @@ export function QRScanner({ eventSlug }: { eventSlug: string }) {
   const [pendingRegistration, setPendingRegistration] = useState(null)
   const [dialogOpen, setDialogOpen] = useState(false)
 
-  const fetchRegistration = async (token: string, activity: string) => {
+  const fetchRegistration = async (token: string, activity: string, eventSlug: string) => {
     const url = new URL("/api/registrationByToken", window.location.origin)
-    url.search = new URLSearchParams({ token, activity }).toString()
+    url.search = new URLSearchParams({ token, activity, eventSlug }).toString()
 
     const response = await fetch(url)
     return await response.json()
@@ -80,7 +80,7 @@ export function QRScanner({ eventSlug }: { eventSlug: string }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           id: pendingRegistration?.id,
-          eventSlug: pendingRegistration?.slug,
+          eventSlug,
           field: activity,
           value: true,
         }),
