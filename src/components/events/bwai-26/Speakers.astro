@@ -1,8 +1,9 @@
 ---
 import { Image } from "astro:assets"
-import fernandoImg from "@/assets/events/bwai-26/speakers/fernando-silva.png"
-import saulImg from "@/assets/events/bwai-26/speakers/saul-gutierrez-espada.png"
-import silvanaImg from "@/assets/events/bwai-26/speakers/silvana-gutierrez-montano.png"
+import fernandoImg from "@/assets/events/bwai-26/speakers/fernando-silva.webp"
+import ivanImg from "@/assets/events/bwai-26/speakers/ivan-martinez.webp"
+import saulImg from "@/assets/events/bwai-26/speakers/saul-gutierrez-espada.webp"
+import silvanaImg from "@/assets/events/bwai-26/speakers/silvana-gutierrez-montano.webp"
 import type { Speaker } from "@/components/events/bwai-26/SpeakerCard.astro"
 import SpeakerCard from "@/components/events/bwai-26/SpeakerCard.astro"
 
@@ -33,7 +34,6 @@ const speakers: Speaker[] = [
     description:
       "En esta charla/taller no vamos a chatear con la IA, vamos a integrarla como un motor de procesamiento para resolver uno de los problemas del Machine Learning: la calidad de los datos.\n- Construiremos en Google Colab integrando la API de Gemini\n- Aplicaremos NLP para normalizar, estructurar y limpiar datasets con errores\n- Generaremos datasets de alta calidad, para mejorar la precisión de modelos de Machine Learning.",
   },
-
   {
     image: fernandoImg,
     name: "Fernando Silva",
@@ -45,6 +45,18 @@ const speakers: Speaker[] = [
     talkIcon: "/events/bwai-26/speaker-icon-2.svg",
     description:
       "Tres charlas para sumergirte en el mundo de los agentes de IA. Agentes locales con Ollama: sistemas que razonan y actúan de forma autónoma desde tu propia máquina, sin depender de la nube.\nAgentic RAG: agentes que no solo recuperan información, sino que gestionan todo el proceso de búsqueda y respuesta para resolver problemas complejos. ReACT: el paradigma que combina razonamiento y acción en ciclos iterativos para resolver tareas paso a paso con mayor precisión.",
+  },
+  {
+    image: ivanImg,
+    name: "Ivan Martinez",
+    roleChips: [],
+    talkTitle: "ADK for Dummies: Tu primer Agente en Google Cloud",
+    talkTitleSizeMobile: "text-2xl",
+    talkTitleSizeDesktop: "lg:text-4xl",
+    talkChips: [],
+    talkIcon: "/events/bwai-26/speaker-icon-3.svg",
+    description:
+      '¿La Inteligencia Artificial te parece demasiado compleja? En esta sesión desmitificaremos la creación de agentes autónomos usando el Agent Development Kit (ADK). Olvídate de los manuales densos y la teoría interminable; aquí iremos directo al grano. Aprenderás de forma sencilla y paso a paso cómo conectar el "cerebro" de la IA con herramientas externas para que tu asistente no solo converse, sino que ejecute acciones reales. Saldrás de la charla con la base técnica clara y esencial para empezar a programar tus propios proyectos desde cero, sin frustraciones.',
   },
 ]
 ---
