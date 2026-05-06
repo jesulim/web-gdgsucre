@@ -168,16 +168,16 @@ export function AccreditationTable({
     onGlobalFilterChange: setGlobalFilter,
   })
 
-  const stats = accreditations?.reduce(
-    (acc, item: AccreditationData) => ({
-      total: acc.total + 1,
-      checkedIn: acc.checkedIn + (item.check_in ? 1 : 0),
-      packagesDelivered: acc.packagesDelivered + (item.package_delivered ? 1 : 0),
-      lunchDelivered: acc.lunchDelivered + (item.lunch ? 1 : 0),
-      refreshmentDelivered: acc.refreshmentDelivered + (item.refreshment ? 1 : 0),
-    }),
-    { total: 0, checkedIn: 0, packagesDelivered: 0, lunchDelivered: 0, refreshmentDelivered: 0 }
-  ) ?? { total: 0, checkedIn: 0, packagesDelivered: 0, lunchDelivered: 0, refreshmentDelivered: 0 }
+  const stats = (accreditations ?? []).reduce(
+    (acc, row) => {
+      acc.total++
+      activities?.forEach(({ name }) => {
+        if (row[name]) acc[name] = (acc[name] ?? 0) + 1
+      })
+      return acc
+    },
+    { total: 0 } as Record<string, number>
+  )
 
   return (
     <div>
@@ -251,29 +251,21 @@ export function AccreditationTable({
         </Table>
       </div>
 
-      <AccreditationStats stats={stats} />
+      <AccreditationStats stats={stats} activities={activities} />
     </div>
   )
 }
 
-function AccreditationStats({
-  stats,
-}: {
-  stats: {
-    total: number
-    checkedIn: number
-    packagesDelivered: number
-    lunchDelivered: number
-    refreshmentDelivered: number
-  }
-}) {
+function AccreditationStats({ stats, activities }) {
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center text-nowrap sm:gap-2 my-4 text-sm">
-      <span className="font-medium">Total registros: {stats.total}</span>
-      <span>Check-in: {stats.checkedIn}</span>
-      <span>Paquetes: {stats.packagesDelivered}</span>
-      <span>Almuerzos: {stats.lunchDelivered}</span>
-      <span>Refrigerios: {stats.refreshmentDelivered}</span>
+    <div className="flex flex-col sm:flex-row sm:items-center text-nowrap gap-2 my-4 text-sm">
+      <span className="font-medium">Total: {stats.total}</span>
+      {activities?.map(activity => (
+        <span key={activity.name} className="flex items-center gap-2">
+          <span className="hidden md:inline">&sdot;</span>
+          {activity.label}: {stats[activity.name] || 0}
+        </span>
+      ))}
     </div>
   )
 }

@@ -111,7 +111,7 @@ function DashboardContainer({ userData, events }: DashboardProps) {
   )
 }
 
-export function Dashboard({ userData, events }: { userData: UserData; events: any[] }) {
+export function Dashboard({ userData, events }: DashboardProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <DashboardContainer userData={userData} events={events} />
