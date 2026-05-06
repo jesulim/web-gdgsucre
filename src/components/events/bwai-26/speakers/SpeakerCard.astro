@@ -27,43 +27,44 @@ const speakerImageSrc = speaker.image.src
 ---
 
 <div class="flex flex-col lg:flex-row gap-6 w-full lg:items-center lg:justify-center">
-
   <div class="flex flex-col items-center gap-6">
     <div class="hidden lg:block lg:w-107 border-2 border-black rounded-4xl">
-      <Image
-        class="w-full rounded-4xl"
-        src={speaker.image}
-        alt={speaker.name}
-        width={428}
-      />
+      <Image class="w-full rounded-4xl" src={speaker.image} alt={speaker.name} width={428} />
     </div>
 
     <div class="hidden lg:flex flex-col items-center gap-6">
-      <div class="text-center bg-blue-500 text-white font-bold text-3xl w-94 px-5 py-5 rounded-3xl border-2 border-black">
+      <div
+        class="text-center bg-blue-500 text-white font-bold text-3xl w-94 px-5 py-5 rounded-3xl border-2 border-black"
+      >
         {speaker.name}
       </div>
-      {speaker.roleChips && speaker.roleChips.length > 0 && (
-        <ul class="flex gap-4 items-center flex-wrap justify-center">
-          {speaker.roleChips.map((chip) => (
-            <li class="text-xl font-medium border-2 border-black rounded-[10px] px-4 py-1 bg-white">
-              {chip}
-            </li>
-          ))}
-        </ul>
-      )}
+      {
+        speaker.roleChips && speaker.roleChips.length > 0 && (
+          <ul class="flex gap-4 items-center flex-wrap justify-center">
+            {speaker.roleChips.map(chip => (
+              <li class="text-xl font-medium border-2 border-black rounded-[10px] px-4 py-1 bg-white">
+                {chip}
+              </li>
+            ))}
+          </ul>
+        )
+      }
     </div>
   </div>
 
   <div class="flex flex-col gap-8">
     <div class="flex gap-12">
       <div class="flex flex-col gap-8 w-full">
-
         <div class="relative w-full lg:min-h-55">
-          <div class="absolute inset-0 bg-[#D4D4D4] border-2 border-black rounded-xl translate-x-2.5 translate-y-2">
+          <div
+            class="absolute inset-0 bg-[#D4D4D4] border-2 border-black rounded-xl translate-x-2.5 translate-y-2"
+          >
             <div class="border-b-2 border-black h-8"></div>
           </div>
 
-          <div class="relative bg-white border-2 border-black rounded-xl overflow-hidden z-10 min-h-55 flex flex-col">
+          <div
+            class="relative bg-white border-2 border-black rounded-xl overflow-hidden z-10 min-h-55 flex flex-col"
+          >
             <div class="border-b-2 border-black h-8 flex items-center px-3 gap-1.5 w-full">
               <span class="size-3 rounded-full bg-red-500 border-2 border-black"></span>
               <span class="size-3 rounded-full bg-yellow-500 border-2 border-black"></span>
@@ -71,7 +72,7 @@ const speakerImageSrc = speaker.image.src
             </div>
 
             <SpeakerDialog
-              client:load
+              client:media="(max-width: 1024px)"
               speakerName={speaker.name}
               speakerImageSrc={speakerImageSrc}
               talkTitle={speaker.talkTitle}
@@ -82,22 +83,26 @@ const speakerImageSrc = speaker.image.src
           </div>
         </div>
 
-        {speaker.talkChips && speaker.talkChips.length > 0 && (
-          <ul class="hidden lg:flex gap-4 justify-center">
-            {speaker.talkChips.map((chip) => (
-              <li class="min-w-45 text-center text-lg font-medium border-2 border-black rounded-full px-4 bg-[#E7EFFE]">
-                {chip}
-              </li>
-            ))}
-          </ul>
-        )}
+        {
+          speaker.talkChips && speaker.talkChips.length > 0 && (
+            <ul class="hidden lg:flex gap-4 justify-center">
+              {speaker.talkChips.map(chip => (
+                <li class="min-w-45 text-center text-lg font-medium border-2 border-black rounded-full px-4 bg-[#E7EFFE]">
+                  {chip}
+                </li>
+              ))}
+            </ul>
+          )
+        }
       </div>
 
       <img src={speaker.talkIcon} class="hidden lg:block lg:w-70" alt="" />
     </div>
 
     <div class="hidden lg:flex max-w-178 flex-col">
-      <p class="text-xl font-medium border-2 py-4 px-6 border-black rounded-4xl bg-white whitespace-pre-line">
+      <p
+        class="text-xl font-medium border-2 py-4 px-6 border-black rounded-4xl bg-white whitespace-pre-line"
+      >
         {speaker.description}
       </p>
       <img class="mt-4 self-end" src={logoSvg} alt="" />

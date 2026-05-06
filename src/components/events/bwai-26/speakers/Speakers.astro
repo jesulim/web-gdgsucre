@@ -1,5 +1,4 @@
 ---
-import { Image } from "astro:assets"
 import fernandoImg from "@/assets/events/bwai-26/speakers/fernando-silva.webp"
 import ivanImg from "@/assets/events/bwai-26/speakers/ivan-martinez.webp"
 import saulImg from "@/assets/events/bwai-26/speakers/saul-gutierrez-espada.webp"
@@ -61,9 +60,7 @@ const speakers: Speaker[] = [
 ]
 ---
 
-<section
-  class="w-full flex flex-col items-start px-5 py-8 gap-2 lg:px-20 lg:py-24 lg:gap-16"
->
+<section class="w-full flex flex-col items-start px-5 py-8 gap-2 lg:px-20 lg:py-24 lg:gap-16">
   <h2
     class="bg-white border-2 border-black rounded-xs md:rounded-lg px-2 py-1 text-xs font-bold lg:px-10 lg:py-4 lg:text-4xl"
   >
@@ -75,8 +72,6 @@ const speakers: Speaker[] = [
   </h3>
 
   <div class="flex flex-col items-center w-full lg:p-5 gap-2 lg:gap-16">
-    {speakers.map((speaker, i) => (
-      <SpeakerCard speaker={speaker} index={i} logoSvg={logoSvg} />
-    ))}
+    {speakers.map((speaker, i) => <SpeakerCard speaker={speaker} index={i} logoSvg={logoSvg} />)}
   </div>
 </section>
