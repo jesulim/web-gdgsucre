@@ -8,7 +8,7 @@ interface Event {
   registration_open: boolean
 }
 
-export async function getAllEvents(supabase: SupabaseClient) {
+export async function getEvents(supabase: SupabaseClient) {
   const { data: events, error } = await supabase
     .from("events")
     .select(
@@ -16,7 +16,7 @@ export async function getAllEvents(supabase: SupabaseClient) {
       event_form_fields(
         name, options
       ),
-      activities(name)
+      activities(label, name)
       `
     )
     .order("date", { ascending: false })
@@ -24,7 +24,7 @@ export async function getAllEvents(supabase: SupabaseClient) {
   if (error) throw new Error(error.message)
 
   return events.map(event => {
-    const { event_form_fields, activities, ...rest } = event
+    const { event_form_fields, ...rest } = event
     const packageOptions = event_form_fields?.find(field => field.name === "package")?.options
     const packages = Array.isArray(packageOptions)
       ? packageOptions.filter((option): option is string => typeof option === "string")
@@ -32,7 +32,6 @@ export async function getAllEvents(supabase: SupabaseClient) {
 
     return {
       packages,
-      activities: (activities ?? []).map(activity => activity.name),
       ...rest,
     }
   })

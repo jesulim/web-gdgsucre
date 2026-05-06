@@ -8,10 +8,9 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import { Loader2Icon } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { toast } from "sonner"
-
-import EventSelector from "@/components/admin/EventSelector"
+import type { Activity } from "@/components/admin/Dashboard"
 import { customFilterFn, SearchInput, TablePagination } from "@/components/admin/TableUtils"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -32,9 +31,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-
 import useAccreditations, { useUpdateAccreditation } from "@/hooks/useAccreditations"
-import useEvents from "@/hooks/useEvents"
 
 interface AccreditationData {
   id: number
@@ -43,30 +40,21 @@ interface AccreditationData {
   last_name: string
   role: string
   status: string
-  package?: string
-  dietary_restriction?: string
-  check_in: boolean
-  package_delivered?: boolean
-  refreshment?: boolean
-  lunch?: boolean
 }
 
 const defaultAccreditations: AccreditationData[] = []
 
-export function AccreditationTable() {
+export function AccreditationTable({
+  eventSlug,
+  activities,
+}: {
+  eventSlug: string
+  activities: Activity[]
+}) {
   const [globalFilter, setGlobalFilter] = useState("")
 
-  const [columnVisibility, setColumnVisibility] = useState({
-    check_in: true,
-    package_delivered: true,
-    refreshment: true,
-    lunch: true,
-  })
-
-  const [eventSlug, setEventSlug] = useState("")
   const [role, setRole] = useState<string>("Todos")
 
-  const { events } = useEvents()
   const {
     data: accreditations,
     isLoading,
@@ -74,27 +62,6 @@ export function AccreditationTable() {
     refetch,
   } = useAccreditations({ slug: eventSlug, role })
   const { mutateAsync: updateAccreditation } = useUpdateAccreditation()
-
-  useEffect(() => {
-    if (events?.length > 0 && !eventSlug) {
-      setEventSlug(events[0].slug)
-    }
-
-    // show columns based on event activities
-    if (eventSlug) {
-      const event = events.find(event => event.slug === eventSlug)
-      const activities = event?.activities ?? []
-
-      if (activities) {
-        setColumnVisibility({
-          check_in: activities.includes("check_in"),
-          package_delivered: activities.includes("package_delivered"),
-          refreshment: activities.includes("refreshment"),
-          lunch: activities.includes("lunch"),
-        })
-      }
-    }
-  }, [events, eventSlug])
 
   const updateCheckbox = async (
     id: number,
@@ -166,55 +133,26 @@ export function AccreditationTable() {
         )
       },
     }),
-    columnHelper.accessor("check_in", {
-      header: "Check-in",
-      enableGlobalFilter: false,
-      cell: info => (
-        <Checkbox
-          checked={info.getValue()}
-          onCheckedChange={checked =>
-            updateCheckbox(info.row.original.id, eventSlug, "check_in", !!checked)
-          }
-        />
-      ),
-    }),
-    columnHelper.accessor("package_delivered", {
-      header: "Paquete entregado",
-      enableGlobalFilter: false,
-      cell: info => (
-        <Checkbox
-          checked={info.getValue()}
-          onCheckedChange={checked =>
-            updateCheckbox(info.row.original.id, eventSlug, "package_delivered", !!checked)
-          }
-        />
-      ),
-    }),
-    columnHelper.accessor("lunch", {
-      header: "Almuerzo entregado",
-      enableGlobalFilter: false,
-      cell: info => (
-        <Checkbox
-          checked={info.getValue()}
-          onCheckedChange={checked =>
-            updateCheckbox(info.row.original.id, eventSlug, "lunch", !!checked)
-          }
-        />
-      ),
-    }),
-    columnHelper.accessor("refreshment", {
-      header: "Refrigerio entregado",
-      enableGlobalFilter: false,
-      cell: info => (
-        <Checkbox
-          checked={info.getValue()}
-          onCheckedChange={checked =>
-            updateCheckbox(info.row.original.id, eventSlug, "refreshment", !!checked)
-          }
-        />
-      ),
-    }),
   ]
+
+  if (activities) {
+    activities.forEach(activity => {
+      columns.push(
+        columnHelper.accessor(activity.name, {
+          header: activity.label,
+          enableGlobalFilter: false,
+          cell: info => (
+            <Checkbox
+              checked={info.getValue()}
+              onCheckedChange={checked =>
+                updateCheckbox(info.row.original.id, eventSlug, activity.name, !!checked)
+              }
+            />
+          ),
+        })
+      )
+    })
+  }
 
   const table = useReactTable({
     data: accreditations ?? defaultAccreditations,
@@ -230,7 +168,6 @@ export function AccreditationTable() {
     },
     state: {
       globalFilter,
-      columnVisibility,
     },
     onGlobalFilterChange: setGlobalFilter,
   })
@@ -250,11 +187,7 @@ export function AccreditationTable() {
     <div>
       <Toaster position="top-right" />
 
-      <div className="grid sm:grid-cols-[1fr_auto_auto] md:grid-cols-[1fr_1fr_auto_auto] gap-2 mb-4">
-        <div className="col-span-2 sm:col-span-3 md:col-span-1">
-          <EventSelector events={events} eventSlug={eventSlug} setEventSlug={setEventSlug} />
-        </div>
-
+      <div className="grid sm:grid-cols-[1fr_auto_auto] md:grid-cols-[1fr_auto_auto] gap-2 mb-4">
         <SearchInput
           placeholder="Buscar por nombre o apellido..."
           globalFilter={globalFilter}

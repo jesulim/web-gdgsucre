@@ -1,7 +1,7 @@
 ---
 import AvatarMenu from "@/components/AvatarMenu"
 
-import { getProfile } from "@/lib/services/profileService"
+import { getProfile, getStaffRoles } from "@/lib/services/profileService"
 import { getEventRegistration } from "@/lib/services/registrationService"
 import { createUserClient } from "@/lib/supabase"
 
@@ -19,6 +19,7 @@ if (names?.length > 1) {
 
 const { eventSlug } = Astro.props
 const registration = await getEventRegistration(supabase, profile?.id, eventSlug)
+const staffRoles = await getStaffRoles(supabase, profile?.id)
 ---
 
 <AvatarMenu
@@ -26,7 +27,7 @@ const registration = await getEventRegistration(supabase, profile?.id, eventSlug
   userName={profile?.first_name}
   userInitials={userInitials}
   email={profile?.email}
-  admin={profile?.is_admin}
+  admin={profile?.is_admin || !!staffRoles}
   registered={!!registration}
   eventSlug={eventSlug}
   client:load

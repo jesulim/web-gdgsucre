@@ -14,6 +14,7 @@ interface SidebarSection {
   title: string
   view: ViewType
   icon?: LucideIcon
+  allowedRoles?: string[]
 }
 
 const sidebarSections: SidebarSection[] = [
@@ -21,24 +22,31 @@ const sidebarSections: SidebarSection[] = [
     title: "Registro de Participantes",
     view: "registrations",
     icon: List,
+    allowedRoles: ["accreditation"],
   },
   {
     title: "Acreditación del Evento",
     view: "accreditation",
     icon: Users,
+    allowedRoles: ["accreditation"],
   },
   {
     title: "Escanear QR",
     view: "scanner",
     icon: ScanQrCode,
+    allowedRoles: ["accreditation"],
   },
 ]
 
 export function NavMain({
   currentView,
+  isAdmin,
+  currentRole,
   onNavigate,
 }: {
   currentView: ViewType
+  isAdmin?: boolean
+  currentRole?: string
   onNavigate?: (view: ViewType) => void
 }) {
   const { isMobile, setOpenMobile } = useSidebar()
@@ -49,10 +57,15 @@ export function NavMain({
     if (isMobile) setOpenMobile(false)
   }
 
+  const filteredSections = sidebarSections.filter(section => {
+    if (isAdmin) return true
+    return section.allowedRoles?.includes(currentRole ?? "")
+  })
+
   return (
     <SidebarGroup>
       <SidebarMenu>
-        {sidebarSections.map(item => (
+        {filteredSections.map(item => (
           <SidebarMenuItem key={item.title}>
             <SidebarMenuButton
               tooltip={item.title}

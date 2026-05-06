@@ -52,7 +52,7 @@ function ConfirmDialog({ open, onConfirm, onCancel, title, description }) {
   )
 }
 
-export function QRScanner() {
+export function QRScanner({ eventSlug }: { eventSlug: string }) {
   const processedRef = useRef<Map<string, number>>(new Map())
   const COOLDOWN_MS = 2000
 

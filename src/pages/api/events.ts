@@ -1,11 +1,11 @@
 import type { APIRoute } from "astro"
-import { createEvent, getAllEvents, updateEvent } from "@/lib/services/eventService"
+import { createEvent, getEvents, updateEvent } from "@/lib/services/eventService"
 import { createUserClient } from "@/lib/supabase"
 
 export const GET: APIRoute = async ({ cookies }) => {
   try {
     const supabase = await createUserClient(cookies)
-    const events = await getAllEvents(supabase)
+    const events = await getEvents(supabase)
 
     return new Response(JSON.stringify(events), {
       headers: { "Content-Type": "application/json" },
