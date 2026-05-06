@@ -66,6 +66,10 @@ function DashboardContainer({ userData, events }: DashboardProps) {
     }
   }, [userData, eventSlug])
 
+  if (!selectedEvent) {
+    return <main className="p-8">No event available</main>
+  }
+
   const views: Record<ViewType, { title: string; component: React.ReactNode }> = {
     registrations: {
       title: "Registro de Participantes",
@@ -77,7 +81,7 @@ function DashboardContainer({ userData, events }: DashboardProps) {
     },
     scanner: {
       title: "Escanear QR",
-      component: <QRScanner eventSlug={eventSlug} />,
+      component: <QRScanner eventSlug={eventSlug} activities={selectedEvent.activities} />,
     },
   }
 

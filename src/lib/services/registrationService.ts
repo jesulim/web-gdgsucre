@@ -410,7 +410,7 @@ export async function getRegistrationByToken(
     .maybeSingle()
 
   if (!registration || error) {
-    return { error: "Registro no encontrado" }
+    return { error: "Registro no encontrado o no pertenece a este evento." }
   }
 
   if (registration[activity]) {
