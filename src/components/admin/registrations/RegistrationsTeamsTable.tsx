@@ -44,6 +44,7 @@ interface MemberCardProps {
 
 function MemberCard({ member, onRemove }: MemberCardProps) {
   const [isRemoving, setIsRemoving] = useState(false)
+  const [showConfirmModal, setShowConfirmModal] = useState(false)
 
   const handleRemove = async () => {
     setIsRemoving(true)
@@ -60,7 +61,7 @@ function MemberCard({ member, onRemove }: MemberCardProps) {
     <div className="group relative flex flex-col items-center gap-1.5 flex-1 min-w-0">
       <button
         type="button"
-        onClick={handleRemove}
+        onClick={() => setShowConfirmModal(true)}
         disabled={isRemoving}
         className="absolute -top-1 right-2 z-10 bg-red-500 text-white rounded-full p-0.5 shadow-md 
                    opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-red-600 disabled:opacity-50"
@@ -95,6 +96,35 @@ function MemberCard({ member, onRemove }: MemberCardProps) {
       ) : (
         <span className="text-[10px] text-muted-foreground">Miembro</span>
       )}
+
+      {/* Confirm Delete Modal */}
+      <Dialog open={showConfirmModal} onOpenChange={setShowConfirmModal}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Confirmar eliminación</DialogTitle>
+          </DialogHeader>
+          <p>Estas seguro de que deseas eliminar a este miembro del equipo?</p>
+          <div className="flex justify-end gap-2 mt-4">
+            <button
+              type="button"
+              className="bg-gray-300 text-gray-700 px-4 py-2 rounded"
+              onClick={() => setShowConfirmModal(false)}
+            >
+              No
+            </button>
+            <button
+              type="button"
+              className="bg-red-500 text-white px-4 py-2 rounded"
+              onClick={() => {
+                setShowConfirmModal(false)
+                handleRemove()
+              }}
+            >
+              Si
+            </button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
