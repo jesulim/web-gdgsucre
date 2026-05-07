@@ -1,0 +1,77 @@
+---
+import ivanImg from "@/assets/events/bwai-26/speakers/ivan-martinez.webp"
+import nathalyImg from "@/assets/events/bwai-26/speakers/nathaly-alarcon.webp"
+import saulImg from "@/assets/events/bwai-26/speakers/saul-gutierrez-espada.webp"
+import silvanaImg from "@/assets/events/bwai-26/speakers/silvana-gutierrez-montano.webp"
+import type { Speaker } from "@/components/events/bwai-26/speakers/SpeakerCard.astro"
+import SpeakerCard from "@/components/events/bwai-26/speakers/SpeakerCard.astro"
+
+const logoSvg = "/events/bwai-26/logo-with-year.svg"
+
+const speakers: Speaker[] = [
+  {
+    image: nathalyImg,
+    name: "Nathaly Alarcón",
+    roleChips: [],
+    talkTitle: "Construyendo Agentes con herramientas de Google",
+    talkTitleSizeMobile: "text-2xl",
+    talkTitleSizeDesktop: "lg:text-4xl",
+    talkChips: [],
+    talkIcon: "/events/bwai-26/speaker-icon-3.svg",
+    description:
+      "ADK en acción. Cómo crear agentes rápidamente usando las herramientas y modelos de Google.",
+  },
+  {
+    image: silvanaImg,
+    name: "Silvana Gutierrez",
+    roleChips: [],
+    talkTitle: "Agentic Workflows: Orquestación de Agentes Autónomos",
+    talkTitleSizeMobile: "text-2xl",
+    talkTitleSizeDesktop: "lg:text-4xl",
+    talkChips: [],
+    talkIcon: "/events/bwai-26/speaker-icon-3.svg",
+    description:
+      "En esta sesión, profundizaremos en los Agentic Workflows y la Orquestación de Agentes, analizando cómo pasar de simples prompts a sistemas integrales que razonan, planifican y utilizan herramientas para resolver problemas complejos. Exploraremos la arquitectura técnica necesaria para que los agentes interactúen con el mundo real de forma autónoma, segura y escalable, transformando la manera en que concebimos el desarrollo de software moderno.",
+  },
+  {
+    image: saulImg,
+    name: "Saul Gutierrez",
+    roleChips: [],
+    talkTitle: "Data-Centric AI: Construyendo Agentes para la Preparación de Datos",
+    talkTitleSizeMobile: "text-2xl",
+    talkTitleSizeDesktop: "lg:text-4xl",
+    talkChips: [],
+    talkIcon: "/events/bwai-26/speaker-icon.svg",
+    description:
+      "En esta charla/taller no vamos a chatear con la IA, vamos a integrarla como un motor de procesamiento para resolver uno de los problemas del Machine Learning: la calidad de los datos.\n- Construiremos en Google Colab integrando la API de Gemini\n- Aplicaremos NLP para normalizar, estructurar y limpiar datasets con errores\n- Generaremos datasets de alta calidad, para mejorar la precisión de modelos de Machine Learning.",
+  },
+  {
+    image: ivanImg,
+    name: "Ivan Martinez",
+    roleChips: [],
+    talkTitle: "ADK for Dummies: Tu primer Agente en Google Cloud",
+    talkTitleSizeMobile: "text-2xl",
+    talkTitleSizeDesktop: "lg:text-4xl",
+    talkChips: [],
+    talkIcon: "/events/bwai-26/speaker-icon-3.svg",
+    description:
+      '¿La Inteligencia Artificial te parece demasiado compleja? En esta sesión desmitificaremos la creación de agentes autónomos usando el Agent Development Kit (ADK). Olvídate de los manuales densos y la teoría interminable; aquí iremos directo al grano. Aprenderás de forma sencilla y paso a paso cómo conectar el "cerebro" de la IA con herramientas externas para que tu asistente no solo converse, sino que ejecute acciones reales. Saldrás de la charla con la base técnica clara y esencial para empezar a programar tus propios proyectos desde cero, sin frustraciones.',
+  },
+]
+---
+
+<section class="w-full flex flex-col items-start px-5 py-8 gap-2 lg:px-20 lg:py-24 lg:gap-16">
+  <h2
+    class="bg-white border-2 border-black rounded-xs md:rounded-lg px-2 py-1 text-xs font-bold lg:px-10 lg:py-4 lg:text-4xl"
+  >
+    SPEAKERS
+  </h2>
+
+  <h3 class="text-4xl lg:text-6xl font-bold tracking-tight">
+    Conoce a las mentes detrás de la innovación
+  </h3>
+
+  <div class="flex flex-col items-center w-full lg:p-5 gap-2 lg:gap-16">
+    {speakers.map((speaker, i) => <SpeakerCard speaker={speaker} index={i} logoSvg={logoSvg} />)}
+  </div>
+</section>

@@ -9,10 +9,9 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import { Loader2Icon } from "lucide-react"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useState } from "react"
 import { toast } from "sonner"
 
-import EventSelector from "@/components/admin/EventSelector"
 import {
   customFilterFn,
   DateCell,
@@ -38,7 +37,6 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-import useEvents from "@/hooks/useEvents"
 import useRegistrations from "@/hooks/useRegistrations"
 import RegistrationRowActions from "./RegistrationRowActions"
 
@@ -72,18 +70,10 @@ function StatusBadge({ status }: { status: string }) {
 
 const defaultRegistrations: Registrations[] = []
 
-export function RegistrationsTable() {
+export function RegistrationsTable({ eventSlug }: { eventSlug: string }) {
   const [globalFilter, setGlobalFilter] = useState("")
-  const [eventSlug, setEventSlug] = useState("")
 
-  const { events } = useEvents()
   const { registrations, isLoading, isFetching, refetch } = useRegistrations(eventSlug)
-
-  useEffect(() => {
-    if (events?.length > 0 && !eventSlug) {
-      setEventSlug(events[0].slug)
-    }
-  }, [events, eventSlug])
 
   const switchRole = useCallback(
     async (id: number, role: string) => {
@@ -134,6 +124,7 @@ export function RegistrationsTable() {
       cell: ({ row }) => {
         return (
           <Select
+            key={row.original.id}
             onValueChange={value => {
               switchRole(row.original.id, value)
             }}
@@ -186,13 +177,7 @@ export function RegistrationsTable() {
     columnHelper.display({
       id: "actions",
       header: "Acciones",
-      cell: ({ row }) => (
-        <RegistrationRowActions
-          row={row}
-          eventName={events.find(e => e.slug === eventSlug)?.name}
-          refetch={refetch}
-        />
-      ),
+      cell: ({ row }) => <RegistrationRowActions row={row} eventName={eventSlug} />,
     }),
   ]
 
@@ -217,11 +202,7 @@ export function RegistrationsTable() {
     <div>
       <Toaster position="top-right" />
 
-      <div className="grid grid-cols-[1fr_auto] md:grid-cols-[1fr_1fr_auto] gap-4 mb-4">
-        <div className="col-span-2 md:col-span-1">
-          <EventSelector events={events} eventSlug={eventSlug} setEventSlug={setEventSlug} />
-        </div>
-
+      <div className="grid grid-cols-[1fr_auto] md:grid-cols-[1fr_auto] gap-4 mb-4">
         <SearchInput
           placeholder="Buscar por nombre, apellido o correo electrónico..."
           globalFilter={globalFilter}

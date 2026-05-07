@@ -4,19 +4,9 @@ import Footer from "@/components/events/bwai-26/Footer.astro"
 import Header from "@/components/events/bwai-26/Header.astro"
 import Hero from "@/components/events/bwai-26/Hero.astro"
 import Info from "@/components/events/bwai-26/Info.astro"
+import Sponsors from "@/components/events/bwai-26/Sponsors.astro"
+import Speakers from "@/components/events/bwai-26/speakers/Speakers.astro"
 import BaseLayout from "@/layout/BaseLayout.astro"
-
-import { getEventRegistration } from "@/lib/services/registrationService"
-import { createUserClient } from "@/lib/supabase"
-
-const supabase = await createUserClient(Astro.cookies)
-const token = Astro.cookies.get("sb-access-token")?.value
-const { data } = await supabase.auth.getClaims(token)
-const registration = data?.claims
-  ? await getEventRegistration(supabase, data.claims.sub, "bwai-26")
-  : null
-
-const isRegistered = !!registration
 
 const imgBlob = "/assets/figma/b9c79608a384972a5a69e904ce221f638866b56c.svg"
 const imgBracketR = "/assets/figma/c16da647df00ff46b018e2f0a32b2954771e2ba6.svg"
@@ -227,11 +217,13 @@ const M_ABOUT_TOP = M_INFO_TOP + M_INFO_H
 
     </div>
 
-    <Header isRegistered={isRegistered} />
+    <Header />
     <main class="overflow-x-hidden">
-      <Hero isRegistered={isRegistered} />
+      <Hero />
       <Info />
       <About />
+      <Speakers />
+      <Sponsors />
     </main>
     <Footer />
   </div>

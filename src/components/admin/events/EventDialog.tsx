@@ -51,7 +51,6 @@ export function EventDialog({ open, event, onCancel }: DialogProps) {
   })
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    console.log(data)
     const response = await fetch("/api/events", {
       method: data.id ? "PUT" : "POST",
       headers: { "Content-Type": "application/json" },

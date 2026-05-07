@@ -399,16 +399,18 @@ export async function getRegistrationData(supabase: SupabaseClient, registration
 export async function getRegistrationByToken(
   supabase: SupabaseClient,
   token: string,
-  activity: string
+  activity: string,
+  eventSlug: string
 ) {
   const { data: registration, error } = await supabase
     .from("registrations_with_activities")
     .select(`id, slug, first_name, last_name, package, activities->${activity}`)
     .eq("token", token)
+    .eq("slug", eventSlug)
     .maybeSingle()
 
   if (!registration || error) {
-    return { error: "Registro no encontrado" }
+    return { error: "Registro no encontrado o no pertenece a este evento." }
   }
 
   if (registration[activity]) {

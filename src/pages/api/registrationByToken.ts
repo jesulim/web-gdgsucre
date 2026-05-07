@@ -6,14 +6,15 @@ import { createUserClient } from "@/lib/supabase"
 export const GET: APIRoute = async ({ url, cookies }) => {
   const token = url.searchParams.get("token")
   const activity = url.searchParams.get("activity")
+  const eventSlug = url.searchParams.get("eventSlug")
 
-  if (!token || !activity) {
-    return new Response("Token and activity are required", { status: 400 })
+  if (!token || !activity || !eventSlug) {
+    return new Response("Token, activity and eventSlug are required", { status: 400 })
   }
 
   try {
     const supabase = await createUserClient(cookies)
-    const response = await getRegistrationByToken(supabase, token, activity)
+    const response = await getRegistrationByToken(supabase, token, activity, eventSlug)
 
     return new Response(JSON.stringify(response), {
       headers: { "Content-Type": "application/json" },
