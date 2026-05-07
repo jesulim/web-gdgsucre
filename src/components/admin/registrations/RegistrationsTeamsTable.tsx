@@ -189,6 +189,8 @@ interface TeamGroupCardProps {
   onAddMember?: (memberId: string, teamId: number) => Promise<void>
   onRemoveMember?: (id: string) => Promise<void>
   sinEquipoMembers: AdminTeamMember[]
+  onJoinTeam: (memberId: string, teamCode: string) => Promise<void>
+  onDeleteMember?: (registrationId: string) => Promise<void>
 }
 
 function TeamGroupCard({
@@ -198,6 +200,8 @@ function TeamGroupCard({
   onAddMember,
   onRemoveMember,
   sinEquipoMembers,
+  onJoinTeam,
+  onDeleteMember,
 }: TeamGroupCardProps) {
   const [showAddModal, setShowAddModal] = useState(false)
   const filteredMembers = team.members.filter(m => matchesFilter(m, filter))
@@ -223,7 +227,7 @@ function TeamGroupCard({
         </div>
         <div className="flex gap-2 px-4 py-4">
           {displayMembers.map(member => (
-            <MemberCard key={member.registration_id} member={member} onRemove={onRemoveMember} />
+            <MemberCard key={member.registration_id} member={member} onRemove={onDeleteMember} />
           ))}
           {!filter &&
             Array.from({ length: emptySlots }).map((_, i) => (
@@ -240,17 +244,14 @@ function TeamGroupCard({
         onOpenChange={setShowAddModal}
         members={sinEquipoMembers}
         teamId={team.id}
-        onAddMember={onAddMember || (async () => {})}
+        onAddMember={async (memberId, teamId) => {
+          const teamCode = team.code
+          await onJoinTeam(memberId, teamCode)
+        }}
       />
     </>
   )
 }
-
-// interface TeamGroupCardProps {
-//   team: AdminTeamGroup
-//   filter: string
-//   index: number
-// }
 
 interface SinEquipoCardProps {
   members: AdminTeamMember[]
@@ -258,23 +259,9 @@ interface SinEquipoCardProps {
   eventId: string
   eventSlug: string
   eventName: string
-  onJoinTeam: (
-    memberId: string,
-    teamCode: string,
-    eventId: string,
-    eventSlug: string,
-    eventName: string
-  ) => Promise<void>
 }
 
-function SinEquipoCard({
-  members,
-  filter,
-  eventId,
-  eventSlug,
-  eventName,
-  onJoinTeam,
-}: SinEquipoCardProps) {
+function SinEquipoCard({ members, filter, eventId, eventSlug, eventName }: SinEquipoCardProps) {
   const filtered = members.filter(m => matchesFilter(m, filter))
   if (!members.length || (filter && filtered.length === 0)) return null
 
@@ -292,24 +279,6 @@ function SinEquipoCard({
         {display.map(member => (
           <div key={member.registration_id} className="flex items-center gap-2">
             <MemberCard member={member} />
-            <Button
-              size="sm"
-              onClick={() => {
-                const teamCode = prompt("Ingrese el código del equipo al que desea unirse:")
-                if (teamCode) {
-                  onJoinTeam(
-                    member.registration_id.toString(),
-                    teamCode,
-                    eventId,
-                    eventSlug,
-                    eventName
-                  )
-                }
-              }}
-              className="ml-2"
-            >
-              Unir a equipo
-            </Button>
           </div>
         ))}
       </div>
@@ -351,7 +320,7 @@ export function RegistrationsTeamsTable() {
 
     try {
       console.log("Sending request to add member", { memberId, teamCode, eventId })
-      const response = await fetch("/api/teams/add-member", {
+      const response = await fetch("/api/teams/addMember", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ memberId, teamCode, eventId }),
@@ -370,6 +339,40 @@ export function RegistrationsTeamsTable() {
     } catch (error) {
       console.error("Error in handleJoinTeam:", error)
       toast.error("Error al unir al equipo")
+    }
+  }
+
+  const handleDeleteTeam = async (registrationId: string) => {
+    console.log("Preparing to delete member", { registrationId })
+
+    if (!registrationId) {
+      console.error("Validation failed: Missing registrationId", { registrationId })
+      toast.error("Faltan datos para eliminar al miembro")
+      return
+    }
+
+    try {
+      console.log("Sending request to delete member", { registrationId })
+      const response = await fetch(
+        `/api/teams/deleteMemberAdmin?registrationId=${registrationId}`,
+        {
+          method: "DELETE",
+        }
+      )
+
+      if (!response.ok) {
+        const errorResponse = await response.text()
+        console.error("Server responded with an error", errorResponse)
+        toast.error(errorResponse || "Error al eliminar al miembro")
+        return
+      }
+
+      console.log("Member successfully deleted")
+      toast.success("Miembro eliminado con éxito")
+      await refetch()
+    } catch (error) {
+      console.error("Error in handleDeleteTeam:", error)
+      toast.error("Error al eliminar al miembro")
     }
   }
 
@@ -440,6 +443,8 @@ export function RegistrationsTeamsTable() {
               filter={globalFilter}
               index={i}
               sinEquipoMembers={sinEquipo}
+              onJoinTeam={handleJoinTeam}
+              onDeleteMember={handleDeleteTeam}
             />
           ))}
           <SinEquipoCard
@@ -448,7 +453,6 @@ export function RegistrationsTeamsTable() {
             eventId={eventId}
             eventSlug={eventSlug}
             eventName={eventName}
-            onJoinTeam={handleJoinTeam}
           />
         </div>
       )}

@@ -107,9 +107,11 @@ export async function createTeam(supabase: SupabaseClient, { event_id, name }: C
   }
 
   // Asociar al creador como lider
-  const { error: teamRegistrationError } = await supabase
-    .from("team_registrations")
-    .insert({ team_id: team.id, registration_id: registration.id, leader: true })
+  const { error: teamRegistrationError } = await supabase.from("team_registrations").insert({
+    team_id: team.id,
+    registration_id: registration.id,
+    leader: true,
+  })
 
   if (teamRegistrationError) {
     throw new Error(`No se pudo asociar el líder al equipo: ${teamRegistrationError.message}`)
@@ -121,7 +123,10 @@ export async function createTeam(supabase: SupabaseClient, { event_id, name }: C
 async function checkTeamAvailable(supabase: SupabaseClient, code: string, event_id: number) {
   const team = await getTeamByCode(supabase, code, event_id)
   if (!team) {
-    return { team: null, error: "Código de equipo inválido o no pertenece a este evento" }
+    return {
+      team: null,
+      error: "Código de equipo inválido o no pertenece a este evento",
+    }
   }
 
   const memberCount = await getTeamMembersCount(supabase, team.id)
@@ -158,9 +163,11 @@ export async function joinTeam(supabase: SupabaseClient, { code, event_id }: Joi
   }
 
   // Asociar al usuario como miembro del equipo
-  const { error: teamRegistrationError } = await supabase
-    .from("team_registrations")
-    .insert({ team_id: team.id, registration_id: registration.id, leader: false })
+  const { error: teamRegistrationError } = await supabase.from("team_registrations").insert({
+    team_id: team.id,
+    registration_id: registration.id,
+    leader: false,
+  })
 
   if (teamRegistrationError) {
     throw new Error(`No se pudo unir al equipo: ${teamRegistrationError.message}`)
@@ -339,12 +346,14 @@ export async function deleteMember(supabase: SupabaseClient, target_registration
   // Encontrar el equipo del target y verificar que el usuario autenticado es líder del mismo equipo
   const { data: teamInfo, error: teamError } = await supabase
     .from("team_registrations")
-    .select(`
+    .select(
+      `
       team_id,
       registration_id,
       leader,
       registrations!inner(user_id)
-    `)
+    `
+    )
     .eq("registration_id", target_registration_id)
     .maybeSingle()
 
@@ -374,4 +383,68 @@ export async function deleteMember(supabase: SupabaseClient, target_registration
   if (error) throw new Error(`Error eliminando miembro: ${error.message}`)
 
   return { success: true }
+}
+
+export async function deleteMemberAsAdmin(
+  supabase: SupabaseClient,
+  target_registration_id: number
+) {
+  const user = await getUser(supabase)
+  if (!user) throw new Error("No se pudo obtener el usuario")
+
+  // Verificar si el usuario es administrador
+  const { data: profile, error: profileError } = await supabase
+    .from("profiles")
+    .select("is_admin")
+    .eq("id", user.id)
+    .single()
+
+  if (profileError) throw new Error(`Error verificando perfil: ${profileError.message}`)
+
+  // Encontrar el equipo del target y verificar que el usuario autenticado es líder del mismo equipo
+  const { data: teamInfo, error: teamError } = await supabase
+    .from("team_registrations")
+    .select(
+      `
+      team_id,
+      registration_id,
+      leader,
+      registrations!inner(user_id)
+    `
+    )
+    .eq("registration_id", target_registration_id)
+    .maybeSingle()
+
+  if (teamError) throw new Error(`Error obteniendo información del equipo: ${teamError.message}`)
+  if (!teamInfo) throw new Error("Registro no encontrado o no pertenece a ningún equipo")
+
+  const { data: leaderCheck, error: leaderError } = await supabase
+    .from("team_registrations")
+    .select("registration_id, registrations!inner(user_id)")
+    .eq("team_id", teamInfo.team_id)
+    .eq("leader", true)
+    .maybeSingle()
+
+  if (leaderError) throw new Error(`Error verificando liderazgo: ${leaderError.message}`)
+
+  const isLeader = leaderCheck && leaderCheck.registrations.user_id === user.id
+  const isAdmin = profile?.is_admin === true
+
+  if (!isLeader && !isAdmin) {
+    throw new Error("Solo el líder o un administrador puede eliminar miembros del equipo")
+  }
+
+  if (leaderCheck?.registration_id === target_registration_id) {
+    throw new Error("No se puede eliminar al líder del equipo")
+  }
+
+  // Usa eliminacion en cascada para eliminar el miembro del equipo
+  const { error: deleteError } = await supabase
+    .from("team_registrations")
+    .delete()
+    .eq("registration_id", target_registration_id)
+
+  if (deleteError) throw new Error(`Error eliminando miembro: ${deleteError.message}`)
+
+  return { message: "Miembro eliminado con éxito" }
 }
