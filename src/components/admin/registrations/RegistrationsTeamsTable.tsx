@@ -105,13 +105,10 @@ function EmptySlot({ onAdd }: { onAdd?: () => void }) {
       <button
         type="button"
         onClick={onAdd}
-        // MODIFICADO: 'rounded-xl' en lugar de 'rounded-full' y tamaño ajustado a 'w-14 h-14'
         className="w-14 h-14 rounded-xl border-2 border-dashed border-border flex items-center justify-center text-muted-foreground text-2xl hover:bg-muted/50 hover:border-muted-foreground/50 hover:text-foreground transition-colors"
       >
         <PlusIcon className="w-6 h-6 stroke-1" />
       </button>
-
-      {/* ELIMINADO: El span con "Agregar" para mantener el diseño compacto de slots cuadrados vacíos */}
     </div>
   )
 }
@@ -258,9 +255,26 @@ function TeamGroupCard({
 interface SinEquipoCardProps {
   members: AdminTeamMember[]
   filter: string
+  eventId: string
+  eventSlug: string
+  eventName: string
+  onJoinTeam: (
+    memberId: string,
+    teamCode: string,
+    eventId: string,
+    eventSlug: string,
+    eventName: string
+  ) => Promise<void>
 }
 
-function SinEquipoCard({ members, filter }: SinEquipoCardProps) {
+function SinEquipoCard({
+  members,
+  filter,
+  eventId,
+  eventSlug,
+  eventName,
+  onJoinTeam,
+}: SinEquipoCardProps) {
   const filtered = members.filter(m => matchesFilter(m, filter))
   if (!members.length || (filter && filtered.length === 0)) return null
 
@@ -276,7 +290,27 @@ function SinEquipoCard({ members, filter }: SinEquipoCardProps) {
       </div>
       <div className="flex flex-wrap gap-3 px-4 py-4">
         {display.map(member => (
-          <MemberCard key={member.registration_id} member={member} />
+          <div key={member.registration_id} className="flex items-center gap-2">
+            <MemberCard member={member} />
+            <Button
+              size="sm"
+              onClick={() => {
+                const teamCode = prompt("Ingrese el código del equipo al que desea unirse:")
+                if (teamCode) {
+                  onJoinTeam(
+                    member.registration_id.toString(),
+                    teamCode,
+                    eventId,
+                    eventSlug,
+                    eventName
+                  )
+                }
+              }}
+              className="ml-2"
+            >
+              Unir a equipo
+            </Button>
+          </div>
         ))}
       </div>
     </div>
@@ -299,35 +333,43 @@ export function RegistrationsTeamsTable() {
   const teams = data?.teams ?? []
   const sinEquipo = data?.sinEquipo ?? []
 
-  const handleAddMember = async (memberId: string, teamId: number) => {
-    try {
-      const response = await fetch(`/api/teams/add-member`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ memberId, teamId }),
-      })
+  const eventId = events?.find((event: Event) => event.slug === eventSlug)?.id || ""
+  const eventName = events?.find((event: Event) => event.slug === eventSlug)?.name || ""
 
-      if (!response.ok) throw new Error("Error adding member")
-      await refetch()
-    } catch (error) {
-      console.error(error)
-      throw error
+  const handleJoinTeam = async (memberId: string, teamCode: string) => {
+    console.log("Preparing to join team", { memberId, teamCode, eventId })
+
+    if (!memberId || !teamCode || !eventId) {
+      console.error("Validation failed: Missing memberId, teamCode, or eventId", {
+        memberId,
+        teamCode,
+        eventId,
+      })
+      toast.error("Faltan datos para unirse al equipo")
+      return
     }
-  }
 
-  const handleRemoveMember = async (memberId: string) => {
     try {
-      const response = await fetch(`/api/teams/remove-member`, {
+      console.log("Sending request to add member", { memberId, teamCode, eventId })
+      const response = await fetch("/api/teams/add-member", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ memberId }),
+        body: JSON.stringify({ memberId, teamCode, eventId }),
       })
 
-      if (!response.ok) throw new Error("Error removing member")
+      if (!response.ok) {
+        const errorResponse = await response.json()
+        console.error("Server responded with an error", errorResponse)
+        toast.error("Error al unir al equipo")
+        return
+      }
+
+      console.log("Member successfully added to team")
+      toast.success("Usuario unido al equipo con éxito")
       await refetch()
     } catch (error) {
-      console.error(error)
-      throw error
+      console.error("Error in handleJoinTeam:", error)
+      toast.error("Error al unir al equipo")
     }
   }
 
@@ -397,14 +439,25 @@ export function RegistrationsTeamsTable() {
               team={team}
               filter={globalFilter}
               index={i}
-              onAddMember={handleAddMember}
-              onRemoveMember={handleRemoveMember}
               sinEquipoMembers={sinEquipo}
             />
           ))}
-          <SinEquipoCard members={sinEquipo} filter={globalFilter} />
+          <SinEquipoCard
+            members={sinEquipo}
+            filter={globalFilter}
+            eventId={eventId}
+            eventSlug={eventSlug}
+            eventName={eventName}
+            onJoinTeam={handleJoinTeam}
+          />
         </div>
       )}
     </div>
   )
+}
+
+type Event = {
+  id: string
+  name: string
+  slug: string
 }
