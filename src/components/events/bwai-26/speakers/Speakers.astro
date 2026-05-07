@@ -1,6 +1,6 @@
 ---
-import fernandoImg from "@/assets/events/bwai-26/speakers/fernando-silva.webp"
 import ivanImg from "@/assets/events/bwai-26/speakers/ivan-martinez.webp"
+import nathalyImg from "@/assets/events/bwai-26/speakers/nathaly-alarcon.webp"
 import saulImg from "@/assets/events/bwai-26/speakers/saul-gutierrez-espada.webp"
 import silvanaImg from "@/assets/events/bwai-26/speakers/silvana-gutierrez-montano.webp"
 import type { Speaker } from "@/components/events/bwai-26/speakers/SpeakerCard.astro"
@@ -9,6 +9,18 @@ import SpeakerCard from "@/components/events/bwai-26/speakers/SpeakerCard.astro"
 const logoSvg = "/events/bwai-26/logo-with-year.svg"
 
 const speakers: Speaker[] = [
+  {
+    image: nathalyImg,
+    name: "Nathaly Alarcón",
+    roleChips: [],
+    talkTitle: "Construyendo Agentes con herramientas de Google",
+    talkTitleSizeMobile: "text-2xl",
+    talkTitleSizeDesktop: "lg:text-4xl",
+    talkChips: [],
+    talkIcon: "/events/bwai-26/speaker-icon-3.svg",
+    description:
+      "ADK en acción. Cómo crear agentes rápidamente usando las herramientas y modelos de Google.",
+  },
   {
     image: silvanaImg,
     name: "Silvana Gutierrez",
@@ -32,18 +44,6 @@ const speakers: Speaker[] = [
     talkIcon: "/events/bwai-26/speaker-icon.svg",
     description:
       "En esta charla/taller no vamos a chatear con la IA, vamos a integrarla como un motor de procesamiento para resolver uno de los problemas del Machine Learning: la calidad de los datos.\n- Construiremos en Google Colab integrando la API de Gemini\n- Aplicaremos NLP para normalizar, estructurar y limpiar datasets con errores\n- Generaremos datasets de alta calidad, para mejorar la precisión de modelos de Machine Learning.",
-  },
-  {
-    image: fernandoImg,
-    name: "Fernando Silva",
-    roleChips: [],
-    talkTitle: "Agentes con Ollama - Agentic RAG - ReACT Agent (Reason + Act)",
-    talkTitleSizeMobile: "text-2xl",
-    talkTitleSizeDesktop: "lg:text-4xl",
-    talkChips: [],
-    talkIcon: "/events/bwai-26/speaker-icon-2.svg",
-    description:
-      "Tres charlas para sumergirte en el mundo de los agentes de IA. Agentes locales con Ollama: sistemas que razonan y actúan de forma autónoma desde tu propia máquina, sin depender de la nube.\nAgentic RAG: agentes que no solo recuperan información, sino que gestionan todo el proceso de búsqueda y respuesta para resolver problemas complejos. ReACT: el paradigma que combina razonamiento y acción en ciclos iterativos para resolver tareas paso a paso con mayor precisión.",
   },
   {
     image: ivanImg,
