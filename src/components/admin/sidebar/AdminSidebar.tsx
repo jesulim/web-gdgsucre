@@ -17,11 +17,13 @@ import type { UserData, ViewType } from "../Dashboard"
 
 export function AdminSidebar({
   userData,
+  currentRole,
   currentView = "registrations",
   onNavigate,
   ...props
 }: ComponentProps<typeof Sidebar> & {
   userData: UserData
+  currentRole?: string
   currentView: ViewType
   onNavigate?: (view: ViewType) => void
 }) {
@@ -41,7 +43,12 @@ export function AdminSidebar({
       </SidebarHeader>
 
       <SidebarContent>
-        <NavMain currentView={currentView} onNavigate={onNavigate} />
+        <NavMain
+          isAdmin={userData.isAdmin}
+          currentRole={currentRole}
+          currentView={currentView}
+          onNavigate={onNavigate}
+        />
       </SidebarContent>
 
       <SidebarFooter>

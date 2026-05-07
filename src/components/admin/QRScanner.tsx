@@ -20,18 +20,36 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import type { Activity } from "./Dashboard"
 
-const getActivityLabel = (activityKey: string) => {
-  const labels: Record<string, string> = {
-    check_in: "Check-in",
-    package_delivered: "Paquete",
-    lunch: "Almuerzo",
-    refreshment: "Refrigerio",
-  }
-  return labels[activityKey] || activityKey
+interface QRScannerProps {
+  eventSlug: string
+  activities: Activity[]
+}
+interface ConfirmDialogProps {
+  open: boolean
+  onConfirm: () => void
+  onCancel: () => void
+  title: string
+  description: string
 }
 
-function ConfirmDialog({ open, onConfirm, onCancel, title, description }) {
+interface Registration {
+  id: number
+  first_name: string
+  last_name: string
+  package: string
+}
+
+const fetchRegistration = async (token: string, activity: string, eventSlug: string) => {
+  const url = new URL("/api/registrationByToken", window.location.origin)
+  url.search = new URLSearchParams({ token, activity, eventSlug }).toString()
+
+  const response = await fetch(url)
+  return await response.json()
+}
+
+function ConfirmDialog({ open, onConfirm, onCancel, title, description }: ConfirmDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onCancel}>
       <DialogContent className="max-w-sm">
@@ -52,7 +70,7 @@ function ConfirmDialog({ open, onConfirm, onCancel, title, description }) {
   )
 }
 
-export function QRScanner() {
+export function QRScanner({ eventSlug, activities }: QRScannerProps) {
   const processedRef = useRef<Map<string, number>>(new Map())
   const COOLDOWN_MS = 2000
 
@@ -60,18 +78,12 @@ export function QRScanner() {
 
   const [isProcessing, setIsProcessing] = useState(false)
   const [selectedDevice, setSelectedDevice] = useState("")
-  const [activity, setActivity] = useState("check_in")
+  const [activity, setActivity] = useState(activities[0].name)
 
-  const [pendingRegistration, setPendingRegistration] = useState(null)
+  const [pendingRegistration, setPendingRegistration] = useState<Registration | null>(null)
   const [dialogOpen, setDialogOpen] = useState(false)
 
-  const fetchRegistration = async (token: string, activity: string) => {
-    const url = new URL("/api/registrationByToken", window.location.origin)
-    url.search = new URLSearchParams({ token, activity }).toString()
-
-    const response = await fetch(url)
-    return await response.json()
-  }
+  const activityLabel = activities.find(a => a.name === activity)?.label ?? activity
 
   const updateActivity = async () => {
     try {
@@ -80,7 +92,7 @@ export function QRScanner() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           id: pendingRegistration?.id,
-          eventSlug: pendingRegistration?.slug,
+          eventSlug,
           field: activity,
           value: true,
         }),
@@ -92,7 +104,7 @@ export function QRScanner() {
       }
 
       toast.success(
-        `${getActivityLabel(activity)} completado para ${pendingRegistration?.first_name} ${pendingRegistration?.last_name}`
+        `${activityLabel} completado para ${pendingRegistration?.first_name} ${pendingRegistration?.last_name}`
       )
       setDialogOpen(false)
     } catch (error) {
@@ -118,7 +130,7 @@ export function QRScanner() {
     processedRef.current.set(token, now)
 
     try {
-      const response = await fetchRegistration(token, activity)
+      const response = await fetchRegistration(token, activity, eventSlug)
 
       if (response.error) {
         toast.error(response.error)
@@ -128,7 +140,7 @@ export function QRScanner() {
 
       if (response.message === "activity_completed") {
         toast.warning(
-          `${getActivityLabel(activity)} ya fue completado para ${response.first_name} ${response.last_name}`,
+          `${activityLabel} ya fue completado para ${response.first_name} ${response.last_name}`,
           {
             duration: 4000,
           }
@@ -153,7 +165,7 @@ export function QRScanner() {
 
   return (
     <div>
-      <Toaster position="top-right" />
+      <Toaster position="top-right" richColors />
 
       <div className="flex gap-4 mb-8">
         <Select onValueChange={value => setActivity(value)} defaultValue="check_in">
@@ -163,15 +175,16 @@ export function QRScanner() {
           <SelectContent>
             <SelectGroup>
               <SelectLabel>Actividad</SelectLabel>
-              <SelectItem value="check_in">Check-in</SelectItem>
-              <SelectItem value="package_delivered">Paquete</SelectItem>
-              {/* <SelectItem value="lunch">Almuerzo</SelectItem> */}
-              <SelectItem value="refreshment">Refrigerio</SelectItem>
+              {activities.map(activity => (
+                <SelectItem key={activity.name} value={activity.name}>
+                  {activity.label}
+                </SelectItem>
+              ))}
             </SelectGroup>
           </SelectContent>
         </Select>
 
-        {devices?.length > 0 && (
+        {devices?.length > 1 && (
           <Select onValueChange={value => setSelectedDevice(value)}>
             <SelectTrigger className="w-[200px]">
               <SelectValue placeholder="Selecciona una cámara" />
@@ -215,10 +228,10 @@ export function QRScanner() {
       {pendingRegistration && (
         <ConfirmDialog
           open={dialogOpen}
-          title={`¿Completar ${getActivityLabel(activity)}?`}
+          title={`¿Completar ${activityLabel}?`}
           description={
             `${pendingRegistration.first_name} ${pendingRegistration.last_name}` +
-            (activity !== "check_in"
+            (activity !== "check_in" && pendingRegistration.package
               ? `\nPaquete: ${pendingRegistration.package?.split(" (")[0]}`
               : "")
           }

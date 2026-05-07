@@ -1,9 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
 
-type EventStaffRoleRow = {
-  role: string | null
-}
-
 export async function getUser(supabase: SupabaseClient) {
   const {
     data: { user },
@@ -12,7 +8,34 @@ export async function getUser(supabase: SupabaseClient) {
   return user
 }
 
-export async function getProfile(supabase: SupabaseClient, eventId?: number) {
+export async function getStaffRoles(
+  supabase: SupabaseClient,
+  userId: string
+): Promise<Record<string, string>> {
+  const staffRoles: Record<string, string> = {}
+
+  const { data: rolesData, error } = await supabase
+    .from("event_staff")
+    .select("role, event_id, events(slug)")
+    .eq("user_id", userId)
+
+  if (error) {
+    console.error("Error getting staff roles", error)
+    return staffRoles
+  }
+
+  if (rolesData && rolesData.length > 0) {
+    rolesData.forEach(row => {
+      if (row.events?.slug) {
+        staffRoles[row.events.slug] = row.role
+      }
+    })
+  }
+
+  return staffRoles
+}
+
+export async function getProfile(supabase: SupabaseClient) {
   const user = await getUser(supabase)
   if (!user) return null
 
@@ -23,20 +46,7 @@ export async function getProfile(supabase: SupabaseClient, eventId?: number) {
     .maybeSingle()
 
   if (error) {
-    console.error("Error getting progile", error)
-  }
-
-  let role: string | null = null
-  if (eventId !== undefined) {
-    const { data: staffData } = await supabase
-      .from("event_staff")
-      .select("role")
-      .eq("user_id", user.id)
-      .eq("event_id", eventId)
-      .maybeSingle()
-
-    const staffRole = staffData as EventStaffRoleRow | null
-    role = staffRole?.role ?? null
+    console.error("Error getting profile", error)
   }
 
   if (!profile) {
@@ -47,14 +57,12 @@ export async function getProfile(supabase: SupabaseClient, eventId?: number) {
       avatar_url: user?.user_metadata?.avatar_url,
       email: user?.user_metadata.email,
       is_admin: false,
-      role,
     }
   }
 
   return {
     ...profile,
     email: user?.user_metadata.email,
-    role,
   }
 }
 

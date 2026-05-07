@@ -13,21 +13,6 @@ const VIEW_STORAGE_KEY = "admin_current_view"
 
 export type ViewType = "registrations" | "accreditation" | "scanner"
 
-const VIEWS: Record<ViewType, { title: string; component: React.ReactNode }> = {
-  registrations: {
-    title: "Registro de Participantes",
-    component: <RegistrationsTable />,
-  },
-  accreditation: {
-    title: "Acreditación del Evento",
-    component: <AccreditationTable />,
-  },
-  scanner: {
-    title: "Escanear QR",
-    component: <QRScanner />,
-  },
-}
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -36,49 +21,104 @@ const queryClient = new QueryClient({
   },
 })
 
+export interface Activity {
+  name: string
+  label: string
+}
+
 export interface UserData {
   name: string
   email: string
   avatar: string
+  isAdmin: boolean
+  staffRoles: Record<string, string>
 }
 
-export function Dashboard({ userData }: { userData: UserData }) {
-  // Inicializar con la vista guardada o "events" por defecto
+export interface DashboardProps {
+  userData: UserData
+  events: {
+    id: number
+    name: string
+    slug: string
+    date: string
+    registrationOpen: boolean
+    activities: Activity[]
+  }[]
+}
+
+function DashboardContainer({ userData, events }: DashboardProps) {
+  const [eventSlug, setEventSlug] = useState(events[0]?.slug ?? "")
+  const selectedEvent = events.find(e => e.slug === eventSlug)
+  const currentRole = userData.staffRoles[eventSlug]
+
   const [currentView, setCurrentView] = useState<ViewType>(() => {
-    if (typeof window === "undefined") {
-      return "registrations"
-    }
-    const stored = localStorage.getItem(VIEW_STORAGE_KEY)
-    return stored && stored in VIEWS ? (stored as ViewType) : "registrations"
+    if (typeof window === "undefined") return "registrations"
+    return (localStorage.getItem(VIEW_STORAGE_KEY) || "registrations") as ViewType
   })
 
-  // Guardar la vista actual en localStorage cuando cambie
   useEffect(() => {
     localStorage.setItem(VIEW_STORAGE_KEY, currentView)
   }, [currentView])
 
+  useEffect(() => {
+    if (!userData.isAdmin && !userData.staffRoles[eventSlug]) {
+      window.location.href = "/"
+    }
+  }, [userData, eventSlug])
+
+  if (!selectedEvent) {
+    return <main className="p-8">No event available</main>
+  }
+
+  const views: Record<ViewType, { title: string; component: React.ReactNode }> = {
+    registrations: {
+      title: "Registro de Participantes",
+      component: <RegistrationsTable eventSlug={eventSlug} />,
+    },
+    accreditation: {
+      title: "Acreditación del Evento",
+      component: <AccreditationTable eventSlug={eventSlug} activities={selectedEvent.activities} />,
+    },
+    scanner: {
+      title: "Escanear QR",
+      component: <QRScanner eventSlug={eventSlug} activities={selectedEvent.activities} />,
+    },
+  }
+
+  return (
+    <SidebarProvider
+      style={
+        {
+          "--sidebar-width": "calc(var(--spacing) * 72)",
+          "--header-height": "calc(var(--spacing) * 12)",
+        } as React.CSSProperties
+      }
+    >
+      <AdminSidebar
+        variant="inset"
+        collapsible="icon"
+        userData={userData}
+        currentRole={currentRole}
+        currentView={currentView}
+        onNavigate={setCurrentView}
+      />
+      <SidebarInset>
+        <SiteHeader
+          sectionTitle={views[currentView].title}
+          events={events}
+          eventSlug={eventSlug}
+          setEventSlug={setEventSlug}
+        />
+        <main className="p-4 lg:px-6">{views[currentView].component}</main>
+      </SidebarInset>
+    </SidebarProvider>
+  )
+}
+
+export function Dashboard({ userData, events }: DashboardProps) {
   return (
     <QueryClientProvider client={queryClient}>
-      <SidebarProvider
-        style={
-          {
-            "--sidebar-width": "calc(var(--spacing) * 72)",
-            "--header-height": "calc(var(--spacing) * 12)",
-          } as React.CSSProperties
-        }
-      >
-        <AdminSidebar
-          variant="inset"
-          collapsible="icon"
-          userData={userData}
-          currentView={currentView}
-          onNavigate={setCurrentView}
-        />
-        <SidebarInset>
-          <SiteHeader sectionTitle={VIEWS[currentView].title} />
-          <main className="p-4 lg:px-6">{VIEWS[currentView].component}</main>
-        </SidebarInset>
-      </SidebarProvider>
+      <DashboardContainer userData={userData} events={events} />
     </QueryClientProvider>
   )
 }
