@@ -1,6 +1,7 @@
-import type { SupabaseClient } from "@supabase/supabase-js"
 import type { APIRoute } from "astro"
+
 import { createUserClient } from "@/lib/supabase"
+import { customAlphabetNanoid } from "@/lib/utils"
 
 export const POST: APIRoute = async ({ request, cookies }) => {
   try {
@@ -18,6 +19,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       .insert({
         name: team_name,
         event_id: event_id,
+        code: customAlphabetNanoid(),
       })
       .select()
       .single()

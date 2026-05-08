@@ -1,9 +1,8 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
-import { customAlphabet } from "nanoid"
-import { getRegistrationByUser } from "@/lib/services/registrationService"
-import { getUser } from "./profileService"
 
-const nanoid = customAlphabet("ABCDEFGHJKLMNPQRSTUVWXYZ23456789", 6)
+import { getRegistrationByUser } from "@/lib/services/registrationService"
+import { customAlphabetNanoid } from "@/lib/utils"
+import { getUser } from "./profileService"
 
 export const MAX_TEAM_MEMBERS = 5
 
@@ -94,7 +93,7 @@ export async function createTeam(supabase: SupabaseClient, { event_id, name }: C
 
   await assertNotInTeam(supabase, registration.id)
 
-  const code = nanoid()
+  const code = customAlphabetNanoid()
 
   const { data: team, error: teamError } = await supabase
     .from("teams")
@@ -123,7 +122,7 @@ export async function createTeamAsAdmin(
   supabase: SupabaseClient,
   { event_id, name }: CreateTeamParams
 ) {
-  const code = nanoid()
+  const code = customAlphabetNanoid()
 
   const { data: team, error: teamError } = await supabase
     .from("teams")
