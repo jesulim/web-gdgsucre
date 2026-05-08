@@ -91,7 +91,7 @@ function MemberCard({ member, onRemove }: MemberCardProps) {
       </span>
       {member.leader ? (
         <span className="text-[10px] font-semibold bg-amber-100 text-amber-700 rounded px-1.5 py-0.5 whitespace-nowrap">
-          Lider
+          Líder
         </span>
       ) : (
         <span className="text-[10px] text-muted-foreground">Miembro</span>
@@ -103,14 +103,14 @@ function MemberCard({ member, onRemove }: MemberCardProps) {
           <DialogHeader>
             <DialogTitle>Confirmar eliminación</DialogTitle>
           </DialogHeader>
-          <p>Estas seguro de que deseas eliminar a este miembro del equipo?</p>
+          <p>Estás seguro de que deseas eliminar a este miembro del equipo?</p>
           <div className="flex justify-end gap-2 mt-4">
             <button
               type="button"
               className="bg-gray-300 text-gray-700 px-4 py-2 rounded"
               onClick={() => setShowConfirmModal(false)}
             >
-              No
+              Cancelar
             </button>
             <button
               type="button"
@@ -120,7 +120,7 @@ function MemberCard({ member, onRemove }: MemberCardProps) {
                 handleRemove()
               }}
             >
-              Si
+              Eliminar
             </button>
           </div>
         </DialogContent>
@@ -363,8 +363,8 @@ export function RegistrationsTeamsTable() {
         return
       }
 
-      console.log("Member successfully added to team")
-      toast.success("Usuario unido al equipo con éxito")
+      // console.log("Member successfully added to team")
+      // toast.success("Usuario unido al equipo con éxito")
       await refetch()
     } catch (error) {
       console.error("Error in handleJoinTeam:", error)

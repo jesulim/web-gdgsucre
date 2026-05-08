@@ -427,18 +427,20 @@ export async function deleteMemberAsAdmin(
 
   if (leaderError) throw new Error(`Error verificando liderazgo: ${leaderError.message}`)
 
-  const isLeader = leaderCheck && leaderCheck.registrations.user_id === user.id
+  //const isLeader = leaderCheck && leaderCheck.registrations.user_id === user.id
   const isAdmin = profile?.is_admin === true
 
-  if (!isLeader && !isAdmin) {
-    throw new Error("Solo el líder o un administrador puede eliminar miembros del equipo")
+  // if (!isLeader && !isAdmin) {
+  //   throw new Error("Solo el líder o un administrador puede eliminar miembros del equipo")
+  // }
+  if (!isAdmin) {
+    throw new Error("Solo un administrador puede eliminar miembros del equipo")
   }
 
   if (leaderCheck?.registration_id === target_registration_id) {
     throw new Error("No se puede eliminar al líder del equipo")
   }
 
-  // Usa eliminacion en cascada para eliminar el miembro del equipo
   const { error: deleteError } = await supabase
     .from("team_registrations")
     .delete()
