@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
+import { createProfileOfOrganizer, getProfileById } from "./profileService"
 import { getRegistrationData } from "./registrationService"
 
 export async function getOrganizers(supabase: SupabaseClient, eventSlug: string) {
@@ -34,6 +35,113 @@ export async function addOrganizer(supabase: SupabaseClient, registrationId: str
 
   if (error) {
     return { success: false, reason: "insert_failed", message: error.message }
+  }
+
+  return { success: true }
+}
+
+export async function addOrganizerByProfileId(
+  supabase: SupabaseClient,
+  profileId: string,
+  eventSlug: string
+) {
+  const profile = await getProfileById(supabase, profileId)
+  if (!profile) {
+    return { success: false, reason: "profile no encontrado" }
+  }
+  const eventId = await supabase
+    .from("events")
+    .select("id")
+    .eq("slug", eventSlug)
+    .maybeSingle()
+    .then(({ data, error }) => {
+      if (error) {
+        console.error("Error fetching event ID", error)
+        return null
+      }
+      return data?.id ?? null
+    })
+
+  if (!eventId) {
+    return { success: false, reason: "event_not_found" }
+  }
+
+  const { error } = await supabase.from("organizers").insert({
+    profile_id: profileId,
+    event_id: eventId,
+  })
+
+  if (error) {
+    return { success: false, reason: "insert_failed", message: error.message }
+  }
+
+  return { success: true }
+}
+
+export async function addOrganizerAndProfile(
+  supabase: SupabaseClient,
+  first_name: string,
+  last_name: string,
+  phone_number: string,
+  email: string,
+  avatar_url: string,
+  eventSlug: string
+) {
+  const { data, existingProfile } = await supabase
+    .from("profiles")
+    .select("id, first_name, last_name, email")
+    .eq("email", email)
+    .maybeSingle()
+    .then(({ data, error }) => {
+      if (error) {
+        console.error("Error checking existing profile", error)
+        return { data: null, existingProfile: false }
+      }
+      return { data, existingProfile: !!data }
+    })
+
+  if (existingProfile) {
+    return {
+      success: false,
+      reason: "profile already exists",
+      message: "Ya existe un perfil con este email",
+    }
+  }
+  const newProfileData = await createProfileOfOrganizer(supabase, {
+    first_name,
+    last_name,
+    phone_number,
+    email,
+    avatar_url,
+  })
+  const eventId = await supabase
+    .from("events")
+    .select("id")
+    .eq("slug", eventSlug)
+    .maybeSingle()
+    .then(({ data, error }) => {
+      if (error) {
+        console.error("Error fetching event ID", error)
+        return null
+      }
+      return data?.id ?? null
+    })
+
+  if (!eventId) {
+    return { success: false, reason: "event_not_found" }
+  }
+
+  if (!newProfileData.success) {
+    return { success: false, reason: "profile fallo creacion", message: newProfileData.message }
+  }
+
+  const { error } = await supabase.from("organizers").insert({
+    profile_id: newProfileData.data[0].id,
+    event_id: eventId,
+  })
+
+  if (error) {
+    return { success: false, reason: "insert_failed of organizers", message: error.message }
   }
 
   return { success: true }
