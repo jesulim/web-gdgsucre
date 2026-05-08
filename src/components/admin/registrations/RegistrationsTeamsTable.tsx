@@ -63,7 +63,7 @@ function MemberCard({ member, onRemove }: MemberCardProps) {
         type="button"
         onClick={() => setShowConfirmModal(true)}
         disabled={isRemoving}
-        className="absolute -top-1 right-2 z-10 bg-red-500 text-white rounded-full p-0.5 shadow-md 
+        className="absolute -top-1 right-2 z-10 bg-red-500 text-white rounded-full p-0.5 shadow-md
                    opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-red-600 disabled:opacity-50"
         title="Eliminar miembro"
       >
@@ -317,10 +317,10 @@ interface CreateTeamModalProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   eventId: string
-  onCreated?: () => Promise<void>
+  refetch?: () => void
 }
 
-function CreateTeamModal({ open, onOpenChange, eventId, onCreated }: CreateTeamModalProps) {
+function CreateTeamModal({ open, onOpenChange, eventId, refetch }: CreateTeamModalProps) {
   const [teamName, setTeamName] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
@@ -333,7 +333,7 @@ function CreateTeamModal({ open, onOpenChange, eventId, onCreated }: CreateTeamM
     setIsLoading(true)
 
     try {
-      const response = await fetch("/api/teams/createVoid", {
+      const response = await fetch("/api/teams", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -354,7 +354,7 @@ function CreateTeamModal({ open, onOpenChange, eventId, onCreated }: CreateTeamM
       setTeamName("")
       onOpenChange(false)
 
-      await onCreated?.()
+      refetch()
     } catch (error) {
       console.error(error)
       toast.error("Error al crear el equipo")
@@ -402,25 +402,14 @@ function CreateTeamModal({ open, onOpenChange, eventId, onCreated }: CreateTeamM
   )
 }
 
-export function RegistrationsTeamsTable() {
+export function TeamsManager({ eventId, eventSlug }: { eventId: number; eventSlug: string }) {
   const [globalFilter, setGlobalFilter] = useState("")
-  const [eventSlug, setEventSlug] = useState("")
   const [showCreateTeamModal, setShowCreateTeamModal] = useState(false)
 
-  const { events } = useEvents()
   const { data, isLoading, isFetching, refetch } = useTeamsWithMembers(eventSlug)
-
-  useEffect(() => {
-    if (events?.length > 0 && !eventSlug) {
-      setEventSlug(events[0].slug)
-    }
-  }, [events, eventSlug])
 
   const teams = data?.teams ?? []
   const sinEquipo = data?.sinEquipo ?? []
-
-  const eventId = events?.find((event: Event) => event.slug === eventSlug)?.id || ""
-  const eventName = events?.find((event: Event) => event.slug === eventSlug)?.name || ""
 
   const handleJoinTeam = async (memberId: string, teamCode: string) => {
     console.log("Preparing to join team", { memberId, teamCode, eventId })
@@ -507,12 +496,7 @@ export function RegistrationsTeamsTable() {
     <div>
       <Toaster position="top-right" />
 
-      {/* Controls */}
-      <div className="grid grid-cols-[1fr_auto] md:grid-cols-[1fr_1fr_auto] gap-4 mb-4">
-        <div className="col-span-2 md:col-span-1">
-          <EventSelector events={events} eventSlug={eventSlug} setEventSlug={setEventSlug} />
-        </div>
-
+      <div className="flex gap-4 mb-4">
         <SearchInput
           placeholder="Buscar por nombre, apellido o correo..."
           globalFilter={globalFilter}
@@ -523,14 +507,12 @@ export function RegistrationsTeamsTable() {
           {isFetching && <Loader2Icon className="animate-spin" />}
           Actualizar
         </Button>
-        <br />
       </div>
-      <div>
-        <Button className="bg-green-500 rounded-sm w-fit mb-4" onClick={modalCreationTeam}>
-          <PlusIcon className="mr-2 h-4 w-4" />
-          Agregar Equipo
-        </Button>
-      </div>
+
+      <Button className="bg-green-500 rounded-sm w-fit mb-4" onClick={modalCreationTeam}>
+        <PlusIcon className="mr-2 h-4 w-4" />
+        Agregar Equipo
+      </Button>
 
       {/* Summary row */}
       {!isLoading && totalMembers > 0 && (
@@ -582,6 +564,7 @@ export function RegistrationsTeamsTable() {
         open={showCreateTeamModal}
         onOpenChange={setShowCreateTeamModal}
         eventId={eventId}
+        refetch={refetch}
       />
     </div>
   )

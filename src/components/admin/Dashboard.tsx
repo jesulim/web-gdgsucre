@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { AccreditationTable } from "@/components/admin/AccreditationTable"
 import { QRScanner } from "@/components/admin/QRScanner"
 import { RegistrationsTable } from "@/components/admin/registrations/RegistrationsTable"
-import { RegistrationsTeamsTable } from "@/components/admin/registrations/RegistrationsTeamsTable"
+import { TeamsManager } from "@/components/admin/registrations/RegistrationsTeamsTable"
 import { AdminSidebar } from "@/components/admin/sidebar/AdminSidebar"
 import { SiteHeader } from "@/components/admin/sidebar/SiteHeader"
 
@@ -78,7 +78,7 @@ function DashboardContainer({ userData, events }: DashboardProps) {
     },
     registrationsTeams: {
       title: "Registro de Equipos",
-      component: <RegistrationsTeamsTable eventSlug={eventSlug} />,
+      component: <TeamsManager eventId={selectedEvent.id} eventSlug={eventSlug} />,
     },
     accreditation: {
       title: "Acreditación del Evento",
