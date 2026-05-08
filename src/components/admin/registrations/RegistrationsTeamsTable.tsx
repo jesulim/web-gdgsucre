@@ -90,11 +90,11 @@ function MemberCard({ member, onRemove }: MemberCardProps) {
         {member.first_name} {member.last_name.charAt(0)}.
       </span>
       {member.leader ? (
-        <span className="text-[10px] font-semibold bg-amber-100 text-amber-700 rounded px-1.5 py-0.5 whitespace-nowrap">
+        <span className="text-[14px] font-semibold bg-amber-100 text-amber-700 rounded px-1.5 py-0.5 whitespace-nowrap">
           Líder
         </span>
       ) : (
-        <span className="text-[10px] text-muted-foreground">Miembro</span>
+        <span className="text-[14px] text-muted-foreground">Miembro</span>
       )}
 
       {/* Confirm Delete Modal */}
@@ -227,8 +227,8 @@ function TeamGroupCard({
   team,
   filter,
   // index,
-  onAddMember,
-  onRemoveMember,
+  // onAddMember,
+  // onRemoveMember,
   sinEquipoMembers,
   onJoinTeam,
   onDeleteMember,
@@ -274,7 +274,7 @@ function TeamGroupCard({
         onOpenChange={setShowAddModal}
         members={sinEquipoMembers}
         teamId={team.id}
-        onAddMember={async (memberId, teamId) => {
+        onAddMember={async (memberId, _teamId) => {
           const teamCode = team.code
           await onJoinTeam(memberId, teamCode)
         }}
@@ -286,12 +286,9 @@ function TeamGroupCard({
 interface SinEquipoCardProps {
   members: AdminTeamMember[]
   filter: string
-  eventId: string
-  eventSlug: string
-  eventName: string
 }
 
-function SinEquipoCard({ members, filter, eventId, eventSlug, eventName }: SinEquipoCardProps) {
+function SinEquipoCard({ members, filter }: SinEquipoCardProps) {
   const filtered = members.filter(m => matchesFilter(m, filter))
   if (!members.length || (filter && filtered.length === 0)) return null
 
@@ -316,9 +313,99 @@ function SinEquipoCard({ members, filter, eventId, eventSlug, eventName }: SinEq
   )
 }
 
+interface CreateTeamModalProps {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  eventId: string
+  onCreated?: () => Promise<void>
+}
+
+function CreateTeamModal({ open, onOpenChange, eventId, onCreated }: CreateTeamModalProps) {
+  const [teamName, setTeamName] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleCreate = async () => {
+    if (!teamName.trim()) {
+      toast.error("Ingresa un nombre para el equipo")
+      return
+    }
+
+    setIsLoading(true)
+
+    try {
+      const response = await fetch("/api/teams/createVoid", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          team_name: teamName,
+          event_id: eventId,
+        }),
+      })
+
+      if (!response.ok) {
+        toast.error("No se pudo crear el equipo")
+        return
+      }
+
+      toast.success("Equipo creado correctamente")
+
+      setTeamName("")
+      onOpenChange(false)
+
+      await onCreated?.()
+    } catch (error) {
+      console.error(error)
+      toast.error("Error al crear el equipo")
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-md">
+        <DialogHeader>
+          <DialogTitle>Crear equipo</DialogTitle>
+        </DialogHeader>
+
+        <div className="space-y-4 py-2">
+          <div className="space-y-2">
+            <label htmlFor="teamName" className="text-sm font-medium">
+              Nombre del equipo
+            </label>
+
+            <input
+              type="text"
+              id="teamName"
+              value={teamName}
+              onChange={e => setTeamName(e.target.value)}
+              placeholder="Ej: GDG Team"
+              className="w-full border rounded-md px-3 py-2 text-sm"
+            />
+          </div>
+
+          <div className="flex justify-end gap-2">
+            <Button variant="outline" onClick={() => onOpenChange(false)}>
+              Cancelar
+            </Button>
+
+            <Button onClick={handleCreate} disabled={isLoading} className="bg-green-500">
+              {isLoading && <Loader2Icon className="animate-spin mr-2 h-4 w-4" />}
+              Crear equipo
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
 export function RegistrationsTeamsTable() {
   const [globalFilter, setGlobalFilter] = useState("")
   const [eventSlug, setEventSlug] = useState("")
+  const [showCreateTeamModal, setShowCreateTeamModal] = useState(false)
 
   const { events } = useEvents()
   const { data, isLoading, isFetching, refetch } = useTeamsWithMembers(eventSlug)
@@ -370,6 +457,10 @@ export function RegistrationsTeamsTable() {
       console.error("Error in handleJoinTeam:", error)
       toast.error("Error al unir al equipo")
     }
+  }
+
+  const modalCreationTeam = () => {
+    setShowCreateTeamModal(true)
   }
 
   const handleDeleteTeam = async (registrationId: string) => {
@@ -432,6 +523,13 @@ export function RegistrationsTeamsTable() {
           {isFetching && <Loader2Icon className="animate-spin" />}
           Actualizar
         </Button>
+        <br />
+      </div>
+      <div>
+        <Button className="bg-green-500 rounded-sm w-fit mb-4" onClick={modalCreationTeam}>
+          <PlusIcon className="mr-2 h-4 w-4" />
+          Agregar Equipo
+        </Button>
       </div>
 
       {/* Summary row */}
@@ -477,15 +575,14 @@ export function RegistrationsTeamsTable() {
               onDeleteMember={handleDeleteTeam}
             />
           ))}
-          <SinEquipoCard
-            members={sinEquipo}
-            filter={globalFilter}
-            eventId={eventId}
-            eventSlug={eventSlug}
-            eventName={eventName}
-          />
+          <SinEquipoCard members={sinEquipo} filter={globalFilter} />
         </div>
       )}
+      <CreateTeamModal
+        open={showCreateTeamModal}
+        onOpenChange={setShowCreateTeamModal}
+        eventId={eventId}
+      />
     </div>
   )
 }

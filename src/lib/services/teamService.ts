@@ -119,8 +119,26 @@ export async function createTeam(supabase: SupabaseClient, { event_id, name }: C
 
   return { success: true, team }
 }
+export async function createTeamAsAdmin(
+  supabase: SupabaseClient,
+  { event_id, name }: CreateTeamParams
+) {
+  const code = nanoid()
 
-async function checkTeamAvailable(supabase: SupabaseClient, code: string, event_id: number) {
+  const { data: team, error: teamError } = await supabase
+    .from("teams")
+    .insert({ event_id, name, code })
+    .select("id, name, code")
+    .single()
+
+  if (teamError || !team) {
+    throw new Error(`No se pudo crear el equipo: ${teamError?.message}`)
+  }
+
+  return { success: true, team }
+}
+
+export async function checkTeamAvailable(supabase: SupabaseClient, code: string, event_id: number) {
   const team = await getTeamByCode(supabase, code, event_id)
   if (!team) {
     return {

@@ -177,7 +177,9 @@ export function RegistrationsTable({ eventSlug }: { eventSlug: string }) {
     columnHelper.display({
       id: "actions",
       header: "Acciones",
-      cell: ({ row }) => <RegistrationRowActions row={row} eventName={eventSlug} />,
+      cell: ({ row }) => (
+        <RegistrationRowActions row={row} eventName={eventSlug} refetch={refetch} />
+      ),
     }),
   ]
 
