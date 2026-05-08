@@ -7,7 +7,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { Loader2Icon } from "lucide-react"
+import { Loader2Icon, PlusIcon } from "lucide-react"
 import { useState } from "react"
 
 import { customFilterFn, SearchInput, TablePagination } from "@/components/admin/TableUtils"
@@ -23,6 +23,8 @@ import {
 } from "@/components/ui/table"
 
 import useOrganizers from "@/hooks/useOrganizers"
+
+import { OrganizerFormModal } from "./OrganizerFormModal"
 
 interface OrganizerData {
   id: number
@@ -40,6 +42,9 @@ export function OrganizersTable({ eventSlug }: { eventSlug: string }) {
   const { organizers, isLoading, isFetching, refetch } = useOrganizers(eventSlug)
 
   const columnHelper = createColumnHelper<OrganizerData>()
+
+  const [modalOpen, setModalOpen] = useState(false)
+  const [editingOrganizer, setEditingOrganizer] = useState<OrganizerData | null>(null)
 
   const columns = [
     columnHelper.display({
@@ -63,6 +68,22 @@ export function OrganizersTable({ eventSlug }: { eventSlug: string }) {
       header: "Teléfono",
       enableGlobalFilter: false,
       cell: info => info.getValue() ?? "-",
+    }),
+    columnHelper.display({
+      id: "actions",
+      header: "Acciones",
+      cell: ({ row }) => (
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => {
+            setEditingOrganizer(row.original)
+            setModalOpen(true)
+          }}
+        >
+          Editar
+        </Button>
+      ),
     }),
   ]
 
@@ -91,6 +112,16 @@ export function OrganizersTable({ eventSlug }: { eventSlug: string }) {
           globalFilter={globalFilter}
           setGlobalFilter={setGlobalFilter}
         />
+        <Button
+          className="bg-blue-500 rounded-sm"
+          onClick={() => {
+            setEditingOrganizer(null)
+            setModalOpen(true)
+          }}
+        >
+          <PlusIcon className="mr-1 h-4 w-4" />
+          Agregar
+        </Button>
         <Button className="bg-blue-500 rounded-sm w-fit" onClick={() => refetch()}>
           {isFetching && <Loader2Icon className="animate-spin" />}
           Actualizar
@@ -139,6 +170,17 @@ export function OrganizersTable({ eventSlug }: { eventSlug: string }) {
       <div className="my-4 text-sm text-gray-600">
         Total: {table.getFilteredRowModel().rows.length} organizador(es)
       </div>
+      <OrganizerFormModal
+        open={modalOpen}
+        onOpenChange={open => {
+          setModalOpen(open)
+          if (!open) setEditingOrganizer(null)
+        }}
+        eventSlug={eventSlug}
+        mode={editingOrganizer ? "edit" : "create"}
+        initialData={editingOrganizer ?? undefined}
+        onSuccess={() => refetch()}
+      />
     </div>
   )
 }

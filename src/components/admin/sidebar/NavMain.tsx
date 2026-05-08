@@ -45,7 +45,6 @@ const sidebarSections: SidebarSection[] = [
     title: "Organizadores",
     view: "organizers",
     icon: UserCog,
-    // sin allowedRoles → solo admins lo ven (el filtro ya lo maneja isAdmin)
   },
 ]
 
