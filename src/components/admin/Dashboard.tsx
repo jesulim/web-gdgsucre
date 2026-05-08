@@ -74,7 +74,7 @@ function DashboardContainer({ userData, events }: DashboardProps) {
   const views: Record<ViewType, { title: string; component: React.ReactNode }> = {
     registrations: {
       title: "Registro de Participantes",
-      component: <RegistrationsTable eventSlug={eventSlug} />,
+      component: <RegistrationsTable eventSlug={eventSlug} eventName={selectedEvent.name} />,
     },
     registrationsTeams: {
       title: "Registro de Equipos",
