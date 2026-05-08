@@ -14,6 +14,8 @@ export async function getStaffRoles(
 ): Promise<Record<string, string>> {
   const staffRoles: Record<string, string> = {}
 
+  if (!userId) return staffRoles
+
   const { data: rolesData, error } = await supabase
     .from("event_staff")
     .select("role, event_id, events(slug)")

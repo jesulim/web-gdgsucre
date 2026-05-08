@@ -1,8 +1,5 @@
-import { FunctionsHttpError } from "@supabase/supabase-js"
-import type SupabaseClient from "@supabase/supabase-js/dist/module/SupabaseClient"
-import { customAlphabet } from "nanoid"
-
-const nanoid = customAlphabet("ABCDEFGHJKLMNPQRSTUVWXYZ23456789")
+import { FunctionsHttpError, type SupabaseClient } from "@supabase/supabase-js"
+import { customAlphabetNanoid } from "@/lib/utils"
 
 async function uploadFile(
   supabase: SupabaseClient,
@@ -178,7 +175,7 @@ export async function confirmRegistration(supabase: SupabaseClient, registration
     return { success: true, token: registration.token }
   }
 
-  const token = nanoid(6)
+  const token = customAlphabetNanoid(6)
 
   const { data: qrData, error: qrError } = await supabase.functions.invoke("generate-qr", {
     body: { token, registrationId: registration.id },

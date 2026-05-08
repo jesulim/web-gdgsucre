@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { AccreditationTable } from "@/components/admin/AccreditationTable"
 import { QRScanner } from "@/components/admin/QRScanner"
 import { RegistrationsTable } from "@/components/admin/registrations/RegistrationsTable"
+import { TeamsManager } from "@/components/admin/registrations/RegistrationsTeamsTable"
 import { AdminSidebar } from "@/components/admin/sidebar/AdminSidebar"
 import { SiteHeader } from "@/components/admin/sidebar/SiteHeader"
 
@@ -11,7 +12,7 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 
 const VIEW_STORAGE_KEY = "admin_current_view"
 
-export type ViewType = "registrations" | "accreditation" | "scanner"
+export type ViewType = "registrations" | "registrationsTeams" | "accreditation" | "scanner"
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -73,7 +74,11 @@ function DashboardContainer({ userData, events }: DashboardProps) {
   const views: Record<ViewType, { title: string; component: React.ReactNode }> = {
     registrations: {
       title: "Registro de Participantes",
-      component: <RegistrationsTable eventSlug={eventSlug} />,
+      component: <RegistrationsTable eventSlug={eventSlug} eventName={selectedEvent.name} />,
+    },
+    registrationsTeams: {
+      title: "Registro de Equipos",
+      component: <TeamsManager eventId={selectedEvent.id} eventSlug={eventSlug} />,
     },
     accreditation: {
       title: "Acreditación del Evento",

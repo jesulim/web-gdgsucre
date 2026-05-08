@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { CrownIcon, Trash2Icon, Loader2Icon } from "lucide-react"
+import { CrownIcon, Loader2Icon, Trash2Icon } from "lucide-react"
 
 import {
   AlertDialog,

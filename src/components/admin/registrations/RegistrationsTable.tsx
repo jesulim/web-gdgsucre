@@ -70,7 +70,13 @@ function StatusBadge({ status }: { status: string }) {
 
 const defaultRegistrations: Registrations[] = []
 
-export function RegistrationsTable({ eventSlug }: { eventSlug: string }) {
+export function RegistrationsTable({
+  eventSlug,
+  eventName,
+}: {
+  eventSlug: string
+  eventName: string
+}) {
   const [globalFilter, setGlobalFilter] = useState("")
 
   const { registrations, isLoading, isFetching, refetch } = useRegistrations(eventSlug)
@@ -177,7 +183,9 @@ export function RegistrationsTable({ eventSlug }: { eventSlug: string }) {
     columnHelper.display({
       id: "actions",
       header: "Acciones",
-      cell: ({ row }) => <RegistrationRowActions row={row} eventName={eventSlug} />,
+      cell: ({ row }) => (
+        <RegistrationRowActions row={row} eventName={eventName} refetch={refetch} />
+      ),
     }),
   ]
 
@@ -196,6 +204,7 @@ export function RegistrationsTable({ eventSlug }: { eventSlug: string }) {
       globalFilter,
     },
     onGlobalFilterChange: setGlobalFilter,
+    autoResetPageIndex: false,
   })
 
   return (

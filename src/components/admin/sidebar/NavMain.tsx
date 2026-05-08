@@ -1,4 +1,4 @@
-import { List, type LucideIcon, ScanQrCode, Users } from "lucide-react"
+import { Box, Boxes, List, type LucideIcon, ScanQrCode, Users } from "lucide-react"
 
 import {
   SidebarGroup,
@@ -23,6 +23,11 @@ const sidebarSections: SidebarSection[] = [
     view: "registrations",
     icon: List,
     allowedRoles: ["accreditation"],
+  },
+  {
+    title: "Registro de Equipos",
+    view: "registrationsTeams",
+    icon: Boxes,
   },
   {
     title: "Acreditación del Evento",
