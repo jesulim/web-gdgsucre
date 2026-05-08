@@ -1,13 +1,12 @@
 import { Loader2Icon, PlusIcon, Trash, UsersIcon, XIcon } from "lucide-react"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
-
+import { set } from "zod"
 import EventSelector from "@/components/admin/EventSelector"
 import { SearchInput } from "@/components/admin/TableUtils"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Toaster } from "@/components/ui/sonner"
-
 import useEvents from "@/hooks/useEvents"
 import useTeamsWithMembers from "@/hooks/useTeamsWithMembers"
 import type { AdminTeamGroup, AdminTeamMember } from "@/lib/services/teamService"
@@ -236,6 +235,8 @@ function TeamGroupCard({
   refetch,
 }: TeamGroupCardProps) {
   const [showAddModal, setShowAddModal] = useState(false)
+  const [showConfirmModal, setShowConfirmModal] = useState(false)
+
   const [isDeleting, setIsDeleting] = useState(false)
   const filteredMembers = team.members.filter(m => matchesFilter(m, filter))
   if (filter && filteredMembers.length === 0) return null
@@ -251,8 +252,13 @@ function TeamGroupCard({
       return
     }
 
+    setIsDeleting(true)
+
     try {
-      console.log("Enviando solicitud para eliminar al equipo", { teamId: team.id })
+      console.log("Enviando solicitud para eliminar al equipo", {
+        teamId: team.id,
+      })
+
       const response = await fetch(`/api/teams?id=${team.id}`, {
         method: "DELETE",
       })
@@ -265,10 +271,15 @@ function TeamGroupCard({
       }
 
       toast.success("Equipo eliminado con exito")
-      refetch()
+
+      setShowConfirmModal(false)
+
+      await refetch()
     } catch (error) {
       console.error("Error in handleDeleteTeamGroup:", error)
       toast.error("Error al eliminar el equipo")
+    } finally {
+      setIsDeleting(false)
     }
   }
 
@@ -283,14 +294,16 @@ function TeamGroupCard({
               {team.code}
             </span>
           </div>
+
           <div className="flex items-center gap-4">
             <span className="text-xs text-muted-foreground">
               {displayMembers.length} / {MAX_SLOTS}
             </span>
+
             <Button
               variant="ghost"
               size="icon"
-              onClick={handleDeleteTeamGroup}
+              onClick={() => setShowConfirmModal(true)}
               disabled={isDeleting || team.members.length > 0}
               className="h-10 w-10 text-red-500 hover:text-red-700 hover:bg-red-50/50 disabled:text-red-200"
             >
@@ -298,10 +311,12 @@ function TeamGroupCard({
             </Button>
           </div>
         </div>
+
         <div className="flex gap-2 px-4 py-4">
           {displayMembers.map(member => (
             <MemberCard key={member.registration_id} member={member} onRemove={onDeleteMember} />
           ))}
+
           {!filter &&
             Array.from({ length: emptySlots }).map((_, i) => (
               <EmptySlot
@@ -322,6 +337,36 @@ function TeamGroupCard({
           await onJoinTeam(memberId, teamCode)
         }}
       />
+
+      <Dialog open={showConfirmModal} onOpenChange={setShowConfirmModal}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Confirmar eliminación</DialogTitle>
+          </DialogHeader>
+
+          <p>¿Estás seguro de que deseas eliminar este equipo?</p>
+
+          <div className="flex justify-end gap-2 mt-4">
+            <button
+              type="button"
+              className="bg-gray-300 text-gray-700 px-4 py-2 rounded"
+              onClick={() => setShowConfirmModal(false)}
+              disabled={isDeleting}
+            >
+              Cancelar
+            </button>
+
+            <button
+              type="button"
+              className="bg-red-500 text-white px-4 py-2 rounded disabled:opacity-50"
+              disabled={isDeleting}
+              onClick={handleDeleteTeamGroup}
+            >
+              {isDeleting ? "Eliminando..." : "Eliminar"}
+            </button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   )
 }
