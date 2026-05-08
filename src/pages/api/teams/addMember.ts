@@ -1,9 +1,10 @@
 import type { APIRoute } from "astro"
-import { getTeamByCode } from "@/lib/services/teamService"
+import { checkTeamAvailable, getTeamByCode } from "@/lib/services/teamService"
 import { createUserClient } from "@/lib/supabase"
 export const POST: APIRoute = async ({ request, cookies }) => {
   try {
     const { memberId, teamCode, eventId } = await request.json()
+    let leaderAssigned = false
 
     console.log("Received data:", { memberId, teamCode, eventId })
 
@@ -42,6 +43,15 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       console.error("Team not found", { teamCode, eventId })
       return new Response(JSON.stringify({ error: "No se encontro el equipo" }), { status: 404 })
     }
+
+    const result = await checkTeamAvailable(supabase, teamCode, Number(eventId))
+    if (result.error) {
+      return new Response(JSON.stringify({ error: result.error }), {
+        status: 409,
+        headers: { "Content-Type": "application/json" },
+      })
+    }
+    // marcamos al primer miembro como líder
     const { count, error: countError } = await supabase
       .from("team_registrations")
       .select("*", { count: "exact" })
@@ -50,17 +60,14 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     if (countError) {
       throw countError
     }
-    if (count ?? 0 >= 5) {
-      return new Response(JSON.stringify({ error: "El equipo ya tiene todos sus integrantes" }), {
-        status: 409,
-        headers: { "Content-Type": "application/json" },
-      })
+    if (count === 0) {
+      leaderAssigned = true
     }
 
     const { error } = await supabase.from("team_registrations").insert({
       team_id: team.id,
       registration_id: parseInt(memberId),
-      leader: false,
+      leader: leaderAssigned,
     })
 
     if (error) {
