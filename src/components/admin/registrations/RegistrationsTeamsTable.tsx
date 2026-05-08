@@ -1,13 +1,12 @@
 import { Loader2Icon, PlusIcon, Trash, UsersIcon, XIcon } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { toast } from "sonner"
-import { set } from "zod"
-import EventSelector from "@/components/admin/EventSelector"
+
 import { SearchInput } from "@/components/admin/TableUtils"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Toaster } from "@/components/ui/sonner"
-import useEvents from "@/hooks/useEvents"
 import useTeamsWithMembers from "@/hooks/useTeamsWithMembers"
 import type { AdminTeamGroup, AdminTeamMember } from "@/lib/services/teamService"
 
@@ -69,25 +68,6 @@ function MemberCard({ member, onRemove }: MemberCardProps) {
         <XIcon className="w-3 h-3" />
       </button>
 
-      <div className="relative">
-        <div
-          className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-medium border-2 ${
-            member.leader
-              ? "bg-amber-100 text-amber-800 border-amber-300"
-              : "bg-blue-100 text-blue-800 border-blue-200"
-          }`}
-        >
-          {getInitials(member.first_name, member.last_name)}
-        </div>
-        {member.leader && (
-          <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-amber-400 border-2 border-white flex items-center justify-center">
-            <span className="text-[7px] text-amber-900">★</span>
-          </div>
-        )}
-      </div>
-      <span className="text-xs font-medium text-center truncate w-full max-w-[72px] leading-tight">
-        {member.first_name} {member.last_name.charAt(0)}.
-      </span>
       {member.leader ? (
         <span className="text-[14px] font-semibold bg-amber-100 text-amber-700 rounded px-1.5 py-0.5 whitespace-nowrap">
           Líder
@@ -95,6 +75,20 @@ function MemberCard({ member, onRemove }: MemberCardProps) {
       ) : (
         <span className="text-[14px] text-muted-foreground">Miembro</span>
       )}
+      <div className="relative">
+        <Avatar className="size-16">
+          <AvatarImage src={member.avatar_url} alt={member.first_name} />
+          <AvatarFallback>{getInitials(member.first_name, member.last_name)}</AvatarFallback>
+        </Avatar>
+        {member.leader && (
+          <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-amber-400 border-2 border-white flex items-center justify-center">
+            <span className="text-[7px] text-amber-900">★</span>
+          </div>
+        )}
+      </div>
+      <span className="text-xs font-medium text-center w-28 leading-tight">
+        {member.first_name} {member.last_name}
+      </span>
 
       {/* Confirm Delete Modal */}
       <Dialog open={showConfirmModal} onOpenChange={setShowConfirmModal}>

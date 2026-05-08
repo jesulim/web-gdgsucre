@@ -261,6 +261,7 @@ export interface AdminTeamMember {
   first_name: string
   last_name: string
   email: string
+  avatar_url: string
   status: string
   leader: boolean
 }
@@ -290,7 +291,7 @@ export async function getTeamsWithMembersByEvent(
         registration_id,
         registrations!inner(
           id, status,
-          profiles!inner(first_name, last_name, email)
+          profiles!inner(first_name, last_name, email, avatar_url)
         )
       ),
       events!inner(slug)`
@@ -306,12 +307,13 @@ export async function getTeamsWithMembersByEvent(
       const reg = tr.registrations as unknown as {
         id: number
         status: string
-        profiles: { first_name: string; last_name: string; email: string }
+        profiles: { first_name: string; last_name: string; email: string; avatar_url: string }
       }
       return {
         registration_id: tr.registration_id,
         first_name: reg.profiles.first_name,
         last_name: reg.profiles.last_name,
+        avatar_url: reg.profiles.avatar_url,
         email: reg.profiles.email ?? "",
         status: reg.status,
         leader: tr.leader,
@@ -342,12 +344,14 @@ export async function getTeamsWithMembersByEvent(
         first_name: string
         last_name: string
         email: string
+        avatar_url: string
       }
       return {
         registration_id: reg.id,
         first_name: profiles.first_name,
         last_name: profiles.last_name,
         email: profiles.email ?? "",
+        avatar_url: profiles.avatar_url,
         status: reg.status,
         leader: false as const,
       }
