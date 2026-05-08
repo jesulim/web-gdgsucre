@@ -288,13 +288,13 @@ function TeamGroupCard({
               {displayMembers.length} / {MAX_SLOTS}
             </span>
             <Button
-              variant="outline"
-              size="sm"
+              variant="ghost"
+              size="icon"
               onClick={handleDeleteTeamGroup}
               disabled={isDeleting || team.members.length > 0}
-              className="bg-red-500 text-white border-red-500 hover:bg-red-600 disabled:bg-red-300 disabled:border-red-300 disabled:text-white/70"
+              className="h-10 w-10 text-red-500 hover:text-red-700 hover:bg-red-50/50 disabled:text-red-200"
             >
-              <Trash className="h-3 w-3" />
+              <Trash size={16} strokeWidth={3} />
             </Button>
           </div>
         </div>
