@@ -1,4 +1,4 @@
-import { Loader2Icon, PlusIcon, UsersIcon, XIcon } from "lucide-react"
+import { Loader2Icon, PlusIcon, Trash, UsersIcon, XIcon } from "lucide-react"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
 
@@ -221,6 +221,7 @@ interface TeamGroupCardProps {
   sinEquipoMembers: AdminTeamMember[]
   onJoinTeam: (memberId: string, teamCode: string) => Promise<void>
   onDeleteMember?: (registrationId: string) => Promise<void>
+  refetch: () => void
 }
 
 function TeamGroupCard({
@@ -232,13 +233,44 @@ function TeamGroupCard({
   sinEquipoMembers,
   onJoinTeam,
   onDeleteMember,
+  refetch,
 }: TeamGroupCardProps) {
   const [showAddModal, setShowAddModal] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
   const filteredMembers = team.members.filter(m => matchesFilter(m, filter))
   if (filter && filteredMembers.length === 0) return null
 
   const displayMembers = filter ? filteredMembers : team.members
   const emptySlots = MAX_SLOTS - displayMembers.length
+
+  const handleDeleteTeamGroup = async () => {
+    if (team.members.length > 0) {
+      toast.error(
+        "No se puede eliminar un equipo con miembros. Elimina o mueve a los miembros primero."
+      )
+      return
+    }
+
+    try {
+      console.log("Enviando solicitud para eliminar al equipo", { teamId: team.id })
+      const response = await fetch(`/api/teams?id=${team.id}`, {
+        method: "DELETE",
+      })
+
+      if (!response.ok) {
+        const errorResponse = await response.text()
+        console.error("Server responded with an error", errorResponse)
+        toast.error(errorResponse || "Error al eliminar el equipo")
+        return
+      }
+
+      toast.success("Equipo eliminado con exito")
+      refetch()
+    } catch (error) {
+      console.error("Error in handleDeleteTeamGroup:", error)
+      toast.error("Error al eliminar el equipo")
+    }
+  }
 
   return (
     <>
@@ -251,9 +283,20 @@ function TeamGroupCard({
               {team.code}
             </span>
           </div>
-          <span className="text-xs text-muted-foreground">
-            {displayMembers.length} / {MAX_SLOTS}
-          </span>
+          <div className="flex items-center gap-4">
+            <span className="text-xs text-muted-foreground">
+              {displayMembers.length} / {MAX_SLOTS}
+            </span>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleDeleteTeamGroup}
+              disabled={isDeleting || team.members.length > 0}
+              className="bg-red-500 text-white border-red-500 hover:bg-red-600 disabled:bg-red-300 disabled:border-red-300 disabled:text-white/70"
+            >
+              <Trash className="h-3 w-3" />
+            </Button>
+          </div>
         </div>
         <div className="flex gap-2 px-4 py-4">
           {displayMembers.map(member => (
@@ -555,6 +598,7 @@ export function TeamsManager({ eventId, eventSlug }: { eventId: number; eventSlu
               sinEquipoMembers={sinEquipo}
               onJoinTeam={handleJoinTeam}
               onDeleteMember={handleDeleteTeam}
+              refetch={refetch}
             />
           ))}
           <SinEquipoCard members={sinEquipo} filter={globalFilter} />
