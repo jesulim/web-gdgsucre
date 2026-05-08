@@ -5,7 +5,9 @@ import { getRegistrationData } from "./registrationService"
 export async function getOrganizers(supabase: SupabaseClient, eventSlug: string) {
   const { data, error } = await supabase
     .from("organizers")
-    .select("id, profiles!inner (first_name, last_name, avatar_url), events!inner(slug)")
+    .select(
+      "id, profiles!inner (first_name, last_name, avatar_url, email, phone_number), events!inner(slug)"
+    )
     .eq("events.slug", eventSlug)
 
   if (error) return null
@@ -17,6 +19,8 @@ export async function getOrganizers(supabase: SupabaseClient, eventSlug: string)
       image: profile?.avatar_url ?? null,
       first_name: profile?.first_name ?? "",
       last_name: profile?.last_name ?? "",
+      email: profile?.email ?? "",
+      phone_number: profile?.phone_number ?? "",
     }
   })
 }

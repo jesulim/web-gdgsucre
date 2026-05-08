@@ -1,7 +1,39 @@
 import type { APIRoute } from "astro"
-
-import { addOrganizer, removeOrganizer } from "@/lib/services/organizersService"
+import { addOrganizer, getOrganizers, removeOrganizer } from "@/lib/services/organizersService"
 import { createUserClient } from "@/lib/supabase"
+
+export const GET: APIRoute = async ({ url, cookies }) => {
+  try {
+    const slug = url.searchParams.get("slug")
+
+    if (!slug) {
+      return new Response(JSON.stringify({ error: "slug es requerido" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      })
+    }
+
+    const supabase = await createUserClient(cookies)
+    const organizers = await getOrganizers(supabase, slug)
+
+    if (!organizers) {
+      return new Response(JSON.stringify({ error: "No se pudieron obtener los organizadores" }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      })
+    }
+
+    return new Response(JSON.stringify(organizers), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    })
+  } catch (error) {
+    return new Response(JSON.stringify({ error: `Error al obtener organizadores: ${error}` }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    })
+  }
+}
 
 export const POST: APIRoute = async ({ request, cookies }) => {
   try {
