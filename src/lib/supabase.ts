@@ -47,3 +47,8 @@ export const createUserClient = async (cookies: APIContext["cookies"]): Promise<
 
   return client
 }
+
+export const supabaseAdmin = createClient(
+  import.meta.env.SUPABASE_URL,
+  import.meta.env.SUPABASE_ROL_KEY
+)

@@ -83,6 +83,20 @@ export async function getProfileById(supabase: SupabaseClient, profileId: string
 
   return profile
 }
+export async function getProfileByEmail(supabase: SupabaseClient, email: string) {
+  const { data: profile, error } = await supabase
+    .from("profiles")
+    .select("id, first_name, last_name, avatar_url, email, phone_number")
+    .eq("email", email)
+    .maybeSingle()
+
+  if (error) {
+    console.error("No se encontro el profile", error)
+    return null
+  }
+
+  return profile
+}
 
 export async function createProfile(
   supabase: SupabaseClient,
@@ -122,15 +136,13 @@ export async function createProfileOfOrganizer(
     last_name: string
     phone_number: string
     email: string
-    avatar_url: string
   }
 ) {
   const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
     email: registrationData.email,
-    email_confirm: true, // no necesita confirmar email
+    email_confirm: true,
     user_metadata: {
       full_name: `${registrationData.first_name} ${registrationData.last_name}`,
-      avatar_url: registrationData.avatar_url,
     },
   })
 
@@ -149,7 +161,6 @@ export async function createProfileOfOrganizer(
         last_name: registrationData.last_name,
         phone_number: registrationData.phone_number,
         email: registrationData.email,
-        avatar_url: registrationData.avatar_url,
       },
     ])
     .select("id")

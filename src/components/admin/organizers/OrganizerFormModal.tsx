@@ -80,12 +80,17 @@ export function OrganizerFormModal({
     setIsLoading(true)
     try {
       if (mode === "create") {
-        const res = await fetch("/api/organizers", {
+        const res = await fetch("/api/organizers/newProfile", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           // TODO: reemplazar con el endpoint de createOrganizerAndProfile cuando esté listo
           body: JSON.stringify({ ...formData, eventSlug }),
         })
+        const data = await res.json()
+        if (res.status === 400 && data.result === "isOrganizer") {
+          toast.error("El usuario ya es un organizador")
+          return
+        }
         if (!res.ok) throw new Error()
         toast.success("Organizador agregado exitosamente")
       } else {
@@ -104,11 +109,45 @@ export function OrganizerFormModal({
     }
   }
 
-  const handleSearchProfile = () => {
+  const handleSearchProfile = async () => {
     // TODO: conectar con el endpoint de búsqueda de perfiles por email cuando esté listo
     // const profile = await fetch(`/api/profiles?email=${emailSearch}`)
-    // if (profile) setFormData({ ...profile })
-    toast.info("Búsqueda de perfiles próximamente disponible")
+    //peticion post
+    if (!emailSearch) {
+      toast.error("Por favor ingresa un correo para buscar")
+      return
+    }
+    try {
+      const response = await fetch(`/api/organizers/byEmail`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ gmail: emailSearch, event_slug: eventSlug }),
+      })
+
+      const result = await response.json()
+
+      if (!response.ok || !result.success) {
+        const errorMessage = result.error || "Error al buscar perfil"
+        toast.error(errorMessage)
+        return
+      }
+      if (!result.data) {
+        toast.error("Perfil no encontrado")
+        return
+      }
+
+      setFormData({
+        first_name: result.data.first_name,
+        last_name: result.data.last_name,
+        email: result.data.email,
+        phone_number: result.data.phone_number || "",
+      })
+      toast.success("Perfil encontrado y cargado")
+    } catch (error) {
+      console.error("Error buscando perfil", error)
+      toast.error("Error al buscar perfil")
+      return
+    }
   }
 
   const initials = `${formData.first_name?.[0] ?? ""}${formData.last_name?.[0] ?? ""}`.toUpperCase()
