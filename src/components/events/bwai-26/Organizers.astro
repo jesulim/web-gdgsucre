@@ -1,16 +1,11 @@
 ---
 import { getOrganizers } from "@/lib/services/organizersService" // O la ruta donde esté tu servicio
-// 1. Importaciones usando tu estructura original
 import { supabase } from "@/lib/supabase"
 import { OrganizerCard } from "./organizers/OrganizerCard"
 
-// 2. Definimos el slug de tu evento
 const { eventSlug = "bwai-26" } = Astro.props
-
-// 3. Llamamos a tu función original
 const organizersData = await getOrganizers(supabase, eventSlug)
 
-// 4. Aseguramos que siempre sea un array aunque falle
 const organizers = organizersData || []
 ---
 
