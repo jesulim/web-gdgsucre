@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro"
-import { success } from "zod"
+
 import { addOrganizerAndProfile } from "@/lib/services/organizersService"
 import { createUserClient } from "@/lib/supabase"
 
