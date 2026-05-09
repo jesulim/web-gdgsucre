@@ -31,7 +31,7 @@ const organizers = organizersData || []
     <div class="relative flex items-center">
       <button
         aria-label="Desplazar a la Izquierda"
-        class="hidden md:flex absolute left-[-60px] z-20 p-2 bg-yellow-500 rounded-full shadow-md hover:bg-yellow-300 focus:outline-none h-[40px] w-[40px] items-center justify-center"
+        class="hidden md:flex absolute -left-15 z-20 p-2 bg-yellow-500 rounded-full shadow-md hover:bg-yellow-300 focus:outline-none h-10 w-10 items-center justify-center"
         onclick="this.nextElementSibling.scrollBy({ left: -320, behavior: 'smooth' })"
       >
         &#8249;
@@ -60,7 +60,7 @@ const organizers = organizersData || []
       </div>
       
       <button
-        class="hidden md:flex absolute -right-15 z-20 p-2 bg-[#0333AB99] rounded-full shadow-md hover:bg-[#0333AB] focus:outline-none h-10 w-10 items-center justify-center text-white font-bold"
+        class="hidden md:flex absolute -right-15 z-20 p-2 bg-yellow-500 rounded-full shadow-md hover:bg-yellow-300 focus:outline-none h-10 w-10 items-center justify-center"
         aria-label="Desplazar a la Derecha"
         onclick="this.previousElementSibling.scrollBy({ left: 320, behavior: 'smooth' })"
       >
