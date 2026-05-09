@@ -38,10 +38,8 @@ const organizers = organizersData || []
             organizers.map((organizer) => (
               <div class="shrink-0 w-65 md:w-80">
                 <OrganizerCard 
-                  img={organizer.image} 
-                  imageUrl={organizer.image}
+                  img={organizer.image}
                   full_name={`${organizer.first_name} ${organizer.last_name}`.trim()}
-                  carrera="" 
                 />
               </div>
             ))

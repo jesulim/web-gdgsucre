@@ -1,10 +1,8 @@
 const background = "/assets/figma/bg-organizer.svg"
 
 export interface Props {
-  imageUrl: string | null
   img: string
   full_name: string
-  carrera: string
   areas?: string[]
 }
 
