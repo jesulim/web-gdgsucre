@@ -12,15 +12,10 @@ const AUTH_ERRORS = [
 
 // DELETE /api/teams/deleteMemberAdmin?registrationId=527
 export const DELETE: APIRoute = async ({ request, cookies }) => {
-  // console.log("[DELETE] Request received at /api/teams/deleteMemberAdmin")
-
   const supabase = await createUserClient(cookies)
   const url = new URL(request.url)
   const rawRegistrationId = url.searchParams.get("registrationId")
   const target_registration_id = Number(rawRegistrationId)
-
-  // console.log("[DELETE] Raw registrationId:", rawRegistrationId)
-  // console.log("[DELETE] Parsed registrationId:", target_registration_id)
 
   if (
     !rawRegistrationId ||
@@ -42,33 +37,15 @@ export const DELETE: APIRoute = async ({ request, cookies }) => {
       return new Response("No se pudo obtener el usuario", { status: 403 })
     }
 
-    // Verificamos si se admin en profiles
-    const { data: profile, error: profileError } = await supabase
-      .from("profiles")
-      .select("is_admin")
-      .eq("id", user.id)
-      .single()
-
-    if (profileError || !profile?.is_admin) {
-      // console.error("[DELETE] User is not an admin", profileError)
-      return new Response(
-        "Solo el líder, administrador o acreditador puede eliminar miembros del equipo",
-        { status: 403 }
-      )
-    }
-
     // Eliminar miembro
-    // console.log("[DELETE] Attempting to delete member with ID:", target_registration_id)
     const result = await deleteMemberAsAdmin(supabase, target_registration_id)
-    // console.log("[DELETE] Member deleted successfully:", result)
 
     return Response.json(result)
   } catch (error: any) {
-    // console.error("[DELETE] Error occurred:", error)
-
     if (AUTH_ERRORS.includes(error.message)) {
       return new Response(error.message, { status: 403 })
     }
+    console.log(error)
 
     return new Response("Error interno del servidor", { status: 500 })
   }

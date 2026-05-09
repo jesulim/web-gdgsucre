@@ -421,15 +421,6 @@ export async function deleteMemberAsAdmin(
   const user = await getUser(supabase)
   if (!user) throw new Error("No se pudo obtener el usuario")
 
-  // Verificar si el usuario es administrador
-  const { data: profile, error: profileError } = await supabase
-    .from("profiles")
-    .select("is_admin")
-    .eq("id", user.id)
-    .single()
-
-  if (profileError) throw new Error(`Error verificando perfil: ${profileError.message}`)
-
   // Encontrar el equipo del target y verificar que el usuario autenticado es líder del mismo equipo
   const { data: teamInfo, error: teamError } = await supabase
     .from("team_registrations")
@@ -455,20 +446,6 @@ export async function deleteMemberAsAdmin(
     .maybeSingle()
 
   if (leaderError) throw new Error(`Error verificando liderazgo: ${leaderError.message}`)
-
-  //const isLeader = leaderCheck && leaderCheck.registrations.user_id === user.id
-  const isAdmin = profile?.is_admin === true
-
-  // if (!isLeader && !isAdmin) {
-  //   throw new Error("Solo el líder o un administrador puede eliminar miembros del equipo")
-  // }
-  if (!isAdmin) {
-    throw new Error("Solo un administrador puede eliminar miembros del equipo")
-  }
-
-  if (leaderCheck?.registration_id === target_registration_id) {
-    throw new Error("No se puede eliminar al líder del equipo")
-  }
 
   const { error: deleteError } = await supabase
     .from("team_registrations")
