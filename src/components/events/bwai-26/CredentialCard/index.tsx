@@ -295,7 +295,7 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
       <div className="pc-inside">
         <div className="pc-shine" />
         <div className="pc-glare" />
-        <div className="pc-content">
+        <div className="pc-content border-2 md:border-0 border-gray-500 rounded-2xl md:rounded-none">
           <div
             className="absolute left-1/2 -translate-x-1/2
   top-[18%] sm:top-[18%] md:top-[18%] lg:top-[18%] w-30 h-30 sm:w-30 sm:h-30 overflow-hidden rounded-xl"
@@ -309,12 +309,10 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
           </div>
           <div
             className="
-    absolute top-[48%] sm:top-[48%] -translate-y-1/2
+    absolute top-[48%] -translate-y-1/2
     left-10 right-10 sm:left-10 sm:right-10
     grid place-items-center bg-white text-black rounded-3xl
-    px-6 py-3 sm:px-2 sm:py-2
-    pointer-events-auto
-  "
+    pointer-events-auto"
           >
             <p className="text-base sm:text-[18px] font-semibold leading-tight wrap-break-word text-center border-2 py-2 px-3 border-blue-500 rounded-2xl">
               {`${firstName} ${lastName}`}
@@ -325,7 +323,7 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
             <p className="text-2xl text-white font-bold">{`${role}`}</p>
           </div>
 
-          <div className="absolute bottom-6 right-6 w-40 h-40 border-3 border-blue-500 rounded-2xl p-3">
+          <div className="absolute bottom-4 right-6 w-40 h-40 border-2 border-blue-500 rounded-2xl p-3">
             <img
               src={qrUrl}
               alt="Código QR de la credencial"

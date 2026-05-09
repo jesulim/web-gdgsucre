@@ -28,6 +28,7 @@ const sidebarSections: SidebarSection[] = [
     title: "Registro de Equipos",
     view: "registrationsTeams",
     icon: Boxes,
+    allowedRoles: ["accreditation"],
   },
   {
     title: "Acreditación del Evento",
