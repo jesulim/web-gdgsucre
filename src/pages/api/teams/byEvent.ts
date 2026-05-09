@@ -1,6 +1,5 @@
 import type { APIRoute } from "astro"
 
-import { getProfile } from "@/lib/services/profileService"
 import { getTeamsWithMembersByEvent } from "@/lib/services/teamService"
 import { createUserClient } from "@/lib/supabase"
 
@@ -12,10 +11,6 @@ export const GET: APIRoute = async ({ url, cookies }) => {
 
   try {
     const supabase = await createUserClient(cookies)
-    const profile = await getProfile(supabase)
-    if (!profile?.is_admin) {
-      return new Response("No autorizado", { status: 403 })
-    }
 
     const membersData = await getTeamsWithMembersByEvent(supabase, slug)
 

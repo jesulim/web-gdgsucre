@@ -6,8 +6,6 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     const { memberId, teamCode, eventId } = await request.json()
     let leaderAssigned = false
 
-    console.log("Received data:", { memberId, teamCode, eventId })
-
     if (!memberId || !teamCode || !eventId) {
       console.error("Validation failed: Missing required fields", {
         memberId,
@@ -20,20 +18,11 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     }
 
     const supabase = await createUserClient(cookies)
-    // console.log("Supabase client initialized");
 
     const { data: userResponse, error: userError } = await supabase.auth.getUser()
     const user = userResponse?.user
     if (userError || !user) {
       return new Response("No autenticado", { status: 401 })
-    }
-    const { data: profile, error: profileError } = await supabase
-      .from("profiles")
-      .select("is_admin")
-      .eq("id", user.id)
-      .single()
-    if (profileError || !profile?.is_admin) {
-      return new Response("No autorizado", { status: 403 })
     }
 
     const team = await getTeamByCode(supabase, teamCode, eventId)
