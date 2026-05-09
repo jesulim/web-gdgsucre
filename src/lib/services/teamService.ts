@@ -329,11 +329,18 @@ export async function getTeamsWithMembersByEvent(
     .from("registrations")
     .select(
       `id, status,
-      profiles!inner(first_name, last_name, email),
+      profiles!inner(id, first_name, last_name, email, avatar_url),
       events!inner(slug)`
     )
     .eq("events.slug", eventSlug)
     .order("created_at", { ascending: true })
+
+  const { data: organizers } = await supabase
+    .from("organizers")
+    .select("profile_id, events!inner(slug)")
+    .eq("events.slug", eventSlug)
+
+  const organizerIds = organizers?.map(organizer => organizer.profile_id)
 
   if (allRegsError) throw new Error(`Error obteniendo registros: ${allRegsError.message}`)
 
@@ -354,6 +361,7 @@ export async function getTeamsWithMembersByEvent(
         avatar_url: profiles.avatar_url,
         status: reg.status,
         leader: false as const,
+        organizer: organizerIds?.includes(reg.profiles.id),
       }
     })
 
