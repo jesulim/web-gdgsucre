@@ -68,7 +68,7 @@ export async function uploadOrganizerByGmail(
   if (!eventId) {
     return { success: false, reason: "event_not_found" }
   }
-  console.log("Data del profile encontrado", profile)
+
   return { success: true, data: profile }
 }
 
@@ -94,31 +94,6 @@ export async function addOrganizerAndProfile(
   if (existingProfile) {
     console.log("Se encontrl el pefil en profile")
     profileId = existingProfile.id
-  } else {
-    console.log("No se encontro perfil, creando nuevo perfil")
-    try {
-      const createProfileResult = await createProfileOfOrganizer(supabase, {
-        first_name,
-        last_name,
-        phone_number,
-        email,
-      })
-      if (!createProfileResult.success || !createProfileResult.data) {
-        return {
-          success: false,
-          reason: "fallo la creacion de profiles",
-          message: createProfileResult.message,
-        }
-      }
-      profileId = createProfileResult.data[0].id
-    } catch (error) {
-      console.error("Error creating profile", error)
-      return {
-        success: false,
-        reason: "database_error",
-        message: "Error al crear el perfil",
-      }
-    }
   }
 
   const { data: eventData, error: eventError } = await supabase

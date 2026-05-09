@@ -1,5 +1,4 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
-import { supabaseAdmin } from "../supabase"
 
 export async function getUser(supabase: SupabaseClient) {
   const {
@@ -138,36 +137,26 @@ export async function createProfileOfOrganizer(
     email: string
   }
 ) {
-  const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
-    email: registrationData.email,
-    email_confirm: true,
-    user_metadata: {
-      full_name: `${registrationData.first_name} ${registrationData.last_name}`,
-    },
-  })
+  return { success: false, reason: "not_implemented" }
 
-  if (authError) {
-    throw new Error(`No se pudo crear el usuario en auth: ${authError.message}`)
-  }
+  //   const userId = authData.user.id
 
-  const userId = authData.user.id
+  //   const { data, error: profileError } = await supabase
+  //     .from("profiles")
+  //     .insert([
+  //       {
+  //         id: userId,
+  //         first_name: registrationData.first_name,
+  //         last_name: registrationData.last_name,
+  //         phone_number: registrationData.phone_number,
+  //         email: registrationData.email,
+  //       },
+  //     ])
+  //     .select("id")
 
-  const { data, error: profileError } = await supabase
-    .from("profiles")
-    .insert([
-      {
-        id: userId,
-        first_name: registrationData.first_name,
-        last_name: registrationData.last_name,
-        phone_number: registrationData.phone_number,
-        email: registrationData.email,
-      },
-    ])
-    .select("id")
+  //   if (profileError) {
+  //     throw new Error(`No se pudo crear el perfil: ${profileError.message}`)
+  //   }
 
-  if (profileError) {
-    throw new Error(`No se pudo crear el perfil: ${profileError.message}`)
-  }
-
-  return { success: true, data }
+  //   return { success: true, data }
 }
