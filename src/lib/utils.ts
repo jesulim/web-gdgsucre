@@ -1,5 +1,6 @@
 import type { AstroCookies } from "astro"
 import { type ClassValue, clsx } from "clsx"
+import { customAlphabet } from "nanoid"
 import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
@@ -26,3 +27,6 @@ export function setSupabaseCookies(
     maxAge: 60 * 60 * 24 * 7, // seven days
   })
 }
+
+const nanoid = customAlphabet("ABCDEFGHJKLMNPQRSTUVWXYZ23456789", 6)
+export { nanoid as customAlphabetNanoid }

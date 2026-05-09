@@ -14,6 +14,8 @@ export async function getStaffRoles(
 ): Promise<Record<string, string>> {
   const staffRoles: Record<string, string> = {}
 
+  if (!userId) return staffRoles
+
   const { data: rolesData, error } = await supabase
     .from("event_staff")
     .select("role, event_id, events(slug)")
@@ -66,6 +68,35 @@ export async function getProfile(supabase: SupabaseClient) {
   }
 }
 
+export async function getProfileById(supabase: SupabaseClient, profileId: string) {
+  const { data: profile, error } = await supabase
+    .from("profiles")
+    .select("id, first_name, last_name, avatar_url, email")
+    .eq("id", profileId)
+    .maybeSingle()
+
+  if (error) {
+    console.error("No se encontro el profile", error)
+    return null
+  }
+
+  return profile
+}
+export async function getProfileByEmail(supabase: SupabaseClient, email: string) {
+  const { data: profile, error } = await supabase
+    .from("profiles")
+    .select("id, first_name, last_name, avatar_url, email, phone_number")
+    .eq("email", email)
+    .maybeSingle()
+
+  if (error) {
+    console.error("No se encontro el profile", error)
+    return null
+  }
+
+  return profile
+}
+
 export async function createProfile(
   supabase: SupabaseClient,
   first_name: string,
@@ -95,4 +126,37 @@ export async function createProfile(
   }
 
   return data
+}
+
+export async function createProfileOfOrganizer(
+  supabase: SupabaseClient,
+  registrationData: {
+    first_name: string
+    last_name: string
+    phone_number: string
+    email: string
+  }
+) {
+  return { success: false, reason: "not_implemented" }
+
+  //   const userId = authData.user.id
+
+  //   const { data, error: profileError } = await supabase
+  //     .from("profiles")
+  //     .insert([
+  //       {
+  //         id: userId,
+  //         first_name: registrationData.first_name,
+  //         last_name: registrationData.last_name,
+  //         phone_number: registrationData.phone_number,
+  //         email: registrationData.email,
+  //       },
+  //     ])
+  //     .select("id")
+
+  //   if (profileError) {
+  //     throw new Error(`No se pudo crear el perfil: ${profileError.message}`)
+  //   }
+
+  //   return { success: true, data }
 }

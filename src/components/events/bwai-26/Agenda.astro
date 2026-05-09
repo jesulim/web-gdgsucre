@@ -1,0 +1,109 @@
+---
+const dia1 = [
+  { time: "08:30 - 09:15", title: "Acreditación", bg: "bg-yellow-300" },
+  { time: "09:15 - 09:45", title: "Inauguración del Evento", bg: "bg-blue-300" },
+  {
+    time: "09:45 - 10:45",
+    title: "Taller 1 - ADK for Dummies: Tu primer Agente en Google Cloud",
+    speaker: "Ivan Martinez",
+    bg: "bg-white",
+  },
+  { time: "10:45 - 11:15", title: "Panel - Refrigerio", bg: "bg-green-300" },
+  {
+    time: "11:15 - 12:15",
+    title: "Taller 2 - Construyendo Agentes con herramientas de Google",
+    speaker: "Nathaly Alarcon",
+    bg: "bg-white",
+  },
+  {
+    time: "12:15 - 13:15",
+    title: "Taller 3 - Agentic Workflows: Orquestación de Agentes Autónomos",
+    speaker: "Silvana Gutierrez",
+    bg: "bg-white",
+  },
+  { time: "13:15 - 14:00", title: "Almuerzo y Networking", bg: "bg-red-300" },
+  {
+    time: "14:00 - 15:00",
+    title: "Taller 4 - Data-Centric AI: Construyendo Agentes para la Preparación de Datos",
+    speaker: "Saul Gutierrez",
+    bg: "bg-white",
+  },
+  { time: "15:00 - 15:15", title: "CIERRE DEL DIA 1", bg: "bg-yellow-300" },
+]
+
+const dia2 = [
+  { time: "09:00 - 09:30", title: "CONCENTRACIÓN", bg: "bg-blue-300" },
+  {
+    time: "09:30 - 09:45",
+    title: "Revelación de los Retos, Mención de las directrices de la Competencia",
+    bg: "bg-yellow-300",
+  },
+  { time: "09:45 - 13:00", title: "Competencia Activa", bg: "bg-green-300" },
+  { time: "13:00 - 13:45", title: "Pausa para el Almuerzo", bg: "bg-red-300" },
+  { time: "13:45 - 14:30", title: "Reactivación de la Competencia", bg: "bg-green-300" },
+  { time: "14:30 - 15:15", title: "Premiación y cierre del evento", bg: "bg-yellow-300" },
+]
+---
+
+<section class="w-full flex flex-col items-start px-5 py-8 gap-4 lg:px-20 lg:py-24 lg:gap-16">
+  <h2
+    class="bg-white border-2 border-black rounded-xs md:rounded-lg px-2 py-1 text-xs font-bold lg:px-10 lg:py-4 lg:text-4xl shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+  >
+    CRONOGRAMA
+  </h2>
+
+  <h3 class="text-4xl lg:text-6xl font-bold tracking-tight">Actividades del evento</h3>
+
+  <div class="flex flex-col md:flex-row w-full gap-10 lg:gap-16 mt-4 lg:mt-0">
+    <!-- Dia 1 -->
+    <div class="flex-1 flex flex-col gap-6">
+      <h4 class="text-2xl lg:text-4xl font-bold border-b-4 border-black pb-2 text-blue-600">
+        DÍA 1
+      </h4>
+      <div class="flex flex-col gap-4">
+        {
+          dia1.map(item => (
+            <div
+              class={`flex flex-col xl:flex-row gap-2 lg:gap-6 border-2 border-black rounded-xl p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] ${item.bg}`}
+            >
+              <div class="font-mono font-bold text-lg lg:text-xl lg:w-48 shrink-0 flex items-center">
+                {item.time}
+              </div>
+              <div class="flex flex-col justify-center">
+                <span class="font-bold text-lg lg:text-xl leading-tight">{item.title}</span>
+                {item.speaker && (
+                  <span class="font-medium text-base lg:text-md mt-2 py-1 w-fit">
+                    {item.speaker}
+                  </span>
+                )}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- Dia 2 -->
+    <div class="flex-1 flex flex-col gap-6">
+      <h4 class="text-2xl lg:text-4xl font-bold border-b-4 border-black pb-2 text-green-600">
+        DÍA 2
+      </h4>
+      <div class="flex flex-col gap-4">
+        {
+          dia2.map(item => (
+            <div
+              class={`flex flex-col xl:flex-row gap-2 lg:gap-6 border-2 border-black rounded-xl p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] ${item.bg}`}
+            >
+              <div class="font-mono font-bold text-lg lg:text-xl lg:w-48 shrink-0 flex items-center">
+                {item.time}
+              </div>
+              <div class="flex flex-col justify-center">
+                <span class="font-bold text-lg lg:text-xl leading-tight">{item.title}</span>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

@@ -19,7 +19,11 @@ if (names?.length > 1) {
 
 const { eventSlug } = Astro.props
 const registration = await getEventRegistration(supabase, profile?.id, eventSlug)
-const staffRoles = await getStaffRoles(supabase, profile?.id)
+
+let staffRoles = {}
+if (!profile?.is_admin) {
+  staffRoles = await getStaffRoles(supabase, profile?.id)
+}
 ---
 
 <AvatarMenu

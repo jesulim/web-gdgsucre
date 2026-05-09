@@ -18,7 +18,8 @@ const sendConfirmationEmail = async (
   id: number,
   eventName: string,
   email: string,
-  name: string
+  name: string,
+  refetch: () => void
 ) => {
   try {
     toast.info(`Enviando email de confirmación a ${email}...`)
@@ -38,12 +39,13 @@ const sendConfirmationEmail = async (
 
     const body = await response.json()
     body.success ? toast.success("Email enviado exitosamente") : toast.error(body.details)
+    refetch()
   } catch {
     toast.error("Error enviando email de confirmación")
   }
 }
 
-const deleteRegistration = async (id: number) => {
+const deleteRegistration = async (id: number, refetch: () => void) => {
   const confirmed = window.confirm(
     "¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer."
   )
@@ -59,6 +61,7 @@ const deleteRegistration = async (id: number) => {
 
     const body = await response.json()
     body.success ? toast.success("Registro eliminado exitosamente") : toast.error(body.details)
+    refetch()
   } catch {
     toast.error("Error eliminando el registro")
   }
@@ -67,9 +70,11 @@ const deleteRegistration = async (id: number) => {
 export default function RegistrationRowActions({
   row,
   eventName,
+  refetch,
 }: {
   row: Row<Registrations>
   eventName: string
+  refetch: () => void
 }) {
   return (
     <DropdownMenu>
@@ -87,7 +92,8 @@ export default function RegistrationRowActions({
               row.original.id,
               eventName,
               row.original.email,
-              row.original.first_name
+              row.original.first_name,
+              refetch
             )
           }
         >
@@ -95,7 +101,10 @@ export default function RegistrationRowActions({
           {row.original.status === "pending" ? "Enviar confirmación" : "Reenviar confirmación"}
         </DropdownMenuItem>
 
-        <DropdownMenuItem variant="destructive" onClick={() => deleteRegistration(row.original.id)}>
+        <DropdownMenuItem
+          variant="destructive"
+          onClick={() => deleteRegistration(row.original.id, refetch)}
+        >
           <Trash2 />
           Eliminar registro
         </DropdownMenuItem>
