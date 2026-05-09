@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro"
 import { addOrganizer, getOrganizers, removeOrganizer } from "@/lib/services/organizersService"
-import { createUserClient } from "@/lib/supabase"
+import { createUserClient, supabaseAdmin } from "@/lib/supabase"
 
 export const GET: APIRoute = async ({ url, cookies }) => {
   try {
@@ -102,6 +102,65 @@ export const DELETE: APIRoute = async ({ request, cookies }) => {
     })
   } catch (error) {
     return new Response(JSON.stringify({ error: `Error al eliminar organizador: ${error}` }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    })
+  }
+}
+
+export const PUT: APIRoute = async ({ request, cookies }) => {
+  try {
+    const body = await request.json()
+    const { id, first_name, last_name, phone_number } = body
+
+    if (!id) {
+      return new Response(JSON.stringify({ error: "El ID del organizador es requerido" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      })
+    }
+
+    const supabase = await createUserClient(cookies)
+    console.log("id recibido", id)
+
+    const { data: organizer } = await supabase
+      .from("organizers")
+      .select("profile_id")
+      .eq("id", id)
+      .single()
+
+    if (!organizer) {
+      return new Response(JSON.stringify({ error: "Organizador no encontrado" }), {
+        status: 404,
+        headers: { "Content-Type": "application/json" },
+      })
+    }
+
+    console.log("organizador encontrado", organizer)
+
+    const supbaseAdmin = supabaseAdmin
+
+    const { error: updateError } = await supbaseAdmin
+      .from("profiles")
+      .update({
+        first_name,
+        last_name,
+        phone_number,
+      })
+      .eq("id", organizer.profile_id)
+
+    if (updateError) {
+      console.error("Error al actualizar el organizador", updateError)
+      throw updateError
+    }
+    console.log("Organizador actualizado")
+
+    return new Response(JSON.stringify({ message: "Organizador actualizado correctamente" }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    })
+  } catch (error) {
+    return new Response(JSON.stringify({ error: `Error al actualizar: ${error}` }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     })

@@ -94,8 +94,20 @@ export function OrganizerFormModal({
         if (!res.ok) throw new Error()
         toast.success("Organizador agregado exitosamente")
       } else {
-        // TODO: conectar con el endpoint de update cuando esté listo
-        // await fetch(`/api/organizers/${initialData?.id}`, { method: "PUT", ... })
+        const res = await fetch("/api/organizers", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: initialData?.id,
+            ...formData,
+          }),
+        })
+
+        if (!res.ok) {
+          const errorData = await res.json()
+          throw new Error(errorData.error || "Error al actualizar")
+        }
+
         toast.success("Organizador actualizado exitosamente")
       }
       onSuccess?.()
