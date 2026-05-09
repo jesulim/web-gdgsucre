@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro"
 import { addOrganizer, getOrganizers, removeOrganizer } from "@/lib/services/organizersService"
-import { createUserClient, supabaseAdmin } from "@/lib/supabase"
+import { createUserClient } from "@/lib/supabase"
 
 export const GET: APIRoute = async ({ url, cookies }) => {
   try {
@@ -138,9 +138,7 @@ export const PUT: APIRoute = async ({ request, cookies }) => {
 
     console.log("organizador encontrado", organizer)
 
-    const supbaseAdmin = supabaseAdmin
-
-    const { error: updateError } = await supbaseAdmin
+    const { error: updateError } = await supabase
       .from("profiles")
       .update({
         first_name,
