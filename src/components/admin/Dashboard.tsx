@@ -2,17 +2,22 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
 
 import { AccreditationTable } from "@/components/admin/AccreditationTable"
+import { OrganizersTable } from "@/components/admin/organizers/OrganizersTable"
 import { QRScanner } from "@/components/admin/QRScanner"
 import { RegistrationsTable } from "@/components/admin/registrations/RegistrationsTable"
-import { TeamsManager } from "@/components/admin/registrations/RegistrationsTeamsTable"
 import { AdminSidebar } from "@/components/admin/sidebar/AdminSidebar"
 import { SiteHeader } from "@/components/admin/sidebar/SiteHeader"
-
+import { TeamsManager } from "@/components/admin/teams/TeamsManager"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 
 const VIEW_STORAGE_KEY = "admin_current_view"
 
-export type ViewType = "registrations" | "registrationsTeams" | "accreditation" | "scanner"
+export type ViewType =
+  | "registrations"
+  | "registrationsTeams"
+  | "accreditation"
+  | "scanner"
+  | "organizers"
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -87,6 +92,10 @@ function DashboardContainer({ userData, events }: DashboardProps) {
     scanner: {
       title: "Escanear QR",
       component: <QRScanner eventSlug={eventSlug} activities={selectedEvent.activities} />,
+    },
+    organizers: {
+      title: "Organizadores",
+      component: <OrganizersTable eventSlug={eventSlug} />,
     },
   }
 

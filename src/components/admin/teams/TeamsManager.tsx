@@ -10,11 +10,6 @@ import { Toaster } from "@/components/ui/sonner"
 import useTeamsWithMembers from "@/hooks/useTeamsWithMembers"
 import type { AdminTeamGroup, AdminTeamMember } from "@/lib/services/teamService"
 
-// const STATUS_STYLES: { [key: string]: { colors: string; label: string } } = {
-//   pending: { colors: "bg-blue-100 text-blue-600", label: "Pendiente" },
-//   confirmed: { colors: "bg-green-100 text-green-600", label: "Confirmado" },
-// }
-
 function normalizeString(str: string) {
   return str
     .normalize("NFD")
@@ -73,7 +68,11 @@ function MemberCard({ member, onRemove }: MemberCardProps) {
           Líder
         </span>
       ) : (
-        <span className="text-[14px] text-muted-foreground">Miembro</span>
+        <span
+          className={`text-[14px] ${member.organizer ? "text-blue-400" : "text-muted-foreground"}`}
+        >
+          {member.organizer ? "Organizador" : "Miembro"}
+        </span>
       )}
       <div className="relative">
         <Avatar className="size-16">
@@ -86,7 +85,7 @@ function MemberCard({ member, onRemove }: MemberCardProps) {
           </div>
         )}
       </div>
-      <span className="text-xs font-medium text-center w-28 leading-tight">
+      <span className="text-xs font-medium text-center w-12 md:w-28 leading-tight">
         {member.first_name} {member.last_name}
       </span>
 
@@ -124,7 +123,7 @@ function MemberCard({ member, onRemove }: MemberCardProps) {
 
 function EmptySlot({ onAdd }: { onAdd?: () => void }) {
   return (
-    <div className="flex flex-col items-center gap-1.5 flex-1 min-w-0">
+    <div className="flex flex-col items-center gap-1.5 flex-1 min-w-0 my-auto">
       <button
         type="button"
         onClick={onAdd}
@@ -384,7 +383,7 @@ function SinEquipoCard({ members, filter }: SinEquipoCardProps) {
           {display.length} participante{display.length !== 1 ? "s" : ""}
         </span>
       </div>
-      <div className="flex flex-wrap gap-3 px-4 py-4">
+      <div className="flex flex-wrap gap-3 px-4 py-4 items-start">
         {display.map(member => (
           <div key={member.registration_id} className="flex items-center gap-2">
             <MemberCard member={member} />
