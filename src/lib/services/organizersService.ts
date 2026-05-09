@@ -1,6 +1,14 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
 import { getRegistrationData } from "./registrationService"
 
+const capitalizeName = (name: string) => {
+  if (!name) return ""
+  return name
+    .split(" ")
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ")
+}
+
 export async function getOrganizers(supabase: SupabaseClient, eventSlug: string) {
   const { data, error } = await supabase
     .from("organizers")
@@ -14,8 +22,8 @@ export async function getOrganizers(supabase: SupabaseClient, eventSlug: string)
     return {
       id: organizer.id,
       image: profile?.avatar_url ?? null,
-      first_name: profile?.first_name ?? "",
-      last_name: profile?.last_name ?? "",
+      first_name: capitalizeName(profile?.first_name ?? ""),
+      last_name: capitalizeName(profile?.last_name ?? ""),
     }
   })
 }

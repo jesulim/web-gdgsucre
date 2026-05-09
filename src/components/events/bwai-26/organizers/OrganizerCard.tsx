@@ -11,20 +11,20 @@ export interface Props {
 export const OrganizerCard = ({ img, full_name, areas }: Props) => {
   return (
     <div
-      className="card-speaker flex flex-col items-center rounded-lg overflow-hidden w-[260px] h-[374px] py-4 px-3 bg-cover bg-center bg-no-repeat mx-auto"
+      className="card-speaker flex flex-col items-center rounded-lg overflow-hidden w-65 h-88 py-4 px-3 bg-cover bg-center bg-no-repeat mx-auto"
       style={{ backgroundImage: `url(${background})` }}
     >
       <div className="w-full flex justify-center">
         <img
           src={img}
           alt={full_name}
-          className="border border-2 border-black w-56 h-56 object-cover rounded-lg"
+          className="border-2 border-black w-56 h-56 object-cover rounded-lg"
           loading="lazy"
           decoding="async"
         />
       </div>
 
-      <div className="pt-2 flex flex-col items-center justify-center text-center flex-grow w-full gap-2 mt-4">
+      <div className="pt-2 flex flex-col items-center justify-center text-center grow w-full gap-2 mt-5">
         <h3 className="text-lg font-semibold leading-tight">
           {full_name.split(" ").length > 2 ? (
             <>

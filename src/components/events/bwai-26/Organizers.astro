@@ -1,12 +1,21 @@
 ---
-import organizers from "@/data/iwd-26/organizers.json"
+import { getOrganizers } from "@/lib/services/organizersService" // O la ruta donde esté tu servicio
+// 1. Importaciones usando tu estructura original
+import { supabase } from "@/lib/supabase"
 import { OrganizerCard } from "./organizers/OrganizerCard"
+
+// 2. Definimos el slug de tu evento
+const { eventSlug = "bwai-26" } = Astro.props
+
+// 3. Llamamos a tu función original
+const organizersData = await getOrganizers(supabase, eventSlug)
+
+// 4. Aseguramos que siempre sea un array aunque falle
+const organizers = organizersData || []
 ---
 
 <section id="organizers" class="w-full flex flex-col items-start px-5 py-8 gap-4 lg:px-20 lg:py-24 lg:gap-16">
-  <h2
-    class="bg-white border-2 border-black rounded-xs md:rounded-lg px-2 py-1 text-xs font-bold lg:px-10 lg:py-4 lg:text-4xl uppercase"
-  >
+  <h2 class="bg-white border-2 border-black rounded-xs md:rounded-lg px-2 py-1 text-xs font-bold lg:px-10 lg:py-4 lg:text-4xl uppercase">
     Organizadores
   </h2>
 
@@ -22,7 +31,7 @@ import { OrganizerCard } from "./organizers/OrganizerCard"
     <div class="relative flex items-center">
       <button
         aria-label="Desplazar a la Izquierda"
-        class="hidden md:flex absolute left-[-60px] z-20 p-2 bg-[#0333AB99] rounded-full shadow-md hover:bg-[#0333AB] focus:outline-none h-[40px] w-[40px] items-center justify-center"
+        class="hidden md:flex absolute -left-15 z-20 p-2 bg-[#0333AB99] rounded-full shadow-md hover:bg-[#0333AB] focus:outline-none h-[40px] w-[40px] items-center justify-center text-white font-bold"
         onclick="this.nextElementSibling.scrollBy({ left: -320, behavior: 'smooth' })"
       >
         &#8249;
@@ -30,16 +39,28 @@ import { OrganizerCard } from "./organizers/OrganizerCard"
       
       <div class="flex overflow-x-auto scroll-smooth organizers-container gap-10 md:gap-1 pb-4 w-full">
         {
-          organizers.map((data) => (
-            <div class="flex-shrink-0 w-[260px] md:w-80">
-              <OrganizerCard {...data} />
+          organizers.length > 0 ? (
+            organizers.map((organizer) => (
+              <div class="shrink-0 w-65 md:w-80">
+                {/* Mapeamos los datos de tu función original a las props de tu Card */}
+                <OrganizerCard 
+                  img={organizer.image ?? '/assets/default-avatar.png'} 
+                  imageUrl={organizer.image}
+                  full_name={`${organizer.first_name} ${organizer.last_name}`.trim()}
+                  carrera="" 
+                />
+              </div>
+            ))
+          ) : (
+            <div class="w-full py-10 text-center text-gray-500 font-medium">
+              No se encontraron organizadores.
             </div>
-          ))
+          )
         }
       </div>
       
       <button
-        class="hidden md:flex absolute right-[-60px] z-20 p-2 bg-[#0333AB99] rounded-full shadow-md hover:bg-[#0333AB] focus:outline-none h-[40px] w-[40px] items-center justify-center"
+        class="hidden md:flex absolute -right-15 z-20 p-2 bg-[#0333AB99] rounded-full shadow-md hover:bg-[#0333AB] focus:outline-none h-10 w-10 items-center justify-center text-white font-bold"
         aria-label="Desplazar a la Derecha"
         onclick="this.previousElementSibling.scrollBy({ left: 320, behavior: 'smooth' })"
       >
@@ -59,5 +80,9 @@ import { OrganizerCard } from "./organizers/OrganizerCard"
   .organizers-container {
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+  
+  .organizers-container::-webkit-scrollbar {
+    display: none;
   }
 </style>
