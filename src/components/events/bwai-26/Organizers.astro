@@ -1,5 +1,5 @@
 ---
-import { getOrganizers } from "@/lib/services/organizersService" // O la ruta donde esté tu servicio
+import { getOrganizers } from "@/lib/services/organizersService"
 import { supabase } from "@/lib/supabase"
 import { OrganizerCard } from "./organizers/OrganizerCard"
 
@@ -37,9 +37,8 @@ const organizers = organizersData || []
           organizers.length > 0 ? (
             organizers.map((organizer) => (
               <div class="shrink-0 w-65 md:w-80">
-                {/* Mapeamos los datos de tu función original a las props de tu Card */}
                 <OrganizerCard 
-                  img={organizer.image ?? '/assets/default-avatar.png'} 
+                  img={organizer.image} 
                   imageUrl={organizer.image}
                   full_name={`${organizer.first_name} ${organizer.last_name}`.trim()}
                   carrera="" 
