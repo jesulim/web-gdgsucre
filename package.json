@@ -19,8 +19,8 @@
     ]
   },
   "dependencies": {
-    "@astrojs/react": "4.4.2",
-    "@astrojs/vercel": "9.0.4",
+    "@astrojs/react": "5.0.6",
+    "@astrojs/vercel": "10.0.8",
     "@hookform/resolvers": "^5.2.2",
     "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.97.0",
@@ -31,7 +31,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.2",
     "@yudiel/react-qr-scanner": "^2.5.1",
-    "astro": "5.17.3",
+    "astro": "6.4.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "embla-carousel-react": "^8.6.0",
