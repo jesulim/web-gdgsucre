@@ -1,8 +1,8 @@
 ---
 import Countdown from "@/components/events/bwai-26/Countdown.astro"
 
-const imgMdiCalendar = "/assets/figma/7a1c156f96ab2633796c12bb6993712de5465a6b.svg"
-const imgIcBaselinePlace = "/assets/figma/fa69afda4d4860d1e050c2b9dca4939ee7fabb75.svg"
+const imgCalendar = "/events/bwai-26/Calendar.svg"
+const imgPlace = "/events/bwai-26/Place.svg"
 ---
 
 <section class="w-full flex flex-col items-start p-5 lg:px-20 lg:py-24 gap-4 lg:gap-14" id="info">
@@ -25,13 +25,7 @@ const imgIcBaselinePlace = "/assets/figma/fa69afda4d4860d1e050c2b9dca4939ee7fabb
           </p>
           <p class="text-base text-gray-800 lg:text-2xl">Sábado y domingo · 2026</p>
           <div class="flex items-center gap-1.5">
-            <img
-              src={imgMdiCalendar}
-              alt=""
-              width="15px"
-              height="16px"
-              class="w-3.75 h-4 lg:size-5"
-            />
+            <img src={imgCalendar} alt="" width="15px" height="16px" class="w-3.75 h-4 lg:size-5" />
             <p class="text-base font-bold lg:text-xl">8:30 a 15:00 · Hora Bolivia (GMT-4)</p>
           </div>
         </div>
@@ -46,7 +40,7 @@ const imgIcBaselinePlace = "/assets/figma/fa69afda4d4860d1e050c2b9dca4939ee7fabb
           </p>
           <div class="flex items-top gap-1.5">
             <img
-              src={imgIcBaselinePlace}
+              src={imgPlace}
               alt=""
               width="15px"
               height="16px"

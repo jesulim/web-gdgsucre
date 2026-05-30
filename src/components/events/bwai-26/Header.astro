@@ -3,7 +3,7 @@ import UserSignIn from "@/assets/icons/social/user-round-plus.svg"
 import Avatar from "@/components/Avatar.astro"
 import HeaderCTA from "@/components/events/bwai-26/HeaderCTA.astro"
 
-const imgLogo = "/assets/figma/logotipo.svg"
+const imgLogo = "/events/bwai-26/logotipo.svg"
 
 const eventSlug = Astro.params.eventSlug || "bwai-26"
 const registroPath = "/registro/" + eventSlug
@@ -16,11 +16,7 @@ const accessToken = Astro.cookies.has("sb-access-token")
   class="sticky top-0 z-50 bg-white border-b border-gray-200 flex items-center justify-between px-5 h-15 lg:h-20 w-full"
 >
   <a href="/">
-    <img
-      alt="GDG Sucre Build with AI"
-      class="w-36 h-6 lg:w-62 lg:h-10"
-      src={imgLogo}
-    />
+    <img alt="GDG Sucre Build with AI" class="w-36 h-6 lg:w-62 lg:h-10" src={imgLogo} />
   </a>
 
   <div class="flex items-center gap-3">
@@ -93,16 +89,16 @@ const accessToken = Astro.cookies.has("sb-access-token")
 </header>
 
 <script>
-  const menuToggle = document.getElementById("menu-toggle");
-  const mobileMenu = document.getElementById("mobile-menu");
+  const menuToggle = document.getElementById("menu-toggle")
+  const mobileMenu = document.getElementById("mobile-menu")
 
-  menuToggle?.addEventListener("click", (e) => {
-    e.stopPropagation();
-    mobileMenu?.classList.toggle("hidden");
-  });
+  menuToggle?.addEventListener("click", e => {
+    e.stopPropagation()
+    mobileMenu?.classList.toggle("hidden")
+  })
 
-  document.addEventListener("click", (event) => {
-    const target = event.target as Node;
+  document.addEventListener("click", event => {
+    const target = event.target as Node
     if (
       mobileMenu &&
       !mobileMenu.classList.contains("hidden") &&
@@ -110,13 +106,13 @@ const accessToken = Astro.cookies.has("sb-access-token")
       menuToggle &&
       !menuToggle.contains(target)
     ) {
-      mobileMenu.classList.add("hidden");
+      mobileMenu.classList.add("hidden")
     }
-  });
+  })
 
-  mobileMenu?.querySelectorAll("a")?.forEach((link) => {
+  mobileMenu?.querySelectorAll("a")?.forEach(link => {
     link.addEventListener("click", () => {
-      mobileMenu?.classList.add("hidden");
-    });
-  });
+      mobileMenu?.classList.add("hidden")
+    })
+  })
 </script>
