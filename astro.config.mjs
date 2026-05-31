@@ -13,6 +13,13 @@ export default defineConfig({
       provider: fontProviders.google(),
       name: "Google Sans Flex",
       cssVariable: "--font-google",
+      weights: [400, 500, 600, 700],
+    },
+    {
+      provider: fontProviders.google(),
+      name: "Google Sans Code",
+      cssVariable: "--font-monospace",
+      weights: [300, 400, 700],
     },
   ],
 

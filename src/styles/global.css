@@ -4,7 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --color-blue-500: #4295f4;
+  --color-blue-500: #4285f4;
   --color-green-500: #34a853;
   --color-yellow-600: #f9ab00;
   --color-red-500: #ea4335;
@@ -22,11 +22,13 @@
   --color-black: #1e1e1e;
   --color-white: #ffffff;
   --color-off-white: #f0f0f0;
-
-  --font-google: "Google Sans Display", sans-serif;
 }
 
 @theme inline {
+  --font-google: var(--font-google);
+  --font-sans: var(--font-google);
+  --font-monospace: var(--font-monospace);
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
