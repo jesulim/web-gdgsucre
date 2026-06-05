@@ -1,0 +1,66 @@
+---
+const { text = "This text will be scrambled", interval = 100 } = Astro.props
+---
+
+<span
+  class="typewriter font-mono uppercase font-light h-6 transition-all"
+  data-text={text}
+  data-interval={interval}
+  aria-label={text}
+  aria-live="polite"></span>
+
+<script>
+  const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-=+[]{}|;':\",./<>?"
+  const CHAR_COLORS = ["text-yellow-500", "text-green-500", "text-blue-500", "text-red-500"]
+
+  function getRandomChar(currentIndex = 0) {
+    const char = CHARS.charAt(Math.floor(Math.random() * CHARS.length))
+    const textColor = CHAR_COLORS[currentIndex % CHAR_COLORS.length]
+    return `<span class="font-mono animate-caret-blink ${textColor}">${char}</span>`
+  }
+
+  function startTyping(el: HTMLElement) {
+    const fullText = el.dataset.text || ""
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      el.innerHTML = fullText
+      return
+    }
+
+    const typingInterval = parseInt(el.dataset.interval || "100")
+    let currentIndex = 0
+
+    function typeText() {
+      if (currentIndex >= fullText.length) {
+        el.innerHTML = fullText
+        return
+      }
+
+      const typedText = fullText.slice(0, currentIndex)
+      el.innerHTML = typedText + getRandomChar(currentIndex)
+
+      if (currentIndex < fullText.length - 1) {
+        el.innerHTML += getRandomChar(currentIndex + 1)
+      }
+
+      currentIndex++
+      setTimeout(typeText, typingInterval)
+    }
+
+    typeText()
+  }
+
+  const observer = new IntersectionObserver(
+    entries => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          startTyping(entry.target as HTMLElement)
+          observer.unobserve(entry.target)
+        }
+      }
+    },
+    { rootMargin: "-50px 0px" },
+  )
+
+  document.querySelectorAll<HTMLElement>(".typewriter").forEach(el => observer.observe(el))
+</script>
