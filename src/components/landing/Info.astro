@@ -1,0 +1,15 @@
+---
+import InfoAccordion from "./InfoAccordion.tsx"
+import ScrambledText from "./ScrambledText.astro"
+---
+
+<section id="about" class="flex flex-col gap-4 p-4">
+  <div class="flex gap-2 items-baseline">
+    <ScrambledText text="Descubre GDG Sucre" />
+    <span class="w-3 h-1 bg-blue-500"></span>
+  </div>
+
+  <h2 class="text-3xl font-medium">Construye, aprende y conecta</h2>
+
+  <InfoAccordion client:visible />
+</section>
