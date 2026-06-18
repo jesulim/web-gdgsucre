@@ -1,10 +1,93 @@
 ---
+import ArrowOutward from "@/assets/icons/arrow_outward.svg"
+import UserSignIn from "@/assets/icons/social/user-round-plus.svg"
 import GDGSucre from "@/assets/logos/GDGSucreLogo.svg"
+
+import Avatar from "@/components/Avatar.astro"
+
+const navLinks = [
+  { name: "¿Quiénes somos?", href: "#about" },
+  { name: "¿Por qué unirte?", href: "#info" },
+  { name: "Destacados", href: "#featured" },
+  { name: "Eventos pasados", href: "/eventos", external: true },
+]
+
+const accessToken = Astro.cookies.has("sb-access-token")
 ---
 
-<header class="w-full border-b-2 border-off-white p-4">
-  <a href="/#" class="flex items-center gap-4 text-xl">
-    <GDGSucre />
-    Google Developer Group Sucre
+<header
+  class="fixed z-50 px-4 w-full h-16 bg-white dark:bg-black border-b-2 border-off-white flex items-center justify-between"
+>
+  <a href="/#" class="pr-4 h-full flex items-center gap-4 text-xl m:border-r-2 border-off-white">
+    <GDGSucre class="h-full" />
+    <span class="hidden xl:block"> Google Developer Group Sucre </span>
+    <span class="xl:hidden"> GDG Sucre </span>
   </a>
+
+  <nav
+    id="mobile-menu"
+    class="hidden absolute top-full left-0 w-full border-y-2 bg-white border-off-white dark:bg-black sm:h-full sm:static sm:flex sm:items-center sm:w-fit sm:ml-auto sm:border-0 sm:border-l-2"
+  >
+    <ul class="flex flex-col py-4 gap-4 sm:p-0 sm:flex-row sm:h-full sm:items-center">
+      {
+        navLinks.map(link => (
+          <li class={`pl-4 ${!link.external && "sm:hidden"}`}>
+            <a
+              href={link.href}
+              class="font-mono uppercase font-light flex items-center gap-4 hover:underline"
+            >
+              <span>{link.name}</span>
+              {link.external && <ArrowOutward class="size-5" />}
+            </a>
+          </li>
+        ))
+      }
+
+      <hr class="border border-off-white sm:hidden" />
+
+      <li class="pl-4 mx-auto h-full flex items-center border-off-white sm:border-l-2">
+        {
+          accessToken ? (
+            <a
+              href="/perfil"
+              class="flex items-center gap-4 font-mono font-light uppercase hover:underline"
+            >
+              Perfil
+              <Avatar server:defer eventSlug="devfest-25">
+                <div class="bg-muted rounded-full size-12" slot="fallback" />
+              </Avatar>
+            </a>
+          ) : (
+            <a
+              href="/api/auth/signin"
+              class="flex items-center gap-4 font-mono font-light uppercase hover:underline"
+              aria-label="Iniciar sesión"
+            >
+              Iniciar Sesión
+              <UserSignIn class="size-5" />
+            </a>
+          )
+        }
+      </li>
+    </ul>
+  </nav>
+
+  <button id="menu-toggle" class="rounded sm:hidden" aria-label="Abrir menú">
+    <svg class="size-6 stroke-black dark:stroke-white" fill="none" viewBox="0 0 24 24">
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M4 6h16M4 12h16M4 18h16"></path>
+    </svg>
+  </button>
 </header>
+
+<script>
+  const menuToggle = document.getElementById("menu-toggle")
+  const mobileMenu = document.getElementById("mobile-menu")
+
+  menuToggle?.addEventListener("click", () => {
+    mobileMenu?.classList.toggle("hidden")
+  })
+</script>

@@ -45,12 +45,21 @@ export default function InfoAccordion() {
   const [section, setSection] = useState<string>("what")
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 -mx-4 border border-off-white">
+    <div className="grid grid-cols-1 sm:grid-cols-2 -mx-4 border-y-2 border-off-white">
       <div className="p-4 md:p-8">{items[section].image}</div>
 
-      <Accordion type="single" className=" border-l" defaultValue="what" onValueChange={setSection}>
+      <Accordion
+        type="single"
+        className="border-l-2 border-off-white"
+        defaultValue="what"
+        onValueChange={setSection}
+      >
         {Object.entries(items).map(([section, item]) => (
-          <AccordionItem key={section} value={section} className="border-b px-4 last:border-b-0">
+          <AccordionItem
+            key={section}
+            value={section}
+            className="border-b-2 px-4 last:border-b-0 border-off-white"
+          >
             <AccordionTrigger className="font-medium text-base">{item.trigger}</AccordionTrigger>
             <AccordionContent>{item.content}</AccordionContent>
           </AccordionItem>
