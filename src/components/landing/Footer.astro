@@ -1,107 +1,70 @@
 ---
-import GdgSucreLogo from "@/assets/logos/GDGSucreLogo.svg"
-import SocialIcons from "@/components/SocialIcons.astro"
+import Facebook from "@/assets/icons/social/Facebook.svg"
+import Instagram from "@/assets/icons/social/Instagram.svg"
+import LinkedIn from "@/assets/icons/social/Linkedin.svg"
+import Tiktok from "@/assets/icons/social/Tiktok.svg"
+import Twitter from "@/assets/icons/social/Twitter.svg"
+import YouTube from "@/assets/icons/social/Youtube.svg"
 ---
 
-<footer class="w-full bg-black text-white">
-  <!-- Mobile Footer -->
-  <div class="block lg:hidden">
-    <div class="flex items-center justify-between gap-8 p-6">
-      <!-- Logo Section -->
-      <div class="flex items-center gap-3">
-        <div
-          class="flex items-center justify-center w-8 h-8 rounded-full border border-white/20 text-sm font-bold"
-        >
-          2025
-        </div>
-        <a
-          href="https://gdg.community.dev/gdg-sucre/"
-          class="flex items-center hover:opacity-80 transition-opacity"
-          target="_blank"
-        >
-          <GdgSucreLogo class="w-auto h-8" />
-        </a>
-      </div>
+<footer class="w-full border-t-2 border-off-white">
+  <div class="p-4 flex justify-around gap-8 opacity-40 md:px-8">
+    <a
+      href="https://www.linkedin.com/company/gdgsucre/"
+      target="_blank"
+      rel="noopener noreferer"
+      aria-label="LinkedIn page"
+    >
+      <LinkedIn class="size-5 md:size-6" />
+    </a>
 
-      <!-- Social Section -->
-      <div class="flex flex-col items-end gap-2">
-        <span class="text-xs font-bold text-white/90">Síguenos en</span>
-        <SocialIcons />
-      </div>
-    </div>
+    <a
+      href="https://twitter.com/gdg_sucre"
+      target="_blank"
+      rel="noopener noreferer"
+      aria-label="Twitter profile"
+    >
+      <Twitter class="size-5 md:size-6" />
+    </a>
+
+    <a
+      href="https://www.instagram.com/gdg.sucre/"
+      target="_blank"
+      rel="noopener noreferer"
+      aria-label="Instagram page"
+    >
+      <Instagram class="size-5 md:size-6" />
+    </a>
+
+    <a
+      href="https://www.facebook.com/gdgsucre"
+      target="_blank"
+      rel="noopener noreferer"
+      aria-label="Facebook page"
+    >
+      <Facebook class="size-5 md:size-6" />
+    </a>
+
+    <a
+      href="https://www.tiktok.com/@gdgsucre"
+      target="_blank"
+      rel="noopener noreferer"
+      aria-label="Tiktok profile"
+    >
+      <Tiktok class="size-5 md:size-6" />
+    </a>
+
+    <a
+      href="https://www.youtube.com/@gdgsucre"
+      target="_blank"
+      rel="noopener noreferer"
+      aria-label="YouTube channel"
+    >
+      <YouTube class="size-5 md:size-6" />
+    </a>
   </div>
 
-  <!-- Desktop Footer -->
-  <div class="hidden lg:block">
-    <div class="mx-auto max-w-screen-2xl px-8 py-12">
-      <!-- Main Footer Content -->
-      <div class="flex items-start justify-between gap-12 mb-12">
-        <!-- Logo Section -->
-        <div class="flex items-center gap-4">
-          <a
-            href="https://gdg.community.dev/gdg-sucre/"
-            class="flex items-center hover:opacity-80 transition-opacity"
-            target="_blank"
-          >
-            <GdgSucreLogo class="w-auto h-12" />
-          </a>
-        </div>
-
-        <!-- Center Content - Could be navigation or event info -->
-        <div class="flex-1 text-center">
-          <h2 class="text-2xl font-bold mb-2">GDG Sucre</h2>
-          <p class="text-white/70 text-sm">Google Developer Group</p>
-        </div>
-
-        <!-- Year Badge -->
-        <div
-          class="flex items-center justify-center w-16 h-16 rounded-full border-2 border-white/30 text-lg font-bold bg-white/5"
-        >
-          2025
-        </div>
-      </div>
-
-      <!-- Bottom Section -->
-      <div class="flex items-center justify-between pt-6 border-t border-white/10">
-        <!-- Copyright -->
-        <div class="flex flex-col text-sm text-white/70">
-          <p>© 2025 GDG Sucre. Todos los derechos reservados.</p>
-        </div>
-
-        <!-- Navigation Links -->
-        <div class="hidden md:flex items-center gap-8 text-sm">
-          <a
-            href="https://gdg.community.dev/gdg-sucre/"
-            class="text-white/70 hover:text-white transition-colors uppercase tracking-wide"
-            target="_blank"
-          >
-            Únete a GDG
-          </a>
-          <a
-            href="/events"
-            class="text-white/70 hover:text-white transition-colors uppercase tracking-wide"
-          >
-            Eventos
-          </a>
-          <a
-            href="/about"
-            class="text-white/70 hover:text-white transition-colors uppercase tracking-wide"
-          >
-            Nosotros
-          </a>
-          <a
-            href="/contact"
-            class="text-white/70 hover:text-white transition-colors uppercase tracking-wide"
-          >
-            Contacto
-          </a>
-        </div>
-
-        <!-- Social Icons -->
-        <div class="flex items-center gap-4">
-          <SocialIcons />
-        </div>
-      </div>
-    </div>
-  </div>
+  <p class="uppercase text-center pt-4 pb-8 md:pb-4 bg-gray-100 border-t-2 border-gray-200">
+    &copy; {new Date().getFullYear()} GDG Sucre.
+  </p>
 </footer>
