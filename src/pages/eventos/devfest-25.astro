@@ -1,0 +1,29 @@
+---
+import About from "@/components/events/devfest-25/About.astro"
+import Footer from "@/components/events/devfest-25/Footer.astro"
+import Header from "@/components/events/devfest-25/Header.astro"
+import Hero from "@/components/events/devfest-25/Hero.astro"
+import Organizers from "@/components/events/devfest-25/organizers/Organizers.astro"
+import Schedule from "@/components/events/devfest-25/Schedule.astro"
+import Sponsors from "@/components/events/devfest-25/Sponsors.astro"
+import Speakers from "@/components/events/devfest-25/speaker/Speakers.astro"
+
+import BaseLayout from "@/layout/BaseLayout.astro"
+---
+
+<BaseLayout
+  theme="dark"
+  title="DevFest 2025"
+  description="Celebra la cultura de GDG en el DevFest 2025."
+>
+  <Header />
+  <main class="flex-1">
+    <Hero />
+    <About />
+    <Speakers />
+    <Schedule />
+    <Sponsors />
+    <Organizers />
+  </main>
+  <Footer />
+</BaseLayout>
