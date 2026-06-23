@@ -43,7 +43,7 @@ export async function getProfile(supabase: SupabaseClient) {
 
   const { data: profile, error } = await supabase
     .from("profiles")
-    .select("id, first_name, last_name, avatar_url, is_admin")
+    .select("id, first_name, last_name, avatar_url, is_admin, occupation, phone_number")
     .eq("id", user.id)
     .maybeSingle()
 
@@ -126,6 +126,41 @@ export async function createProfile(
   }
 
   return data
+}
+
+export async function updateProfile(
+  supabase: SupabaseClient,
+  data: {
+    first_name: string
+    last_name: string
+    occupation?: string | null
+    phone_number?: string | null
+    avatar_url?: string | null
+  }
+) {
+  const user = await getUser(supabase)
+  if (!user) {
+    throw new Error("No se pudo actualizar el perfil: No se pudo obtener el usuario")
+  }
+
+  const { error } = await supabase.from("profiles").upsert(
+    {
+      id: user.id,
+      email: user.user_metadata.email,
+      avatar_url: data.avatar_url || user.user_metadata.avatar_url,
+      first_name: data.first_name,
+      last_name: data.last_name,
+      occupation: data.occupation || null,
+      phone_number: data.phone_number || null,
+    },
+    { onConflict: "id" }
+  )
+
+  if (error) {
+    throw new Error(`No se pudo actualizar el perfil: ${error.message}`)
+  }
+
+  return { success: true }
 }
 
 export async function createProfileOfOrganizer(
