@@ -3,7 +3,7 @@ import ArrowOutward from "@/assets/icons/arrow_outward.svg"
 import UserSignIn from "@/assets/icons/social/user-round-plus.svg"
 import GDGSucre from "@/assets/logos/GDGSucreLogo.svg"
 
-import Avatar from "@/components/Avatar.astro"
+import LoggedInMenu from "./LoggedInMenu.astro"
 
 const navLinks = [
   { name: "¿Quiénes somos?", href: "/#about" },
@@ -16,9 +16,14 @@ const accessToken = Astro.cookies.has("sb-access-token")
 ---
 
 <header
-  class="fixed z-50 px-4 w-full h-16 bg-white dark:bg-black border-b-2 border-off-white flex items-center justify-between"
+  id="header"
+  class="fixed z-50 px-4 w-auto h-16 bg-white dark:bg-black border-b-2 border-off-white flex items-center justify-between"
 >
-  <a href="/#" class="pr-4 h-full flex items-center gap-4 text-xl sm:border-r-2 border-off-white">
+  <a
+    id="logo"
+    href="/#"
+    class="pr-4 h-full flex items-center gap-4 text-xl sm:border-r-2 border-off-white"
+  >
     <GDGSucre class="h-full" />
     <span class="hidden lg:block"> Google Developer Group Sucre </span>
     <span class="lg:hidden"> GDG Sucre </span>
@@ -26,17 +31,16 @@ const accessToken = Astro.cookies.has("sb-access-token")
 
   <nav
     id="mobile-menu"
-    class="hidden absolute top-full left-0 w-full border-y-2 bg-white border-off-white dark:bg-black sm:h-full sm:static sm:flex sm:items-center sm:w-fit sm:ml-auto sm:border-0 sm:border-l-2"
+    class="hidden absolute top-full left-0 w-full bg-white dark:bg-black border-y-2 border-off-white sm:h-full sm:static sm:flex sm:items-center sm:w-fit sm:ml-auto sm:border-0 sm:border-l-2"
   >
-    <ul class="flex flex-col py-4 gap-4 sm:p-0 sm:flex-row sm:h-full sm:items-center">
+    <ul
+      class="flex flex-col py-4 gap-4 sm:p-0 sm:pl-auto sm:flex-row sm:h-full sm:items-center uppercase font-light"
+    >
       {
         navLinks.map(link => (
           <li class={`pl-4 ${!link.external && "sm:hidden"}`}>
-            <a
-              href={link.href}
-              class="font-mono uppercase font-light flex items-center gap-4 hover:underline"
-            >
-              <span>{link.name}</span>
+            <a href={link.href} class="flex items-center gap-4 hover:underline font-monospace">
+              {link.name}
               {link.external && <ArrowOutward class="size-5" />}
             </a>
           </li>
@@ -45,30 +49,24 @@ const accessToken = Astro.cookies.has("sb-access-token")
 
       <hr class="border border-off-white sm:hidden" />
 
-      <li class="pl-4 mx-auto h-full flex items-center border-off-white sm:border-l-2">
-        {
-          accessToken ? (
-            <a
-              href="/perfil"
-              class="flex items-center gap-4 font-mono font-light uppercase hover:underline"
-            >
-              Perfil
-              <Avatar server:defer eventSlug="devfest-25">
-                <div class="bg-muted rounded-full size-12" slot="fallback" />
-              </Avatar>
-            </a>
-          ) : (
+      {
+        accessToken ? (
+          <LoggedInMenu server:defer>
+            <div class="h-full w-23.5 border-l-2 border-off-white" slot="fallback" />
+          </LoggedInMenu>
+        ) : (
+          <li class="pl-4 mx-auto h-full flex items-center border-off-white sm:border-l-2">
             <a
               href="/api/auth/signin"
-              class="flex items-center gap-4 font-mono font-light uppercase hover:underline"
+              class="flex items-center gap-3 font-monospace font-light uppercase hover:underline"
               aria-label="Iniciar sesión"
             >
               Iniciar Sesión
               <UserSignIn class="size-5" />
             </a>
-          )
-        }
-      </li>
+          </li>
+        )
+      }
     </ul>
   </nav>
 
@@ -83,11 +81,68 @@ const accessToken = Astro.cookies.has("sb-access-token")
   </button>
 </header>
 
+<div id="menu-overlay" class="fixed h-0 inset-0 z-40 bg-black/30 transition-all"></div>
+
+<style>
+  #header {
+    transition: all 200ms ease;
+    top: 0;
+    inset-inline: 0;
+  }
+
+  #header.floating {
+    top: 0.5rem;
+    inset-inline: 0.5rem;
+    border: 2px solid var(--color-off-white);
+  }
+
+  #header.floating #mobile-menu:not(.hidden) {
+    left: -2px;
+    width: calc(100% + 4px);
+    border: 2px solid var(--color-off-white);
+  }
+</style>
+
 <script>
+  const header = document.getElementById("header")
+  const logo = document.getElementById("logo")
   const menuToggle = document.getElementById("menu-toggle")
   const mobileMenu = document.getElementById("mobile-menu")
+  const menuOverlay = document.getElementById("menu-overlay")
 
-  menuToggle?.addEventListener("click", () => {
+  function toggleMenu() {
     mobileMenu?.classList.toggle("hidden")
+
+    menuToggle?.setAttribute(
+      "aria-label",
+      mobileMenu?.classList.contains("hidden") ? "Abrir menú" : "Cerrar menú",
+    )
+
+    menuOverlay?.classList.toggle("backdrop-blur-sm")
+    menuOverlay?.classList.toggle("h-auto")
+  }
+
+  // mobileMenu?.addEventListener("click", e => {
+  //   if (e.target instanceof HTMLAnchorElement) return
+  //   if (e.target instanceof HTMLAnchorElement) {
+  //     toggleMenu()
+  //   }
+  // })
+  logo?.addEventListener("click", () => {
+    if (mobileMenu?.classList.contains("hidden")) return
+    toggleMenu()
   })
+  menuToggle?.addEventListener("click", () => toggleMenu())
+  menuOverlay?.addEventListener("click", () => toggleMenu())
+
+  function updateHeader() {
+    if (window.scrollY > 0) {
+      header?.classList.add("floating")
+    } else {
+      header?.classList.remove("floating")
+    }
+  }
+
+  window.addEventListener("scroll", updateHeader, { passive: true })
+  updateHeader()
 </script>

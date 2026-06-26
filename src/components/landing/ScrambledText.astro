@@ -3,7 +3,7 @@ const { text = "This text will be scrambled", interval = 100 } = Astro.props
 ---
 
 <span
-  class="typewriter font-mono uppercase font-light h-6 transition-all"
+  class="typewriter font-monospace uppercase font-light h-6 transition-all"
   data-text={text}
   data-interval={interval}
   aria-label={text}
@@ -16,7 +16,7 @@ const { text = "This text will be scrambled", interval = 100 } = Astro.props
   function getRandomChar(currentIndex = 0) {
     const char = CHARS.charAt(Math.floor(Math.random() * CHARS.length))
     const textColor = CHAR_COLORS[currentIndex % CHAR_COLORS.length]
-    return `<span class="font-mono animate-caret-blink ${textColor}">${char}</span>`
+    return `<span class="font-monospace animate-caret-blink ${textColor}">${char}</span>`
   }
 
   function startTyping(el: HTMLElement) {
