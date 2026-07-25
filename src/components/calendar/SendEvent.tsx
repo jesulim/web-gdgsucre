@@ -145,7 +145,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
 
   if (submitted) {
     return (
-      <div className="font-monospace border border-black p-8 text-center">
+      <div className="font-monospace border p-8 text-center text-white">
         <p className="text-lg font-bold">¡Recibimos tu evento!</p>
         <p className="text-muted-foreground mt-2 text-sm normal-case">
           Lo revisamos en menos de 24 h y lo vas a ver en la agenda.
@@ -153,7 +153,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
         <Button
           type="button"
           variant="outline"
-          className="mt-6 rounded-none border-black"
+          className="mt-6 rounded-none"
           onClick={() => setSubmitted(false)}
         >
           Publicar otro evento
@@ -163,7 +163,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
   }
 
   return (
-    <div className="relative border border-black">
+    <div className="relative border text-white">
       <Toaster position="top-right" richColors />
       <Form {...form}>
         <form
@@ -181,7 +181,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                     {...field}
                     disabled={disabled}
                     placeholder="ej. devfest sucre 2026"
-                    className="rounded-none border-black"
+                    className="rounded-none"
                   />
                 </FormControl>
                 <FormMessage />
@@ -223,7 +223,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                       {...field}
                       type="datetime-local"
                       disabled={disabled}
-                      className="rounded-none border-black"
+                      className="rounded-none"
                     />
                   </FormControl>
                   <FormMessage />
@@ -242,7 +242,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                       {...field}
                       type="datetime-local"
                       disabled={disabled}
-                      className="rounded-none border-black"
+                      className="rounded-none"
                     />
                   </FormControl>
                   <FormMessage />
@@ -275,8 +275,8 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                   <Input
                     {...field}
                     disabled={disabled}
-                    placeholder="hub usfx · o link de acceso"
-                    className="rounded-none border-black"
+                    placeholder="hub de innovación usfx · o link de acceso"
+                    className="rounded-none"
                   />
                 </FormControl>
                 <FormMessage />
@@ -295,7 +295,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                     {...field}
                     disabled={disabled}
                     placeholder="https://..."
-                    className="rounded-none border-black"
+                    className="rounded-none"
                   />
                 </FormControl>
                 <FormMessage />
@@ -306,7 +306,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
           <Button
             type="submit"
             disabled={disabled}
-            className="bg-green-lime hover:bg-green-lime/90 w-full rounded-none py-6 font-bold text-black uppercase"
+            className="bg-lime-300 hover:bg-lime-300/90 w-full rounded-none py-6 font-bold text-black uppercase"
           >
             {loading && <Loader2Icon className="animate-spin" />}
             Enviar evento
@@ -316,9 +316,9 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
       </Form>
 
       {!isLoggedIn && (
-        <div className="font-monospace absolute inset-0 flex flex-col items-center justify-center gap-4 bg-white/90 p-6 text-center">
+        <div className="font-monospace absolute inset-0 flex flex-col items-center justify-center gap-4 p-6 text-center text-white">
           <p className="text-sm uppercase">Inicia sesión para publicar tu evento</p>
-          <Button asChild className="bg-green-lime hover:bg-green-lime/90 rounded-none text-black">
+          <Button asChild className="bg-lime-300 hover:bg-lime-300/90 rounded-none text-black">
             <a href="/api/auth/signin?next=/calendario">Iniciar sesión</a>
           </Button>
         </div>

@@ -6,22 +6,28 @@ const steps = [
 ]
 ---
 
-<section class="font-monospace mx-auto flex max-w-2xl flex-col gap-4 px-4 pt-24 pb-8">
-  <p class="text-green-lime text-sm uppercase">[ 06 · publicar ]</p>
+<section class="font-monospace flex flex-col gap-6">
+  <div class="flex flex-col gap-4">
+    <p class="text-green-lime text-sm uppercase">[ 06 · publicar ]</p>
 
-  <h1 class="text-4xl font-bold uppercase md:text-5xl">Publica tu evento</h1>
+    <h1 class="text-white text-5xl leading-none font-bold md:text-6xl">
+      Publica<br />tu evento
+    </h1>
 
-  <p class="text-muted-foreground max-w-md text-base normal-case">
-    Una agenda abierta: si tu comunidad arma algo, viene acá. Gratis.
-  </p>
+    <p class="text-muted-foreground max-w-md text-base normal-case">
+      Una agenda abierta: si tu comunidad arma algo, viene acá. gratis y sin vueltas.
+    </p>
+  </div>
 
-  <div class="mt-4 flex flex-col gap-3">
-    <p class="text-sm font-bold uppercase">// cómo funciona</p>
+  <hr class="border-t border-white/10" />
+
+  <div class="flex flex-col gap-3">
+    <p class="text-sm text-base font-bold">// Cómo funciona</p>
 
     <div class="flex flex-col gap-3">
       {
         steps.map(step => (
-          <div class="border-green-lime flex items-center gap-3 border p-3">
+          <div class="flex items-center gap-3 p-3">
             <span class="border-green-lime text-green-lime shrink-0 border px-2 py-1 text-sm">
               {step.number}
             </span>
@@ -30,5 +36,14 @@ const steps = [
         ))
       }
     </div>
+  </div>
+
+  <hr class="border-t border-white/10" />
+
+  <div class="flex items-center gap-4">
+    <span class="bg-lime-300 shadow-[4px_4px_0_0_var(--color-blue-500)] inline-block -rotate-6 px-5 py-2 text-sm font-bold text-black">
+      gratis
+    </span>
+    <p class="text-muted-foreground text-sm normal-case">publicar siempre es sin costo.</p>
   </div>
 </section>

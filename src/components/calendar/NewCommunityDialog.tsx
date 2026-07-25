@@ -57,13 +57,13 @@ export function NewCommunityDialog({ onCreate, disabled }: NewCommunityDialogPro
           variant="outline"
           size="icon"
           disabled={disabled}
-          className="shrink-0 rounded-none border-black"
+          className="shrink-0 rounded-none"
           aria-label="Agregar nueva comunidad"
         >
           <PlusIcon className="size-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="rounded-none border-black font-monospace">
+      <DialogContent className="rounded-none border-black font-monospace text-black">
         <DialogHeader>
           <DialogTitle>Nueva comunidad</DialogTitle>
           <DialogDescription className="normal-case">
@@ -132,7 +132,7 @@ export function NewCommunityDialog({ onCreate, disabled }: NewCommunityDialogPro
             <DialogFooter>
               <Button
                 type="submit"
-                className="bg-green-lime hover:bg-green-lime/90 w-full rounded-none font-bold text-black"
+                className="bg-lime-300 hover:bg-lime-300/90 w-full rounded-none font-bold text-black"
               >
                 Agregar comunidad
               </Button>

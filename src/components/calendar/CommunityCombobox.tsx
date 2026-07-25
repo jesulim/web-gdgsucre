@@ -35,7 +35,7 @@ export function CommunityCombobox({ value, label, onChange, disabled }: Communit
           aria-expanded={open}
           disabled={disabled}
           className={cn(
-            "w-full justify-between rounded-none border-black font-monospace font-normal normal-case",
+            "w-full justify-between rounded-none font-monospace font-normal normal-case",
             !label && "text-muted-foreground"
           )}
         >
@@ -45,15 +45,15 @@ export function CommunityCombobox({ value, label, onChange, disabled }: Communit
       </PopoverTrigger>
       <PopoverContent
         align="start"
-        className="w-[var(--radix-popover-trigger-width)] rounded-none border-black p-0"
+        className="w-[var(--radix-popover-trigger-width)] rounded-none p-0"
       >
-        <div className="border-b border-black p-2">
+        <div className="border-b p-2">
           <Input
             autoFocus
             placeholder="Buscar comunidad..."
             value={search}
             onChange={event => setSearch(event.target.value)}
-            className="rounded-none border-black"
+            className="rounded-none"
           />
         </div>
         <div role="listbox" aria-label="Comunidades" className="max-h-60 overflow-y-auto p-1">
@@ -75,7 +75,7 @@ export function CommunityCombobox({ value, label, onChange, disabled }: Communit
                 onChange(community.id, community.name)
                 setOpen(false)
               }}
-              className="hover:bg-off-white flex w-full items-center gap-2 px-2 py-2 text-left text-sm"
+              className="hover:bg-accent flex w-full items-center gap-2 px-2 py-2 text-left text-sm"
             >
               <CheckIcon
                 className={cn(
