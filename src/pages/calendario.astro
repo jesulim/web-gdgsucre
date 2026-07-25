@@ -1,0 +1,28 @@
+---
+import PublishHero from "@/components/calendar/PublishHero.astro"
+import { SendEvent } from "@/components/calendar/SendEvent"
+import Footer from "@/components/landing/Footer.astro"
+import Header from "@/components/landing/Header.astro"
+
+import BaseLayout from "@/layout/BaseLayout.astro"
+
+import { getProfile } from "@/lib/services/profileService"
+import { createUserClient } from "@/lib/supabase"
+
+const supabase = await createUserClient(Astro.cookies)
+const profile = await getProfile(supabase)
+---
+
+<BaseLayout theme="light" title="Calendario - GDG Sucre" description="Publica tu evento en la agenda de comunidades de Sucre">
+  <Header />
+
+  <main class="flex-1 overflow-x-hidden mt-16">
+    <PublishHero />
+
+    <div class="mx-auto max-w-2xl px-4 pb-16">
+      <SendEvent isLoggedIn={!!profile} client:load />
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>

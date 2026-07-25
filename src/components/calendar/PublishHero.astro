@@ -1,0 +1,34 @@
+---
+const steps = [
+  { number: "01", text: "Envías los datos del evento" },
+  { number: "02", text: "Revisamos que todo esté ok · <24 h" },
+  { number: "03", text: "Se publica en la agenda y el calendario" },
+]
+---
+
+<section class="font-monospace mx-auto flex max-w-2xl flex-col gap-4 px-4 pt-24 pb-8">
+  <p class="text-green-lime text-sm uppercase">[ 06 · publicar ]</p>
+
+  <h1 class="text-4xl font-bold uppercase md:text-5xl">Publica tu evento</h1>
+
+  <p class="text-muted-foreground max-w-md text-base normal-case">
+    Una agenda abierta: si tu comunidad arma algo, viene acá. Gratis.
+  </p>
+
+  <div class="mt-4 flex flex-col gap-3">
+    <p class="text-sm font-bold uppercase">// cómo funciona</p>
+
+    <div class="flex flex-col gap-3">
+      {
+        steps.map(step => (
+          <div class="border-green-lime flex items-center gap-3 border p-3">
+            <span class="border-green-lime text-green-lime shrink-0 border px-2 py-1 text-sm">
+              {step.number}
+            </span>
+            <p class="text-muted-foreground text-sm normal-case">{step.text}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

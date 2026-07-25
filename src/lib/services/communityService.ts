@@ -10,11 +10,19 @@ interface Community {
   accepted?: boolean
 }
 
+// Escapa los caracteres que PostgREST interpreta como sintaxis dentro de un
+// filtro .or(): una coma o un paréntesis sin escapar en el input del usuario
+// puede alterar el árbol de filtros o romper el parseo de la request.
+function escapePostgrestPattern(value: string) {
+  return value.replace(/[,()]/g, "\\$&")
+}
+
 export async function getCommunities(supabase: SupabaseClient, name?: string) {
   let query = supabase.from("communities").select("*").order("name")
 
   if (name) {
-    query = query.or(`name.ilike.%${name}%,short_name.ilike.%${name}%`)
+    const pattern = escapePostgrestPattern(name)
+    query = query.or(`name.ilike.%${pattern}%,short_name.ilike.%${pattern}%`)
   }
 
   const { data: communities, error } = await query
@@ -25,17 +33,24 @@ export async function getCommunities(supabase: SupabaseClient, name?: string) {
 }
 
 export async function createCommunity(supabase: SupabaseClient, community: Community) {
-  // No se encadena .select(): la fila creada queda con accepted=false, y la
-  // política de SELECT (accepted OR is_admin) rechazaría el RETURNING para
-  // un creador no admin, haciendo fallar el INSERT completo por RLS.
-  const { error } = await supabase.from("communities").insert(community)
+  // Se usa un RPC SECURITY DEFINER en vez de un INSERT directo: la fila
+  // creada queda con accepted=false, y la política de SELECT
+  // (accepted OR is_admin) rechazaría el RETURNING de un INSERT normal para
+  // un creador no admin. El RPC bypasea RLS solo para devolver el id nuevo,
+  // sin exponer la fila en sí ni permitir setear accepted desde el cliente.
+  const { data, error } = await supabase.rpc("create_pending_community", {
+    p_name: community.name,
+    p_short_name: community.short_name,
+    p_website: community.website,
+    p_contact_email: community.contact_email,
+  })
 
   if (error) {
     console.error(`error creating community: ${error.message}`)
-    return false
+    return null
   }
 
-  return true
+  return data as number
 }
 
 export async function updateCommunity(
