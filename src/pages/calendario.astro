@@ -22,7 +22,7 @@ const profile = await getProfile(supabase)
         <PublishHero />
       </div>
 
-      <SendEvent isLoggedIn={!!profile} client:load />
+      <SendEvent isLoggedIn={!!profile} client:visible />
     </div>
   </main>
 

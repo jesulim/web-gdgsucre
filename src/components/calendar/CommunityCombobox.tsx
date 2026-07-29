@@ -35,11 +35,11 @@ export function CommunityCombobox({ value, label, onChange, disabled }: Communit
           aria-expanded={open}
           disabled={disabled}
           className={cn(
-            "w-full justify-between rounded-none font-monospace font-normal normal-case",
+            "w-full justify-between rounded-none font-normal",
             !label && "text-muted-foreground"
           )}
         >
-          <span className="truncate">{label ?? "comunidad organizadora"}</span>
+          <span className="truncate">{label ?? "Comunidad organizadora"}</span>
           <ChevronsUpDownIcon className="size-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>

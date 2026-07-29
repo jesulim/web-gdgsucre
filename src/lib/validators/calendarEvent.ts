@@ -14,10 +14,10 @@ export const calendarEventSchema = z
     community_id: z
       .number()
       .int()
-      .refine(value => value !== 0, { error: "Elegí una comunidad" }),
+      .refine(value => value !== 0, { error: "Elige una comunidad" }),
     start_datetime: z.string().trim().min(1, "La fecha de inicio es requerida"),
     end_datetime: z.string().trim().min(1, "La fecha de fin es requerida"),
-    format: z.enum(EVENT_FORMATS, { error: "Elegí la modalidad" }),
+    format: z.enum(EVENT_FORMATS, { error: "Elige una modalidad" }),
     location: z.string().trim().min(1, "Este campo es requerido"),
     registration_link: optionalUrl,
   })

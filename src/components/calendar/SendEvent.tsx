@@ -86,7 +86,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
       // falla se corta acá y el evento no llega a enviarse.
       if (communityId === NEW_COMMUNITY_ID) {
         if (!pendingCommunity) {
-          form.setError("community_id", { type: "manual", message: "Elegí una comunidad" })
+          form.setError("community_id", { type: "manual", message: "Elige una comunidad" })
           return
         }
 
@@ -145,10 +145,10 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
 
   if (submitted) {
     return (
-      <div className="font-monospace border p-8 text-center text-white">
+      <div className="border p-8 text-center text-white">
         <p className="text-lg font-bold">¡Recibimos tu evento!</p>
-        <p className="text-muted-foreground mt-2 text-sm normal-case">
-          Lo revisamos en menos de 24 h y lo vas a ver en la agenda.
+        <p className="text-muted-foreground mt-2 text-sm">
+          Cuando sea aprobado, se publicará en la agenda.
         </p>
         <Button
           type="button"
@@ -166,10 +166,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
     <div className="relative border text-white">
       <Toaster position="top-right" richColors />
       <Form {...form}>
-        <form
-          className="font-monospace flex flex-col gap-6 p-6"
-          onSubmit={form.handleSubmit(onSubmit)}
-        >
+        <form className="flex flex-col gap-6 p-6" onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
             control={form.control}
             name="name"
@@ -180,7 +177,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                   <Input
                     {...field}
                     disabled={disabled}
-                    placeholder="ej. devfest sucre 2026"
+                    placeholder="DevFest Sucre 2026"
                     className="rounded-none"
                   />
                 </FormControl>
@@ -195,17 +192,19 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
             render={() => (
               <FormItem>
                 <FormLabel className="text-xs uppercase">Comunidad</FormLabel>
-                <div className="flex gap-2">
-                  <FormControl>
-                    <CommunityCombobox
-                      value={form.watch("community_id")}
-                      label={communityLabel}
-                      onChange={handleSelectCommunity}
-                      disabled={disabled}
-                    />
-                  </FormControl>
-                  <NewCommunityDialog onCreate={handleCreateCommunity} disabled={disabled} />
-                </div>
+                <FormControl>
+                  <div className="flex gap-2">
+                    <div className="min-w-0 flex-1">
+                      <CommunityCombobox
+                        value={form.watch("community_id")}
+                        label={communityLabel}
+                        onChange={handleSelectCommunity}
+                        disabled={disabled}
+                      />
+                    </div>
+                    <NewCommunityDialog onCreate={handleCreateCommunity} disabled={disabled} />
+                  </div>
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
@@ -217,7 +216,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
               name="start_datetime"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-xs uppercase">Inicio — fecha y hora</FormLabel>
+                  <FormLabel className="text-xs uppercase">Inicio</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -236,7 +235,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
               name="end_datetime"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-xs uppercase">Fin — fecha y hora</FormLabel>
+                  <FormLabel className="text-xs uppercase">Fin</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -270,12 +269,12 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
             name="location"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs uppercase">Ubicación / link de acceso</FormLabel>
+                <FormLabel className="text-xs uppercase">Ubicación / Link de acceso</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
                     disabled={disabled}
-                    placeholder="hub de innovación usfx · o link de acceso"
+                    placeholder="Hub de innovación USFX / Link de acceso"
                     className="rounded-none"
                   />
                 </FormControl>
@@ -316,7 +315,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
       </Form>
 
       {!isLoggedIn && (
-        <div className="font-monospace absolute inset-0 flex flex-col items-center justify-center gap-4 p-6 text-center text-white">
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-6 text-center text-white bg-black/70 backdrop-blur-xs">
           <p className="text-sm uppercase">Inicia sesión para publicar tu evento</p>
           <Button asChild className="bg-lime-300 hover:bg-lime-300/90 rounded-none text-black">
             <a href="/api/auth/signin?next=/calendario">Iniciar sesión</a>
