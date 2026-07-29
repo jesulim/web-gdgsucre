@@ -18,7 +18,7 @@ function escapePostgrestPattern(value: string) {
 }
 
 export async function getCommunities(supabase: SupabaseClient, name?: string) {
-  let query = supabase.from("communities").select("*").order("name")
+  let query = supabase.from("communities").select("id, name, short_name, website, contact_email")
 
   if (name) {
     const pattern = escapePostgrestPattern(name)
@@ -33,24 +33,15 @@ export async function getCommunities(supabase: SupabaseClient, name?: string) {
 }
 
 export async function createCommunity(supabase: SupabaseClient, community: Community) {
-  // Se usa un RPC SECURITY DEFINER en vez de un INSERT directo: la fila
-  // creada queda con accepted=false, y la política de SELECT
-  // (accepted OR is_admin) rechazaría el RETURNING de un INSERT normal para
-  // un creador no admin. El RPC bypasea RLS solo para devolver el id nuevo,
-  // sin exponer la fila en sí ni permitir setear accepted desde el cliente.
-  const { data, error } = await supabase.rpc("create_pending_community", {
-    p_name: community.name,
-    p_short_name: community.short_name,
-    p_website: community.website,
-    p_contact_email: community.contact_email,
-  })
+  const { data, error } = await supabase
+    .from("communities")
+    .insert(community)
+    .select(`id`)
+    .maybeSingle()
 
-  if (error) {
-    console.error(`error creating community: ${error.message}`)
-    return null
-  }
+  if (error) throw new Error(error.message)
 
-  return data as number
+  return data?.id ?? null
 }
 
 export async function updateCommunity(
