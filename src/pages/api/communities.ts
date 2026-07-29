@@ -38,7 +38,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     }
 
     const supabase = await createUserClient(cookies)
-    const success = await createCommunity(supabase, {
+    const id = await createCommunity(supabase, {
       name,
       short_name,
       website,
@@ -46,14 +46,14 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       image,
     })
 
-    if (!success) {
+    if (id === null) {
       return new Response(JSON.stringify({ error: "Failed to create community" }), {
         status: 500,
         headers: { "Content-Type": "application/json" },
       })
     }
 
-    return new Response(JSON.stringify({ message: "Comunidad creada exitosamente" }), {
+    return new Response(JSON.stringify({ id, message: "Comunidad creada exitosamente" }), {
       headers: { "Content-Type": "application/json" },
       status: 201,
     })

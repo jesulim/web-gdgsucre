@@ -10,11 +10,19 @@ interface Community {
   accepted?: boolean
 }
 
+// Escapa los caracteres que PostgREST interpreta como sintaxis dentro de un
+// filtro .or(): una coma o un paréntesis sin escapar en el input del usuario
+// puede alterar el árbol de filtros o romper el parseo de la request.
+function escapePostgrestPattern(value: string) {
+  return value.replace(/[,()]/g, "\\$&")
+}
+
 export async function getCommunities(supabase: SupabaseClient, name?: string) {
-  let query = supabase.from("communities").select("*").order("name")
+  let query = supabase.from("communities").select("id, name, short_name, website, contact_email")
 
   if (name) {
-    query = query.or(`name.ilike.%${name}%,short_name.ilike.%${name}%`)
+    const pattern = escapePostgrestPattern(name)
+    query = query.or(`name.ilike.%${pattern}%,short_name.ilike.%${pattern}%`)
   }
 
   const { data: communities, error } = await query
@@ -25,17 +33,15 @@ export async function getCommunities(supabase: SupabaseClient, name?: string) {
 }
 
 export async function createCommunity(supabase: SupabaseClient, community: Community) {
-  // No se encadena .select(): la fila creada queda con accepted=false, y la
-  // política de SELECT (accepted OR is_admin) rechazaría el RETURNING para
-  // un creador no admin, haciendo fallar el INSERT completo por RLS.
-  const { error } = await supabase.from("communities").insert(community)
+  const { data, error } = await supabase
+    .from("communities")
+    .insert(community)
+    .select(`id`)
+    .maybeSingle()
 
-  if (error) {
-    console.error(`error creating community: ${error.message}`)
-    return false
-  }
+  if (error) throw new Error(error.message)
 
-  return true
+  return data?.id ?? null
 }
 
 export async function updateCommunity(

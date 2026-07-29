@@ -22,6 +22,8 @@
   --color-black: #1e1e1e;
   --color-white: #ffffff;
   --color-off-white: #f0f0f0;
+
+  --color-green-lime: #c5f24c;
 }
 
 @theme inline {
