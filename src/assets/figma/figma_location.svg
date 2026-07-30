@@ -1,0 +1,8 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><title>Icon</title>
+<g id="lucide/map-pin">
+<g id="Vector">
+<path d="M10.5008 18.1658C12.0508 16.8275 16.6667 12.4942 16.6667 8.33333C16.6667 6.56522 15.9643 4.86953 14.714 3.61929C13.4638 2.36905 11.7681 1.66667 10 1.66667C8.23189 1.66667 6.5362 2.36905 5.28595 3.61929C4.03571 4.86953 3.33333 6.56522 3.33333 8.33333C3.33333 12.4942 7.94917 16.8275 9.49917 18.1658C9.64356 18.2744 9.81933 18.3331 10 18.3331C10.1807 18.3331 10.3564 18.2744 10.5008 18.1658Z" stroke="var(--stroke-0, white)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M10 10.8333C11.3807 10.8333 12.5 9.71404 12.5 8.33333C12.5 6.95262 11.3807 5.83333 10 5.83333C8.61929 5.83333 7.5 6.95262 7.5 8.33333C7.5 9.71404 8.61929 10.8333 10 10.8333Z" stroke="var(--stroke-0, white)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+</svg>
