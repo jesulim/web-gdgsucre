@@ -1,27 +1,9 @@
 ---
-import Facebook from "@/assets/icons/social/Facebook.svg"
-import Instagram from "@/assets/icons/social/Instagram.svg"
-import LinkedIn from "@/assets/icons/social/Linkedin.svg"
-import Twitter from "@/assets/icons/social/Twitter.svg"
-
-import figmaBaseWhite from "@/assets/logos/figma_base_white.webp"
-import figmaGradI from "@/assets/logos/figma_grad_i.webp"
-import figmaGradO from "@/assets/logos/figma_grad_o.webp"
-import figmaSlashHeader from "@/assets/logos/figma_slash_header.svg"
-import figmaSlashHero from "@/assets/logos/figma_slash_hero.svg"
-
-import topicAndroid from "@/assets/logos/topic_android.webp"
-import topicCloud from "@/assets/logos/topic_cloud.webp"
-import topicIA from "@/assets/logos/topic_ia.webp"
-import topicUXUI from "@/assets/logos/topic_uxui.webp"
-import topicWeb from "@/assets/logos/topic_web.webp"
-
+import decoExperiencia from "@/assets/decos/deco_experiencia.webp"
 import decoHero1 from "@/assets/decos/deco_hero_1.webp"
 import decoHero2 from "@/assets/decos/deco_hero_2.webp"
 import decoHero3 from "@/assets/decos/deco_hero_3.webp"
 import decoHero4 from "@/assets/decos/deco_hero_4.webp"
-import decoExperiencia from "@/assets/decos/deco_experiencia.webp"
-
 import figmaBlob from "@/assets/figma/figma_blob.svg"
 import figmaCalendarIcon from "@/assets/figma/figma_calendar.svg"
 import figmaCodeVector1 from "@/assets/figma/figma_code_vector1.svg"
@@ -29,6 +11,20 @@ import figmaCodeVector2 from "@/assets/figma/figma_code_vector2.svg"
 import figmaCountdownSlash from "@/assets/figma/figma_countdown_slash.svg"
 import figmaGlow from "@/assets/figma/figma_glow.svg"
 import figmaLocationIcon from "@/assets/figma/figma_location.svg"
+import Facebook from "@/assets/icons/social/Facebook.svg"
+import Instagram from "@/assets/icons/social/Instagram.svg"
+import LinkedIn from "@/assets/icons/social/Linkedin.svg"
+import Twitter from "@/assets/icons/social/Twitter.svg"
+import figmaBaseWhite from "@/assets/logos/figma_base_white.webp"
+import figmaGradI from "@/assets/logos/figma_grad_i.webp"
+import figmaGradO from "@/assets/logos/figma_grad_o.webp"
+import figmaSlashHeader from "@/assets/logos/figma_slash_header.svg"
+import figmaSlashHero from "@/assets/logos/figma_slash_hero.svg"
+import topicAndroid from "@/assets/logos/topic_android.webp"
+import topicCloud from "@/assets/logos/topic_cloud.webp"
+import topicIA from "@/assets/logos/topic_ia.webp"
+import topicUXUI from "@/assets/logos/topic_uxui.webp"
+import topicWeb from "@/assets/logos/topic_web.webp"
 
 import BaseLayout from "@/layout/BaseLayout.astro"
 
@@ -42,7 +38,10 @@ const now = new Date()
 const diff = Math.max(0, targetDate.getTime() - now.getTime())
 
 const initialDays = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, "0")
-const initialHours = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, "0")
+const initialHours = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(
+  2,
+  "0"
+)
 const initialMinutes = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, "0")
 const initialSeconds = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, "0")
 
@@ -51,27 +50,31 @@ const countdown = [
     id: "countdown-days",
     value: initialDays,
     label: "DÍAS",
-    className: "h-[82px] md:h-[216px] w-[57px] md:w-[150px] rounded-[17px] md:rounded-[44px] bg-gradient-to-b from-[#34a853] via-[#4285f4] to-[#ea4335]",
+    className:
+      "h-[82px] md:h-[216px] w-[57px] md:w-[150px] rounded-[17px] md:rounded-[44px] bg-gradient-to-b from-[#34a853] via-[#4285f4] to-[#ea4335]",
   },
   {
     id: "countdown-hours",
     value: initialHours,
     label: "HORAS",
     className: "h-[82px] md:h-[216px] w-[82px] md:w-[216px] rounded-[41px] md:rounded-[108px]",
-    style: "background-image: linear-gradient(120.466deg, rgb(79, 195, 247) 11.111%, rgb(66, 133, 244) 48.148%, rgb(251, 188, 4) 85.185%)",
+    style:
+      "background-image: linear-gradient(120.466deg, rgb(79, 195, 247) 11.111%, rgb(66, 133, 244) 48.148%, rgb(251, 188, 4) 85.185%)",
   },
   {
     id: "countdown-minutes",
     value: initialMinutes,
     label: "MINUTOS",
     className: "h-[82px] md:h-[216px] w-[72px] md:w-[190px] rounded-[24px] md:rounded-[64px]",
-    style: "background-image: linear-gradient(117.316deg, rgb(251, 188, 4) 11.111%, rgb(234, 67, 53) 48.148%, rgb(161, 66, 244) 85.185%)",
+    style:
+      "background-image: linear-gradient(117.316deg, rgb(251, 188, 4) 11.111%, rgb(234, 67, 53) 48.148%, rgb(161, 66, 244) 85.185%)",
   },
   {
     id: "countdown-seconds",
     value: initialSeconds,
     label: "SEGUNDOS",
-    className: "h-[82px] md:h-[216px] w-[68px] md:w-[180px] rounded-tl-[34px] md:rounded-tl-[90px] rounded-tr-[34px] md:rounded-tr-[90px] rounded-bl-[11px] md:rounded-bl-[28px] rounded-br-[11px] md:rounded-br-[28px] bg-gradient-to-b from-[#81c995] via-[#34a853] to-[#4285f4]",
+    className:
+      "h-[82px] md:h-[216px] w-[68px] md:w-[180px] rounded-tl-[34px] md:rounded-tl-[90px] rounded-tr-[34px] md:rounded-tr-[90px] rounded-bl-[11px] md:rounded-bl-[28px] rounded-br-[11px] md:rounded-br-[28px] bg-gradient-to-b from-[#81c995] via-[#34a853] to-[#4285f4]",
   },
 ]
 
@@ -102,7 +105,8 @@ const speakers = [
     tag: "AI & Firebase",
     location: "Lima · PE",
     cardBorder: "border-[rgba(251,188,4,0.65)]",
-    avatarStyle: "background-image: linear-gradient(120.466deg, rgb(251, 188, 4) 11.111%, rgb(234, 67, 53) 48.148%, rgb(161, 66, 244) 85.185%)",
+    avatarStyle:
+      "background-image: linear-gradient(120.466deg, rgb(251, 188, 4) 11.111%, rgb(234, 67, 53) 48.148%, rgb(161, 66, 244) 85.185%)",
     avatarShape: "rounded-[35.36px]",
     avatarShadow: "shadow-[0px_10px_50px_2px_rgba(234,67,53,0.5)]",
     iconAsset: topicIA.src,
@@ -124,7 +128,8 @@ const speakers = [
     tag: "UX/UI",
     location: "Cochabamba · BO",
     cardBorder: "border-[rgba(251,188,4,0.65)]",
-    avatarStyle: "background-image: linear-gradient(120.466deg, rgb(251, 188, 4) 11.111%, rgb(234, 67, 53) 48.148%, rgb(66, 133, 244) 85.185%)",
+    avatarStyle:
+      "background-image: linear-gradient(120.466deg, rgb(251, 188, 4) 11.111%, rgb(234, 67, 53) 48.148%, rgb(66, 133, 244) 85.185%)",
     avatarShape: "rounded-[26px]",
     avatarShadow: "shadow-[0px_10px_50px_2px_rgba(251,188,4,0.5)]",
     iconAsset: topicUXUI.src,
