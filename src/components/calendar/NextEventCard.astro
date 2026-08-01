@@ -20,9 +20,7 @@ const position = String(index + 1).padStart(2, "0")
 
 <article
   class:list={[
-    // The base layer applies `font-google` via the universal selector, which
-    // beats inheritance, so the monospace face has to be forced on descendants.
-    "border [&_*]:font-monospace",
+    "font-monospace border",
     isNext ? "border-green-lime bg-black" : "border-white/15",
   ]}
 >

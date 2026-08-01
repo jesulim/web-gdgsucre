@@ -138,8 +138,11 @@
 }
 
 @layer base {
+  /* No se fija la fuente acá: el selector universal aplica a cada elemento y le
+     gana a la herencia, así que un `font-monospace` en un contenedor nunca
+     bajaría a sus hijos. La cascada desde `body` cubre el caso por defecto. */
   * {
-    @apply border-border outline-ring/50 font-google;
+    @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground font-google;

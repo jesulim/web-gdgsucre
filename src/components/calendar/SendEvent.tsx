@@ -145,7 +145,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
 
   if (submitted) {
     return (
-      <div className="border p-8 text-center text-white">
+      <div className="font-monospace border p-8 text-center text-white">
         <p className="text-lg font-bold">¡Recibimos tu evento!</p>
         <p className="text-muted-foreground mt-2 text-sm">
           Cuando sea aprobado, se publicará en la agenda.
@@ -163,7 +163,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
   }
 
   return (
-    <div className="relative border text-white">
+    <div className="font-monospace relative border text-white">
       <Toaster position="top-right" richColors />
       <Form {...form}>
         <form className="flex flex-col gap-6 p-6" onSubmit={form.handleSubmit(onSubmit)}>
