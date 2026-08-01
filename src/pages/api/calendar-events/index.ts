@@ -2,6 +2,7 @@ import type { APIRoute } from "astro"
 import {
   createCalendarEvent,
   deleteCalendarEvent,
+  getAllCalendarEvents,
   getCalendarEvents,
   updateCalendarEvent,
 } from "@/lib/services/calendarEventService"
@@ -9,22 +10,29 @@ import { createUserClient } from "@/lib/supabase"
 
 export const GET: APIRoute = async ({ url, cookies }) => {
   try {
-    const now = new Date()
     const yearParam = url.searchParams.get("year")
     const monthParam = url.searchParams.get("month")
 
-    const year = yearParam ? Number(yearParam) : now.getUTCFullYear()
-    const month = monthParam ? Number(monthParam) : now.getUTCMonth() + 1
-
-    if (!Number.isInteger(year) || !Number.isInteger(month) || month < 1 || month > 12) {
-      return new Response(JSON.stringify({ error: "year/month inválidos" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      })
-    }
-
     const supabase = await createUserClient(cookies)
-    const calendarEvents = await getCalendarEvents(supabase, year, month)
+
+    let calendarEvents: Awaited<ReturnType<typeof getCalendarEvents>>
+
+    if (yearParam || monthParam) {
+      const now = new Date()
+      const year = yearParam ? Number(yearParam) : now.getUTCFullYear()
+      const month = monthParam ? Number(monthParam) : now.getUTCMonth() + 1
+
+      if (!Number.isInteger(year) || !Number.isInteger(month) || month < 1 || month > 12) {
+        return new Response(JSON.stringify({ error: "year/month inválidos" }), {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        })
+      }
+
+      calendarEvents = await getCalendarEvents(supabase, year, month)
+    } else {
+      calendarEvents = await getAllCalendarEvents(supabase)
+    }
 
     return new Response(JSON.stringify(calendarEvents), {
       headers: { "Content-Type": "application/json" },

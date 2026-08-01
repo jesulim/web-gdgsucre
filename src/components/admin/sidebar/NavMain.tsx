@@ -1,4 +1,13 @@
-import { Boxes, List, type LucideIcon, ScanQrCode, UserCog, Users } from "lucide-react"
+import {
+  Boxes,
+  Building2,
+  CalendarDays,
+  List,
+  type LucideIcon,
+  ScanQrCode,
+  SquareUserRound,
+  UserCog,
+} from "lucide-react"
 
 import {
   SidebarGroup,
@@ -25,15 +34,9 @@ const sidebarSections: SidebarSection[] = [
     allowedRoles: ["accreditation"],
   },
   {
-    title: "Registro de Equipos",
-    view: "registrationsTeams",
-    icon: Boxes,
-    allowedRoles: ["accreditation"],
-  },
-  {
     title: "Acreditación del Evento",
     view: "accreditation",
-    icon: Users,
+    icon: SquareUserRound,
     allowedRoles: ["accreditation"],
   },
   {
@@ -43,9 +46,25 @@ const sidebarSections: SidebarSection[] = [
     allowedRoles: ["accreditation"],
   },
   {
+    title: "Registro de Equipos",
+    view: "registrationsTeams",
+    icon: Boxes,
+    allowedRoles: ["accreditation"],
+  },
+  {
     title: "Organizadores",
     view: "organizers",
     icon: UserCog,
+  },
+  {
+    title: "Eventos del Calendario",
+    view: "calendarEvents",
+    icon: CalendarDays,
+  },
+  {
+    title: "Comunidades",
+    view: "communities",
+    icon: Building2,
   },
 ]
 

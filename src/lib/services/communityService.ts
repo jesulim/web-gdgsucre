@@ -18,7 +18,10 @@ function escapePostgrestPattern(value: string) {
 }
 
 export async function getCommunities(supabase: SupabaseClient, name?: string) {
-  let query = supabase.from("communities").select("id, name, short_name, website, contact_email")
+  let query = supabase
+    .from("communities")
+    .select("id, created_at, name, short_name, website, contact_email, accepted")
+    .order("created_at", { ascending: false })
 
   if (name) {
     const pattern = escapePostgrestPattern(name)

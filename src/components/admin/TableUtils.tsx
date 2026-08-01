@@ -75,7 +75,7 @@ export function DateCell({ value }: { value: string }) {
   return <span>{formatter.format(date)}</span>
 }
 
-export function TablePagination({ table }: { table: Table<RowData> }) {
+export function TablePagination<T extends RowData>({ table }: { table: Table<T> }) {
   const isMobile = useIsMobile()
 
   const totalRows = table.getCoreRowModel().rows.length
