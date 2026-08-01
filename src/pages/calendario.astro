@@ -1,4 +1,5 @@
 ---
+import NextEvents from "@/components/calendar/NextEvents.astro"
 import PublishHero from "@/components/calendar/PublishHero.astro"
 import { SendEvent } from "@/components/calendar/SendEvent"
 import Footer from "@/components/landing/Footer.astro"
@@ -17,6 +18,8 @@ const profile = await getProfile(supabase)
   <Header />
 
   <main class="flex-1 overflow-x-hidden mt-16">
+    <NextEvents />
+
     <div class="mx-auto grid max-w-6xl gap-12 px-4 py-16 lg:grid-cols-[2fr_3fr] lg:items-start lg:gap-20 lg:py-24">
       <div class="lg:sticky lg:top-24">
         <PublishHero />
