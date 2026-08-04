@@ -1,11 +1,13 @@
 ---
 import UserSignIn from "@/assets/icons/social/user-round-plus.svg"
+import LogoBlackIO from "@/assets/logos/IO_Extended_Black.png"
 import Avatar from "@/components/Avatar.astro"
 import HeaderCTA from "@/components/events/bwai-26/HeaderCTA.astro"
 
-const imgLogo = "/events/bwai-26/logotipo.svg"
-
 const eventSlug = Astro.params.eventSlug || "bwai-26"
+const isIoExtended = eventSlug.includes("io-extended")
+const imgLogo = isIoExtended ? LogoBlackIO.src : "/events/bwai-26/logotipo.svg"
+
 const registroPath = "/registro/" + eventSlug
 const isOnRegistroPage = Astro.url.pathname === registroPath
 
@@ -16,7 +18,7 @@ const accessToken = Astro.cookies.has("sb-access-token")
   class="sticky top-0 z-50 bg-white border-b border-gray-200 flex items-center justify-between px-5 h-15 lg:h-20 w-full"
 >
   <a href="/">
-    <img alt="GDG Sucre Build with AI" class="w-36 h-6 lg:w-62 lg:h-10" src={imgLogo} />
+    <img alt="Logo" class="h-6 lg:h-10 w-auto object-contain" src={imgLogo} />
   </a>
 
   <div class="flex items-center gap-3">
