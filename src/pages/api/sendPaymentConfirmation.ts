@@ -1,7 +1,6 @@
 import type { APIRoute } from "astro"
 import { z } from "zod"
 
-import { sendPaymentConfirmationEmail } from "@/lib/services/emailService"
 import { confirmRegistration } from "@/lib/services/registrationService"
 import { createUserClient } from "@/lib/supabase"
 
@@ -32,12 +31,9 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     const supabase = await createUserClient(cookies)
     await confirmRegistration(supabase, registrationId)
 
-    const emailData = { userEmail, userName, eventName }
-    try {
-      const result = await sendPaymentConfirmationEmail(emailData)
-    } catch (error) {
-      console.error("Error enviando email de confirmación de pago:", error)
-    }
+    supabase.functions.invoke("send-email", {
+      body: { type: "payment", data: { userEmail, userName, eventName } },
+    })
 
     return new Response(
       JSON.stringify({

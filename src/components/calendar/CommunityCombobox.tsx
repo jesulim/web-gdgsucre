@@ -43,9 +43,11 @@ export function CommunityCombobox({ value, label, onChange, disabled }: Communit
           <ChevronsUpDownIcon className="size-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
+      {/* Radix renders this in a portal, outside the form's tree, so the font
+          is not inherited and has to be declared here. */}
       <PopoverContent
         align="start"
-        className="w-[var(--radix-popover-trigger-width)] rounded-none p-0"
+        className="font-monospace w-[var(--radix-popover-trigger-width)] rounded-none p-0"
       >
         <div className="border-b p-2">
           <Input

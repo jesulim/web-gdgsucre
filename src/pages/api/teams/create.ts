@@ -1,6 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
 import type { APIRoute } from "astro"
-import { sendRegistrationConfirmationEmail } from "@/lib/services/emailService"
+
 import { createProfile, getProfile } from "@/lib/services/profileService"
 import { submitRegistration } from "@/lib/services/registrationService"
 import { createTeam } from "@/lib/services/teamService"
@@ -10,23 +10,28 @@ const sendConfirmationEmail = async (
   supabase: SupabaseClient,
   event_name: string,
   event_slug: string,
-  team
+  team: { name: string; code: string }
 ) => {
   const userProfile = await getProfile(supabase)
 
-  if (!userProfile || !("email" in userProfile)) return
+  if (!userProfile || !("email" in userProfile)) {
+    console.warn("No se pudo obtener el email del usuario")
+    return
+  }
 
-  await sendRegistrationConfirmationEmail(
-    {
-      userEmail: userProfile.email,
-      userName: userProfile.first_name ?? "",
-      eventName: event_name,
-      eventSlug: event_slug,
-      teamName: team.name,
-      teamCode: team.code,
+  supabase.functions.invoke("send-email", {
+    body: {
+      type: "registration-team",
+      data: {
+        userEmail: userProfile.email,
+        userName: userProfile.first_name ?? "",
+        eventName: event_name,
+        eventSlug: event_slug,
+        teamName: team.name,
+        teamCode: team.code,
+      },
     },
-    "registrationEmailBWAILeader"
-  )
+  })
 }
 
 export const POST: APIRoute = async ({ request, cookies }) => {

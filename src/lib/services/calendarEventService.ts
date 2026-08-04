@@ -28,10 +28,28 @@ export async function getCalendarEvents(supabase: SupabaseClient, year: number, 
   return calendarEvents
 }
 
+export async function getAllCalendarEvents(supabase: SupabaseClient) {
+  const { data: calendarEvents, error } = await supabase
+    .from("calendar_events")
+    .select(`
+      id,
+      created_at,
+      name,
+      start_datetime,
+      end_datetime,
+      format,
+      registration_link,
+      location,
+      accepted,
+      communities(id, name, short_name, image)`)
+    .order("start_datetime", { ascending: false })
+
+  if (error) throw new Error(error.message)
+
+  return calendarEvents
+}
+
 export async function createCalendarEvent(supabase: SupabaseClient, calendarEvent: CalendarEvent) {
-  // No se encadena .select(): la fila creada queda con accepted=false, y la
-  // política de SELECT (accepted OR is_admin) rechazaría el RETURNING para
-  // un creador no admin, haciendo fallar el INSERT completo por RLS.
   const { error } = await supabase.from("calendar_events").insert(calendarEvent)
 
   if (error) {

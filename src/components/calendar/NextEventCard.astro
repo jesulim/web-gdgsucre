@@ -1,0 +1,113 @@
+---
+import { formatEventDate, type UpcomingCalendarEvent } from "@/lib/calendar"
+
+interface Props {
+  event: UpcomingCalendarEvent
+  index: number
+}
+
+const { event, index } = Astro.props
+
+// Google's four brand colors, cycled in the order the design uses them.
+const ACCENTS = ["bg-blue-500", "bg-red-500", "bg-yellow-600", "bg-green-500"]
+const accent = ACCENTS[index % ACCENTS.length]
+
+const isNext = index === 0
+const { day, month, weekday, time } = formatEventDate(event.start_datetime)
+const community = event.communities?.short_name ?? event.communities?.name
+const position = String(index + 1).padStart(2, "0")
+---
+
+<article
+  class:list={[
+    "font-monospace border",
+    isNext ? "border-green-lime bg-black" : "border-white/15",
+  ]}
+>
+  <!-- Mobile: stacked card with the date as a filled block. -->
+  <div class="grid grid-cols-[auto_1fr] items-center gap-x-4 gap-y-1 p-4 md:hidden">
+    <div class:list={["row-span-2 flex size-20 flex-col items-center justify-center", accent]}>
+      <span class="text-2xl leading-none font-bold text-black">{day}</span>
+      <span class="mt-1 text-xs font-bold uppercase text-black">{month}</span>
+    </div>
+
+    <div class="flex items-baseline justify-between gap-3">
+      <h3 class:list={["truncate text-lg font-bold", isNext ? "text-white" : "text-white/70"]}>
+        {event.name}
+      </h3>
+      <span class:list={["shrink-0 text-sm", isNext ? "text-green-lime" : "text-white/40"]}>
+        {time}
+      </span>
+    </div>
+
+    <p class="text-muted-foreground self-start truncate text-sm">// {community}</p>
+
+    <p class="col-start-2 flex items-center gap-2 pt-2 text-sm text-white/70">
+      <svg
+        class="size-4 shrink-0"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path>
+        <circle cx="12" cy="10" r="3"></circle>
+      </svg>
+      <span class="truncate">{event.location}</span>
+      {isNext && <span class="text-green-lime shrink-0 font-bold">· → próximo</span>}
+    </p>
+  </div>
+
+  <!-- Desktop: single row split into cells, as in the agenda table. -->
+  <div
+    class="hidden md:grid md:grid-cols-[minmax(0,14rem)_minmax(0,1fr)_minmax(0,8rem)_minmax(0,18rem)]"
+  >
+    <div class="flex items-center gap-3 px-5 py-4">
+      <span class:list={["size-3 shrink-0", accent]}></span>
+      <div class="min-w-0">
+        <p class="text-green-lime font-bold">{day} {month.toUpperCase()}</p>
+        <p class="text-muted-foreground text-sm">{weekday}</p>
+      </div>
+    </div>
+
+    <div
+      class:list={[
+        "flex min-w-0 flex-col justify-center border-l px-5 py-4",
+        isNext ? "border-green-lime" : "border-white/15",
+      ]}
+    >
+      <h3 class:list={["truncate text-xl font-bold", isNext ? "text-white" : "text-white/70"]}>
+        {event.name}
+      </h3>
+      <p class="text-muted-foreground truncate text-sm">// {community}</p>
+    </div>
+
+    <div
+      class:list={[
+        "flex items-center justify-center border-l px-5 py-4",
+        isNext ? "border-green-lime" : "border-white/15",
+      ]}
+    >
+      <span class:list={[isNext ? "text-white" : "text-white/40"]}>{time}</span>
+    </div>
+
+    <div
+      class:list={[
+        "flex items-center justify-between gap-3 border-l px-5 py-4",
+        isNext ? "border-green-lime" : "border-white/15",
+      ]}
+    >
+      <span class="truncate text-white/70">{event.location}</span>
+      {
+        isNext ? (
+          <span class="text-green-lime shrink-0 font-bold">→ próximo</span>
+        ) : (
+          <span class="text-muted-foreground shrink-0 text-sm">{position}</span>
+        )
+      }
+    </div>
+  </div>
+</article>

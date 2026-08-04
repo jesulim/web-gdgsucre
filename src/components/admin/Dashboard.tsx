@@ -2,6 +2,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
 
 import { AccreditationTable } from "@/components/admin/AccreditationTable"
+import { CalendarEventsTable } from "@/components/admin/calendar-events/CalendarEventsTable"
+import { CommunitiesTable } from "@/components/admin/communities/CommunitiesTable"
 import { OrganizersTable } from "@/components/admin/organizers/OrganizersTable"
 import { QRScanner } from "@/components/admin/QRScanner"
 import { RegistrationsTable } from "@/components/admin/registrations/RegistrationsTable"
@@ -18,6 +20,8 @@ export type ViewType =
   | "accreditation"
   | "scanner"
   | "organizers"
+  | "communities"
+  | "calendarEvents"
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -96,6 +100,14 @@ function DashboardContainer({ userData, events }: DashboardProps) {
     organizers: {
       title: "Organizadores",
       component: <OrganizersTable eventSlug={eventSlug} />,
+    },
+    calendarEvents: {
+      title: "Eventos del Calendario",
+      component: <CalendarEventsTable />,
+    },
+    communities: {
+      title: "Comunidades",
+      component: <CommunitiesTable />,
     },
   }
 
