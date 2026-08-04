@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>¡Pago confirmado! - {{eventName}}</title>
+  <title>¡Evento aceptado! - <%= it.eventName %></title>
 </head>
 
 <body style="
@@ -23,11 +23,18 @@
           background: linear-gradient(135deg, #34a853 0%, #4285f4 100%);
           padding: 40px 20px;
           text-align: center;
-          position: relative;
         ">
       <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: bold">
-        ¡Felicidades, {{userName}}! 🎉
+        ¡Tu evento fue aceptado! 🎉
       </h1>
+      <p style="
+            color: #ffffff;
+            margin: 15px 0 0 0;
+            font-size: 16px;
+            opacity: 0.9;
+          ">
+        <%= it.communityName %>
+      </p>
     </div>
 
     <div style="padding: 30px 20px">
@@ -46,8 +53,15 @@
                 color: #155724;
                 font-weight: bold;
               ">
-            ¡Pago confirmado exitosamente!
+            ¡Felicidades! Tu evento fue aprobado por el equipo de GDG Sucre.
           </h3>
+          <p style="
+                margin: 10px 0 0 0;
+                font-size: 14px;
+                color: #155724;
+              ">
+            Aparecerá en la agenda pública próximamente.
+          </p>
         </div>
       </div>
 
@@ -58,42 +72,62 @@
             margin: 25px 0;
             border: 1px solid #e9ecef;
           ">
-        <div>
-          <h4 style="
-                font-size: 20px;
-                margin: 0 0 15px 0;
-                font-weight: 600;
-              ">
-            {{eventName}}
-          </h4>
-          <p style="
-                font-size: 16px;
-                color: #555;
-                margin: 8px 0;
-                line-height: 1.5;
-              ">
-            <strong style="color: #333">📅 Fecha:</strong> Sábado y Domingo 10 de mayo
-          </p>
-          <p style="
-                font-size: 16px;
-                color: #555;
-                margin: 8px 0;
-                line-height: 1.5;
-              ">
-            <strong style="color: #333">🕗 Hora:</strong> 08:30 Hrs.
-          </p>
-          <p style="
-                font-size: 16px;
-                color: #555;
-                margin: 8px 0;
-                line-height: 1.5;
-              ">
-            <strong style="color: #333">📍 Ubicación:</strong>
-            SIB Chuquisaca. Calle Destacamento 111 #192
-          </p>
-        </div>
+        <h4 style="
+              font-size: 20px;
+              margin: 0 0 15px 0;
+              font-weight: 600;
+            ">
+          <%= it.eventName %>
+        </h4>
+        <p style="
+              font-size: 16px;
+              color: #555;
+              margin: 8px 0;
+              line-height: 1.5;
+            ">
+          <strong style="color: #333">📅 Inicio:</strong> <%= it.startDatetime %>
+        </p>
+        <p style="
+              font-size: 16px;
+              color: #555;
+              margin: 8px 0;
+              line-height: 1.5;
+            ">
+          <strong style="color: #333">📅 Fin:</strong> <%= it.endDatetime %>
+        </p>
+        <p style="
+              font-size: 16px;
+              color: #555;
+              margin: 8px 0;
+              line-height: 1.5;
+            ">
+          <strong style="color: #333">📍 Modalidad:</strong> <%= it.format %>
+        </p>
+        <p style="
+              font-size: 16px;
+              color: #555;
+              margin: 8px 0;
+              line-height: 1.5;
+            ">
+          <strong style="color: #333">📍 Ubicación:</strong> <%= it.location %>
+        </p>
       </div>
 
+      <div style="text-align: center; margin: 30px 0">
+        <a href="<%= it.registrationLink %>" style="
+              background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);
+              color: white;
+              padding: 15px 30px;
+              text-decoration: none;
+              border-radius: 25px;
+              display: inline-block;
+              font-weight: bold;
+              font-size: 16px;
+              box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
+            ">
+          🔗 Ver página de registro
+        </a>
+      </div>
 
       <div style="
             background: #fff8e1;
@@ -102,56 +136,20 @@
             padding: 20px;
             margin: 25px 0;
           ">
-        <h4 style="margin: 0 0 15px 0; color: #e65100; font-size: 16px">
-          ⚠️ Instrucciones importantes
+        <h4 style="margin: 0 0 10px 0; color: #e65100; font-size: 16px">
+          📌 Próximos pasos
         </h4>
         <ul style="
               margin: 0;
               padding-left: 20px;
-              color: #e65100;
+              color: #555;
               font-size: 14px;
               line-height: 1.6;
             ">
-          <li>
-            <strong>Llega 15 minutos antes</strong> para evitar congestión en
-            el acceso
-          </li>
-          <li>
-            <strong>Lleva tu documento de identidad</strong> como respaldo
-          </li>
-          <li>
-            <strong>Guarda este correo</strong> por si necesitas mostrar tu
-            entrada
-          </li>
+          <li>Tu evento aparecerá en la agenda de <strong>gdgsucre.com</strong></li>
+          <li>Comparte la notificación con tu comunidad</li>
+          <li>Asegúrate de que los datos de registro estén correctos</li>
         </ul>
-      </div>
-
-      <div style="text-align: center; margin: 35px 0">
-        <p style="color: #555; margin-bottom: 20px; font-size: 16px">
-          ¡Únete a nuestra comunidad y prepárate para el evento!
-        </p>
-        <a href="https://chat.whatsapp.com/EHtkjWuuhPh8cPDY8U9A7O" style="
-              background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
-              color: white;
-              padding: 15px 30px;
-              text-decoration: none;
-              border-radius: 25px;
-              display: inline-block;
-              font-weight: bold;
-              font-size: 16px;
-              box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
-              transition: transform 0.2s ease;
-            ">
-          💬 Únete a la comunidad
-        </a>
-        <p style="
-              color: #666;
-              font-size: 12px;
-              margin-top: 15px;
-              font-style: italic;
-            ">
-          Conecta con otros asistentes y recibe actualizaciones del evento
-        </p>
       </div>
 
       <div style="
@@ -162,12 +160,11 @@
             border-radius: 0 15px 15px 0;
           ">
         <h4 style="margin: 0 0 15px 0; color: #4285f4; font-size: 18px">
-          🙏 ¡Gracias por acompañarnos!
+          🙏 ¡Gracias por ser parte de GDG Sucre!
         </h4>
         <p style="margin: 0; color: #555; font-size: 14px; line-height: 1.6">
-          Estamos emocionados de tenerte en el <strong>{{eventName}}</strong>.
-          Será una experiencia increíble llena de aprendizaje, networking y
-          diversión.
+          Tu evento enriquece la comunidad tecnológica de Chuquisaca.
+          Si tienes alguna pregunta, no dudes en escribirnos.
         </p>
       </div>
     </div>

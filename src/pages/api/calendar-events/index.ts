@@ -6,6 +6,7 @@ import {
   getCalendarEvents,
   updateCalendarEvent,
 } from "@/lib/services/calendarEventService"
+
 import { createUserClient } from "@/lib/supabase"
 
 export const GET: APIRoute = async ({ url, cookies }) => {
@@ -129,22 +130,29 @@ export const PUT: APIRoute = async ({ request, cookies }) => {
     })
 
     if (!result) {
-      return new Response(
-        JSON.stringify({ error: "Evento no encontrado o sin permisos para actualizarlo" }),
-        {
-          status: 404,
-          headers: { "Content-Type": "application/json" },
-        }
-      )
+      return new Response(JSON.stringify({ error: "Evento no encontrado" }), {
+        status: 404,
+        headers: { "Content-Type": "application/json" },
+      })
+    }
+
+    if (accepted === true) {
+      supabase.functions.invoke("send-email", {
+        body: {
+          type: "event-accepted",
+          data: { eventId: id },
+        },
+      })
     }
 
     return new Response(JSON.stringify(result), {
-      headers: { "Content-Type": "application/json" },
       status: 200,
+      headers: { "Content-Type": "application/json" },
     })
   } catch (error) {
     return new Response(`Error updating calendar event ${error}`, {
       status: 500,
+      headers: { "Content-Type": "application/json" },
     })
   }
 }

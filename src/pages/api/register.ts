@@ -1,9 +1,30 @@
+import type { SupabaseClient } from "@supabase/supabase-js"
 import type { APIRoute } from "astro"
 
-import { sendRegistrationConfirmationEmail } from "@/lib/services/emailService"
 import { createProfile, getProfile } from "@/lib/services/profileService"
 import { submitRegistration } from "@/lib/services/registrationService"
 import { createUserClient } from "@/lib/supabase"
+
+const sendEmail = async (supabase: SupabaseClient, event_name: string, event_slug: string) => {
+  const userProfile = await getProfile(supabase)
+
+  if (!userProfile || !("email" in userProfile)) {
+    console.warn("No se pudo obtener el email del usuario")
+    return
+  }
+
+  supabase.functions.invoke("send-email", {
+    body: {
+      type: "registration",
+      data: {
+        userEmail: userProfile.email,
+        userName: userProfile.first_name ?? "",
+        eventName: event_name,
+        eventSlug: event_slug,
+      },
+    },
+  })
+}
 
 export const POST: APIRoute = async ({ request, cookies }) => {
   const supabase = await createUserClient(cookies)
@@ -11,6 +32,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
   const { event_id, event_slug, event_name, first_name, last_name, phone_number, ...fields } =
     Object.fromEntries(formData)
+
   if (first_name && last_name && phone_number) {
     try {
       await createProfile(supabase, String(first_name), String(last_name), String(phone_number))
@@ -21,19 +43,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
   try {
     await submitRegistration(supabase, { event_id, event_slug, fields })
-
-    const userProfile = await getProfile(supabase)
-
-    if (userProfile && "email" in userProfile) {
-      await sendRegistrationConfirmationEmail({
-        userEmail: userProfile.email,
-        userName: userProfile.first_name ?? "",
-        eventName: String(event_name),
-        eventSlug: String(event_slug),
-      })
-    } else {
-      console.error("No se pudo obtener el perfil o el email del usuario para enviar el correo.")
-    }
+    sendEmail(supabase, String(event_name), String(event_slug))
 
     return new Response("Registro exitoso", { status: 200 })
   } catch (error) {
