@@ -24,7 +24,7 @@ if (names.length > 1 && names[0] && names[1]) {
   userInitials = "U"
 }
 
-const { eventSlug = "io-extended-25" } = Astro.props
+const { eventSlug = "io-extended-26" } = Astro.props
 const registration = profile?.id
   ? await getEventRegistration(supabase, profile.id, eventSlug)
   : null

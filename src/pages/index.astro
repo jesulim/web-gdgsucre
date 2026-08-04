@@ -30,8 +30,8 @@ import BaseLayout from "@/layout/BaseLayout.astro"
 
 const isLoggedIn = Astro.cookies.has("sb-access-token") || Astro.cookies.has("sb-refresh-token")
 const redirectHref = isLoggedIn
-  ? "/registro/io-extended-25"
-  : "/api/auth/signin?next=/registro/io-extended-25"
+  ? "/registro/io-extended-26"
+  : "/api/auth/signin?next=/registro/io-extended-26"
 
 const targetDate = new Date("2026-08-15T08:00:00-04:00")
 const now = new Date()
@@ -188,7 +188,7 @@ const mockups = [
         </a>
         {
           isLoggedIn ? (
-            <Avatar server:defer eventSlug="io-extended-25">
+            <Avatar server:defer eventSlug="io-extended-26">
               <div class="bg-gray-700/50 rounded-full size-10 animate-pulse" slot="fallback" />
             </Avatar>
           ) : (
