@@ -181,30 +181,27 @@ const mockups = [
         <a href="#experiencia" class="hover:text-white transition-colors">Sponsors</a>
       </nav>
 
-      <!-- Desktop & User Actions -->
+      <!-- Header Actions / Avatar -->
       <div class="flex gap-[12px] items-center">
-        <a href="#" class="hidden md:block border border-[#3c4043] border-solid px-[20px] py-[10px] rounded-[999px] text-[#e8eaed] text-[14px] font-medium hover:border-[#8ab4f8] transition-colors">
-          Eventos pasados
-        </a>
         {
           isLoggedIn ? (
             <Avatar server:defer eventSlug="io-extended-26">
               <div class="bg-gray-700/50 rounded-full size-10 animate-pulse" slot="fallback" />
             </Avatar>
           ) : (
-            <a href={redirectHref} class="hidden md:block bg-[#8ab4f8] px-[20px] py-[10px] rounded-[999px] text-[#202124] text-[14px] font-medium hover:bg-[#aecbfa] transition-colors">
-              Registrarme
-            </a>
+            <>
+              <a href={redirectHref} class="hidden md:block bg-[#8ab4f8] px-[20px] py-[10px] rounded-[999px] text-[#202124] text-[14px] font-medium hover:bg-[#aecbfa] transition-colors">
+                Registrarme
+              </a>
+              <button aria-label="Abrir menú" class="md:hidden flex flex-col gap-[5px] items-end shrink-0 p-1">
+                <span class="h-[2.5px] w-[20px] rounded-[2px] bg-[#e8eaed]"></span>
+                <span class="h-[2.5px] w-[20px] rounded-[2px] bg-[#e8eaed]"></span>
+                <span class="h-[2.5px] w-[12px] rounded-[2px] bg-[#e8eaed]"></span>
+              </button>
+            </>
           )
         }
       </div>
-
-      <!-- Mobile Menu Button -->
-      <button aria-label="Abrir menú" class="md:hidden flex flex-col gap-[5px] items-end shrink-0 p-1">
-        <span class="h-[2.5px] w-[20px] rounded-[2px] bg-[#e8eaed]"></span>
-        <span class="h-[2.5px] w-[20px] rounded-[2px] bg-[#e8eaed]"></span>
-        <span class="h-[2.5px] w-[12px] rounded-[2px] bg-[#e8eaed]"></span>
-      </button>
     </header>
 
     <main class="relative z-10 flex w-full flex-col items-center">
@@ -285,14 +282,14 @@ const mockups = [
 
         <!-- Info Cards -->
         <div class="flex flex-col md:flex-row gap-[10px] md:gap-[16px] items-center justify-center shrink-0 w-full">
-          <div class="flex items-center gap-[8px] rounded-[20px] border border-[#8ab4f8] border-solid pl-[16px] pr-[20px] py-[10px] md:py-[12px] shrink-0">
+          <div class="flex items-center gap-[8px] rounded-[20px] pl-[16px] pr-[20px] py-[10px] md:py-[12px] shrink-0">
             <img alt="Calendario" class="size-[16px] md:size-[20px] shrink-0" src={figmaCalendarIcon.src} />
             <p class="text-[#e8eaed] text-[13px] md:text-[14px] font-medium whitespace-nowrap">
               Sábado 15 de Agosto — 8:00 Hrs
             </p>
           </div>
 
-          <div class="flex items-center gap-[8px] rounded-[20px] border border-[#8ab4f8] border-solid pl-[16px] pr-[20px] py-[10px] md:py-[12px] shrink-0">
+          <div class="flex items-center gap-[8px] rounded-[20px] pl-[16px] pr-[20px] py-[10px] md:py-[12px] shrink-0">
             <img alt="Ubicación" class="size-[20px] shrink-0" src={figmaLocationIcon.src} />
             <div class="text-[#e8eaed] text-[13px] md:text-[14px] font-medium text-center whitespace-nowrap">
               Facultad de Tecnología · Salón Rosendo Carreras Fumaña
