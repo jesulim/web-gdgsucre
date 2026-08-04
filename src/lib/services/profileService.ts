@@ -43,9 +43,7 @@ export async function getProfile(supabase: SupabaseClient) {
 
   const { data: profile, error } = await supabase
     .from("profiles")
-    .select(
-      "id, first_name, last_name, avatar_url, is_admin, occupation, phone_number, share_data, display_name"
-    )
+    .select("id, first_name, last_name, avatar_url, is_admin, occupation, phone_number")
     .eq("id", user.id)
     .maybeSingle()
 
@@ -156,8 +154,6 @@ export async function updateProfile(
       last_name: data.last_name,
       occupation: data.occupation || null,
       phone_number: data.phone_number || null,
-      share_data: data.share_data ?? false,
-      display_name: data.display_name || null,
     },
     { onConflict: "id" }
   )

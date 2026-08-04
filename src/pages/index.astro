@@ -25,10 +25,10 @@ import topicCloud from "@/assets/logos/topic_cloud.webp"
 import topicIA from "@/assets/logos/topic_ia.webp"
 import topicUXUI from "@/assets/logos/topic_uxui.webp"
 import topicWeb from "@/assets/logos/topic_web.webp"
-
+import Avatar from "@/components/Avatar.astro"
 import BaseLayout from "@/layout/BaseLayout.astro"
 
-const isLoggedIn = Astro.cookies.has("sb-refresh-token")
+const isLoggedIn = Astro.cookies.has("sb-access-token") || Astro.cookies.has("sb-refresh-token")
 const redirectHref = isLoggedIn
   ? "/registro/io-extended-25"
   : "/api/auth/signin?next=/registro/io-extended-25"
@@ -181,14 +181,22 @@ const mockups = [
         <a href="#experiencia" class="hover:text-white transition-colors">Sponsors</a>
       </nav>
 
-      <!-- Desktop Actions -->
-      <div class="hidden md:flex gap-[12px] items-center">
-        <a href="#" class="border border-[#3c4043] border-solid px-[20px] py-[10px] rounded-[999px] text-[#e8eaed] text-[14px] font-medium hover:border-[#8ab4f8] transition-colors">
+      <!-- Desktop & User Actions -->
+      <div class="flex gap-[12px] items-center">
+        <a href="#" class="hidden md:block border border-[#3c4043] border-solid px-[20px] py-[10px] rounded-[999px] text-[#e8eaed] text-[14px] font-medium hover:border-[#8ab4f8] transition-colors">
           Eventos pasados
         </a>
-        <a href={redirectHref} class="bg-[#8ab4f8] px-[20px] py-[10px] rounded-[999px] text-[#202124] text-[14px] font-medium hover:bg-[#aecbfa] transition-colors">
-          Registrarme
-        </a>
+        {
+          isLoggedIn ? (
+            <Avatar server:defer eventSlug="io-extended-25">
+              <div class="bg-gray-700/50 rounded-full size-10 animate-pulse" slot="fallback" />
+            </Avatar>
+          ) : (
+            <a href={redirectHref} class="hidden md:block bg-[#8ab4f8] px-[20px] py-[10px] rounded-[999px] text-[#202124] text-[14px] font-medium hover:bg-[#aecbfa] transition-colors">
+              Registrarme
+            </a>
+          )
+        }
       </div>
 
       <!-- Mobile Menu Button -->

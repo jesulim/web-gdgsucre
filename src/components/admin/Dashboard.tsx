@@ -57,7 +57,12 @@ export interface DashboardProps {
 }
 
 function DashboardContainer({ userData, events }: DashboardProps) {
-  const [eventSlug, setEventSlug] = useState(events[0]?.slug ?? "")
+  const [eventSlug, setEventSlug] = useState(() => {
+    if (userData.isAdmin) return events[0]?.slug ?? ""
+    const userEvents = Object.keys(userData.staffRoles)
+    const match = events.find(e => userEvents.includes(e.slug))
+    return match?.slug ?? userEvents[0] ?? events[0]?.slug ?? ""
+  })
   const selectedEvent = events.find(e => e.slug === eventSlug)
   const currentRole = userData.staffRoles[eventSlug]
 
