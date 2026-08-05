@@ -184,23 +184,15 @@ const mockups = [
       <!-- Header Actions / Avatar -->
       <div class="flex gap-[12px] items-center">
         {
-          isLoggedIn ? (
-            <Avatar server:defer eventSlug="io-extended-26">
-              <div class="bg-gray-700/50 rounded-full size-10 animate-pulse" slot="fallback" />
-            </Avatar>
-          ) : (
-            <>
-              <a href={redirectHref} class="hidden md:block bg-[#8ab4f8] px-[20px] py-[10px] rounded-[999px] text-[#202124] text-[14px] font-medium hover:bg-[#aecbfa] transition-colors">
-                Registrarme
-              </a>
-              <button aria-label="Abrir menú" class="md:hidden flex flex-col gap-[5px] items-end shrink-0 p-1">
-                <span class="h-[2.5px] w-[20px] rounded-[2px] bg-[#e8eaed]"></span>
-                <span class="h-[2.5px] w-[20px] rounded-[2px] bg-[#e8eaed]"></span>
-                <span class="h-[2.5px] w-[12px] rounded-[2px] bg-[#e8eaed]"></span>
-              </button>
-            </>
+          !isLoggedIn && (
+            <a href={redirectHref} class="hidden md:block bg-[#8ab4f8] px-[20px] py-[10px] rounded-[999px] text-[#202124] text-[14px] font-medium hover:bg-[#aecbfa] transition-colors">
+              Registrarme
+            </a>
           )
         }
+        <Avatar server:defer eventSlug="io-extended-26">
+          <div class="bg-gray-700/50 rounded-full size-10 animate-pulse" slot="fallback" />
+        </Avatar>
       </div>
     </header>
 
