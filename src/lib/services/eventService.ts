@@ -42,11 +42,10 @@ export async function getEvent(supabase: SupabaseClient, slug: string) {
     .from("events")
     .select("id, name, date, slug, image_url, registration_open")
     .eq("slug", slug)
-    .single()
+    .maybeSingle()
 
   if (error) {
-    console.error(`error getting event: ${error.message}`)
-    return null
+    throw new Error(`error getting event: ${error.message}`)
   }
 
   return event
