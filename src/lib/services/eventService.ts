@@ -38,9 +38,6 @@ export async function getEvents(supabase: SupabaseClient) {
 }
 
 export async function getEvent(supabase: SupabaseClient, slug: string) {
-  // maybeSingle distingue "sin fila" (data: null, error: null) de un fallo real de
-  // consulta (error no vacío). El 404 debe responder solo al primer caso; un fallo
-  // transitorio de Supabase no debe camuflarse como recurso inexistente.
   const { data: event, error } = await supabase
     .from("events")
     .select("id, name, date, slug, image_url, registration_open")
