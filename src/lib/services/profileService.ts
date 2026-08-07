@@ -54,10 +54,10 @@ export async function getProfile(supabase: SupabaseClient) {
   if (!profile) {
     return {
       id: user.id,
-      first_name: user.user_metadata.full_name,
+      first_name: user.user_metadata?.full_name || user.user_metadata?.name || "",
       last_name: "",
       avatar_url: user?.user_metadata?.avatar_url,
-      email: user?.user_metadata.email,
+      email: user?.user_metadata?.email,
       is_admin: false,
     }
   }
