@@ -15,6 +15,10 @@ if (!profile) {
   profile = await getProfile(supabase)
 }
 
+if (!profile) {
+  return null
+}
+
 const names = profile?.first_name ? profile.first_name.trim().split(" ") : []
 if (names.length > 1 && names[0] && names[1]) {
   userInitials = (names[0][0] + names[1][0]).toUpperCase()

@@ -1,8 +1,8 @@
 import type { APIRoute } from "astro"
-import { createUserClient } from "@/lib/supabase"
+import { createSupabaseServerClient } from "@/lib/supabase"
 
-export const GET: APIRoute = async ({ cookies, redirect }) => {
-  const supabase = await createUserClient(cookies)
+export const GET: APIRoute = async ({ request, cookies, redirect }) => {
+  const supabase = createSupabaseServerClient({ request, cookies })
 
   await supabase.auth.signOut()
   cookies.delete("sb-access-token", { path: "/" })
