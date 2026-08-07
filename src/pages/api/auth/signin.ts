@@ -22,6 +22,9 @@ export const GET: APIRoute = async ({ request, url, cookies, redirect }) => {
     provider: "google",
     options: {
       redirectTo: callbackRedirectUrl.toString(),
+      queryParams: {
+        prompt: "select_account",
+      },
     },
   })
 
