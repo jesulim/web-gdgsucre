@@ -7,13 +7,8 @@ import { createSupabaseServerClient, createUserClient } from "@/lib/supabase"
 
 let userInitials = ""
 
-let supabase = await createUserClient(Astro.cookies)
-let profile = await getProfile(supabase)
-
-if (!profile) {
-  supabase = createSupabaseServerClient({ request: Astro.request, cookies: Astro.cookies })
-  profile = await getProfile(supabase)
-}
+const supabase = createSupabaseServerClient({ request: Astro.request, cookies: Astro.cookies })
+const profile = await getProfile(supabase)
 
 if (!profile) {
   return null
