@@ -4,10 +4,12 @@ import { createSupabaseServerClient } from "@/lib/supabase"
 export const GET: APIRoute = async ({ request, url, cookies, redirect }) => {
   const supabase = createSupabaseServerClient({ request, cookies })
 
-  const host = request.headers.get("x-forwarded-host") ?? request.headers.get("host")
+  const rawHost = request.headers.get("x-forwarded-host") ?? request.headers.get("host") ?? ""
+  const host = rawHost.split(",")[0].trim()
 
+  const rawProtocol = request.headers.get("x-forwarded-proto") ?? ""
   const protocol =
-    request.headers.get("x-forwarded-proto") ?? (host?.includes("localhost") ? "http" : "https")
+    rawProtocol.split(",")[0].trim() || (host.includes("localhost") ? "http" : "https")
 
   const origin = host ? `${protocol}://${host}` : url.origin
 
