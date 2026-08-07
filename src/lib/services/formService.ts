@@ -22,7 +22,12 @@ export async function getFormFieldsByEvent(
     .eq("events.slug", eventSlug)
     .order("order")
 
-  if (error) throw error
+  if (error) {
+    console.error("Error getting form fields:", error)
+    return []
+  }
+
+  if (!data) return []
 
   return data.map(({ events: _events, ...row }) => formFieldSchema.parse(row))
 }

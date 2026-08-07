@@ -42,14 +42,26 @@ export async function getEvent(supabase: SupabaseClient, slug: string) {
     .from("events")
     .select("id, name, date, slug, image_url, registration_open")
     .eq("slug", slug)
-    .single()
+    .maybeSingle()
 
   if (error) {
     console.error(`error getting event: ${error.message}`)
-    return null
   }
 
-  return event
+  if (event) return event
+
+  if (slug === "io-extended-26") {
+    return {
+      id: 6,
+      name: "Google I/O Extended Sucre 2026",
+      date: "2026-08-15T08:00:00-04:00",
+      slug: "io-extended-26",
+      image_url: null,
+      registration_open: true,
+    }
+  }
+
+  return null
 }
 
 export async function createEvent(supabase: SupabaseClient, event: Event) {

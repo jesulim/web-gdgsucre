@@ -15,7 +15,7 @@ const event = await getEvent(supabase, eventSlug)
 if (!event) return Astro.redirect("/")
 
 const accessToken = Astro.cookies.get("sb-access-token")?.value
-const { data } = await supabase.auth.getClaims(accessToken)
+const { data } = accessToken ? await supabase.auth.getClaims(accessToken) : { data: null }
 const registration = data?.claims
   ? await getEventRegistration(supabase, data.claims.sub, eventSlug)
   : null
