@@ -31,7 +31,7 @@ if (registration?.status === "confirmed") {
   return Astro.redirect(`/registro/${eventSlug}/confirmado`)
 }
 
-const formFields = await getFormFieldsByEvent(supabase, eventSlug, event?.id)
+const formFields = await getFormFieldsByEvent(supabase, event?.id)
 const teamCode = Astro.url.searchParams.get("code") || undefined
 
 let initialTeamName = ""

@@ -79,10 +79,15 @@ export async function createEvent(supabase: SupabaseClient, event: Event) {
 }
 
 export async function updateEvent(supabase: SupabaseClient, id: number, event: Event) {
-  const { data, error } = await supabase.from("events").update(event).eq("id", id)
+  const { data, error } = await supabase
+    .from("events")
+    .update(event)
+    .eq("id", id)
+    .select("id")
+    .single()
 
   if (error) {
-    console.error(`error updating event: ${error.message}`)
+    console.error(`Error updating event: ${error.message}`)
     return null
   }
 

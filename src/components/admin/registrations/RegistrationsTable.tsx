@@ -37,7 +37,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-import useRegistrations from "@/hooks/useRegistrations"
+import useRegistrations from "@/hooks/admin/useRegistrations"
 import RegistrationRowActions from "./RegistrationRowActions"
 
 export interface Registrations {
