@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 
-export default function useFetchEvents(params = {}) {
+export default function useEvents(params = {}) {
   const fetchEvents = async (signal: AbortSignal) => {
     const url = new URL("/api/events", window.location.origin)
     url.search = new URLSearchParams(params).toString()
