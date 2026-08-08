@@ -24,6 +24,14 @@
   --color-off-white: #f0f0f0;
 
   --color-green-lime: #c5f24c;
+
+  /* Colores de marca de redes sociales (hover de íconos del footer) */
+  --color-brand-linkedin: #0a66c2;
+  --color-brand-twitter: #1da1f2;
+  --color-brand-instagram: #e4405fd1;
+  --color-brand-facebook: #1877f2;
+  --color-brand-tiktok: #fe2c55;
+  --color-brand-youtube: #ff0000;
 }
 
 @theme inline {
