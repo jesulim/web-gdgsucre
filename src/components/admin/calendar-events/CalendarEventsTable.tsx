@@ -27,7 +27,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-import { useAdminCalendarEvents } from "@/hooks/useAdminCalendarEvents"
+import { useCalendarEvents } from "@/hooks/admin/useCalendarEvents"
 import CalendarEventRowActions from "./CalendarEventRowActions"
 
 export interface CalendarEvent {
@@ -88,7 +88,7 @@ const defaultCalendarEvents: CalendarEvent[] = []
 export function CalendarEventsTable() {
   const [globalFilter, setGlobalFilter] = useState("")
 
-  const { calendarEvents, isLoading, isFetching, refetch } = useAdminCalendarEvents()
+  const { calendarEvents, isLoading, isFetching, refetch } = useCalendarEvents()
 
   const columnHelper = createColumnHelper<CalendarEvent>()
 

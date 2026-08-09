@@ -3,7 +3,7 @@ import type { APIRoute } from "astro"
 
 import { createProfile, getProfile } from "@/lib/services/profileService"
 import { submitRegistration } from "@/lib/services/registrationService"
-import { createUserClient } from "@/lib/supabase"
+import { createSupabaseServerClient } from "@/lib/supabase"
 
 const sendEmail = async (supabase: SupabaseClient, event_name: string, event_slug: string) => {
   const userProfile = await getProfile(supabase)
@@ -27,7 +27,7 @@ const sendEmail = async (supabase: SupabaseClient, event_name: string, event_slu
 }
 
 export const POST: APIRoute = async ({ request, cookies }) => {
-  const supabase = await createUserClient(cookies)
+  const supabase = createSupabaseServerClient({ request, cookies })
   const formData = await request.formData()
 
   const { event_id, event_slug, event_name, first_name, last_name, phone_number, ...fields } =

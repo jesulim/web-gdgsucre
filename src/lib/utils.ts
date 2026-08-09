@@ -17,6 +17,7 @@ export function setSupabaseCookies(
     path: "/",
     httpOnly: true,
     secure: import.meta.env.PROD,
+    sameSite: "lax",
     maxAge: expires_in,
   })
 
@@ -24,9 +25,22 @@ export function setSupabaseCookies(
     path: "/",
     httpOnly: true,
     secure: import.meta.env.PROD,
+    sameSite: "lax",
     maxAge: 60 * 60 * 24 * 7, // seven days
   })
 }
 
+export function deleteSupabaseCookies(cookies: AstroCookies) {
+  const options = {
+    path: "/",
+    httpOnly: true,
+    secure: import.meta.env.PROD,
+    sameSite: "lax" as const,
+  }
+  cookies.delete("sb-access-token", options)
+  cookies.delete("sb-refresh-token", options)
+}
+
 const nanoid = customAlphabet("ABCDEFGHJKLMNPQRSTUVWXYZ23456789", 6)
+
 export { nanoid as customAlphabetNanoid }

@@ -31,7 +31,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import useAccreditations, { useUpdateAccreditation } from "@/hooks/useAccreditations"
+import useAccreditations, { useUpdateAccreditation } from "@/hooks/admin/useAccreditations"
 
 interface AccreditationData {
   id: number
@@ -106,7 +106,7 @@ export function AccreditationTable({
     columnHelper.accessor("package", {
       header: "Paquete",
       enableGlobalFilter: false,
-      cell: info => info.getValue()?.split(" (")[0] ?? info.getValue(),
+      cell: info => (info.getValue()?.split(" (")[0] ?? info.getValue()) || '-',
     }),
     columnHelper.accessor("dietary_restriction", {
       header: "Restricción alimentaria",

@@ -1,5 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
-import { createProfileOfOrganizer, getProfileByEmail } from "./profileService"
+import { getProfileByEmail } from "./profileService"
 import { getRegistrationData } from "./registrationService"
 
 const capitalizeName = (name: string) => {
@@ -80,9 +80,6 @@ export async function uploadOrganizerByGmail(
 
 export async function addOrganizerAndProfile(
   supabase: SupabaseClient,
-  first_name: string,
-  last_name: string,
-  phone_number: string,
   email: string,
   eventSlug: string
 ) {

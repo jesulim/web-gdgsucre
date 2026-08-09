@@ -3,21 +3,20 @@ import Header from "@/components/events/bwai-26/Header.astro"
 import BaseLayout from "@/layout/BaseLayout.astro"
 
 import { getEvent } from "@/lib/services/eventService"
+import { getProfile } from "@/lib/services/profileService"
 import { getEventRegistration } from "@/lib/services/registrationService"
 import { getTeamByRegistration } from "@/lib/services/teamService"
+import { createSupabaseServerClient } from "@/lib/supabase"
 
-import { createUserClient } from "@/lib/supabase"
-
-const supabase = await createUserClient(Astro.cookies)
+const supabase = createSupabaseServerClient({ request: Astro.request, cookies: Astro.cookies })
 
 const eventSlug = Astro.params.eventSlug || ""
 const event = await getEvent(supabase, eventSlug)
 if (!event) return new Response(null, { status: 404 })
 
-const accessToken = Astro.cookies.get("sb-access-token")?.value
-const { data } = await supabase.auth.getClaims(accessToken)
-const registration = data?.claims
-  ? await getEventRegistration(supabase, data.claims.sub, eventSlug)
+const profile = await getProfile(supabase)
+const registration = profile?.id
+  ? await getEventRegistration(supabase, profile.id, eventSlug)
   : null
 
 if (!registration && event.registration_open === false)

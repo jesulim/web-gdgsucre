@@ -8,9 +8,9 @@ import { getFormFieldsByEvent } from "@/lib/services/formService"
 import { getProfile } from "@/lib/services/profileService"
 import { getEventRegistration } from "@/lib/services/registrationService"
 
-import { createUserClient } from "@/lib/supabase"
+import { createSupabaseServerClient } from "@/lib/supabase"
 
-const supabase = await createUserClient(Astro.cookies)
+const supabase = createSupabaseServerClient({ request: Astro.request, cookies: Astro.cookies })
 
 const eventSlug = Astro.params.eventSlug || ""
 const event = await getEvent(supabase, eventSlug)
@@ -30,7 +30,7 @@ if (registration?.status === "confirmed") {
   return Astro.redirect(`/registro/${eventSlug}/confirmado`)
 }
 
-const formFields = await getFormFieldsByEvent(supabase, eventSlug)
+const formFields = await getFormFieldsByEvent(supabase, event?.id)
 ---
 
 <BaseLayout theme="light">
