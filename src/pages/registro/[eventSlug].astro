@@ -12,7 +12,7 @@ const supabase = createSupabaseServerClient({ request: Astro.request, cookies: A
 
 const eventSlug = Astro.params.eventSlug || ""
 const event = await getEvent(supabase, eventSlug)
-if (!event) return Astro.redirect("/")
+if (!event) return new Response(null, { status: 404 })
 
 const profile = await getProfile(supabase)
 const registration = profile?.id

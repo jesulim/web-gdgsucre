@@ -45,7 +45,7 @@ export async function getEvent(supabase: SupabaseClient, slug: string) {
     .maybeSingle()
 
   if (error) {
-    console.error(`error getting event: ${error.message}`)
+    console.error(`Error getting event: ${error.message}`)
   }
 
   if (event) return event

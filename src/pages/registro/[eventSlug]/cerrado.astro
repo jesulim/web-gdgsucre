@@ -12,7 +12,8 @@ const user = await getUser(supabase)
 
 const eventSlug = Astro.params.eventSlug || ""
 const event = await getEvent(supabase, eventSlug)
-if (!user || !event) return Astro.redirect("/")
+if (!user) return Astro.redirect("/")
+if (!event) return new Response(null, { status: 404 })
 
 if (event.registration_open === true) return Astro.redirect(`/registro/${eventSlug}`)
 ---
