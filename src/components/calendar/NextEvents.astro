@@ -1,14 +1,11 @@
 ---
 import { formatRangeLabel, type UpcomingCalendarEvent } from "@/lib/calendar"
-import { getMockUpcomingEvents } from "@/lib/mocks/upcomingCalendarEvents"
 
 import NextEventCard from "./NextEventCard.astro"
 
 const UPCOMING_LIMIT = 4
 
 let events: UpcomingCalendarEvent[] = []
-// The endpoint is owned by another branch. Until it ships the fetch fails, and
-// the section is skipped rather than breaking the page around it.
 let endpointAvailable = false
 
 try {
@@ -23,16 +20,6 @@ try {
   }
 } catch (error) {
   console.error("NextEvents: no se pudieron obtener los próximos eventos", error)
-}
-
-// TEMPORARY: keeps the agenda reviewable while the endpoint does not exist.
-// Gated to `astro dev`, so a production build still degrades to a hidden
-// section instead of shipping fake events. Remove this block, the import and
-// src/lib/mocks/upcomingCalendarEvents.ts once the endpoint is merged.
-if (!endpointAvailable && import.meta.env.DEV) {
-  events = getMockUpcomingEvents(UPCOMING_LIMIT)
-  endpointAvailable = true
-  console.warn("NextEvents: mostrando datos mockeados (solo dev) porque el endpoint no existe")
 }
 
 const rangeLabel = formatRangeLabel(events)

@@ -28,6 +28,25 @@ export async function getCalendarEvents(supabase: SupabaseClient, year: number, 
   return calendarEvents
 }
 
+export async function getUpcomingCalendarEvents(supabase: SupabaseClient, limit: number) {
+  const startOfToday = new Date(Date.now() - 4 * 60 * 60 * 1000)
+  startOfToday.setUTCHours(0, 0, 0, 0)
+
+  const { data: calendarEvents, error } = await supabase
+    .from("calendar_events")
+    .select(
+      "id, name, start_datetime, end_datetime, format, registration_link, location, communities(id, name, short_name, image)"
+    )
+    .eq("accepted", true)
+    .gte("start_datetime", startOfToday.toISOString())
+    .order("start_datetime", { ascending: true })
+    .limit(limit)
+
+  if (error) throw new Error(error.message)
+
+  return calendarEvents
+}
+
 export async function getAllCalendarEvents(supabase: SupabaseClient) {
   const { data: calendarEvents, error } = await supabase
     .from("calendar_events")
