@@ -1,0 +1,99 @@
+---
+import ScheduleCard from "@/components/events/io-extended-26/schedule/ScheduleCard.astro"
+import scheduleDataRaw from "@/components/events/io-extended-26/schedule/schedule.json"
+
+interface ScheduleEntry {
+  type: "talk" | "activity" | "break"
+  time: string
+  title: string
+  speaker?: string
+}
+
+const scheduleData = scheduleDataRaw as ScheduleEntry[]
+
+// Separate talks from non-talks to assign gradient colors per talk
+const googleGradients = [
+  "bg-[linear-gradient(135deg,_rgb(66,133,244)_0%,_rgb(79,195,247)_100%)]",
+  "bg-[linear-gradient(135deg,_rgb(251,188,4)_0%,_rgb(234,67,53)_100%)]",
+  "bg-[linear-gradient(135deg,_rgb(234,67,53)_0%,_rgb(161,66,244)_100%)]",
+  "bg-[linear-gradient(135deg,_rgb(52,168,83)_0%,_rgb(66,133,244)_100%)]",
+  "bg-[linear-gradient(135deg,_rgb(79,195,247)_0%,_rgb(66,133,244)_50%,_rgb(161,66,244)_100%)]",
+]
+
+let talkIndex = 0
+const enrichedData = scheduleData.map((entry) => {
+  if (entry.type === "talk") {
+    const gradient = googleGradients[talkIndex % googleGradients.length]
+    talkIndex++
+    return { ...entry, gradient }
+  }
+  return { ...entry, gradient: undefined }
+})
+---
+
+<section
+  id="cronograma"
+  aria-labelledby="cronograma-title"
+  class="bg-[#131316] relative flex flex-col gap-[28px] md:gap-[48px] items-center px-[24px] md:px-[80px] pt-[64px] md:pt-[120px] pb-[72px] md:pb-[128px] w-full text-center"
+>
+  <!-- Ambient background glow -->
+  <div aria-hidden="true" class="absolute inset-0 pointer-events-none overflow-hidden -z-10">
+    <div
+      class="absolute left-[10%] top-[20%] size-[300px] md:size-[500px] bg-[radial-gradient(circle,_rgba(66,133,244,0.12)_0%,_transparent_70%)] blur-3xl"
+    >
+    </div>
+    <div
+      class="absolute right-[10%] bottom-[20%] size-[250px] md:size-[420px] bg-[radial-gradient(circle,_rgba(161,66,244,0.10)_0%,_transparent_70%)] blur-3xl"
+    >
+    </div>
+  </div>
+
+  <!-- Section Header -->
+  <div class="flex flex-col gap-[8px] md:gap-[14px] items-center shrink-0">
+    <p class="text-[#8ab4f8] text-[11px] md:text-[14px] font-medium tracking-[2.5px] md:tracking-[3px]">
+      CRONOGRAMA
+    </p>
+    <h2
+      id="cronograma-title"
+      class="text-[28px] md:text-[48px] font-semibold text-white leading-[1.15]"
+    >
+      Agenda del evento
+    </h2>
+    <p class="text-[#9aa0a6] text-[13px] md:text-[15px] leading-[1.5] max-w-[320px] md:max-w-none">
+      Sábado 15 de Agosto · 8:00 – 13:00 hrs
+    </p>
+  </div>
+
+  <!-- Schedule List -->
+  <div class="w-full max-w-[342px] md:max-w-[720px] flex flex-col gap-[8px] md:gap-[10px]">
+    {
+      enrichedData.map((entry) => (
+        <div class="relative flex items-stretch gap-4">
+          <!-- Left timeline indicator (desktop only) -->
+          <div class="hidden md:flex flex-col items-center shrink-0 pt-5 gap-0">
+            <div
+              class:list={[
+                "size-[10px] rounded-full shrink-0 mt-[3px]",
+                {
+                  "bg-[#4285f4] shadow-[0_0_8px_rgba(66,133,244,0.6)]": entry.type === "talk",
+                  "bg-[#fbbc04]": entry.type === "break",
+                  "bg-[#34353b]": entry.type === "activity",
+                },
+              ]}
+            />
+          </div>
+
+          <!-- Card -->
+          <div class="flex-1 min-w-0">
+            <ScheduleCard
+              type={entry.type}
+              time={entry.time}
+              title={entry.title}
+              speaker={entry.speaker}
+            />
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>

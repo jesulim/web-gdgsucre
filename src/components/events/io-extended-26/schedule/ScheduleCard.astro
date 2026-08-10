@@ -1,0 +1,118 @@
+---
+interface Props {
+  type: "talk" | "activity" | "break"
+  time: string
+  title: string
+  speaker?: string
+}
+
+const { type, time, title, speaker } = Astro.props
+
+const isTalk = type === "talk"
+const isBreak = type === "break"
+---
+
+<article
+  class:list={[
+    "relative flex flex-col gap-3 rounded-[20px] p-[1.5px] transition-transform duration-200 hover:scale-[1.01]",
+    {
+      "bg-[linear-gradient(135deg,_rgb(79,195,247)_0%,_rgb(66,133,244)_50%,_rgb(161,66,244)_100%)]":
+        isTalk,
+      "bg-[#2a2b31]": isBreak,
+      "bg-[#26272d]": !isTalk && !isBreak,
+    },
+  ]}
+>
+  <div
+    class:list={[
+      "flex h-full w-full flex-col gap-2 rounded-[18.5px] p-4 md:p-5",
+      {
+        "bg-[#1b1c21]": isTalk,
+        "bg-[#1e1f24]": isBreak,
+        "bg-[#1a1b20]": !isTalk && !isBreak,
+      },
+    ]}
+  >
+    <!-- Time badge -->
+    <div class="flex items-center gap-2 shrink-0">
+      <div
+        class:list={[
+          "inline-flex items-center gap-1.5 rounded-[999px] px-3 py-1 shrink-0",
+          {
+            "bg-[linear-gradient(135deg,_rgba(79,195,247,0.15)_0%,_rgba(66,133,244,0.15)_50%,_rgba(161,66,244,0.15)_100%)] border border-[rgba(66,133,244,0.3)]":
+              isTalk,
+            "bg-[#2a2b31] border border-[#3c4043]": isBreak,
+            "bg-[#26272d] border border-[#34353b]": !isTalk && !isBreak,
+          },
+        ]}
+      >
+        <!-- Clock icon (inline SVG) -->
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+          class:list={[
+            "shrink-0",
+            {
+              "text-[#8ab4f8]": isTalk,
+              "text-[#9aa0a6]": !isTalk,
+            },
+          ]}
+        >
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        <time
+          datetime={time.split(" - ")[0]}
+          class:list={[
+            "text-[11px] md:text-[12px] font-medium tracking-[0.5px] whitespace-nowrap",
+            {
+              "text-[#8ab4f8]": isTalk,
+              "text-[#9aa0a6]": !isTalk,
+            },
+          ]}
+        >
+          {time}
+        </time>
+      </div>
+
+      <!-- Break/Activity pill -->
+      {
+        isBreak && (
+          <span class="text-[10px] font-medium tracking-[1.5px] text-[#fbbc04] uppercase">
+            Descanso
+          </span>
+        )
+      }
+    </div>
+
+    <!-- Content -->
+    <div class="flex flex-col gap-1">
+      <h3
+        class:list={[
+          "text-[15px] md:text-[17px] font-semibold leading-snug",
+          {
+            "text-white": isTalk || isBreak,
+            "text-[#bdc1c6]": !isTalk && !isBreak,
+          },
+        ]}
+      >
+        {title}
+      </h3>
+
+      {
+        speaker && (
+          <p class="text-[13px] md:text-[14px] text-[#9aa0a6] font-medium">
+            {speaker}
+          </p>
+        )
+      }
+    </div>
+  </div>
+</article>
