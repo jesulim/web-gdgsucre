@@ -1,53 +1,62 @@
 ---
-import decoExperiencia from "@/assets/decos/deco_experiencia.webp"
-import decoHero1 from "@/assets/decos/deco_hero_1.webp"
-import decoHero2 from "@/assets/decos/deco_hero_2.webp"
-import decoHero3 from "@/assets/decos/deco_hero_3.webp"
-import decoHero4 from "@/assets/decos/deco_hero_4.webp"
-import figmaBlob from "@/assets/figma/figma_blob.svg"
-import figmaCalendarIcon from "@/assets/figma/figma_calendar.svg"
-import figmaCodeVector1 from "@/assets/figma/figma_code_vector1.svg"
-import figmaCodeVector2 from "@/assets/figma/figma_code_vector2.svg"
-import figmaCountdownSlash from "@/assets/figma/figma_countdown_slash.svg"
-import figmaGlow from "@/assets/figma/figma_glow.svg"
-import figmaLocationIcon from "@/assets/figma/figma_location.svg"
-import Facebook from "@/assets/icons/social/Facebook.svg"
-import Instagram from "@/assets/icons/social/Instagram.svg"
-import LinkedIn from "@/assets/icons/social/Linkedin.svg"
-import Twitter from "@/assets/icons/social/Twitter.svg"
-import figmaBaseWhite from "@/assets/logos/figma_base_white.webp"
-import figmaGradI from "@/assets/logos/figma_grad_i.webp"
-import figmaGradO from "@/assets/logos/figma_grad_o.webp"
-import figmaSlashHeader from "@/assets/logos/figma_slash_header.svg"
-import figmaSlashHero from "@/assets/logos/figma_slash_hero.svg"
-import topicAndroid from "@/assets/logos/topic_android.webp"
-import topicCloud from "@/assets/logos/topic_cloud.webp"
-import topicIA from "@/assets/logos/topic_ia.webp"
-import topicUXUI from "@/assets/logos/topic_uxui.webp"
-import topicWeb from "@/assets/logos/topic_web.webp"
-import mockupLanyards from "@/assets/mockups/mockup_lanyards.webp"
-import mockupRefrigerio from "@/assets/mockups/mockup_refrigerio.webp"
-import mockupSoporte from "@/assets/mockups/mockup_soporte.webp"
-import mockupStickers from "@/assets/mockups/mockup_stickers.webp"
-import Avatar from "@/components/Avatar.astro"
-import BaseLayout from "@/layout/BaseLayout.astro"
+import decoExperiencia from "@/assets/decos/deco_experiencia.webp";
+import decoHero1 from "@/assets/decos/deco_hero_1.webp";
+import decoHero2 from "@/assets/decos/deco_hero_2.webp";
+import decoHero3 from "@/assets/decos/deco_hero_3.webp";
+import decoHero4 from "@/assets/decos/deco_hero_4.webp";
+import figmaBlob from "@/assets/figma/figma_blob.svg";
+import figmaCalendarIcon from "@/assets/figma/figma_calendar.svg";
+import figmaCodeVector1 from "@/assets/figma/figma_code_vector1.svg";
+import figmaCodeVector2 from "@/assets/figma/figma_code_vector2.svg";
+import figmaCountdownSlash from "@/assets/figma/figma_countdown_slash.svg";
+import figmaGlow from "@/assets/figma/figma_glow.svg";
+import figmaLocationIcon from "@/assets/figma/figma_location.svg";
+import Facebook from "@/assets/icons/social/Facebook.svg";
+import Instagram from "@/assets/icons/social/Instagram.svg";
+import LinkedIn from "@/assets/icons/social/Linkedin.svg";
+import Twitter from "@/assets/icons/social/Twitter.svg";
+import figmaBaseWhite from "@/assets/logos/figma_base_white.webp";
+import figmaGradI from "@/assets/logos/figma_grad_i.webp";
+import figmaGradO from "@/assets/logos/figma_grad_o.webp";
+import figmaSlashHeader from "@/assets/logos/figma_slash_header.svg";
+import figmaSlashHero from "@/assets/logos/figma_slash_hero.svg";
+import topicAndroid from "@/assets/logos/topic_android.webp";
+import topicCloud from "@/assets/logos/topic_cloud.webp";
+import topicIA from "@/assets/logos/topic_ia.webp";
+import topicUXUI from "@/assets/logos/topic_uxui.webp";
+import topicWeb from "@/assets/logos/topic_web.webp";
+import mockupLanyards from "@/assets/mockups/mockup_lanyards.webp";
+import mockupRefrigerio from "@/assets/mockups/mockup_refrigerio.webp";
+import mockupSoporte from "@/assets/mockups/mockup_soporte.webp";
+import mockupStickers from "@/assets/mockups/mockup_stickers.webp";
+import Avatar from "@/components/Avatar.astro";
+import BaseLayout from "@/layout/BaseLayout.astro";
+import Schedule from "@/components/events/io-extended-26/Schedule.astro";
 
-const isLoggedIn = Astro.cookies.has("sb-access-token") || Astro.cookies.has("sb-refresh-token")
+const isLoggedIn =
+  Astro.cookies.has("sb-access-token") || Astro.cookies.has("sb-refresh-token");
 const redirectHref = isLoggedIn
   ? "/registro/io-extended-26"
-  : "/api/auth/signin?next=/registro/io-extended-26"
+  : "/api/auth/signin?next=/registro/io-extended-26";
 
-const targetDate = new Date("2026-08-15T08:00:00-04:00")
-const now = new Date()
-const diff = Math.max(0, targetDate.getTime() - now.getTime())
+const targetDate = new Date("2026-08-15T08:00:00-04:00");
+const now = new Date();
+const diff = Math.max(0, targetDate.getTime() - now.getTime());
 
-const initialDays = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, "0")
-const initialHours = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(
+const initialDays = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(
   2,
-  "0"
-)
-const initialMinutes = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, "0")
-const initialSeconds = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, "0")
+  "0",
+);
+const initialHours = String(
+  Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+).padStart(2, "0");
+const initialMinutes = String(
+  Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+).padStart(2, "0");
+const initialSeconds = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(
+  2,
+  "0",
+);
 
 const countdown = [
   {
@@ -61,7 +70,8 @@ const countdown = [
     id: "countdown-hours",
     value: initialHours,
     label: "HORAS",
-    className: "h-[82px] md:h-[216px] w-[82px] md:w-[216px] rounded-[41px] md:rounded-[108px]",
+    className:
+      "h-[82px] md:h-[216px] w-[82px] md:w-[216px] rounded-[41px] md:rounded-[108px]",
     style:
       "background-image: linear-gradient(120.466deg, rgb(79, 195, 247) 11.111%, rgb(66, 133, 244) 48.148%, rgb(251, 188, 4) 85.185%)",
   },
@@ -69,7 +79,8 @@ const countdown = [
     id: "countdown-minutes",
     value: initialMinutes,
     label: "MINUTOS",
-    className: "h-[82px] md:h-[216px] w-[72px] md:w-[190px] rounded-[24px] md:rounded-[64px]",
+    className:
+      "h-[82px] md:h-[216px] w-[72px] md:w-[190px] rounded-[24px] md:rounded-[64px]",
     style:
       "background-image: linear-gradient(117.316deg, rgb(251, 188, 4) 11.111%, rgb(234, 67, 53) 48.148%, rgb(161, 66, 244) 85.185%)",
   },
@@ -80,7 +91,7 @@ const countdown = [
     className:
       "h-[82px] md:h-[216px] w-[68px] md:w-[180px] rounded-tl-[34px] md:rounded-tl-[90px] rounded-tr-[34px] md:rounded-tr-[90px] rounded-bl-[11px] md:rounded-bl-[28px] rounded-br-[11px] md:rounded-br-[28px] bg-gradient-to-b from-[#81c995] via-[#34a853] to-[#4285f4]",
   },
-]
+];
 
 const topics = [
   { label: "Web", iconAsset: topicWeb.src },
@@ -89,7 +100,7 @@ const topics = [
   { label: "UX/UI", iconAsset: topicUXUI.src },
   { label: "IA", iconAsset: topicIA.src },
   { label: "Cloud", iconAsset: topicCloud.src },
-]
+];
 
 const speakers = [
   {
@@ -122,7 +133,8 @@ const speakers = [
     location: "La Paz · BO",
     cardBorder: "border-[rgba(129,201,149,0.65)]",
     avatarBg: "bg-gradient-to-b from-[#81c995] via-[#34a853] to-[#4285f4]",
-    avatarShape: "rounded-tl-[52px] rounded-tr-[52px] rounded-bl-[16.64px] rounded-br-[16.64px]",
+    avatarShape:
+      "rounded-tl-[52px] rounded-tr-[52px] rounded-bl-[16.64px] rounded-br-[16.64px]",
     avatarShadow: "shadow-[0px_10px_50px_2px_rgba(52,168,83,0.5)]",
     iconAsset: topicCloud.src,
   },
@@ -138,39 +150,79 @@ const speakers = [
     avatarShadow: "shadow-[0px_10px_50px_2px_rgba(251,188,4,0.5)]",
     iconAsset: topicUXUI.src,
   },
-]
+];
 
 const mockups = [
   { title: "Refrigerio", label: "MOCKUP", image: mockupRefrigerio },
   { title: "Stickers", label: "MOCKUP", image: mockupStickers },
   { title: "Soporte de celular", label: "MOCKUP", image: mockupSoporte },
   { title: "Lanyards", label: "MOCKUP", image: mockupLanyards },
-]
+];
 ---
 
-<BaseLayout theme="dark" title="Google I/O Extended Sucre" description="Landing de Google I/O Extended Sucre">
-  <div class="relative min-h-screen bg-[#131316] text-white font-sans antialiased overflow-x-hidden">
+<BaseLayout
+  theme="dark"
+  title="Google I/O Extended Sucre"
+  description="Landing de Google I/O Extended Sucre"
+>
+  <div
+    class="relative min-h-screen bg-[#131316] text-white font-sans antialiased overflow-x-hidden"
+  >
     <!-- Navbar -->
-    <header class="relative z-10 flex items-center justify-between px-[20px] md:px-[80px] py-[16px] md:py-[20px] w-full max-w-[1440px] mx-auto">
+    <header
+      class="relative z-10 flex items-center justify-between px-[20px] md:px-[80px] py-[16px] md:py-[20px] w-full max-w-[1440px] mx-auto"
+    >
       <a href="/#" class="block shrink-0">
-        <div class="grid-cols-[max-content] grid-rows-[max-content] inline-grid leading-[0] place-items-start relative shrink-0">
-          <div class="col-1 h-[33.35px] md:h-[44.29px] ml-0 mt-0 relative row-1 w-[128px] md:w-[170px]">
+        <div
+          class="grid-cols-[max-content] grid-rows-[max-content] inline-grid leading-[0] place-items-start relative shrink-0"
+        >
+          <div
+            class="col-1 h-[33.35px] md:h-[44.29px] ml-0 mt-0 relative row-1 w-[128px] md:w-[170px]"
+          >
             <div class="absolute inset-0 overflow-hidden pointer-events-none">
-              <img alt="Google I/O Extended Sucre" class="absolute h-[132.54%] left-[-0.05%] max-w-none top-[-23.41%] w-[100.1%]" src={figmaBaseWhite.src} />
+              <img
+                alt="Google I/O Extended Sucre"
+                class="absolute h-[132.54%] left-[-0.05%] max-w-none top-[-23.41%] w-[100.1%]"
+                src={figmaBaseWhite.src}
+              />
             </div>
           </div>
-          <div class="col-1 grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[57.03px] md:ml-[75.74px] mt-[5.58px] md:mt-[7.41px] place-items-start relative row-1">
-            <div class="col-1 grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-0 mt-[1.18px] md:mt-[1.57px] place-items-start relative row-1">
-              <div class="col-1 h-[12.58px] md:h-[16.71px] ml-0 mt-0 relative row-1 w-[6.46px] md:w-[8.58px]">
-                <img alt="" class="absolute left-0 max-w-none size-full top-0" src={figmaGradI.src} />
+          <div
+            class="col-1 grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[57.03px] md:ml-[75.74px] mt-[5.58px] md:mt-[7.41px] place-items-start relative row-1"
+          >
+            <div
+              class="col-1 grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-0 mt-[1.18px] md:mt-[1.57px] place-items-start relative row-1"
+            >
+              <div
+                class="col-1 h-[12.58px] md:h-[16.71px] ml-0 mt-0 relative row-1 w-[6.46px] md:w-[8.58px]"
+              >
+                <img
+                  alt=""
+                  class="absolute left-0 max-w-none size-full top-0"
+                  src={figmaGradI.src}
+                />
               </div>
             </div>
-            <div class="col-1 h-[14.43px] md:h-[19.16px] ml-[6.56px] md:ml-[8.72px] mt-0 relative row-1 w-[4.64px] md:w-[6.17px]">
-              <img alt="" class="absolute block inset-0 max-w-none size-full" src={figmaSlashHeader.src} />
+            <div
+              class="col-1 h-[14.43px] md:h-[19.16px] ml-[6.56px] md:ml-[8.72px] mt-0 relative row-1 w-[4.64px] md:w-[6.17px]"
+            >
+              <img
+                alt=""
+                class="absolute block inset-0 max-w-none size-full"
+                src={figmaSlashHeader.src}
+              />
             </div>
-            <div class="col-1 grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[10.57px] md:ml-[14.03px] mt-[0.8px] md:mt-[1.06px] place-items-start relative row-1">
-              <div class="col-1 h-[12.95px] md:h-[17.20px] ml-0 mt-0 relative row-1 w-[12.65px] md:w-[16.81px]">
-                <img alt="" class="absolute left-0 max-w-none size-full top-0" src={figmaGradO.src} />
+            <div
+              class="col-1 grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[10.57px] md:ml-[14.03px] mt-[0.8px] md:mt-[1.06px] place-items-start relative row-1"
+            >
+              <div
+                class="col-1 h-[12.95px] md:h-[17.20px] ml-0 mt-0 relative row-1 w-[12.65px] md:w-[16.81px]"
+              >
+                <img
+                  alt=""
+                  class="absolute left-0 max-w-none size-full top-0"
+                  src={figmaGradO.src}
+                />
               </div>
             </div>
           </div>
@@ -178,23 +230,38 @@ const mockups = [
       </a>
 
       <!-- Desktop Links -->
-      <nav class="hidden md:flex gap-[32px] items-center text-[#e8eaed] text-[14px] font-medium">
-        <a href="#about" class="hover:text-white transition-colors">El evento</a>
-        <a href="#speakers" class="hover:text-white transition-colors">Speakers</a>
-        <a href="#experiencia" class="hover:text-white transition-colors">Agenda</a>
-        <a href="#experiencia" class="hover:text-white transition-colors">Sponsors</a>
+      <nav
+        class="hidden md:flex gap-[32px] items-center text-[#e8eaed] text-[14px] font-medium"
+      >
+        <a href="#about" class="hover:text-white transition-colors">El evento</a
+        >
+        <a href="#speakers" class="hover:text-white transition-colors"
+          >Speakers</a
+        >
+        <a href="#experiencia" class="hover:text-white transition-colors"
+          >Agenda</a
+        >
+        <a href="#experiencia" class="hover:text-white transition-colors"
+          >Sponsors</a
+        >
       </nav>
 
       <!-- Header Actions / Avatar -->
       <div class="flex gap-[12px] items-center">
         {
           !isLoggedIn ? (
-            <a href={redirectHref} class="hidden md:block bg-[#8ab4f8] px-[20px] py-[10px] rounded-[999px] text-[#202124] text-[14px] font-medium hover:bg-[#aecbfa] transition-colors">
+            <a
+              href={redirectHref}
+              class="hidden md:block bg-[#8ab4f8] px-[20px] py-[10px] rounded-[999px] text-[#202124] text-[14px] font-medium hover:bg-[#aecbfa] transition-colors"
+            >
               Registrarme
             </a>
           ) : (
             <Avatar server:defer eventSlug="io-extended-26">
-              <div class="bg-gray-700/50 rounded-full size-10 animate-pulse" slot="fallback" />
+              <div
+                class="bg-gray-700/50 rounded-full size-10 animate-pulse"
+                slot="fallback"
+              />
             </Avatar>
           )
         }
@@ -203,70 +270,138 @@ const mockups = [
 
     <main class="relative z-10 flex w-full flex-col items-center">
       <!-- Hero Section -->
-      <section class="relative flex flex-col items-center gap-[20px] md:gap-[28px] px-[24px] md:px-[80px] pt-[36px] md:pt-[64px] pb-[64px] md:pb-[96px] w-full text-center">
+      <section
+        class="relative flex flex-col items-center gap-[20px] md:gap-[28px] px-[24px] md:px-[80px] pt-[36px] md:pt-[64px] pb-[64px] md:pb-[96px] w-full text-center"
+      >
         <!-- Hardware-Accelerated Hero Lava Lamp Ambient Glows -->
-        <div aria-hidden="true" class="absolute pointer-events-none inset-0 overflow-hidden -z-10">
-          <div class="absolute h-[340px] md:h-[500px] w-[440px] md:w-[900px] left-[-20px] md:left-[50%] md:-translate-x-1/2 top-[10px] md:top-[60px] opacity-75 motion-safe:animate-pulse">
-            <img alt="" class="block size-full max-w-none" src={figmaGlow.src} />
+        <div
+          aria-hidden="true"
+          class="absolute pointer-events-none inset-0 overflow-hidden -z-10"
+        >
+          <div
+            class="absolute h-[340px] md:h-[500px] w-[440px] md:w-[900px] left-[-20px] md:left-[50%] md:-translate-x-1/2 top-[10px] md:top-[60px] opacity-75 motion-safe:animate-pulse"
+          >
+            <img
+              alt=""
+              class="block size-full max-w-none"
+              src={figmaGlow.src}
+            />
           </div>
-          <div class="absolute left-[-10%] md:left-[15%] top-[10px] size-[320px] md:size-[500px] bg-[radial-gradient(circle,_rgba(66,133,244,0.55)_0%,_rgba(79,195,247,0.25)_50%,_transparent_75%)] blur-2xl animate-lava-blob-1 will-change-transform"></div>
-          <div class="absolute right-[-15%] md:right-[15%] top-[80px] size-[300px] md:size-[450px] bg-[radial-gradient(circle,_rgba(161,66,244,0.4)_0%,_rgba(66,133,244,0.25)_55%,_transparent_75%)] blur-3xl animate-lava-blob-2 will-change-transform"></div>
-          <div class="absolute left-[20%] md:left-[40%] top-[160px] size-[250px] md:size-[400px] bg-[radial-gradient(circle,_rgba(79,195,247,0.45)_0%,_rgba(66,133,244,0.15)_60%,_transparent_75%)] blur-2xl animate-lava-blob-3 will-change-transform"></div>
+          <div
+            class="absolute left-[-10%] md:left-[15%] top-[10px] size-[320px] md:size-[500px] bg-[radial-gradient(circle,_rgba(66,133,244,0.55)_0%,_rgba(79,195,247,0.25)_50%,_transparent_75%)] blur-2xl animate-lava-blob-1 will-change-transform"
+          >
+          </div>
+          <div
+            class="absolute right-[-15%] md:right-[15%] top-[80px] size-[300px] md:size-[450px] bg-[radial-gradient(circle,_rgba(161,66,244,0.4)_0%,_rgba(66,133,244,0.25)_55%,_transparent_75%)] blur-3xl animate-lava-blob-2 will-change-transform"
+          >
+          </div>
+          <div
+            class="absolute left-[20%] md:left-[40%] top-[160px] size-[250px] md:size-[400px] bg-[radial-gradient(circle,_rgba(79,195,247,0.45)_0%,_rgba(66,133,244,0.15)_60%,_transparent_75%)] blur-2xl animate-lava-blob-3 will-change-transform"
+          >
+          </div>
         </div>
 
         <!-- Desktop Decorative Tech Ornaments (Figma 19:73, 19:82, 19:91, 19:100) -->
-        <div aria-hidden="true" class="hidden lg:block absolute inset-0 pointer-events-none -z-5">
+        <div
+          aria-hidden="true"
+          class="hidden lg:block absolute inset-0 pointer-events-none -z-5"
+        >
           <!-- Top-Right Deco 1 -->
-          <div class="absolute top-[80px] right-[6%] xl:right-[10%] w-[155px] h-[115px] opacity-90 mix-blend-screen animate-pulse">
+          <div
+            class="absolute top-[80px] right-[6%] xl:right-[10%] w-[155px] h-[115px] opacity-90 mix-blend-screen animate-pulse"
+          >
             <img alt="" class="size-full object-contain" src={decoHero1.src} />
           </div>
           <!-- Top-Left Deco 4 -->
-          <div class="absolute top-[100px] left-[6%] xl:left-[10%] w-[146px] h-[146px] opacity-95 mix-blend-screen">
+          <div
+            class="absolute top-[100px] left-[6%] xl:left-[10%] w-[146px] h-[146px] opacity-95 mix-blend-screen"
+          >
             <img alt="" class="size-full object-contain" src={decoHero4.src} />
           </div>
           <!-- Bottom-Left Deco 2 -->
-          <div class="absolute bottom-[60px] left-[7%] xl:left-[11%] w-[122px] h-[122px] opacity-85 mix-blend-screen">
+          <div
+            class="absolute bottom-[60px] left-[7%] xl:left-[11%] w-[122px] h-[122px] opacity-85 mix-blend-screen"
+          >
             <img alt="" class="size-full object-contain" src={decoHero2.src} />
           </div>
           <!-- Bottom-Right Deco 3 -->
-          <div class="absolute bottom-[70px] right-[7%] xl:right-[11%] w-[106px] h-[133px] opacity-85 mix-blend-screen">
+          <div
+            class="absolute bottom-[70px] right-[7%] xl:right-[11%] w-[106px] h-[133px] opacity-85 mix-blend-screen"
+          >
             <img alt="" class="size-full object-contain" src={decoHero3.src} />
           </div>
         </div>
 
         <!-- Hero Lockup Logo -->
-        <div class="grid-cols-[max-content] grid-rows-[max-content] inline-grid leading-[0] place-items-start relative shrink-0">
-          <div class="col-1 h-[78px] md:h-[130.26px] ml-0 mt-0 relative row-1 w-[300px] md:w-[500px]">
+        <div
+          class="grid-cols-[max-content] grid-rows-[max-content] inline-grid leading-[0] place-items-start relative shrink-0"
+        >
+          <div
+            class="col-1 h-[78px] md:h-[130.26px] ml-0 mt-0 relative row-1 w-[300px] md:w-[500px]"
+          >
             <div class="absolute inset-0 overflow-hidden pointer-events-none">
-              <img alt="Google I/O Extended Sucre" class="absolute h-[132.54%] left-[-0.05%] max-w-none top-[-23.41%] w-[100.1%]" src={figmaBaseWhite.src} />
+              <img
+                alt="Google I/O Extended Sucre"
+                class="absolute h-[132.54%] left-[-0.05%] max-w-none top-[-23.41%] w-[100.1%]"
+                src={figmaBaseWhite.src}
+              />
             </div>
           </div>
-          <div class="col-1 grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[134.75px] md:ml-[222.77px] mt-[14.56px] md:mt-[21.8px] place-items-start relative row-1">
-            <div class="col-1 grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-0 mt-[2.58px] md:mt-[4.61px] place-items-start relative row-1">
-              <div class="col-1 h-[27.52px] md:h-[49.15px] ml-0 mt-0 relative row-1 w-[14.13px] md:w-[25.22px]">
-                <img alt="" class="absolute left-0 max-w-none size-full top-0" src={figmaGradI.src} />
+          <div
+            class="col-1 grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[134.75px] md:ml-[222.77px] mt-[14.56px] md:mt-[21.8px] place-items-start relative row-1"
+          >
+            <div
+              class="col-1 grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-0 mt-[2.58px] md:mt-[4.61px] place-items-start relative row-1"
+            >
+              <div
+                class="col-1 h-[27.52px] md:h-[49.15px] ml-0 mt-0 relative row-1 w-[14.13px] md:w-[25.22px]"
+              >
+                <img
+                  alt=""
+                  class="absolute left-0 max-w-none size-full top-0"
+                  src={figmaGradI.src}
+                />
               </div>
             </div>
-            <div class="col-1 h-[31.56px] md:h-[56.36px] ml-[14.36px] md:ml-[25.64px] mt-0 relative row-1 w-[10.16px] md:w-[18.14px]">
-              <img alt="" class="absolute block inset-0 max-w-none size-full" src={figmaSlashHero.src} />
+            <div
+              class="col-1 h-[31.56px] md:h-[56.36px] ml-[14.36px] md:ml-[25.64px] mt-0 relative row-1 w-[10.16px] md:w-[18.14px]"
+            >
+              <img
+                alt=""
+                class="absolute block inset-0 max-w-none size-full"
+                src={figmaSlashHero.src}
+              />
             </div>
-            <div class="col-1 grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[23.12px] md:ml-[41.28px] mt-[1.75px] md:mt-[3.13px] place-items-start relative row-1">
-              <div class="col-1 h-[28.33px] md:h-[50.60px] ml-0 mt-0 relative row-1 w-[27.68px] md:w-[49.43px]">
-                <img alt="" class="absolute left-0 max-w-none size-full top-0" src={figmaGradO.src} />
+            <div
+              class="col-1 grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[23.12px] md:ml-[41.28px] mt-[1.75px] md:mt-[3.13px] place-items-start relative row-1"
+            >
+              <div
+                class="col-1 h-[28.33px] md:h-[50.60px] ml-0 mt-0 relative row-1 w-[27.68px] md:w-[49.43px]"
+              >
+                <img
+                  alt=""
+                  class="absolute left-0 max-w-none size-full top-0"
+                  src={figmaGradO.src}
+                />
               </div>
             </div>
           </div>
         </div>
 
         <!-- Hero Heading -->
-        <div class="text-[28px] md:text-[56px] font-semibold leading-[1.2] md:leading-[66px] text-white">
+        <div
+          class="text-[28px] md:text-[56px] font-semibold leading-[1.2] md:leading-[66px] text-white"
+        >
           <p class="mb-0">Aprende de los mejores.</p>
           <p>Conecta con tu futuro.</p>
         </div>
 
         <!-- Subtitle -->
-        <p class="text-[#bdc1c6] text-[14px] md:text-[18px] leading-[1.2] md:leading-[normal] w-[300px] md:w-auto">
-          Descubre lo nuevo en Web, Cloud, AI, UX/UI y más, junto a expertos de la región.
+        <p
+          class="text-[#bdc1c6] text-[14px] md:text-[18px] leading-[1.2] md:leading-[normal] w-[300px] md:w-auto"
+        >
+          Descubre lo nuevo en Web, Cloud, AI, UX/UI y más, junto a expertos de
+          la región.
         </p>
 
         <!-- CTA Button -->
@@ -278,17 +413,35 @@ const mockups = [
         </a>
 
         <!-- Info Cards -->
-        <div class="flex flex-col md:flex-row gap-[10px] md:gap-[16px] items-center justify-center shrink-0 w-full">
-          <div class="flex items-center gap-[8px] rounded-[20px] pl-[16px] pr-[20px] py-[10px] md:py-[12px] shrink-0">
-            <img alt="Calendario" class="size-[16px] md:size-[20px] shrink-0" src={figmaCalendarIcon.src} />
-            <p class="text-[#e8eaed] text-[13px] md:text-[14px] font-medium whitespace-nowrap">
+        <div
+          class="flex flex-col md:flex-row gap-[10px] md:gap-[16px] items-center justify-center shrink-0 w-full"
+        >
+          <div
+            class="flex items-center gap-[8px] rounded-[20px] pl-[16px] pr-[20px] py-[10px] md:py-[12px] shrink-0"
+          >
+            <img
+              alt="Calendario"
+              class="size-[16px] md:size-[20px] shrink-0"
+              src={figmaCalendarIcon.src}
+            />
+            <p
+              class="text-[#e8eaed] text-[13px] md:text-[14px] font-medium whitespace-nowrap"
+            >
               Sábado 15 de Agosto — 8:00 Hrs
             </p>
           </div>
 
-          <div class="flex items-center gap-[8px] rounded-[20px] pl-[16px] pr-[20px] py-[10px] md:py-[12px] shrink-0">
-            <img alt="Ubicación" class="size-[20px] shrink-0" src={figmaLocationIcon.src} />
-            <div class="text-[#e8eaed] text-[13px] md:text-[14px] font-medium text-center whitespace-nowrap">
+          <div
+            class="flex items-center gap-[8px] rounded-[20px] pl-[16px] pr-[20px] py-[10px] md:py-[12px] shrink-0"
+          >
+            <img
+              alt="Ubicación"
+              class="size-[20px] shrink-0"
+              src={figmaLocationIcon.src}
+            />
+            <div
+              class="text-[#e8eaed] text-[13px] md:text-[14px] font-medium text-center whitespace-nowrap"
+            >
               Facultad de Tecnología · Salón Rosendo Carreras Fumaña
             </div>
           </div>
@@ -296,18 +449,30 @@ const mockups = [
       </section>
 
       <!-- Countdown Section -->
-      <section class="flex flex-col items-center gap-[28px] md:gap-[40px] px-[16px] md:px-[80px] pt-[56px] md:pt-[96px] pb-[64px] md:pb-[120px] w-full text-center" aria-labelledby="countdown-title">
-        <div class="flex flex-col gap-[8px] md:gap-[12px] items-center shrink-0">
-          <p class="text-[#8ab4f8] text-[11px] md:text-[14px] font-medium tracking-[2.5px] md:tracking-[3px]">
+      <section
+        class="flex flex-col items-center gap-[28px] md:gap-[40px] px-[16px] md:px-[80px] pt-[56px] md:pt-[96px] pb-[64px] md:pb-[120px] w-full text-center"
+        aria-labelledby="countdown-title"
+      >
+        <div
+          class="flex flex-col gap-[8px] md:gap-[12px] items-center shrink-0"
+        >
+          <p
+            class="text-[#8ab4f8] text-[11px] md:text-[14px] font-medium tracking-[2.5px] md:tracking-[3px]"
+          >
             CUENTA REGRESIVA
           </p>
-          <h2 id="countdown-title" class="text-[26px] md:text-[40px] font-semibold text-white">
+          <h2
+            id="countdown-title"
+            class="text-[26px] md:text-[40px] font-semibold text-white"
+          >
             El evento comienza en
           </h2>
         </div>
 
         <!-- Countdown Items -->
-        <div class="flex items-center justify-center gap-[5px] md:gap-[28px] shrink-0">
+        <div
+          class="flex items-center justify-center gap-[5px] md:gap-[28px] shrink-0"
+        >
           {
             countdown.map((unit, index) => (
               <>
@@ -316,14 +481,26 @@ const mockups = [
                     class={`flex items-center justify-center overflow-hidden shrink-0 ${unit.className}`}
                     style={unit.style}
                   >
-                    <span id={unit.id} class="text-[30px] md:text-[84px] font-semibold leading-normal text-[#17181c]">{unit.value}</span>
+                    <span
+                      id={unit.id}
+                      class="text-[30px] md:text-[84px] font-semibold leading-normal text-[#17181c]"
+                    >
+                      {unit.value}
+                    </span>
                   </div>
-                  <span class="text-[9px] md:text-[13px] font-medium tracking-[1.5px] md:tracking-[3px] text-[#9aa0a6]">{unit.label}</span>
+                  <span class="text-[9px] md:text-[13px] font-medium tracking-[1.5px] md:tracking-[3px] text-[#9aa0a6]">
+                    {unit.label}
+                  </span>
                 </div>
 
                 {index < countdown.length - 1 && (
                   <div class="h-[42px] md:h-[110px] w-[13.2px] md:w-[34.6px] shrink-0 relative">
-                    <img alt="" aria-hidden="true" class="block size-full max-w-none" src={figmaCountdownSlash.src} />
+                    <img
+                      alt=""
+                      aria-hidden="true"
+                      class="block size-full max-w-none"
+                      src={figmaCountdownSlash.src}
+                    />
                   </div>
                 )}
               </>
@@ -331,48 +508,83 @@ const mockups = [
           }
         </div>
 
-        <div class="text-[#9aa0a6] text-[12px] md:text-[15px] text-center leading-[18px] md:leading-[normal]">
-          <p class="mb-0">Nos vemos el Sábado 15 de Agosto · Salón Rosendo Carreras Fumaña, Facultad de Tecnología</p>
+        <div
+          class="text-[#9aa0a6] text-[12px] md:text-[15px] text-center leading-[18px] md:leading-[normal]"
+        >
+          <p class="mb-0">
+            Nos vemos el Sábado 15 de Agosto · Salón Rosendo Carreras Fumaña,
+            Facultad de Tecnología
+          </p>
         </div>
       </section>
 
       <!-- About Section -->
-      <section class="bg-[#131316] flex flex-col gap-[20px] md:gap-[32px] items-center px-[24px] md:px-[80px] pt-[64px] md:pt-[110px] pb-[72px] md:pb-[110px] w-full text-center" id="about">
-        <div class="flex flex-col gap-[8px] md:gap-[12px] items-center shrink-0">
-          <p class="text-[#8ab4f8] text-[11px] md:text-[14px] font-medium tracking-[2.5px] md:tracking-[3px]">
+      <section
+        class="bg-[#131316] flex flex-col gap-[20px] md:gap-[32px] items-center px-[24px] md:px-[80px] pt-[64px] md:pt-[110px] pb-[72px] md:pb-[110px] w-full text-center"
+        id="about"
+      >
+        <div
+          class="flex flex-col gap-[8px] md:gap-[12px] items-center shrink-0"
+        >
+          <p
+            class="text-[#8ab4f8] text-[11px] md:text-[14px] font-medium tracking-[2.5px] md:tracking-[3px]"
+          >
             EL EVENTO
           </p>
-          <h2 class="text-[26px] md:text-[40px] font-semibold leading-[33px] md:leading-[48px] text-white w-[300px] md:w-auto">
+          <h2
+            class="text-[26px] md:text-[40px] font-semibold leading-[33px] md:leading-[48px] text-white w-[300px] md:w-auto"
+          >
             ¿Qué es Google I/O Extended Sucre?
           </h2>
         </div>
 
-        <div class="flex flex-col gap-[12px] items-center text-[#bdc1c6] text-[15px] md:text-[17px] leading-[23px] md:leading-[26px] w-[330px] md:w-[620px]">
+        <div
+          class="flex flex-col gap-[12px] items-center text-[#bdc1c6] text-[15px] md:text-[17px] leading-[23px] md:leading-[26px] w-[330px] md:w-[620px]"
+        >
           <p>
-            Google I/O Extended Sucre es el evento oficial que reúne a desarrolladores, diseñadores, estudiantes y entusiastas de la tecnología en un solo lugar.
+            Google I/O Extended Sucre es el evento oficial que reúne a
+            desarrolladores, diseñadores, estudiantes y entusiastas de la
+            tecnología en un solo lugar.
           </p>
           <p>
-            Durante una jornada llena de charlas, demos en vivo, talleres y networking, exploramos las últimas novedades del universo Google.
+            Durante una jornada llena de charlas, demos en vivo, talleres y
+            networking, exploramos las últimas novedades del universo Google.
           </p>
         </div>
 
         <!-- Topics Pills -->
-        <div class="flex flex-wrap gap-[10px] md:gap-[14px] items-start justify-center w-[342px] md:w-auto shrink-0">
+        <div
+          class="flex flex-wrap gap-[10px] md:gap-[14px] items-start justify-center w-[342px] md:w-auto shrink-0"
+        >
           {
-            topics.map(topic => (
+            topics.map((topic) => (
               <div class="bg-[#1b1c21] border border-[#2a2b31] border-solid flex gap-[8px] md:gap-[10px] items-center pl-[14px] md:pl-[18px] pr-[16px] md:pr-[20px] py-[10px] md:py-[12px] rounded-[999px] shrink-0">
                 {topic.iconAsset && (
                   <div class="size-[18px] md:size-[22px] shrink-0 overflow-hidden relative">
-                    <img alt="" class="size-full object-cover" src={topic.iconAsset} />
+                    <img
+                      alt=""
+                      class="size-full object-cover"
+                      src={topic.iconAsset}
+                    />
                   </div>
                 )}
                 {topic.isCodeIcon && (
                   <div class="flex gap-[2px] items-center shrink-0 h-[18px] md:h-[22px]">
-                    <img alt="" class="h-[18px] md:h-[22px] w-[9px] md:w-[11px] mix-blend-screen" src={figmaCodeVector1.src} />
-                    <img alt="" class="h-[18px] md:h-[22px] w-[9px] md:w-[11px] mix-blend-screen" src={figmaCodeVector2.src} />
+                    <img
+                      alt=""
+                      class="h-[18px] md:h-[22px] w-[9px] md:w-[11px] mix-blend-screen"
+                      src={figmaCodeVector1.src}
+                    />
+                    <img
+                      alt=""
+                      class="h-[18px] md:h-[22px] w-[9px] md:w-[11px] mix-blend-screen"
+                      src={figmaCodeVector2.src}
+                    />
                   </div>
                 )}
-                <span class="text-[#e8eaed] text-[13px] md:text-[14px] font-medium">{topic.label}</span>
+                <span class="text-[#e8eaed] text-[13px] md:text-[14px] font-medium">
+                  {topic.label}
+                </span>
               </div>
             ))
           }
@@ -380,17 +592,30 @@ const mockups = [
       </section>
 
       <!-- Speakers Section -->
-      <section class="bg-[#131316] relative flex flex-col gap-[28px] md:gap-[56px] items-center px-[24px] md:px-[80px] pt-[64px] md:pt-[120px] pb-[80px] md:pb-[136px] w-full text-center overflow-hidden" id="speakers">
+      <section
+        class="bg-[#131316] relative flex flex-col gap-[28px] md:gap-[56px] items-center px-[24px] md:px-[80px] pt-[64px] md:pt-[120px] pb-[80px] md:pb-[136px] w-full text-center overflow-hidden"
+        id="speakers"
+      >
         <!-- Background Blobs -->
-        <div aria-hidden="true" class="absolute h-[260px] md:h-[420px] w-[300px] md:w-[520px] left-[45px] md:left-[60px] top-[120px] md:top-[180px] pointer-events-none -z-10">
+        <div
+          aria-hidden="true"
+          class="absolute h-[260px] md:h-[420px] w-[300px] md:w-[520px] left-[45px] md:left-[60px] top-[120px] md:top-[180px] pointer-events-none -z-10"
+        >
           <img alt="" class="block size-full max-w-none" src={figmaBlob.src} />
         </div>
-        <div aria-hidden="true" class="hidden md:block absolute h-[400px] w-[480px] right-[60px] top-[360px] pointer-events-none -z-10 opacity-70">
+        <div
+          aria-hidden="true"
+          class="hidden md:block absolute h-[400px] w-[480px] right-[60px] top-[360px] pointer-events-none -z-10 opacity-70"
+        >
           <img alt="" class="block size-full max-w-none" src={figmaBlob.src} />
         </div>
 
-        <div class="flex flex-col gap-[8px] md:gap-[14px] items-center shrink-0">
-          <p class="text-[#8ab4f8] text-[11px] md:text-[14px] font-medium tracking-[2.5px] md:tracking-[3px]">
+        <div
+          class="flex flex-col gap-[8px] md:gap-[14px] items-center shrink-0"
+        >
+          <p
+            class="text-[#8ab4f8] text-[11px] md:text-[14px] font-medium tracking-[2.5px] md:tracking-[3px]"
+          >
             EXPERTOS DE LA REGIÓN
           </p>
           <h2 class="text-[32px] md:text-[56px] font-semibold text-white">
@@ -399,26 +624,42 @@ const mockups = [
         </div>
 
         <!-- Speaker Cards -->
-        <div class="flex flex-col md:flex-row gap-[14px] md:gap-[24px] items-center justify-center shrink-0 w-full max-w-[342px] md:max-w-none">
+        <div
+          class="flex flex-col md:flex-row gap-[14px] md:gap-[24px] items-center justify-center shrink-0 w-full max-w-[342px] md:max-w-none"
+        >
           {
-            speakers.map(speaker => (
-              <article class={`bg-[#1b1c21] border-[1.5px] ${speaker.cardBorder} border-solid flex md:flex-col gap-[18px] md:gap-[16px] items-center p-[16px] md:pb-[32px] md:pt-[36px] md:px-[24px] rounded-[26px] md:rounded-[32px] w-[342px] md:w-[300px] shrink-0 text-left md:text-center`}>
+            speakers.map((speaker) => (
+              <article
+                class={`bg-[#1b1c21] border-[1.5px] ${speaker.cardBorder} border-solid flex md:flex-col gap-[18px] md:gap-[16px] items-center p-[16px] md:pb-[32px] md:pt-[36px] md:px-[24px] rounded-[26px] md:rounded-[32px] w-[342px] md:w-[300px] shrink-0 text-left md:text-center`}
+              >
                 <div
                   class={`flex size-[104px] md:size-[190px] items-center justify-center shrink-0 ${speaker.avatarShape} ${speaker.avatarShadow} ${speaker.avatarBg || ""}`}
                   style={speaker.avatarStyle}
                 >
-                  <span class="text-[30px] md:text-[54px] font-semibold text-[#17181c]">{speaker.initials}</span>
+                  <span class="text-[30px] md:text-[54px] font-semibold text-[#17181c]">
+                    {speaker.initials}
+                  </span>
                 </div>
 
                 <div class="flex flex-col gap-[7px] md:gap-[12px] items-start md:items-center shrink-0 min-w-0">
-                  <p class="text-[17px] md:text-[22px] font-semibold text-white truncate">{speaker.name}</p>
+                  <p class="text-[17px] md:text-[22px] font-semibold text-white truncate">
+                    {speaker.name}
+                  </p>
 
                   <div class="bg-[#26272d] flex gap-[6px] md:gap-[8px] items-center pl-[10px] md:pl-[14px] pr-[13px] md:pr-[18px] py-[6px] md:py-[9px] rounded-[999px] shrink-0">
-                    <img alt="" class="size-[14px] md:size-[18px] shrink-0" src={speaker.iconAsset} />
-                    <span class="text-[#e8eaed] text-[12px] md:text-[14px] font-medium">{speaker.tag}</span>
+                    <img
+                      alt=""
+                      class="size-[14px] md:size-[18px] shrink-0"
+                      src={speaker.iconAsset}
+                    />
+                    <span class="text-[#e8eaed] text-[12px] md:text-[14px] font-medium">
+                      {speaker.tag}
+                    </span>
                   </div>
 
-                  <p class="text-[#9aa0a6] text-[12px] md:text-[14px]">{speaker.location}</p>
+                  <p class="text-[#9aa0a6] text-[12px] md:text-[14px]">
+                    {speaker.location}
+                  </p>
                 </div>
               </article>
             ))
@@ -427,55 +668,98 @@ const mockups = [
       </section>
 
       <!-- Paquete Oficial / Experiencia Completa -->
-      <section class="bg-[#131316] relative flex flex-col gap-[24px] md:gap-[44px] items-center px-[24px] md:px-[80px] pt-[64px] md:pt-[120px] pb-[72px] md:pb-[128px] w-full text-center" id="experiencia">
-        <div class="flex flex-col gap-[8px] md:gap-[14px] items-center shrink-0">
-          <p class="text-[#8ab4f8] text-[11px] md:text-[14px] font-medium tracking-[2.5px] md:tracking-[3px]">
+      <section
+        class="bg-[#131316] relative flex flex-col gap-[24px] md:gap-[44px] items-center px-[24px] md:px-[80px] pt-[64px] md:pt-[120px] pb-[72px] md:pb-[128px] w-full text-center"
+        id="experiencia"
+      >
+        <div
+          class="flex flex-col gap-[8px] md:gap-[14px] items-center shrink-0"
+        >
+          <p
+            class="text-[#8ab4f8] text-[11px] md:text-[14px] font-medium tracking-[2.5px] md:tracking-[3px]"
+          >
             PAQUETE OFICIAL
           </p>
-          <h2 class="text-[28px] md:text-[48px] font-semibold text-white w-[320px] md:w-auto">
+          <h2
+            class="text-[28px] md:text-[48px] font-semibold text-white w-[320px] md:w-auto"
+          >
             Vive la experiencia completa
           </h2>
         </div>
 
-        <div class="relative w-full max-w-[342px] md:max-w-[960px] p-[2px] rounded-[28px] md:rounded-[36px] bg-[linear-gradient(140.194deg,_rgb(79,195,247)_11.111%,_rgb(66,133,244)_48.148%,_rgb(161,66,244)_85.185%)] shadow-[0px_12px_60px_0px_rgba(66,133,244,0.22)] shrink-0">
-          <div class="bg-[#1b1c21] rounded-[26px] md:rounded-[34px] p-[24px] md:p-[44px] flex flex-col md:flex-row gap-[24px] md:gap-[48px] items-center justify-between w-full">
+        <div
+          class="relative w-full max-w-[342px] md:max-w-[960px] p-[2px] rounded-[28px] md:rounded-[36px] bg-[linear-gradient(140.194deg,_rgb(79,195,247)_11.111%,_rgb(66,133,244)_48.148%,_rgb(161,66,244)_85.185%)] shadow-[0px_12px_60px_0px_rgba(66,133,244,0.22)] shrink-0"
+        >
+          <div
+            class="bg-[#1b1c21] rounded-[26px] md:rounded-[34px] p-[24px] md:p-[44px] flex flex-col md:flex-row gap-[24px] md:gap-[48px] items-center justify-between w-full"
+          >
             <!-- Left Info -->
-            <div class="flex flex-col gap-[12px] md:gap-[16px] items-center md:items-start text-center md:text-left w-full md:w-auto">
-              <div class="bg-[#1e2a47] flex items-center px-[10px] md:px-[14px] py-[5px] md:py-[7px] rounded-[999px] shrink-0">
-                <span class="text-[#8ab4f8] text-[10px] md:text-[12px] font-medium tracking-[1.5px] md:tracking-[2px]">
+            <div
+              class="flex flex-col gap-[12px] md:gap-[16px] items-center md:items-start text-center md:text-left w-full md:w-auto"
+            >
+              <div
+                class="bg-[#1e2a47] flex items-center px-[10px] md:px-[14px] py-[5px] md:py-[7px] rounded-[999px] shrink-0"
+              >
+                <span
+                  class="text-[#8ab4f8] text-[10px] md:text-[12px] font-medium tracking-[1.5px] md:tracking-[2px]"
+                >
                   TODA LA MAÑANA INCLUIDA
                 </span>
               </div>
 
-              <p class="text-[22px] md:text-[30px] font-semibold text-white">Experiencia Completa</p>
-
-              <p class="text-[#bdc1c6] text-[14px] md:text-[16px] leading-[21px] md:leading-[24px] w-[280px] md:w-[300px]">
-                Alimentación y todo el merch oficial del evento en un solo paquete.
+              <p class="text-[22px] md:text-[30px] font-semibold text-white">
+                Experiencia Completa
               </p>
 
-              <div class="flex gap-[8px] items-center justify-center md:justify-start">
-                <span class="text-[40px] md:text-[52px] font-semibold text-transparent bg-clip-text bg-[linear-gradient(140.194deg,_rgb(79,195,247)_11.111%,_rgb(66,133,244)_48.148%,_rgb(161,66,244)_85.185%)]">
+              <p
+                class="text-[#bdc1c6] text-[14px] md:text-[16px] leading-[21px] md:leading-[24px] w-[280px] md:w-[300px]"
+              >
+                Alimentación y todo el merch oficial del evento en un solo
+                paquete.
+              </p>
+
+              <div
+                class="flex gap-[8px] items-center justify-center md:justify-start"
+              >
+                <span
+                  class="text-[40px] md:text-[52px] font-semibold text-transparent bg-clip-text bg-[linear-gradient(140.194deg,_rgb(79,195,247)_11.111%,_rgb(66,133,244)_48.148%,_rgb(161,66,244)_85.185%)]"
+                >
                   Bs 35
                 </span>
-                <span class="text-[#9aa0a6] text-[12px] md:text-[14px]">· pago único</span>
+                <span class="text-[#9aa0a6] text-[12px] md:text-[14px]"
+                  >· pago único</span
+                >
               </div>
 
-              <p class="text-[#80868b] text-[11px] md:text-[12px] leading-[16px] md:leading-[18px] w-[280px] md:w-[300px]">
-                * La entrada al evento es gratuita. El paquete es opcional y solo suma la experiencia.
+              <p
+                class="text-[#80868b] text-[11px] md:text-[12px] leading-[16px] md:leading-[18px] w-[280px] md:w-[300px]"
+              >
+                * La entrada al evento es gratuita. El paquete es opcional y
+                solo suma la experiencia.
               </p>
             </div>
 
             <!-- Right Mockups Grid -->
-            <div class="flex flex-wrap gap-[16px] items-start justify-center w-full md:w-[536px] font-medium shrink-0">
+            <div
+              class="flex flex-wrap gap-[16px] items-start justify-center w-full md:w-[536px] font-medium shrink-0"
+            >
               {
-                mockups.map(item => (
+                mockups.map((item) => (
                   <div class="bg-[#202127] border border-[#3c4043] flex flex-col items-center justify-center h-[140px] md:h-[165px] w-[140px] md:w-[245px] rounded-[18px] overflow-hidden shrink-0 relative group shadow-lg transition-transform hover:scale-[1.02]">
                     {item.image ? (
-                      <img src={item.image.src} alt={item.title} class="size-full object-cover rounded-[18px]" />
+                      <img
+                        src={item.image.src}
+                        alt={item.title}
+                        class="size-full object-cover rounded-[18px]"
+                      />
                     ) : (
                       <>
-                        <p class="text-[#e8eaed] text-[14px] text-center">{item.title}</p>
-                        <span class="text-[#5f6368] text-[9px] tracking-[2px]">{item.label}</span>
+                        <p class="text-[#e8eaed] text-[14px] text-center">
+                          {item.title}
+                        </p>
+                        <span class="text-[#5f6368] text-[9px] tracking-[2px]">
+                          {item.label}
+                        </span>
                       </>
                     )}
                   </div>
@@ -485,47 +769,113 @@ const mockups = [
           </div>
 
           <!-- Pointer Cursor Ornament Overlapping IN FRONT OF Card (Figma 19:305) -->
-          <div aria-hidden="true" class="hidden lg:block absolute -right-[40px] -bottom-[45px] z-20 w-[155px] h-[183px] pointer-events-none rotate-[-18.75deg]">
-            <img alt="" class="size-full object-contain drop-shadow-xl" src={decoExperiencia.src} />
+          <div
+            aria-hidden="true"
+            class="hidden lg:block absolute -right-[40px] -bottom-[45px] z-20 w-[155px] h-[183px] pointer-events-none rotate-[-18.75deg]"
+          >
+            <img
+              alt=""
+              class="size-full object-contain drop-shadow-xl"
+              src={decoExperiencia.src}
+            />
           </div>
         </div>
       </section>
 
+      <!-- Agenda Section -->
+      <Schedule />
+
       <!-- Footer Section -->
-      <footer class="bg-[#0b0b0e] flex flex-col gap-[24px] md:gap-[32px] items-center px-[24px] md:px-[80px] pt-[48px] md:pt-[72px] pb-[32px] md:pb-[40px] w-full text-center">
-        <div class="flex flex-col md:flex-row items-center justify-between w-full gap-[20px] md:gap-0">
+      <footer
+        class="bg-[#0b0b0e] flex flex-col gap-[24px] md:gap-[32px] items-center px-[24px] md:px-[80px] pt-[48px] md:pt-[72px] pb-[32px] md:pb-[40px] w-full text-center"
+      >
+        <div
+          class="flex flex-col md:flex-row items-center justify-between w-full gap-[20px] md:gap-0"
+        >
           <!-- Footer Logo -->
-          <div class="grid-cols-[max-content] grid-rows-[max-content] inline-grid leading-[0] place-items-start relative shrink-0">
-            <div class="col-1 h-[46.89px] md:h-[54.71px] ml-0 mt-0 relative row-1 w-[180px] md:w-[210px]">
+          <div
+            class="grid-cols-[max-content] grid-rows-[max-content] inline-grid leading-[0] place-items-start relative shrink-0"
+          >
+            <div
+              class="col-1 h-[46.89px] md:h-[54.71px] ml-0 mt-0 relative row-1 w-[180px] md:w-[210px]"
+            >
               <div class="absolute inset-0 overflow-hidden pointer-events-none">
-                <img alt="Google I/O Extended Sucre" class="absolute h-[132.54%] left-[-0.05%] max-w-none top-[-23.41%] w-[100.1%]" src={figmaBaseWhite.src} />
+                <img
+                  alt="Google I/O Extended Sucre"
+                  class="absolute h-[132.54%] left-[-0.05%] max-w-none top-[-23.41%] w-[100.1%]"
+                  src={figmaBaseWhite.src}
+                />
               </div>
             </div>
-            <div class="col-1 grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[80.2px] md:ml-[93.57px] mt-[7.85px] md:mt-[9.16px] place-items-start relative row-1">
-              <div class="col-1 h-[17.69px] md:h-[20.64px] ml-0 mt-0 relative row-1 w-[9.08px] md:w-[10.59px]">
-                <img alt="" class="absolute left-0 max-w-none size-full top-0" src={figmaGradI.src} />
+            <div
+              class="col-1 grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[80.2px] md:ml-[93.57px] mt-[7.85px] md:mt-[9.16px] place-items-start relative row-1"
+            >
+              <div
+                class="col-1 h-[17.69px] md:h-[20.64px] ml-0 mt-0 relative row-1 w-[9.08px] md:w-[10.59px]"
+              >
+                <img
+                  alt=""
+                  class="absolute left-0 max-w-none size-full top-0"
+                  src={figmaGradI.src}
+                />
               </div>
-              <div class="col-1 h-[20.29px] md:h-[23.67px] ml-[9.23px] md:ml-[10.77px] mt-0 relative row-1 w-[6.53px] md:w-[7.62px]">
-                <img alt="" class="absolute block inset-0 max-w-none size-full" src={figmaSlashHeader.src} />
+              <div
+                class="col-1 h-[20.29px] md:h-[23.67px] ml-[9.23px] md:ml-[10.77px] mt-0 relative row-1 w-[6.53px] md:w-[7.62px]"
+              >
+                <img
+                  alt=""
+                  class="absolute block inset-0 max-w-none size-full"
+                  src={figmaSlashHeader.src}
+                />
               </div>
-              <div class="col-1 h-[18.22px] md:h-[21.26px] ml-[14.86px] md:ml-[17.34px] mt-[1.13px] relative row-1 w-[17.79px] md:w-[20.76px]">
-                <img alt="" class="absolute left-0 max-w-none size-full top-0" src={figmaGradO.src} />
+              <div
+                class="col-1 h-[18.22px] md:h-[21.26px] ml-[14.86px] md:ml-[17.34px] mt-[1.13px] relative row-1 w-[17.79px] md:w-[20.76px]"
+              >
+                <img
+                  alt=""
+                  class="absolute left-0 max-w-none size-full top-0"
+                  src={figmaGradO.src}
+                />
               </div>
             </div>
           </div>
 
           <!-- Social Buttons -->
           <div class="flex gap-[10px] items-center shrink-0">
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="bg-[#26272d] border border-[#34353b] border-solid flex size-[40px] items-center justify-center rounded-[20px] text-[#e8eaed] text-[14px] font-medium transition-colors hover:bg-white/10">
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+              class="bg-[#26272d] border border-[#34353b] border-solid flex size-[40px] items-center justify-center rounded-[20px] text-[#e8eaed] text-[14px] font-medium transition-colors hover:bg-white/10"
+            >
               <Facebook class="size-[18px]" />
             </a>
-            <a href="https://instagram.com/gdg.sucre" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="bg-[#26272d] border border-[#34353b] border-solid flex size-[40px] items-center justify-center rounded-[20px] text-[#e8eaed] text-[14px] font-medium transition-colors hover:bg-white/10">
+            <a
+              href="https://instagram.com/gdg.sucre"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              class="bg-[#26272d] border border-[#34353b] border-solid flex size-[40px] items-center justify-center rounded-[20px] text-[#e8eaed] text-[14px] font-medium transition-colors hover:bg-white/10"
+            >
               <Instagram class="size-[18px]" />
             </a>
-            <a href="https://x.com/gdg_sucre" target="_blank" rel="noopener noreferrer" aria-label="Twitter / X" class="bg-[#26272d] border border-[#34353b] border-solid flex size-[40px] items-center justify-center rounded-[20px] text-[#e8eaed] text-[14px] font-medium transition-colors hover:bg-white/10">
+            <a
+              href="https://x.com/gdg_sucre"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Twitter / X"
+              class="bg-[#26272d] border border-[#34353b] border-solid flex size-[40px] items-center justify-center rounded-[20px] text-[#e8eaed] text-[14px] font-medium transition-colors hover:bg-white/10"
+            >
               <Twitter class="size-[18px]" />
             </a>
-            <a href="https://linkedin.com/company/gdgsucre" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="bg-[#26272d] border border-[#34353b] border-solid flex size-[40px] items-center justify-center rounded-[20px] text-[#e8eaed] text-[14px] font-medium transition-colors hover:bg-white/10">
+            <a
+              href="https://linkedin.com/company/gdgsucre"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+              class="bg-[#26272d] border border-[#34353b] border-solid flex size-[40px] items-center justify-center rounded-[20px] text-[#e8eaed] text-[14px] font-medium transition-colors hover:bg-white/10"
+            >
               <LinkedIn class="size-[18px]" />
             </a>
           </div>
@@ -534,10 +884,15 @@ const mockups = [
         <!-- Divider Line -->
         <div class="bg-[#26272d] h-px w-full shrink-0"></div>
 
-        <div class="flex flex-col md:flex-row items-center justify-between w-full gap-[12px] md:gap-0 text-center md:text-left">
+        <div
+          class="flex flex-col md:flex-row items-center justify-between w-full gap-[12px] md:gap-0 text-center md:text-left"
+        >
           <!-- Disclaimer -->
-          <p class="text-[#80868b] text-[11px] md:text-[12px] leading-[16px] md:leading-[18px] w-[300px] md:w-[480px]">
-            Google I/O Extended Sucre es un evento independiente organizado por la comunidad, inspirado en Google I/O.
+          <p
+            class="text-[#80868b] text-[11px] md:text-[12px] leading-[16px] md:leading-[18px] w-[300px] md:w-[480px]"
+          >
+            Google I/O Extended Sucre es un evento independiente organizado por
+            la comunidad, inspirado en Google I/O.
           </p>
 
           <!-- Copyright -->
@@ -552,7 +907,8 @@ const mockups = [
 
 <style>
   @keyframes lavaBlob1 {
-    0%, 100% {
+    0%,
+    100% {
       transform: translate3d(0px, 0px, 0px) scale(1) rotate(0deg);
       border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
       opacity: 0.85;
@@ -570,7 +926,8 @@ const mockups = [
   }
 
   @keyframes lavaBlob2 {
-    0%, 100% {
+    0%,
+    100% {
       transform: translate3d(0px, 0px, 0px) scale(1.05) rotate(0deg);
       border-radius: 50% 50% 30% 70% / 50% 30% 70% 50%;
       opacity: 0.75;
@@ -583,7 +940,8 @@ const mockups = [
   }
 
   @keyframes lavaBlob3 {
-    0%, 100% {
+    0%,
+    100% {
       transform: translate3d(0px, 0px, 0px) scale(0.9);
       border-radius: 60% 40% 50% 50% / 40% 60% 50% 50%;
       opacity: 0.8;
@@ -610,26 +968,26 @@ const mockups = [
 
 <script>
   function updateCountdown() {
-    const targetDate = new Date("2026-08-15T08:00:00-04:00").getTime()
-    const now = Date.now()
-    const diff = Math.max(0, targetDate - now)
+    const targetDate = new Date("2026-08-15T08:00:00-04:00").getTime();
+    const now = Date.now();
+    const diff = Math.max(0, targetDate - now);
 
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000)
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-    const daysEl = document.getElementById("countdown-days")
-    const hoursEl = document.getElementById("countdown-hours")
-    const minutesEl = document.getElementById("countdown-minutes")
-    const secondsEl = document.getElementById("countdown-seconds")
+    const daysEl = document.getElementById("countdown-days");
+    const hoursEl = document.getElementById("countdown-hours");
+    const minutesEl = document.getElementById("countdown-minutes");
+    const secondsEl = document.getElementById("countdown-seconds");
 
-    if (daysEl) daysEl.textContent = String(days).padStart(2, "0")
-    if (hoursEl) hoursEl.textContent = String(hours).padStart(2, "0")
-    if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, "0")
-    if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, "0")
+    if (daysEl) daysEl.textContent = String(days).padStart(2, "0");
+    if (hoursEl) hoursEl.textContent = String(hours).padStart(2, "0");
+    if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, "0");
+    if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, "0");
   }
 
-  updateCountdown()
-  setInterval(updateCountdown, 1000)
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
 </script>
