@@ -12,26 +12,30 @@ const { events } = Astro.props
 const rangeLabel = formatRangeLabel(events)
 ---
 
-<section id="agenda" class="font-monospace mx-auto flex max-w-6xl flex-col gap-6 px-4 pt-16 lg:pt-24">
-  <p class="text-green-lime text-xs uppercase">[ 03 · agenda ]</p>
+<section
+  id="agenda"
+  class="font-monospace mx-auto flex max-w-6xl flex-col gap-4 md:gap-6 px-4 pt-16 lg:pt-24"
+>
+  <p class="text-green-lime text-xs uppercase">[ 02 · agenda ]</p>
 
   <div class="flex items-baseline justify-between gap-4">
-    <h2 class="text-4xl font-bold text-white md:text-5xl">
-      <span class="md:hidden">Próximos</span>
-      <span class="hidden md:inline">próximos / vistazo</span>
+    <h2 class="text-xl font-bold text-white md:text-5xl">
+      <span>Próximos eventos</span>
     </h2>
     <span class="text-muted-foreground shrink-0 text-sm">{rangeLabel}</span>
   </div>
 
-  {events.length > 0 ? (
-    <div class="flex flex-col gap-3">
-      {events.map((event, index) => (
-        <NextEventCard event={event} index={index} />
-      ))}
-    </div>
-  ) : (
-    <p class="text-muted-foreground border border-white/15 p-6 text-center text-sm">
-      Todavía no hay eventos próximos. Publicá el tuyo acá abajo.
-    </p>
-  )}
+  {
+    events.length > 0 ? (
+      <div class="flex flex-col gap-3">
+        {events.map((event, index) => (
+          <NextEventCard event={event} index={index} />
+        ))}
+      </div>
+    ) : (
+      <p class="text-muted-foreground border border-white/15 p-6 text-center text-sm">
+        Todavía no hay eventos próximos. Publicá el tuyo acá abajo.
+      </p>
+    )
+  }
 </section>

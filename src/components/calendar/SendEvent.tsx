@@ -315,7 +315,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
       </Form>
 
       {!isLoggedIn && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-6 text-center text-white bg-black/70 backdrop-blur-xs">
+        <div className="absolute inset-0 flex flex-col items-center pt-20 md:pt-40 gap-4 p-6 text-center text-white bg-black/70 backdrop-blur-xs">
           <p className="text-sm uppercase">Inicia sesión para publicar tu evento</p>
           <Button asChild className="bg-lime-300 hover:bg-lime-300/90 rounded-none text-black">
             <a href="/api/auth/signin?next=/calendario">Iniciar sesión</a>
