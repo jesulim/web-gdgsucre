@@ -1,0 +1,89 @@
+---
+import figmaBlob from "@/assets/figma/figma_blob.svg"
+import SpeakerCard, {
+  type Speaker,
+  type SpeakerTheme,
+} from "@/components/events/io-extended-26/SpeakerCard.astro"
+import speakersData from "@/data/io-extended-26/speakers.json"
+
+// Paleta de gradientes por speaker (en orden): cada card tiene su propio color,
+// siguiendo el diseño original donde RT/BC/SS/CC tenían cada uno su gradiente.
+const themes: SpeakerTheme[] = [
+  {
+    // Cyan -> Azul -> Púrpura (marca de la landing)
+    gradient:
+      "linear-gradient(140.194deg, rgb(79,195,247) 11.111%, rgb(66,133,244) 48.148%, rgb(161,66,244) 85.185%)",
+    glow: "rgba(66,133,244,0.5)",
+  },
+  {
+    // Amarillo -> Rojo -> Púrpura
+    gradient:
+      "linear-gradient(120.466deg, rgb(251,188,4) 11.111%, rgb(234,67,53) 48.148%, rgb(161,66,244) 85.185%)",
+    glow: "rgba(234,67,53,0.5)",
+  },
+  {
+    // Verde -> Azul
+    gradient:
+      "linear-gradient(140.194deg, rgb(129,201,149) 11.111%, rgb(52,168,83) 48.148%, rgb(66,133,244) 85.185%)",
+    glow: "rgba(52,168,83,0.5)",
+  },
+  {
+    // Amarillo -> Rojo -> Azul
+    gradient:
+      "linear-gradient(120.466deg, rgb(251,188,4) 11.111%, rgb(234,67,53) 48.148%, rgb(66,133,244) 85.185%)",
+    glow: "rgba(251,188,4,0.5)",
+  },
+  {
+    // Cyan -> Azul -> Amarillo
+    gradient:
+      "linear-gradient(120.466deg, rgb(79,195,247) 11.111%, rgb(66,133,244) 48.148%, rgb(251,188,4) 85.185%)",
+    glow: "rgba(79,195,247,0.5)",
+  },
+]
+
+const speakers: { speaker: Speaker; theme: SpeakerTheme }[] = speakersData.map((speaker, i) => ({
+  speaker,
+  theme: themes[i % themes.length],
+}))
+---
+
+<!-- Speakers Section -->
+<section
+  class="bg-io-bg relative flex flex-col gap-[28px] md:gap-[56px] items-center px-[24px] md:px-[80px] pt-[64px] md:pt-[120px] pb-[80px] md:pb-[136px] w-full text-center overflow-hidden"
+  id="speakers"
+>
+  <!-- Background Blobs -->
+  <div
+    aria-hidden="true"
+    class="absolute h-[260px] md:h-[420px] w-[300px] md:w-[520px] left-[45px] md:left-[60px] top-[120px] md:top-[180px] pointer-events-none -z-10"
+  >
+    <img alt="" class="block size-full max-w-none" src={figmaBlob.src} />
+  </div>
+  <div
+    aria-hidden="true"
+    class="hidden md:block absolute h-[400px] w-[480px] right-[60px] top-[360px] pointer-events-none -z-10 opacity-70"
+  >
+    <img alt="" class="block size-full max-w-none" src={figmaBlob.src} />
+  </div>
+
+  <!-- Glow unificador detrás del grid: conecta las cards y evita que se vean aisladas -->
+  <div
+    aria-hidden="true"
+    class="absolute left-1/2 top-[62%] -translate-x-1/2 -translate-y-1/2 size-[480px] md:size-[820px] rounded-full blur-3xl pointer-events-none opacity-50"
+    style="background-image: radial-gradient(closest-side, rgba(66,133,244,0.35), transparent 70%);"
+  ></div>
+
+  <div class="flex flex-col gap-[8px] md:gap-[14px] items-center shrink-0">
+    <p class="text-io-accent text-[11px] md:text-[14px] font-medium tracking-[2.5px] md:tracking-[3px]">
+      EXPERTOS DE LA REGIÓN
+    </p>
+    <h2 class="text-[32px] md:text-[56px] font-semibold text-white">Speakers</h2>
+  </div>
+
+  <!-- Speaker Cards -->
+  <div
+    class="flex flex-wrap justify-center gap-3.5 md:gap-5 w-full max-w-[380px] sm:max-w-none"
+  >
+    {speakers.map(({ speaker, theme }) => <SpeakerCard speaker={speaker} theme={theme} />)}
+  </div>
+</section>

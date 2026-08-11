@@ -3,7 +3,6 @@ import decoHero1 from "@/assets/decos/deco_hero_1.webp"
 import decoHero2 from "@/assets/decos/deco_hero_2.webp"
 import decoHero3 from "@/assets/decos/deco_hero_3.webp"
 import decoHero4 from "@/assets/decos/deco_hero_4.webp"
-import figmaBlob from "@/assets/figma/figma_blob.svg"
 import figmaCalendarIcon from "@/assets/figma/figma_calendar.svg"
 import figmaCountdownSlash from "@/assets/figma/figma_countdown_slash.svg"
 import figmaGlow from "@/assets/figma/figma_glow.svg"
@@ -24,8 +23,8 @@ import topicUXUI from "@/assets/logos/topic_uxui.webp"
 import topicWeb from "@/assets/logos/topic_web.webp"
 import Avatar from "@/components/Avatar.astro"
 import PackageSection from "@/components/events/io-extended-26/PackageSection.astro"
+import SpeakersSection from "@/components/events/io-extended-26/SpeakersSection.astro"
 import TopicPill from "@/components/events/io-extended-26/TopicPill.astro"
-import speakersData from "@/data/io-extended-26/speakers.json"
 import BaseLayout from "@/layout/BaseLayout.astro"
 
 interface CountdownUnit {
@@ -40,14 +39,6 @@ interface TopicPillData {
   label: string
   iconAsset?: string
   isCodeIcon?: boolean
-}
-
-interface Speaker {
-  name: string
-  talkTitle: string
-  talkDescription: string
-  areas: string[]
-  photo: string
 }
 
 const isLoggedIn = Astro.cookies.has("sb-access-token") || Astro.cookies.has("sb-refresh-token")
@@ -108,20 +99,6 @@ const topics: TopicPillData[] = [
   { label: "IA", iconAsset: topicIA.src },
   { label: "Cloud", iconAsset: topicCloud.src },
 ]
-
-const speakers: Speaker[] = speakersData
-
-const topicIconForArea = (area: string): string | undefined => {
-  const normalized = area.toLowerCase()
-  if (normalized.includes("ai") || normalized.includes("ia") || normalized.includes("ml")) {
-    return topicIA.src
-  }
-  if (normalized.includes("android")) return topicAndroid.src
-  if (normalized.includes("cloud")) return topicCloud.src
-  if (normalized.includes("ux") || normalized.includes("ui")) return topicUXUI.src
-  if (normalized.includes("web")) return topicWeb.src
-  return undefined
-}
 ---
 
 <BaseLayout theme="dark" title="Google I/O Extended Sucre" description="Landing de Google I/O Extended Sucre">
@@ -342,70 +319,7 @@ const topicIconForArea = (area: string): string | undefined => {
         </div>
       </section>
 
-      <!-- Speakers Section -->
-      <section class="bg-io-bg relative flex flex-col gap-[28px] md:gap-[56px] items-center px-[24px] md:px-[80px] pt-[64px] md:pt-[120px] pb-[80px] md:pb-[136px] w-full text-center overflow-hidden" id="speakers">
-        <!-- Background Blobs -->
-        <div aria-hidden="true" class="absolute h-[260px] md:h-[420px] w-[300px] md:w-[520px] left-[45px] md:left-[60px] top-[120px] md:top-[180px] pointer-events-none -z-10">
-          <img alt="" class="block size-full max-w-none" src={figmaBlob.src} />
-        </div>
-        <div aria-hidden="true" class="hidden md:block absolute h-[400px] w-[480px] right-[60px] top-[360px] pointer-events-none -z-10 opacity-70">
-          <img alt="" class="block size-full max-w-none" src={figmaBlob.src} />
-        </div>
-
-        <div class="flex flex-col gap-[8px] md:gap-[14px] items-center shrink-0">
-          <p class="text-io-accent text-[11px] md:text-[14px] font-medium tracking-[2.5px] md:tracking-[3px]">
-            EXPERTOS DE LA REGIÓN
-          </p>
-          <h2 class="text-[32px] md:text-[56px] font-semibold text-white">
-            Speakers
-          </h2>
-        </div>
-
-        <!-- Speaker Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3.5 md:gap-5 w-full max-w-[380px] sm:max-w-none">
-          {
-            speakers.map(speaker => (
-              <article class="bg-io-surface border-[1.5px] border-io-border border-solid flex flex-col gap-3.5 md:gap-4 items-start p-5 md:p-6 rounded-6 md:rounded-7 text-left min-w-0">
-                <div class="flex items-center gap-3.5 w-full min-w-0">
-                  <img
-                    src={speaker.photo}
-                    alt={`Foto de ${speaker.name}`}
-                    loading="lazy"
-                    class="size-13 md:size-15 rounded-4 md:rounded-5 object-cover border border-io-border-2 border-solid shrink-0"
-                  />
-                  <div class="flex flex-col gap-0.5 min-w-0">
-                    <p class="text-io-text text-[15px] md:text-[17px] font-semibold truncate">{speaker.name}</p>
-                    <span class="text-io-accent text-[10px] md:text-[11px] font-medium tracking-[2px] uppercase">
-                      Speaker
-                    </span>
-                  </div>
-                </div>
-
-                <h3 class="text-white text-[17px] md:text-[19px] font-semibold leading-[1.3]">
-                  {speaker.talkTitle}
-                </h3>
-
-                <p class="text-io-text-secondary text-[13px] md:text-sm leading-[21px] md:leading-[22px] line-clamp-4">
-                  {speaker.talkDescription}
-                </p>
-
-                <ul class="flex flex-wrap gap-2 mt-auto pt-0.5">
-                  {
-                    speaker.areas.map(area => {
-                      const icon = topicIconForArea(area)
-                      return (
-                        <li>
-                          <TopicPill label={area} iconAsset={icon} variant="small" />
-                        </li>
-                      )
-                    })
-                  }
-                </ul>
-              </article>
-            ))
-          }
-        </div>
-      </section>
+      <SpeakersSection />
 
       <PackageSection />
 
