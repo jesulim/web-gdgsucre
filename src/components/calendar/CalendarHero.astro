@@ -1,0 +1,57 @@
+---
+import ArrowOutward from "@/assets/icons/arrow_outward.svg"
+
+import { formatHeroDate, toEventSlug, type UpcomingCalendarEvent } from "@/lib/calendar"
+
+import RocketIllustration from "./RocketIllustration.astro"
+
+interface Props {
+  event: UpcomingCalendarEvent | undefined
+}
+
+const { event } = Astro.props
+
+const terminalLine = event
+  ? `> próximo: ${toEventSlug(event.name)} · ${formatHeroDate(event.start_datetime)}`
+  : "> sin eventos próximos"
+---
+
+<section class="font-monospace mx-auto grid max-w-6xl gap-10 px-4 pt-16 lg:grid-cols-2 lg:items-center lg:gap-16 lg:pt-24">
+  <div class="flex flex-col gap-6">
+    <p class="text-green-lime text-xs uppercase">[ 01 · señal ]</p>
+
+    <h1 class="text-4xl leading-none font-bold text-white md:text-5xl lg:text-6xl">
+      La agenda tech<br />de sucre
+    </h1>
+
+    <p class="text-muted-foreground text-sm normal-case md:text-base">
+      Eventos tech de sucre.<br />próxima fecha clara.
+    </p>
+
+    <div class="flex items-center justify-between gap-3 border border-white/15 bg-black px-4 py-3">
+      <span class="truncate text-xs text-white/70 md:text-sm">{terminalLine}</span>
+      <span class="bg-green-lime size-3 shrink-0 animate-pulse"></span>
+    </div>
+
+    <div class="flex flex-wrap items-center gap-4">
+      <a
+        href="#publicar"
+        class="group bg-lime-300 hover:bg-lime-300/90 shadow-[4px_4px_0_0_var(--color-blue-500)] inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-black md:text-base"
+      >
+        Sumar evento
+        <ArrowOutward
+          class="size-5 transition-transform ease-in-out group-hover:translate-1 group-hover:-translate-y-1"
+        />
+      </a>
+
+      <a
+        href="#agenda"
+        class="border border-white/15 px-6 py-3 text-sm text-white transition-colors hover:bg-white/5 md:text-base"
+      >
+        Ver agenda
+      </a>
+    </div>
+  </div>
+
+  <RocketIllustration />
+</section>
