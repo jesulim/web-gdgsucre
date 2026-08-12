@@ -1,4 +1,5 @@
 ---
+import { ConfettiEffect } from "@/components/ConfettiEffect"
 import Header from "@/components/events/bwai-26/Header.astro"
 import BaseLayout from "@/layout/BaseLayout.astro"
 
@@ -18,6 +19,7 @@ if (!registration || registration?.status !== "pending") return Astro.redirect("
 
 <BaseLayout theme="light">
   <Header />
+  <ConfettiEffect client:load />
   <main class="mt-16 pt-12 flex">
     <div class="mx-auto px-4">
       <h1 class="text-xl mb-4">¡Hola, {profile?.first_name}!</h1>
