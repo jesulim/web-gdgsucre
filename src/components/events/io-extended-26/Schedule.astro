@@ -11,7 +11,6 @@ interface ScheduleEntry {
 
 const scheduleData = scheduleDataRaw as ScheduleEntry[]
 
-// Separate talks from non-talks to assign gradient colors per talk
 const googleGradients = [
   "bg-[linear-gradient(135deg,_rgb(66,133,244)_0%,_rgb(79,195,247)_100%)]",
   "bg-[linear-gradient(135deg,_rgb(251,188,4)_0%,_rgb(234,67,53)_100%)]",
@@ -20,15 +19,13 @@ const googleGradients = [
   "bg-[linear-gradient(135deg,_rgb(79,195,247)_0%,_rgb(66,133,244)_50%,_rgb(161,66,244)_100%)]",
 ]
 
-let talkIndex = 0
-const enrichedData = scheduleData.map((entry) => {
-  if (entry.type === "talk") {
-    const gradient = googleGradients[talkIndex % googleGradients.length]
-    talkIndex++
-    return { ...entry, gradient }
-  }
-  return { ...entry, gradient: undefined }
-})
+const baseGradient = googleGradients[0]
+const talkGradient = "bg-[linear-gradient(135deg,_rgb(251,188,4)_0%,_rgb(234,67,53)_50%,_rgb(161,66,244)_100%)]"
+const enrichedData = scheduleData.map((entry) => ({
+  ...entry,
+  gradient: baseGradient,
+  talkGradient: entry.type === "talk" ? talkGradient : undefined,
+}))
 ---
 
 <section
@@ -59,9 +56,6 @@ const enrichedData = scheduleData.map((entry) => {
     >
       Agenda del evento
     </h2>
-    <p class="text-[#9aa0a6] text-[13px] md:text-[15px] leading-[1.5] max-w-[320px] md:max-w-none">
-      Sábado 15 de Agosto · 8:00 – 13:00 hrs
-    </p>
   </div>
 
   <!-- Schedule List -->
@@ -69,19 +63,6 @@ const enrichedData = scheduleData.map((entry) => {
     {
       enrichedData.map((entry) => (
         <div class="relative flex items-stretch gap-4">
-          <!-- Left timeline indicator (desktop only) -->
-          <div class="hidden md:flex flex-col items-center shrink-0 pt-5 gap-0">
-            <div
-              class:list={[
-                "size-[10px] rounded-full shrink-0 mt-[3px]",
-                {
-                  "bg-[#4285f4] shadow-[0_0_8px_rgba(66,133,244,0.6)]": entry.type === "talk",
-                  "bg-[#fbbc04]": entry.type === "break",
-                  "bg-[#34353b]": entry.type === "activity",
-                },
-              ]}
-            />
-          </div>
 
           <!-- Card -->
           <div class="flex-1 min-w-0">
@@ -90,6 +71,8 @@ const enrichedData = scheduleData.map((entry) => {
               time={entry.time}
               title={entry.title}
               speaker={entry.speaker}
+              gradient={entry.gradient}
+              talkGradient={entry.talkGradient}
             />
           </div>
         </div>
