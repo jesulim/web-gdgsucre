@@ -46,7 +46,6 @@ export interface Registrations {
   first_name: string
   last_name: string
   email: string
-  phone_number: string
   role: string
   status: string
   package: string
@@ -111,9 +110,8 @@ export function RegistrationsTable({
       id: "rowNumber",
       header: "#",
       cell: ({ row }) => {
-        const filteredRows = table.getFilteredRowModel().rows
-        const index = filteredRows.findIndex(r => r.id === row.id)
-        return <span className="text-gray-600">{index + 1}</span>
+        const totalRows = table.getCoreRowModel().rows.length
+        return <span className="text-gray-600">{totalRows - row.index}</span>
       },
     }),
     columnHelper.accessor("created_at", {
@@ -123,7 +121,6 @@ export function RegistrationsTable({
     columnHelper.accessor("first_name", { header: "Nombre(s)", filterFn: "includesString" }),
     columnHelper.accessor("last_name", { header: "Apellido(s)", filterFn: "includesString" }),
     columnHelper.accessor("email", { header: "Correo electrónico", filterFn: "includesString" }),
-    columnHelper.accessor("phone_number", { header: "Teléfono", enableGlobalFilter: false }),
     columnHelper.display({
       id: "role",
       header: "Rol",
