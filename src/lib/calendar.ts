@@ -21,8 +21,7 @@ export interface UpcomingCalendarEvent {
 // `start_datetime` is a timestamptz, but the publish form sends the value with
 // no offset (see SendEvent.tsx), so Postgres stores it as UTC. Formatting back
 // in UTC therefore renders the same wall-clock time the community typed in.
-// Switch this to "America/La_Paz" only once the POST starts sending the offset.
-const TIME_ZONE = "UTC"
+const TIME_ZONE = "America/La_Paz"
 const LOCALE = "es-BO"
 
 const dayFormatter = new Intl.DateTimeFormat(LOCALE, { day: "2-digit", timeZone: TIME_ZONE })

@@ -17,25 +17,27 @@ const terminalLine = event
 ---
 
 <section
-  class="font-monospace mx-auto grid max-w-6xl gap-10 px-4 pt-16 lg:grid-cols-2 lg:items-center lg:gap-16 lg:pt-24"
+  class="font-monospace mx-auto grid max-w-6xl gap-10 px-4 md:grid-cols-2 lg:items-center lg:gap-16"
 >
-  <div class="flex flex-col gap-6">
+  <div class="flex min-w-0 flex-col gap-6">
     <p class="text-green-lime text-xs uppercase">[ 01 · señal ]</p>
 
-    <h1 class="text-4xl leading-none font-bold text-white md:text-5xl lg:text-6xl">
+    <h1 class="text-3xl sm:text-4xl leading-none font-bold text-white md:text-5xl lg:text-6xl">
       La agenda tech<br />de Sucre
     </h1>
 
-    <div class="flex items-center gap-3 border border-white/15 bg-black px-4 py-3">
-      <span class="text-green-lime">&gt;</span>
-      <span class="truncate text-xs text-white/70 md:text-sm">{terminalLine}</span>
-      <span class="bg-green-lime size-3 shrink-0 animate-pulse ml-auto"></span>
+    <div class="flex items-center gap-3 border border-white/15 bg-black p-2 md:p-4">
+      <span class="text-green-lime text-xs">&gt;</span>
+      <span class="min-w-0 flex-1 truncate text-xs text-white/70 md:text-sm">
+        {terminalLine}
+      </span>
+      <span class="bg-green-lime size-3 shrink-0 animate-pulse"></span>
     </div>
 
     <div class="flex flex-wrap items-center gap-4">
       <a
         href="#publicar"
-        class="group bg-lime-300 hover:bg-lime-300/90 shadow-[4px_4px_0_0_var(--color-blue-500)] inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-black md:text-base"
+        class="group bg-lime-300 hover:bg-lime-300/90 hover:shadow-[4px_4px_0_0_var(--color-blue-500)] inline-flex items-center gap-2 px-2 sm:px-6 py-2 md:py-4 text-sm font-bold text-black md:text-base transition-all"
       >
         Sumar evento
         <ArrowOutward
@@ -45,7 +47,7 @@ const terminalLine = event
 
       <a
         href="#agenda"
-        class="border border-white/15 px-6 py-3 text-sm text-white transition-colors hover:bg-white/5 md:text-base"
+        class="border border-white/15 px-4 md:px-6 py-2 md:py-4 text-sm text-white transition-colors hover:bg-white/5 md:text-base"
       >
         Ver agenda
       </a>

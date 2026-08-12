@@ -1,0 +1,81 @@
+---
+const navLinks = [
+  { href: "#agenda", label: "agenda" },
+  { href: "#calendario", label: "calendario" },
+  { href: "#publicar", label: "publicar evento" },
+]
+
+const socialLinks = [
+  { href: "https://www.facebook.com/gdgsucre", label: "Facebook" },
+  { href: "https://www.tiktok.com/@gdgsucre", label: "Tiktok" },
+  { href: "https://www.instagram.com/gdg.sucre/", label: "Instagram" },
+  { href: "https://www.youtube.com/@gdgsucre", label: "YouTube" },
+  { href: "https://www.linkedin.com/company/gdgsucre/", label: "LinkedIn" },
+  { href: "https://twitter.com/gdg_sucre", label: "Twitter" },
+]
+---
+
+<footer class="w-full bg-black border-t border-white/15 font-monospace">
+  <div class="max-w-7xl mx-auto flex flex-col gap-8 px-8 p-4 md:p-8">
+    <div class="w-full flex flex-col md:flex-row gap-8 md:justify-between">
+      <div>
+        <h3 class="text-4xl md:text-5xl mt-2 mb-4">sucre.tech</h3>
+        <p class="text-muted-foreground leading-loose">
+          Agenda de eventos tecnológicos en Sucre, Bolivia. <br />
+          <span class="text-muted-foreground">
+            hecho por: <a
+              class="text-white font-bold hover:underline"
+              href="https://www.gdgsucre.com.bo/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GDG Sucre
+            </a>
+          </span>
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 gap-8 md:gap-4">
+        <ul class="grid grid-cols-1 gap-y-2">
+          <li>EXPLORAR</li>
+          {
+            navLinks.map(link => (
+              <li>
+                <a class="text-muted-foreground hover:underline" href={link.href}>
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+
+        <ul class="w-fit grid grid-cols-2 gap-y-2 gap-x-8">
+          <li class="col-span-2">REDES</li>
+          {
+            socialLinks.map(link => (
+              <li>
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-muted-foreground hover:underline"
+                  href={link.href}
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+
+    <hr class="border-t border-white/15" />
+
+    <span class="text-muted-foreground text-xs md:text-sm">
+      &copy; {new Date().getFullYear()} sucre.tech <span class="hidden sm:inline">
+        · proyecto comunitario · sin fines de lucro
+      </span>
+    </span>
+    <div class="bg-green-lime w-48 h-1"></div>
+  </div>
+</footer>

@@ -1,0 +1,57 @@
+---
+import { SendEvent } from "@/components/calendar/SendEvent"
+
+const isLoggedIn = Astro.cookies.has("sb-access-token")
+
+const steps = [
+  { number: "01", text: "Envía los datos del evento." },
+  { number: "02", text: "Revisaremos los datos." },
+  { number: "03", text: "Se publica en la agenda." },
+]
+---
+
+<section
+  id="publicar"
+  class="mx-auto grid max-w-6xl gap-12 px-4 py-16 lg:grid-cols-[2fr_3fr] lg:items-start lg:gap-20 lg:py-24"
+>
+  <section class="font-monospace flex flex-col gap-6">
+    <div class="flex flex-col gap-4">
+      <p class="text-green-lime text-xs uppercase">[ 04 · publicar ]</p>
+
+      <h2 class="text-white text-5xl leading-none font-bold md:text-6xl">
+        Publica<br />tu evento
+      </h2>
+    </div>
+
+    <hr class="border-t border-white/10" />
+
+    <div class="flex flex-col gap-3">
+      <p class="text-sm sm:text-base font-bold">// Cómo funciona</p>
+
+      <div class="flex flex-col gap-3">
+        {
+          steps.map(step => (
+            <div class="flex items-center gap-3 p-3">
+              <span class="border-green-lime text-green-lime shrink-0 border px-2 py-1 text-sm">
+                {step.number}
+              </span>
+              <p class="text-muted-foreground text-sm normal-case">{step.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <hr class="border-t border-white/10" />
+
+    <div class="flex items-center gap-4">
+      <span
+        class="bg-lime-300 shadow-[4px_4px_0_0_var(--color-blue-500)] inline-block -rotate-6 px-5 py-2 text-sm font-bold text-black"
+      >
+        gratis
+      </span>
+      <p class="text-muted-foreground text-sm">Publicar no tiene costo.</p>
+    </div>
+  </section>
+  <SendEvent isLoggedIn={isLoggedIn} client:visible />
+</section>
