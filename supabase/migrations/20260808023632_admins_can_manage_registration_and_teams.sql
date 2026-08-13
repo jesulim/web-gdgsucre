@@ -1,5 +1,5 @@
 DROP POLICY IF EXISTS "Admins can insert registrations" ON "public"."registrations";
-DROP POLICY IF EXISTS "Admins can update registrations" ON "public"."registrations";
+DROP POLICY IF EXISTS "Admins and staff can update registrations" ON "public"."registrations";
 DROP POLICY IF EXISTS "Admins can delete registrations" ON "public"."registrations";
 
 DROP POLICY IF EXISTS "Admins can insert registration_activities" ON "public"."registration_activities";
@@ -39,12 +39,12 @@ CREATE POLICY "Admins can insert registration_activities" ON "public"."registrat
   TO authenticated
   WITH CHECK ("public"."is_admin"(auth.uid()));
 
-CREATE POLICY "Admins can update registration_activities" ON "public"."registration_activities"
+CREATE POLICY "Admins and staff can update registration_activities" ON "public"."registration_activities"
   AS permissive
   FOR UPDATE
   TO authenticated
-  USING ("public"."is_admin"(auth.uid()))
-  WITH CHECK ("public"."is_admin"(auth.uid()));
+  USING (can_access_registration(id, auth.uid()))
+  WITH CHECK (can_access_registration(id, auth.uid()));
 
 CREATE POLICY "Admins can delete registration_activities" ON "public"."registration_activities"
   AS permissive

@@ -64,10 +64,20 @@ export function AccreditationTable({
   } = useAccreditations({ slug: eventSlug, role })
   const { mutateAsync: updateAccreditation } = useUpdateAccreditation()
 
-  const updateCheckbox = async (id: number, eventSlug: string, field: string, value: boolean) => {
-    // Actualización optimista: actualizar UI inmediatamente
+  const updateCheckbox = async (
+    registrationId: number,
+    activityId: number,
+    activityName: string,
+    value: boolean
+  ) => {
     try {
-      await updateAccreditation({ id, eventSlug, field, value, params: { slug: eventSlug, role } })
+      await updateAccreditation({
+        registrationId,
+        activityId,
+        activityName,
+        value,
+        params: { slug: eventSlug, role },
+      })
     } catch (error) {
       toast.error("Error al actualizar")
       console.error("Error updating checkbox:", error)
@@ -106,7 +116,7 @@ export function AccreditationTable({
     columnHelper.accessor("package", {
       header: "Paquete",
       enableGlobalFilter: false,
-      cell: info => (info.getValue()?.split(" (")[0] ?? info.getValue()) || '-',
+      cell: info => (info.getValue()?.split(" (")[0] ?? info.getValue()) || "-",
     }),
     columnHelper.accessor("dietary_restriction", {
       header: "Restricción alimentaria",
@@ -141,7 +151,7 @@ export function AccreditationTable({
             <Checkbox
               checked={info.getValue()}
               onCheckedChange={checked =>
-                updateCheckbox(info.row.original.id, eventSlug, activity.name, !!checked)
+                updateCheckbox(info.row.original.id, activity.id, activity.name, !!checked)
               }
             />
           ),

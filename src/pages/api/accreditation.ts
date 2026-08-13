@@ -3,7 +3,7 @@ import type { APIRoute } from "astro"
 import {
   getRegistrationsWithActivities,
   updateRegistrationActivity,
-} from "@/lib/services/registrationService"
+} from "@/lib/services/accreditationService"
 import { createUserClient } from "@/lib/supabase"
 
 export const GET: APIRoute = async ({ url, cookies }) => {
@@ -34,9 +34,9 @@ export const GET: APIRoute = async ({ url, cookies }) => {
 export const POST: APIRoute = async ({ request, cookies }) => {
   try {
     const body = await request.json()
-    const { id, field, eventSlug, value } = body
+    const { registrationId, activityId, activityName, value } = body
 
-    if (!id || !eventSlug || !field || typeof value !== "boolean") {
+    if (!registrationId || !activityId || !activityName || typeof value !== "boolean") {
       return new Response(JSON.stringify({ error: "Invalid request body" }), {
         status: 400,
         headers: { "Content-Type": "application/json" },
@@ -44,7 +44,13 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     }
 
     const supabase = await createUserClient(cookies)
-    const result = await updateRegistrationActivity(supabase, id, eventSlug, field, value)
+    const result = await updateRegistrationActivity(
+      supabase,
+      registrationId,
+      activityId,
+      activityName,
+      value
+    )
 
     return new Response(JSON.stringify({ success: true, data: result }), {
       headers: { "Content-Type": "application/json" },
