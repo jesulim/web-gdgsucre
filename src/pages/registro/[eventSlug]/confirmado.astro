@@ -2,8 +2,8 @@
 import CredentialCardBWAI26 from "@/components/events/bwai-26/CredentialCard"
 import CredentialCardDevfest25 from "@/components/events/devfest-25/CredentialCard"
 import CredentialCardIO26 from "@/components/events/io-extended-26/CredentialCard"
+import IoExtendedHeader from "@/components/events/io-extended-26/Header.astro"
 import CredentialCardIWD26 from "@/components/events/iwd-26/CredentialCard"
-import Header from "@/components/events/bwai-26/Header.astro"
 
 import BaseLayout from "@/layout/BaseLayout.astro"
 
@@ -19,8 +19,7 @@ const eventSlug = Astro.params.eventSlug || "bwai-26"
 const registration = await getEventRegistration(supabase, profile?.id, eventSlug)
 if (!registration) return Astro.redirect("/")
 
-if (registration?.status !== "confirmed")
-  return Astro.redirect(`/registro/${eventSlug}`)
+if (registration?.status !== "confirmed") return Astro.redirect(`/registro/${eventSlug}`)
 
 const cardProps = {
   avatarUrl: profile.avatar_url,
@@ -36,9 +35,9 @@ const cardProps = {
 }
 ---
 
-<BaseLayout theme="light">
-  <Header />
-  <main class="mt-16 pt-12 flex">
+<BaseLayout theme="dark">
+  <IoExtendedHeader />
+  <main class="bg-io-bg flex min-h-screen pt-[64px] md:pt-[96px] text-white">
     <div class="mx-auto px-4">
       {eventSlug === "io-extended-26" && <CredentialCardIO26 client:load {...cardProps} />}
       {eventSlug === "iwd-26" && <CredentialCardIWD26 client:load {...cardProps} />}

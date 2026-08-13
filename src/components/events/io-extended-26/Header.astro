@@ -1,0 +1,97 @@
+---
+import figmaBaseWhite from "@/assets/logos/figma_base_white.webp"
+import figmaGradI from "@/assets/logos/figma_grad_i.webp"
+import figmaGradO from "@/assets/logos/figma_grad_o.webp"
+import figmaSlashHeader from "@/assets/logos/figma_slash_header.svg"
+import Avatar from "@/components/Avatar.astro"
+
+const isLoggedIn = Astro.cookies.has("sb-access-token") || Astro.cookies.has("sb-refresh-token")
+const registerHref = "/api/auth/signin?next=/registro/io-extended-26"
+---
+
+<header
+  class="relative z-10 flex items-center justify-between px-[20px] md:px-[80px] py-[16px] md:py-[20px] w-full max-w-[1440px] mx-auto"
+>
+  <a href="/#" class="block shrink-0">
+    <div
+      class="grid-cols-[max-content] grid-rows-[max-content] inline-grid leading-[0] place-items-start relative shrink-0"
+    >
+      <div
+        class="col-1 h-[33.35px] md:h-[44.29px] ml-0 mt-0 relative row-1 w-[128px] md:w-[170px]"
+      >
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+          <img
+            alt="Google I/O Extended Sucre"
+            class="absolute h-[132.54%] left-[-0.05%] max-w-none top-[-23.41%] w-[100.1%]"
+            src={figmaBaseWhite.src}
+          />
+        </div>
+      </div>
+      <div
+        class="col-1 grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[57.03px] md:ml-[75.74px] mt-[5.58px] md:mt-[7.41px] place-items-start relative row-1"
+      >
+        <div
+          class="col-1 grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-0 mt-[1.18px] md:mt-[1.57px] place-items-start relative row-1"
+        >
+          <div
+            class="col-1 h-[12.58px] md:h-[16.71px] ml-0 mt-0 relative row-1 w-[6.46px] md:w-[8.58px]"
+          >
+            <img
+              alt=""
+              class="absolute left-0 max-w-none size-full top-0"
+              src={figmaGradI.src}
+            />
+          </div>
+        </div>
+        <div
+          class="col-1 h-[14.43px] md:h-[19.16px] ml-[6.56px] md:ml-[8.72px] mt-0 relative row-1 w-[4.64px] md:w-[6.17px]"
+        >
+          <img
+            alt=""
+            class="absolute block inset-0 max-w-none size-full"
+            src={figmaSlashHeader.src}
+          />
+        </div>
+        <div
+          class="col-1 grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[10.57px] md:ml-[14.03px] mt-[0.8px] md:mt-[1.06px] place-items-start relative row-1"
+        >
+          <div
+            class="col-1 h-[12.95px] md:h-[17.20px] ml-0 mt-0 relative row-1 w-[12.65px] md:w-[16.81px]"
+          >
+            <img
+              alt=""
+              class="absolute left-0 max-w-none size-full top-0"
+              src={figmaGradO.src}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </a>
+
+  <!-- Desktop Links -->
+  <nav class="hidden md:flex gap-[32px] items-center text-io-text text-[14px] font-medium">
+    <a href="/#about" class="hover:text-white transition-colors">El evento</a>
+    <a href="/#speakers" class="hover:text-white transition-colors">Speakers</a>
+    <a href="/#experiencia" class="hover:text-white transition-colors">Agenda</a>
+    <a href="/#experiencia" class="hover:text-white transition-colors">Sponsors</a>
+  </nav>
+
+  <!-- Header Actions / Avatar -->
+  <div class="flex gap-[12px] items-center">
+    {
+      !isLoggedIn ? (
+        <a href={registerHref} class="hidden md:block bg-io-accent px-[20px] py-[10px] rounded-[999px] text-io-on-accent text-[14px] font-medium hover:bg-io-accent-hover transition-colors">
+          Registrarme
+        </a>
+      ) : (
+        <Avatar server:defer eventSlug="io-extended-26">
+          <div
+            class="bg-gray-700/50 rounded-full size-10 animate-pulse"
+            slot="fallback"
+          />
+        </Avatar>
+      )
+    }
+  </div>
+</header>
