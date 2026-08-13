@@ -70,9 +70,26 @@ export async function createEvent(supabase: SupabaseClient, event: Event) {
     .insert(event)
     .select("id, name, slug, date, registration_open")
 
-  if (error) {
-    console.error(`error creating event: ${error.message}`)
+  if (error || !data) {
+    console.error(`error creating event: ${error?.message}`)
     return null
+  }
+
+  const { error: activityError } = await supabase
+    .from("activities")
+    .insert([{ name: "check_in", label: "Check-in", event_id: data.id }])
+
+  if (activityError) {
+    console.error(`Error adding check-in activity: ${activityError.message}`)
+  }
+
+  const { error: badgeError } = await supabase.from("badges").insert([
+    { name: `Organizador ${event.name}`, image_url: "" },
+    { name: `Participante ${event.name}`, image_url: "" },
+  ])
+
+  if (badgeError) {
+    console.error(`error creating badges: ${badgeError.message}`)
   }
 
   return data
