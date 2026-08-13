@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query"
 import {
   createColumnHelper,
   flexRender,
@@ -69,6 +70,61 @@ function StatusBadge({ status }: { status: string }) {
 
 const defaultRegistrations: Registrations[] = []
 
+function PackageCount({ rows }: { rows: Row<Registrations>[] }) {
+  if (!rows.length) return
+
+  const packageCounts: Record<string, { name: string; price: number; qty: number }> = {}
+
+  for (const row of rows) {
+    const match = String(row.getValue("package")).match(/^(.*)\s\((\d+).Bs\)$/)
+    if (!match) continue
+    const [, name, price] = match
+
+    if (!packageCounts[name]) {
+      packageCounts[name] = { name, price: Number(price), qty: 0 }
+    }
+    packageCounts[name].qty++
+  }
+
+  return (
+    <div className="flex flex-col sm:flex-row sm:items-center text-nowrap gap-2 my-4 ">
+      <span className="font-medium">Cantidad de paquetes:</span>
+      <p className="flex gap-2">
+        {Object.values(packageCounts)
+          .sort((a, b) => a.price - b.price)
+          .map(({ name, qty }) => (
+            <span key={name}>
+              {name}: {qty}
+            </span>
+          ))}
+      </p>
+    </div>
+  )
+}
+
+function StatusCount({ rows }: { rows: Row<Registrations>[] }) {
+  if (!rows.length) return
+  const statusCounts: Record<string, number> = {}
+  for (const row of rows) {
+    const status = row.getValue("status") === "confirmed" ? "Confirmado" : "Pendiente"
+    if (!statusCounts[status]) statusCounts[status] = 0
+    statusCounts[status]++
+  }
+
+  return (
+    <div className="flex flex-col sm:flex-row sm:items-center text-nowrap gap-2 my-4 ">
+      <span className="font-medium">Total por estado:</span>
+      <p className="flex gap-2">
+        {Object.entries(statusCounts).map(([status, qty]) => (
+          <span key={status}>
+            {status}: {qty}
+          </span>
+        ))}
+      </p>
+    </div>
+  )
+}
+
 export function RegistrationsTable({
   eventSlug,
   eventName,
@@ -79,12 +135,18 @@ export function RegistrationsTable({
   const [globalFilter, setGlobalFilter] = useState("")
 
   const { registrations, isLoading, isFetching, refetch } = useRegistrations(eventSlug)
+  const queryClient = useQueryClient()
 
   const switchRole = useCallback(
     async (id: number, role: string) => {
-      try {
-        toast.info("Actualizando rol")
+      const queryKey = ["registrations", eventSlug]
+      const previous = queryClient.getQueryData<Registrations[]>(queryKey)
 
+      queryClient.setQueryData<Registrations[]>(queryKey, old =>
+        old?.map(reg => (reg.id === id ? { ...reg, role } : reg))
+      )
+
+      try {
         const res = await fetch("/api/organizers", {
           method: role === "Organizer" ? "POST" : "DELETE",
           headers: {
@@ -97,10 +159,11 @@ export function RegistrationsTable({
         toast.success("Rol actualizado")
         await refetch()
       } catch {
+        queryClient.setQueryData(queryKey, previous)
         toast.error("Error al actualizar el rol")
       }
     },
-    [refetch]
+    [queryClient, refetch, eventSlug]
   )
 
   const columnHelper = createColumnHelper<Registrations>()
@@ -263,38 +326,7 @@ export function RegistrationsTable({
       </div>
 
       <PackageCount rows={table.getFilteredRowModel().rows} />
-    </div>
-  )
-}
-
-function PackageCount({ rows }: { rows: Row<Registrations>[] }) {
-  if (!rows.length) return
-
-  const packageCounts: Record<string, { name: string; price: number; qty: number }> = {}
-
-  for (const row of rows) {
-    const match = String(row.getValue("package")).match(/^(.*)\s\((\d+).Bs\)$/)
-    if (!match) continue
-    const [, name, price] = match
-
-    if (!packageCounts[name]) {
-      packageCounts[name] = { name, price: Number(price), qty: 0 }
-    }
-    packageCounts[name].qty++
-  }
-
-  return (
-    <div className="flex flex-col sm:flex-row sm:items-center text-nowrap gap-2 my-4 ">
-      <span className="font-medium">Cantidad de paquetes:</span>
-      <p className="flex gap-2">
-        {Object.values(packageCounts)
-          .sort((a, b) => a.price - b.price)
-          .map(({ name, qty }) => (
-            <span key={name}>
-              {name}: {qty}
-            </span>
-          ))}
-      </p>
+      <StatusCount rows={table.getFilteredRowModel().rows} />
     </div>
   )
 }
