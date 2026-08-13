@@ -2,9 +2,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
 export default function useAccreditations(params = {}) {
   return useQuery({
-    queryKey: ["activities", params],
+    queryKey: ["accreditation", params],
     queryFn: async ({ signal }) => {
-      const url = new URL("/api/activities", window.location.origin)
+      const url = new URL("/api/accreditation", window.location.origin)
       url.search = new URLSearchParams(params).toString()
 
       const response = await fetch(url, { signal })
@@ -19,16 +19,16 @@ export function useUpdateAccreditation() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async ({ id, eventSlug, field, value, params }) => {
-      const response = await fetch("/api/activities", {
+    mutationFn: async ({ registrationId, activityId, activityName, value, params }) => {
+      const response = await fetch("/api/accreditation", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id,
-          eventSlug,
-          field,
+          registrationId,
+          activityId,
+          activityName,
           value,
         }),
       })
@@ -36,23 +36,25 @@ export function useUpdateAccreditation() {
       return response.json()
     },
 
-    onMutate: async ({ id, eventSlug, field, value, params }) => {
-      await queryClient.cancelQueries({ queryKey: ["activities", params] })
-      const previousData = queryClient.getQueryData(["activities", params])
+    onMutate: async ({ registrationId, activityId, activityName, value, params }) => {
+      await queryClient.cancelQueries({ queryKey: ["accreditation", params] })
+      const previousData = queryClient.getQueryData(["accreditation", params])
 
-      queryClient.setQueryData(["activities", params], (old: any) => {
-        return old.map((item: any) => (item.id === id ? { ...item, [field]: value } : item))
+      queryClient.setQueryData(["accreditation", params], (old: any) => {
+        return old.map((item: any) =>
+          item.id === registrationId ? { ...item, [activityName]: value } : item
+        )
       })
 
       return { previousData }
     },
 
     onError: (error, { params }, context) => {
-      queryClient.setQueryData(["activities", params], context?.previousData)
+      queryClient.setQueryData(["accreditation", params], context?.previousData)
     },
 
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["activities"], refetchType: "none" })
+      queryClient.invalidateQueries({ queryKey: ["accreditation"], refetchType: "none" })
     },
   })
 }

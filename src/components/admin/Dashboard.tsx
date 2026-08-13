@@ -38,6 +38,7 @@ const queryClient = new QueryClient({
 })
 
 export interface Activity {
+  id: number
   name: string
   label: string
 }

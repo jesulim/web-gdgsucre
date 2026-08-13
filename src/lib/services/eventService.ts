@@ -16,7 +16,7 @@ export async function getEvents(supabase: SupabaseClient) {
       event_form_fields(
         name, options
       ),
-      activities(label, name)
+      activities(id, label, name)
       `
     )
     .order("date", { ascending: false })
