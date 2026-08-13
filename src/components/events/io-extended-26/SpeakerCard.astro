@@ -42,50 +42,55 @@ const topicIconForArea = (area: string): string | undefined => {
 ---
 
 <article
-  class="group relative p-[2px] rounded-[26px] md:rounded-[32px] shadow-[0px_12px_40px_0px_var(--card-glow)] hover:shadow-[0px_16px_60px_0px_var(--card-glow)] hover:-translate-y-1.5 transition-[transform,box-shadow] duration-150 ease-out w-full sm:w-[calc(50%-0.4375rem)] md:w-[calc(50%-0.625rem)] xl:w-[calc(33.333%-0.8333rem)] min-w-0"
-  style={`background-image: ${theme.gradient}; --card-glow: ${theme.glow};`}
+  class="group w-full sm:w-[calc(50%-0.4375rem)] md:w-[calc(50%-0.625rem)] xl:w-[calc(33.333%-0.8333rem)] min-w-0 flex"
+  style={`--card-glow: ${theme.glow};`}
 >
   <div
-    class="bg-io-surface rounded-[24px] md:rounded-[30px] flex flex-col items-center gap-3.5 md:gap-4 p-5 md:p-6 text-center min-w-0 h-full"
+    class="relative p-[2px] rounded-[26px] md:rounded-[32px] shadow-[0px_12px_40px_0px_var(--card-glow)] group-hover:shadow-[0px_16px_60px_0px_var(--card-glow)] group-hover:-translate-y-1.5 transition-[transform,box-shadow] duration-200 ease-out w-full flex flex-col min-w-0"
+    style={`background-image: ${theme.gradient};`}
   >
-    <!-- Foto limpia: squircle con sombra neutra, sin anillo -->
-    <img
-      src={speaker.photo}
-      alt={`Foto de ${speaker.name}`}
-      loading="lazy"
-      class="block size-[104px] md:size-[160px] rounded-[28px] md:rounded-[40px] object-cover shadow-[0px_10px_30px_rgba(0,0,0,0.35)] transition-transform duration-150 ease-out group-hover:scale-[1.04] shrink-0"
-    />
-
-    <div class="flex flex-col gap-1 items-center min-w-0">
-      <p class="text-white text-[17px] md:text-[19px] font-semibold truncate max-w-full">
-        {speaker.name}
-      </p>
-      <span class="text-io-accent text-[10px] md:text-[11px] font-medium tracking-[2px] uppercase">
-        Speaker
-      </span>
-    </div>
-
-    <h3 class="text-white text-[15px] md:text-[17px] font-semibold leading-[1.3]">
-      {speaker.talkTitle}
-    </h3>
-
-    <p
-      class="text-io-text-secondary text-[13px] md:text-sm leading-[21px] md:leading-[22px] line-clamp-4"
+    <div
+      class="bg-io-surface rounded-[24px] md:rounded-[30px] flex flex-col items-center gap-3.5 md:gap-4 p-5 md:p-6 text-center min-w-0 h-full flex-1"
     >
-      {speaker.talkDescription}
-    </p>
+      <!-- Foto limpia: squircle con sombra neutra, sin anillo -->
+      <img
+        src={speaker.photo}
+        alt={`Foto de ${speaker.name}`}
+        loading="lazy"
+        class="block size-[104px] md:size-[160px] rounded-[28px] md:rounded-[40px] object-cover shadow-[0px_10px_30px_rgba(0,0,0,0.35)] transition-transform duration-200 ease-out group-hover:scale-[1.04] shrink-0"
+      />
 
-    <ul class="flex flex-wrap gap-2 justify-center mt-auto pt-0.5">
-      {
-        speaker.areas.map(area => {
-          const icon = topicIconForArea(area)
-          return (
-            <li>
-              <TopicPill label={area} iconAsset={icon} variant="small" />
-            </li>
-          )
-        })
-      }
-    </ul>
+      <div class="flex flex-col gap-1 items-center min-w-0">
+        <p class="text-white text-[17px] md:text-[19px] font-semibold truncate max-w-full">
+          {speaker.name}
+        </p>
+        <span class="text-io-accent text-[10px] md:text-[11px] font-medium tracking-[2px] uppercase">
+          Speaker
+        </span>
+      </div>
+
+      <h3 class="text-white text-[15px] md:text-[17px] font-semibold leading-[1.3]">
+        {speaker.talkTitle}
+      </h3>
+
+      <p
+        class="text-io-text-secondary text-[13px] md:text-sm leading-[21px] md:leading-[22px] line-clamp-4"
+      >
+        {speaker.talkDescription}
+      </p>
+
+      <ul class="flex flex-wrap gap-2 justify-center mt-auto pt-0.5">
+        {
+          speaker.areas.map(area => {
+            const icon = topicIconForArea(area)
+            return (
+              <li>
+                <TopicPill label={area} iconAsset={icon} variant="small" />
+              </li>
+            )
+          })
+        }
+      </ul>
+    </div>
   </div>
 </article>
