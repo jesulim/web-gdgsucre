@@ -1,5 +1,5 @@
 import type { Row, RowData, Table } from "@tanstack/react-table"
-import { ChevronLeft, ChevronRight, SearchIcon } from "lucide-react"
+import { ChevronLeft, ChevronRight, SearchIcon, XIcon } from "lucide-react"
 import { useEffect, useRef } from "react"
 
 import { Button } from "@/components/ui/button"
@@ -55,9 +55,28 @@ export function SearchInput({
         onChange={e => setGlobalFilter(e.target.value)}
         className="pl-9 lg:pr-20"
       />
-      <div className="hidden md:flex absolute right-2 top-1/2 transform -translate-y-1/2  gap-1">
-        <Kbd>Ctrl</Kbd>
-        <Kbd>K</Kbd>
+      {globalFilter && (
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          className="absolute right-2 top-1/2 transform -translate-y-1/2 h-7 w-7 text-muted-foreground hover:text-foreground"
+          aria-label="Limpiar búsqueda"
+          onClick={() => {
+            setGlobalFilter("")
+            searchInputRef.current?.focus()
+          }}
+        >
+          <XIcon className="h-4 w-4" />
+        </Button>
+      )}
+      <div className="hidden md:flex absolute right-2 top-1/2 transform -translate-y-1/2 gap-1">
+        {!globalFilter && (
+          <>
+            <Kbd>Ctrl</Kbd>
+            <Kbd>K</Kbd>
+          </>
+        )}
       </div>
     </div>
   )
