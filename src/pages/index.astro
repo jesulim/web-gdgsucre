@@ -1,40 +1,48 @@
 ---
-import decoExperiencia from "@/assets/decos/deco_experiencia.webp";
-import decoHero1 from "@/assets/decos/deco_hero_1.webp";
-import decoHero2 from "@/assets/decos/deco_hero_2.webp";
-import decoHero3 from "@/assets/decos/deco_hero_3.webp";
-import decoHero4 from "@/assets/decos/deco_hero_4.webp";
-import figmaBlob from "@/assets/figma/figma_blob.svg";
-import figmaCalendarIcon from "@/assets/figma/figma_calendar.svg";
-import figmaCodeVector1 from "@/assets/figma/figma_code_vector1.svg";
-import figmaCodeVector2 from "@/assets/figma/figma_code_vector2.svg";
-import figmaCountdownSlash from "@/assets/figma/figma_countdown_slash.svg";
-import figmaGlow from "@/assets/figma/figma_glow.svg";
-import figmaLocationIcon from "@/assets/figma/figma_location.svg";
-import Facebook from "@/assets/icons/social/Facebook.svg";
-import Instagram from "@/assets/icons/social/Instagram.svg";
-import LinkedIn from "@/assets/icons/social/Linkedin.svg";
-import Twitter from "@/assets/icons/social/Twitter.svg";
-import figmaBaseWhite from "@/assets/logos/figma_base_white.webp";
-import figmaGradI from "@/assets/logos/figma_grad_i.webp";
-import figmaGradO from "@/assets/logos/figma_grad_o.webp";
-import figmaSlashHeader from "@/assets/logos/figma_slash_header.svg";
-import figmaSlashHero from "@/assets/logos/figma_slash_hero.svg";
-import topicAndroid from "@/assets/logos/topic_android.webp";
-import topicCloud from "@/assets/logos/topic_cloud.webp";
-import topicIA from "@/assets/logos/topic_ia.webp";
-import topicUXUI from "@/assets/logos/topic_uxui.webp";
-import topicWeb from "@/assets/logos/topic_web.webp";
-import mockupLanyards from "@/assets/mockups/mockup_lanyards.webp";
-import mockupRefrigerio from "@/assets/mockups/mockup_refrigerio.webp";
-import mockupSoporte from "@/assets/mockups/mockup_soporte.webp";
-import mockupStickers from "@/assets/mockups/mockup_stickers.webp";
-import Avatar from "@/components/Avatar.astro";
-import BaseLayout from "@/layout/BaseLayout.astro";
-import Schedule from "@/components/events/io-extended-26/Schedule.astro";
+import decoHero1 from "@/assets/decos/deco_hero_1.webp"
+import decoHero2 from "@/assets/decos/deco_hero_2.webp"
+import decoHero3 from "@/assets/decos/deco_hero_3.webp"
+import decoHero4 from "@/assets/decos/deco_hero_4.webp"
+import figmaCalendarIcon from "@/assets/figma/figma_calendar.svg"
+import figmaCountdownSlash from "@/assets/figma/figma_countdown_slash.svg"
+import figmaGlow from "@/assets/figma/figma_glow.svg"
+import figmaLocationIcon from "@/assets/figma/figma_location.svg"
+import Facebook from "@/assets/icons/social/Facebook.svg"
+import Instagram from "@/assets/icons/social/Instagram.svg"
+import LinkedIn from "@/assets/icons/social/Linkedin.svg"
+import Twitter from "@/assets/icons/social/Twitter.svg"
+import figmaBaseWhite from "@/assets/logos/figma_base_white.webp"
+import figmaGradI from "@/assets/logos/figma_grad_i.webp"
+import figmaGradO from "@/assets/logos/figma_grad_o.webp"
+import figmaSlashHeader from "@/assets/logos/figma_slash_header.svg"
+import figmaSlashHero from "@/assets/logos/figma_slash_hero.svg"
+import topicAndroid from "@/assets/logos/topic_android.webp"
+import topicCloud from "@/assets/logos/topic_cloud.webp"
+import topicIA from "@/assets/logos/topic_ia.webp"
+import topicUXUI from "@/assets/logos/topic_uxui.webp"
+import topicWeb from "@/assets/logos/topic_web.webp"
+import Avatar from "@/components/Avatar.astro"
+import PackageSection from "@/components/events/io-extended-26/PackageSection.astro"
+import SpeakersSection from "@/components/events/io-extended-26/SpeakersSection.astro"
+import Schedule from "@/components/events/io-extended-26/Schedule.astro"
+import TopicPill from "@/components/events/io-extended-26/TopicPill.astro"
+import BaseLayout from "@/layout/BaseLayout.astro"
 
-const isLoggedIn =
-  Astro.cookies.has("sb-access-token") || Astro.cookies.has("sb-refresh-token");
+interface CountdownUnit {
+  id: string
+  value: string
+  label: string
+  className: string
+  style?: string
+}
+
+interface TopicPillData {
+  label: string
+  iconAsset?: string
+  isCodeIcon?: boolean
+}
+
+const isLoggedIn = Astro.cookies.has("sb-access-token") || Astro.cookies.has("sb-refresh-token")
 const redirectHref = isLoggedIn
   ? "/registro/io-extended-26"
   : "/api/auth/signin?next=/registro/io-extended-26";
@@ -58,13 +66,13 @@ const initialSeconds = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(
   "0",
 );
 
-const countdown = [
+const countdown: CountdownUnit[] = [
   {
     id: "countdown-days",
     value: initialDays,
     label: "DÍAS",
     className:
-      "h-[82px] md:h-[216px] w-[57px] md:w-[150px] rounded-[17px] md:rounded-[44px] bg-gradient-to-b from-[#34a853] via-[#4285f4] to-[#ea4335]",
+      "h-[82px] md:h-[216px] w-[57px] md:w-[150px] rounded-[17px] md:rounded-[44px] bg-gradient-to-b from-green-500 via-blue-500 to-red-500",
   },
   {
     id: "countdown-hours",
@@ -89,85 +97,22 @@ const countdown = [
     value: initialSeconds,
     label: "SEGUNDOS",
     className:
-      "h-[82px] md:h-[216px] w-[68px] md:w-[180px] rounded-tl-[34px] md:rounded-tl-[90px] rounded-tr-[34px] md:rounded-tr-[90px] rounded-bl-[11px] md:rounded-bl-[28px] rounded-br-[11px] md:rounded-br-[28px] bg-gradient-to-b from-[#81c995] via-[#34a853] to-[#4285f4]",
+      "h-[82px] md:h-[216px] w-[68px] md:w-[180px] rounded-tl-[34px] md:rounded-tl-[90px] rounded-tr-[34px] md:rounded-tr-[90px] rounded-bl-[11px] md:rounded-bl-[28px] rounded-br-[11px] md:rounded-br-[28px] bg-gradient-to-b from-io-green-light via-green-500 to-blue-500",
   },
 ];
 
-const topics = [
+const topics: TopicPillData[] = [
   { label: "Web", iconAsset: topicWeb.src },
   { label: "Código", isCodeIcon: true },
   { label: "Android", iconAsset: topicAndroid.src },
   { label: "UX/UI", iconAsset: topicUXUI.src },
   { label: "IA", iconAsset: topicIA.src },
   { label: "Cloud", iconAsset: topicCloud.src },
-];
-
-const speakers = [
-  {
-    initials: "RT",
-    name: "Rodrigo Torrico",
-    tag: "Desarrollo Web",
-    location: "Cochabamba · BO",
-    cardBorder: "border-[rgba(79,195,247,0.65)]",
-    avatarBg: "bg-gradient-to-b from-[#4fc3f7] via-[#4285f4] to-[#a142f4]",
-    avatarShape: "rounded-[52px]",
-    avatarShadow: "shadow-[0px_10px_50px_2px_rgba(66,133,244,0.5)]",
-    iconAsset: topicWeb.src,
-  },
-  {
-    initials: "BC",
-    name: "Brian Castillo",
-    tag: "AI & Firebase",
-    location: "Lima · PE",
-    cardBorder: "border-[rgba(251,188,4,0.65)]",
-    avatarStyle:
-      "background-image: linear-gradient(120.466deg, rgb(251, 188, 4) 11.111%, rgb(234, 67, 53) 48.148%, rgb(161, 66, 244) 85.185%)",
-    avatarShape: "rounded-[35.36px]",
-    avatarShadow: "shadow-[0px_10px_50px_2px_rgba(234,67,53,0.5)]",
-    iconAsset: topicIA.src,
-  },
-  {
-    initials: "SS",
-    name: "Sara Salazar",
-    tag: "AI & Cloud",
-    location: "La Paz · BO",
-    cardBorder: "border-[rgba(129,201,149,0.65)]",
-    avatarBg: "bg-gradient-to-b from-[#81c995] via-[#34a853] to-[#4285f4]",
-    avatarShape:
-      "rounded-tl-[52px] rounded-tr-[52px] rounded-bl-[16.64px] rounded-br-[16.64px]",
-    avatarShadow: "shadow-[0px_10px_50px_2px_rgba(52,168,83,0.5)]",
-    iconAsset: topicCloud.src,
-  },
-  {
-    initials: "CC",
-    name: "Carlos Collazos",
-    tag: "UX/UI",
-    location: "Cochabamba · BO",
-    cardBorder: "border-[rgba(251,188,4,0.65)]",
-    avatarStyle:
-      "background-image: linear-gradient(120.466deg, rgb(251, 188, 4) 11.111%, rgb(234, 67, 53) 48.148%, rgb(66, 133, 244) 85.185%)",
-    avatarShape: "rounded-[26px]",
-    avatarShadow: "shadow-[0px_10px_50px_2px_rgba(251,188,4,0.5)]",
-    iconAsset: topicUXUI.src,
-  },
-];
-
-const mockups = [
-  { title: "Refrigerio", label: "MOCKUP", image: mockupRefrigerio },
-  { title: "Stickers", label: "MOCKUP", image: mockupStickers },
-  { title: "Soporte de celular", label: "MOCKUP", image: mockupSoporte },
-  { title: "Lanyards", label: "MOCKUP", image: mockupLanyards },
-];
+]
 ---
 
-<BaseLayout
-  theme="dark"
-  title="Google I/O Extended Sucre"
-  description="Landing de Google I/O Extended Sucre"
->
-  <div
-    class="relative min-h-screen bg-[#131316] text-white font-sans antialiased overflow-x-hidden"
-  >
+<BaseLayout theme="dark" title="Google I/O Extended Sucre" description="Landing de Google I/O Extended Sucre">
+  <div class="relative min-h-screen bg-io-bg text-white font-sans antialiased overflow-x-hidden">
     <!-- Navbar -->
     <header
       class="relative z-10 flex items-center justify-between px-[20px] md:px-[80px] py-[16px] md:py-[20px] w-full max-w-[1440px] mx-auto"
@@ -230,30 +175,18 @@ const mockups = [
       </a>
 
       <!-- Desktop Links -->
-      <nav
-        class="hidden md:flex gap-[32px] items-center text-[#e8eaed] text-[14px] font-medium"
-      >
-        <a href="#about" class="hover:text-white transition-colors">El evento</a
-        >
-        <a href="#speakers" class="hover:text-white transition-colors"
-          >Speakers</a
-        >
-        <a href="#experiencia" class="hover:text-white transition-colors"
-          >Agenda</a
-        >
-        <a href="#experiencia" class="hover:text-white transition-colors"
-          >Sponsors</a
-        >
+      <nav class="hidden md:flex gap-[32px] items-center text-io-text text-[14px] font-medium">
+        <a href="#about" class="hover:text-white transition-colors">El evento</a>
+        <a href="#speakers" class="hover:text-white transition-colors">Speakers</a>
+        <a href="#experiencia" class="hover:text-white transition-colors">Agenda</a>
+        <a href="#experiencia" class="hover:text-white transition-colors">Sponsors</a>
       </nav>
 
       <!-- Header Actions / Avatar -->
       <div class="flex gap-[12px] items-center">
         {
           !isLoggedIn ? (
-            <a
-              href={redirectHref}
-              class="hidden md:block bg-[#8ab4f8] px-[20px] py-[10px] rounded-[999px] text-[#202124] text-[14px] font-medium hover:bg-[#aecbfa] transition-colors"
-            >
+            <a href={redirectHref} class="hidden md:block bg-io-accent px-[20px] py-[10px] rounded-[999px] text-io-on-accent text-[14px] font-medium hover:bg-io-accent-hover transition-colors">
               Registrarme
             </a>
           ) : (
@@ -397,68 +330,40 @@ const mockups = [
         </div>
 
         <!-- Subtitle -->
-        <p
-          class="text-[#bdc1c6] text-[14px] md:text-[18px] leading-[1.2] md:leading-[normal] w-[300px] md:w-auto"
-        >
-          Descubre lo nuevo en Web, Cloud, AI, UX/UI y más, junto a expertos de
-          la región.
+        <p class="text-io-text-secondary text-[14px] md:text-[18px] leading-[1.2] md:leading-[normal] w-[300px] md:w-auto">
+          Descubre lo nuevo en Web, Cloud, AI, UX/UI y más, junto a expertos de la región.
         </p>
 
         <!-- CTA Button -->
         <a
           href={redirectHref}
-          class="flex w-full md:w-auto items-center justify-center rounded-[999px] bg-[#8ab4f8] px-[36px] py-[16px] text-[16px] font-medium text-[#202124] transition-transform duration-200 active:scale-[0.98]"
+          class="flex w-full md:w-auto items-center justify-center rounded-[999px] bg-io-accent px-[36px] py-[16px] text-[16px] font-medium text-io-on-accent transition-transform duration-200 active:scale-[0.98]"
         >
           Regístrate ahora
         </a>
 
         <!-- Info Cards -->
-        <div
-          class="flex flex-col md:flex-row gap-[10px] md:gap-[16px] items-center justify-center shrink-0 w-full"
-        >
-          <div
-            class="flex items-center gap-[8px] rounded-[20px] pl-[16px] pr-[20px] py-[10px] md:py-[12px] shrink-0"
-          >
-            <img
-              alt="Calendario"
-              class="size-[16px] md:size-[20px] shrink-0"
-              src={figmaCalendarIcon.src}
-            />
-            <p
-              class="text-[#e8eaed] text-[13px] md:text-[14px] font-medium whitespace-nowrap"
-            >
+        <div class="flex flex-col md:flex-row gap-[10px] md:gap-[16px] items-center justify-center shrink-0 w-full">
+          <div class="flex items-center gap-[8px] rounded-[20px] pl-[16px] pr-[20px] py-[10px] md:py-[12px] shrink-0">
+            <img alt="Calendario" class="size-[16px] md:size-[20px] shrink-0" src={figmaCalendarIcon.src} />
+            <p class="text-io-text text-[13px] md:text-[14px] font-medium whitespace-nowrap">
               Sábado 15 de Agosto — 8:00 Hrs
             </p>
           </div>
 
-          <div
-            class="flex items-center gap-[8px] rounded-[20px] pl-[16px] pr-[20px] py-[10px] md:py-[12px] shrink-0"
-          >
-            <img
-              alt="Ubicación"
-              class="size-[20px] shrink-0"
-              src={figmaLocationIcon.src}
-            />
-            <div
-              class="text-[#e8eaed] text-[13px] md:text-[14px] font-medium text-center whitespace-nowrap"
-            >
-              Facultad de Tecnología · Salón Rosendo Carreras Fumaña
+          <div class="flex items-center gap-[8px] rounded-[20px] pl-[16px] pr-[20px] py-[10px] md:py-[12px] shrink-0">
+            <img alt="Ubicación" class="size-[20px] shrink-0" src={figmaLocationIcon.src} />
+            <div class="text-[#e8eaed] text-[13px] md:text-[14px] font-medium text-center whitespace-nowrap">
+              Facultad de Tecnología <br> Salón Rosendo Carreras Fumaña
             </div>
           </div>
         </div>
       </section>
 
       <!-- Countdown Section -->
-      <section
-        class="flex flex-col items-center gap-[28px] md:gap-[40px] px-[16px] md:px-[80px] pt-[56px] md:pt-[96px] pb-[64px] md:pb-[120px] w-full text-center"
-        aria-labelledby="countdown-title"
-      >
-        <div
-          class="flex flex-col gap-[8px] md:gap-[12px] items-center shrink-0"
-        >
-          <p
-            class="text-[#8ab4f8] text-[11px] md:text-[14px] font-medium tracking-[2.5px] md:tracking-[3px]"
-          >
+      <section class="flex flex-col items-center gap-[28px] md:gap-[40px] px-[16px] md:px-[80px] pt-[56px] md:pt-[96px] pb-[64px] md:pb-[120px] w-full text-center" aria-labelledby="countdown-title">
+        <div class="flex flex-col gap-[8px] md:gap-[12px] items-center shrink-0">
+          <p class="text-io-accent text-[11px] md:text-[14px] font-medium tracking-[2.5px] md:tracking-[3px]">
             CUENTA REGRESIVA
           </p>
           <h2
@@ -481,16 +386,9 @@ const mockups = [
                     class={`flex items-center justify-center overflow-hidden shrink-0 ${unit.className}`}
                     style={unit.style}
                   >
-                    <span
-                      id={unit.id}
-                      class="text-[30px] md:text-[84px] font-semibold leading-normal text-[#17181c]"
-                    >
-                      {unit.value}
-                    </span>
+                    <span id={unit.id} class="text-[30px] md:text-[84px] font-semibold leading-normal text-io-digits">{unit.value}</span>
                   </div>
-                  <span class="text-[9px] md:text-[13px] font-medium tracking-[1.5px] md:tracking-[3px] text-[#9aa0a6]">
-                    {unit.label}
-                  </span>
+                  <span class="text-[9px] md:text-[13px] font-medium tracking-[1.5px] md:tracking-[3px] text-io-text-muted">{unit.label}</span>
                 </div>
 
                 {index < countdown.length - 1 && (
@@ -507,28 +405,12 @@ const mockups = [
             ))
           }
         </div>
-
-        <div
-          class="text-[#9aa0a6] text-[12px] md:text-[15px] text-center leading-[18px] md:leading-[normal]"
-        >
-          <p class="mb-0">
-            Nos vemos el Sábado 15 de Agosto · Salón Rosendo Carreras Fumaña,
-            Facultad de Tecnología
-          </p>
-        </div>
       </section>
 
       <!-- About Section -->
-      <section
-        class="bg-[#131316] flex flex-col gap-[20px] md:gap-[32px] items-center px-[24px] md:px-[80px] pt-[64px] md:pt-[110px] pb-[72px] md:pb-[110px] w-full text-center"
-        id="about"
-      >
-        <div
-          class="flex flex-col gap-[8px] md:gap-[12px] items-center shrink-0"
-        >
-          <p
-            class="text-[#8ab4f8] text-[11px] md:text-[14px] font-medium tracking-[2.5px] md:tracking-[3px]"
-          >
+      <section class="bg-io-bg flex flex-col gap-[20px] md:gap-[32px] items-center px-[24px] md:px-[80px] pt-[64px] md:pt-[110px] pb-[72px] md:pb-[110px] w-full text-center" id="about">
+        <div class="flex flex-col gap-[8px] md:gap-[12px] items-center shrink-0">
+          <p class="text-io-accent text-[11px] md:text-[14px] font-medium tracking-[2.5px] md:tracking-[3px]">
             EL EVENTO
           </p>
           <h2
@@ -538,9 +420,7 @@ const mockups = [
           </h2>
         </div>
 
-        <div
-          class="flex flex-col gap-[12px] items-center text-[#bdc1c6] text-[15px] md:text-[17px] leading-[23px] md:leading-[26px] w-[330px] md:w-[620px]"
-        >
+        <div class="flex flex-col gap-[12px] items-center text-io-text-secondary text-[15px] md:text-[17px] leading-[23px] md:leading-[26px] w-[330px] md:w-[620px]">
           <p>
             Google I/O Extended Sucre es el evento oficial que reúne a
             desarrolladores, diseñadores, estudiantes y entusiastas de la
@@ -553,245 +433,24 @@ const mockups = [
         </div>
 
         <!-- Topics Pills -->
-        <div
-          class="flex flex-wrap gap-[10px] md:gap-[14px] items-start justify-center w-[342px] md:w-auto shrink-0"
-        >
+        <div class="flex flex-wrap gap-2.5 md:gap-3.5 items-start justify-center w-full max-w-[342px] md:max-w-none md:w-auto shrink-0">
           {
-            topics.map((topic) => (
-              <div class="bg-[#1b1c21] border border-[#2a2b31] border-solid flex gap-[8px] md:gap-[10px] items-center pl-[14px] md:pl-[18px] pr-[16px] md:pr-[20px] py-[10px] md:py-[12px] rounded-[999px] shrink-0">
-                {topic.iconAsset && (
-                  <div class="size-[18px] md:size-[22px] shrink-0 overflow-hidden relative">
-                    <img
-                      alt=""
-                      class="size-full object-cover"
-                      src={topic.iconAsset}
-                    />
-                  </div>
-                )}
-                {topic.isCodeIcon && (
-                  <div class="flex gap-[2px] items-center shrink-0 h-[18px] md:h-[22px]">
-                    <img
-                      alt=""
-                      class="h-[18px] md:h-[22px] w-[9px] md:w-[11px] mix-blend-screen"
-                      src={figmaCodeVector1.src}
-                    />
-                    <img
-                      alt=""
-                      class="h-[18px] md:h-[22px] w-[9px] md:w-[11px] mix-blend-screen"
-                      src={figmaCodeVector2.src}
-                    />
-                  </div>
-                )}
-                <span class="text-[#e8eaed] text-[13px] md:text-[14px] font-medium">
-                  {topic.label}
-                </span>
-              </div>
+            topics.map(topic => (
+              <TopicPill {...topic} />
             ))
           }
         </div>
       </section>
 
-      <!-- Speakers Section -->
-      <section
-        class="bg-[#131316] relative flex flex-col gap-[28px] md:gap-[56px] items-center px-[24px] md:px-[80px] pt-[64px] md:pt-[120px] pb-[80px] md:pb-[136px] w-full text-center overflow-hidden"
-        id="speakers"
-      >
-        <!-- Background Blobs -->
-        <div
-          aria-hidden="true"
-          class="absolute h-[260px] md:h-[420px] w-[300px] md:w-[520px] left-[45px] md:left-[60px] top-[120px] md:top-[180px] pointer-events-none -z-10"
-        >
-          <img alt="" class="block size-full max-w-none" src={figmaBlob.src} />
-        </div>
-        <div
-          aria-hidden="true"
-          class="hidden md:block absolute h-[400px] w-[480px] right-[60px] top-[360px] pointer-events-none -z-10 opacity-70"
-        >
-          <img alt="" class="block size-full max-w-none" src={figmaBlob.src} />
-        </div>
+      <SpeakersSection />
 
-        <div
-          class="flex flex-col gap-[8px] md:gap-[14px] items-center shrink-0"
-        >
-          <p
-            class="text-[#8ab4f8] text-[11px] md:text-[14px] font-medium tracking-[2.5px] md:tracking-[3px]"
-          >
-            EXPERTOS DE LA REGIÓN
-          </p>
-          <h2 class="text-[32px] md:text-[56px] font-semibold text-white">
-            Speakers
-          </h2>
-        </div>
+      <PackageSection />
 
-        <!-- Speaker Cards -->
-        <div
-          class="flex flex-col md:flex-row gap-[14px] md:gap-[24px] items-center justify-center shrink-0 w-full max-w-[342px] md:max-w-none"
-        >
-          {
-            speakers.map((speaker) => (
-              <article
-                class={`bg-[#1b1c21] border-[1.5px] ${speaker.cardBorder} border-solid flex md:flex-col gap-[18px] md:gap-[16px] items-center p-[16px] md:pb-[32px] md:pt-[36px] md:px-[24px] rounded-[26px] md:rounded-[32px] w-[342px] md:w-[300px] shrink-0 text-left md:text-center`}
-              >
-                <div
-                  class={`flex size-[104px] md:size-[190px] items-center justify-center shrink-0 ${speaker.avatarShape} ${speaker.avatarShadow} ${speaker.avatarBg || ""}`}
-                  style={speaker.avatarStyle}
-                >
-                  <span class="text-[30px] md:text-[54px] font-semibold text-[#17181c]">
-                    {speaker.initials}
-                  </span>
-                </div>
-
-                <div class="flex flex-col gap-[7px] md:gap-[12px] items-start md:items-center shrink-0 min-w-0">
-                  <p class="text-[17px] md:text-[22px] font-semibold text-white truncate">
-                    {speaker.name}
-                  </p>
-
-                  <div class="bg-[#26272d] flex gap-[6px] md:gap-[8px] items-center pl-[10px] md:pl-[14px] pr-[13px] md:pr-[18px] py-[6px] md:py-[9px] rounded-[999px] shrink-0">
-                    <img
-                      alt=""
-                      class="size-[14px] md:size-[18px] shrink-0"
-                      src={speaker.iconAsset}
-                    />
-                    <span class="text-[#e8eaed] text-[12px] md:text-[14px] font-medium">
-                      {speaker.tag}
-                    </span>
-                  </div>
-
-                  <p class="text-[#9aa0a6] text-[12px] md:text-[14px]">
-                    {speaker.location}
-                  </p>
-                </div>
-              </article>
-            ))
-          }
-        </div>
-      </section>
-
-      <!-- Paquete Oficial / Experiencia Completa -->
-      <section
-        class="bg-[#131316] relative flex flex-col gap-[24px] md:gap-[44px] items-center px-[24px] md:px-[80px] pt-[64px] md:pt-[120px] pb-[72px] md:pb-[128px] w-full text-center"
-        id="experiencia"
-      >
-        <div
-          class="flex flex-col gap-[8px] md:gap-[14px] items-center shrink-0"
-        >
-          <p
-            class="text-[#8ab4f8] text-[11px] md:text-[14px] font-medium tracking-[2.5px] md:tracking-[3px]"
-          >
-            PAQUETE OFICIAL
-          </p>
-          <h2
-            class="text-[28px] md:text-[48px] font-semibold text-white w-[320px] md:w-auto"
-          >
-            Vive la experiencia completa
-          </h2>
-        </div>
-
-        <div
-          class="relative w-full max-w-[342px] md:max-w-[960px] p-[2px] rounded-[28px] md:rounded-[36px] bg-[linear-gradient(140.194deg,_rgb(79,195,247)_11.111%,_rgb(66,133,244)_48.148%,_rgb(161,66,244)_85.185%)] shadow-[0px_12px_60px_0px_rgba(66,133,244,0.22)] shrink-0"
-        >
-          <div
-            class="bg-[#1b1c21] rounded-[26px] md:rounded-[34px] p-[24px] md:p-[44px] flex flex-col md:flex-row gap-[24px] md:gap-[48px] items-center justify-between w-full"
-          >
-            <!-- Left Info -->
-            <div
-              class="flex flex-col gap-[12px] md:gap-[16px] items-center md:items-start text-center md:text-left w-full md:w-auto"
-            >
-              <div
-                class="bg-[#1e2a47] flex items-center px-[10px] md:px-[14px] py-[5px] md:py-[7px] rounded-[999px] shrink-0"
-              >
-                <span
-                  class="text-[#8ab4f8] text-[10px] md:text-[12px] font-medium tracking-[1.5px] md:tracking-[2px]"
-                >
-                  TODA LA MAÑANA INCLUIDA
-                </span>
-              </div>
-
-              <p class="text-[22px] md:text-[30px] font-semibold text-white">
-                Experiencia Completa
-              </p>
-
-              <p
-                class="text-[#bdc1c6] text-[14px] md:text-[16px] leading-[21px] md:leading-[24px] w-[280px] md:w-[300px]"
-              >
-                Alimentación y todo el merch oficial del evento en un solo
-                paquete.
-              </p>
-
-              <div
-                class="flex gap-[8px] items-center justify-center md:justify-start"
-              >
-                <span
-                  class="text-[40px] md:text-[52px] font-semibold text-transparent bg-clip-text bg-[linear-gradient(140.194deg,_rgb(79,195,247)_11.111%,_rgb(66,133,244)_48.148%,_rgb(161,66,244)_85.185%)]"
-                >
-                  Bs 35
-                </span>
-                <span class="text-[#9aa0a6] text-[12px] md:text-[14px]"
-                  >· pago único</span
-                >
-              </div>
-
-              <p
-                class="text-[#80868b] text-[11px] md:text-[12px] leading-[16px] md:leading-[18px] w-[280px] md:w-[300px]"
-              >
-                * La entrada al evento es gratuita. El paquete es opcional y
-                solo suma la experiencia.
-              </p>
-            </div>
-
-            <!-- Right Mockups Grid -->
-            <div
-              class="flex flex-wrap gap-[16px] items-start justify-center w-full md:w-[536px] font-medium shrink-0"
-            >
-              {
-                mockups.map((item) => (
-                  <div class="bg-[#202127] border border-[#3c4043] flex flex-col items-center justify-center h-[140px] md:h-[165px] w-[140px] md:w-[245px] rounded-[18px] overflow-hidden shrink-0 relative group shadow-lg transition-transform hover:scale-[1.02]">
-                    {item.image ? (
-                      <img
-                        src={item.image.src}
-                        alt={item.title}
-                        class="size-full object-cover rounded-[18px]"
-                      />
-                    ) : (
-                      <>
-                        <p class="text-[#e8eaed] text-[14px] text-center">
-                          {item.title}
-                        </p>
-                        <span class="text-[#5f6368] text-[9px] tracking-[2px]">
-                          {item.label}
-                        </span>
-                      </>
-                    )}
-                  </div>
-                ))
-              }
-            </div>
-          </div>
-
-          <!-- Pointer Cursor Ornament Overlapping IN FRONT OF Card (Figma 19:305) -->
-          <div
-            aria-hidden="true"
-            class="hidden lg:block absolute -right-[40px] -bottom-[45px] z-20 w-[155px] h-[183px] pointer-events-none rotate-[-18.75deg]"
-          >
-            <img
-              alt=""
-              class="size-full object-contain drop-shadow-xl"
-              src={decoExperiencia.src}
-            />
-          </div>
-        </div>
-      </section>
-
-      <!-- Agenda Section -->
       <Schedule />
 
       <!-- Footer Section -->
-      <footer
-        class="bg-[#0b0b0e] flex flex-col gap-[24px] md:gap-[32px] items-center px-[24px] md:px-[80px] pt-[48px] md:pt-[72px] pb-[32px] md:pb-[40px] w-full text-center"
-      >
-        <div
-          class="flex flex-col md:flex-row items-center justify-between w-full gap-[20px] md:gap-0"
-        >
+      <footer class="bg-io-bg-deep flex flex-col gap-[24px] md:gap-[32px] items-center px-[24px] md:px-[80px] pt-[48px] md:pt-[72px] pb-[32px] md:pb-[40px] w-full text-center">
+        <div class="flex flex-col md:flex-row items-center justify-between w-full gap-[20px] md:gap-0">
           <!-- Footer Logo -->
           <div
             class="grid-cols-[max-content] grid-rows-[max-content] inline-grid leading-[0] place-items-start relative shrink-0"
@@ -842,61 +501,34 @@ const mockups = [
 
           <!-- Social Buttons -->
           <div class="flex gap-[10px] items-center shrink-0">
-            <a
-              href="https://facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Facebook"
-              class="bg-[#26272d] border border-[#34353b] border-solid flex size-[40px] items-center justify-center rounded-[20px] text-[#e8eaed] text-[14px] font-medium transition-colors hover:bg-white/10"
-            >
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="bg-io-surface-3 border border-io-border-3 border-solid flex size-[40px] items-center justify-center rounded-[20px] text-io-text text-[14px] font-medium transition-colors hover:bg-white/10">
               <Facebook class="size-[18px]" />
             </a>
-            <a
-              href="https://instagram.com/gdg.sucre"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Instagram"
-              class="bg-[#26272d] border border-[#34353b] border-solid flex size-[40px] items-center justify-center rounded-[20px] text-[#e8eaed] text-[14px] font-medium transition-colors hover:bg-white/10"
-            >
+            <a href="https://instagram.com/gdg.sucre" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="bg-io-surface-3 border border-io-border-3 border-solid flex size-[40px] items-center justify-center rounded-[20px] text-io-text text-[14px] font-medium transition-colors hover:bg-white/10">
               <Instagram class="size-[18px]" />
             </a>
-            <a
-              href="https://x.com/gdg_sucre"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Twitter / X"
-              class="bg-[#26272d] border border-[#34353b] border-solid flex size-[40px] items-center justify-center rounded-[20px] text-[#e8eaed] text-[14px] font-medium transition-colors hover:bg-white/10"
-            >
+            <a href="https://x.com/gdg_sucre" target="_blank" rel="noopener noreferrer" aria-label="Twitter / X" class="bg-io-surface-3 border border-io-border-3 border-solid flex size-[40px] items-center justify-center rounded-[20px] text-io-text text-[14px] font-medium transition-colors hover:bg-white/10">
               <Twitter class="size-[18px]" />
             </a>
-            <a
-              href="https://linkedin.com/company/gdgsucre"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn"
-              class="bg-[#26272d] border border-[#34353b] border-solid flex size-[40px] items-center justify-center rounded-[20px] text-[#e8eaed] text-[14px] font-medium transition-colors hover:bg-white/10"
-            >
+            <a href="https://linkedin.com/company/gdgsucre" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="bg-io-surface-3 border border-io-border-3 border-solid flex size-[40px] items-center justify-center rounded-[20px] text-io-text text-[14px] font-medium transition-colors hover:bg-white/10">
               <LinkedIn class="size-[18px]" />
             </a>
           </div>
         </div>
 
         <!-- Divider Line -->
-        <div class="bg-[#26272d] h-px w-full shrink-0"></div>
+        <div class="bg-io-surface-3 h-px w-full shrink-0"></div>
 
         <div
           class="flex flex-col md:flex-row items-center justify-between w-full gap-[12px] md:gap-0 text-center md:text-left"
         >
           <!-- Disclaimer -->
-          <p
-            class="text-[#80868b] text-[11px] md:text-[12px] leading-[16px] md:leading-[18px] w-[300px] md:w-[480px]"
-          >
-            Google I/O Extended Sucre es un evento independiente organizado por
-            la comunidad, inspirado en Google I/O.
+          <p class="text-io-text-faint text-[11px] md:text-[12px] leading-[16px] md:leading-[18px] w-[300px] md:w-[480px]">
+            Google I/O Extended Sucre es un evento independiente organizado por la comunidad, inspirado en Google I/O.
           </p>
 
           <!-- Copyright -->
-          <p class="text-[#9aa0a6] text-[11px] md:text-[12px]">
+          <p class="text-io-text-muted text-[11px] md:text-[12px]">
             © {new Date().getFullYear()} Google I/O Extended Sucre · GDG Sucre
           </p>
         </div>

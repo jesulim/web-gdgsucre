@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Ariel Ortuño Solis",
+    "talkTitle": "El fin del determinismo!",
+    "talkDescription": "El desarrollo de software está cambiando de raíz. En esta charla, conversaremos sobre la evolución de nuestra perspectiva profesional y cómo adaptarnos a lo que viene, con especial foco en los anuncios del Google I/O 2026.",
+    "areas": ["AI/ML", "Android", "Cloud", "Firebase"],
+    "photo": "https://drive.google.com/thumbnail?id=1ZxVGvwzT4aBxBOLzu14OiBbZdAdhlNis&sz=w800"
+  },
+  {
+    "name": "Carlos Collazos",
+    "talkTitle": "Generative UI: Como la IA cambia el UX",
+    "talkDescription": "Actualmente la IA nos responde con texto. ¿Qué pasa cuando responde con una interfaz? En esta charla exploramos Generative UI: cómo un LLM puede generar componentes en tiempo real y qué significa esto para quienes diseñamos y construimos productos.",
+    "areas": ["AI/ML", "UI/UX"],
+    "photo": "https://drive.google.com/thumbnail?id=1c3DjLw1QSWfs3i66OE73vs6qohu2adOs&sz=w800"
+  },
+  {
+    "name": "Jimy Dolores",
+    "talkTitle": "¿Y Si la IA Construyera la Pantalla?",
+    "talkDescription": "Descubre cómo la IA integrada de Chrome puede interpretar la intención del usuario y construir interfaces dinámicas en tiempo real mediante Generative UI. Una demostración práctica con Angular 22 y Gemini Nano, ejecutándose 100% dentro del navegador.",
+    "areas": ["AI/ML", "Desarrollo Web", "UI/UX"],
+    "photo": "https://drive.google.com/thumbnail?id=1sziEgAiJfypN7Aw_lAdYKOkR5c_c42Sb&sz=w800"
+  },
+  {
+    "name": "Lupe Canaviri Maydana",
+    "talkTitle": "Detrás de la pantalla, como cuidar tu seguridad digital?",
+    "talkDescription": "En general creemos que lo digital no nos afecta en el mundo real a todxs, pero minimizamos las acciones digitales y muchas veces olvidamos incluso realizar acciones para cuidar nuestra seguridad digital, queremos con está charla abordar estás acciones porque creemos que pasan varias cosas Detrás de la Pantalla",
+    "areas": ["Ciberseguridad"],
+    "photo": "https://drive.google.com/thumbnail?id=1sNmBp6pPSzuwCru3CAzX7HzqhzjY9FjF&sz=w800"
+  },
+  {
+    "name": "Josue Lemus Miranda",
+    "talkTitle": "GenUI y el Futuro de las Interfaces en Flutter",
+    "talkDescription": "La charla muestra cómo dejar de diseñar pantallas estáticas para crear aplicaciones que generan y adaptan sus componentes visuales en tiempo real usando Inteligencia Artificial y Flutter.",
+    "areas": ["AI/ML", "Android", "Flutter", "UI/UX"],
+    "photo": "https://drive.google.com/thumbnail?id=1193-w7HDnCKo_LYpJRpRys9tmW46Rsd3&sz=w800"
+  }
+]
