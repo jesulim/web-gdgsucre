@@ -87,14 +87,24 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
         : "?";
 
   const handleShare = async () => {
-    if (!cardRef.current || isSharing) return;
+    if (isSharing) return;
     setIsSharing(true);
     try {
-      await shareOrDownloadCredential(cardRef.current, {
-        title: `Credencial de ${firstName} ${lastName} - GDG Sucre`,
-        text: `¡Ya estoy registrado para el evento de GDG Sucre! Genera la tuya aquí 🎉`,
-        filename: `credencial-${firstName.toLowerCase().replace(/\s+/g, "-")}.png`,
-      });
+      await shareOrDownloadCredential(
+        {
+          firstName,
+          lastName,
+          role,
+          avatarUrl: finalAvatar,
+          qrUrl,
+          bgImageUrl: innerGradient,
+        },
+        {
+          title: `Credencial de ${firstName} ${lastName} - GDG Sucre`,
+          text: `¡Ya estoy registrado para el evento de GDG Sucre! Genera la tuya aquí 🎉`,
+          filename: `credencial-${firstName.toLowerCase().replace(/\s+/g, "-")}.png`,
+        },
+      );
     } catch (err) {
       console.error("Error al compartir la credencial:", err);
     } finally {
