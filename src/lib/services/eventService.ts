@@ -50,17 +50,6 @@ export async function getEvent(supabase: SupabaseClient, slug: string) {
 
   if (event) return event
 
-  if (slug === "io-extended-26") {
-    return {
-      id: 6,
-      name: "Google I/O Extended Sucre 2026",
-      date: "2026-08-15T08:00:00-04:00",
-      slug: "io-extended-26",
-      image_url: null,
-      registration_open: true,
-    }
-  }
-
   return null
 }
 
