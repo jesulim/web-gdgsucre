@@ -1,5 +1,5 @@
 ---
-import Header from "@/components/events/bwai-26/Header.astro"
+import IoExtendedHeader from "@/components/events/io-extended-26/Header.astro"
 import { RegisterForm } from "@/components/registration/RegisterForm"
 import BaseLayout from "@/layout/BaseLayout.astro"
 
@@ -33,9 +33,9 @@ if (registration?.status === "confirmed") {
 const formFields = await getFormFieldsByEvent(supabase, event?.id)
 ---
 
-<BaseLayout theme="light">
-  <Header />
-  <main class="mt-4 flex">
+<BaseLayout theme="dark">
+  <IoExtendedHeader />
+  <main class="bg-io-bg flex min-h-screen pt-[64px] md:pt-[96px] text-io-text">
     <div class="mx-auto px-4 pb-16">
       <h1 class="text-xl mb-4 font-medium">Regístrate al {event.name}</h1>
       {
@@ -45,7 +45,31 @@ const formFields = await getFormFieldsByEvent(supabase, event?.id)
           </p>
         )
       }
-      <RegisterForm formFields={formFields} profile={profile} event={event} client:load />
+      <div class="io-register-form">
+        <RegisterForm formFields={formFields} profile={profile} event={event} client:load />
+      </div>
     </div>
   </main>
 </BaseLayout>
+
+<style is:global>
+  .io-register-form label {
+    color: var(--color-io-text);
+  }
+
+  .io-register-form input {
+    color: var(--color-io-text);
+  }
+
+  .io-register-form input::placeholder {
+    color: var(--color-io-text-muted);
+  }
+
+  .io-register-form [data-slot="select-trigger"] {
+    color: var(--color-io-text);
+  }
+
+  .io-register-form [data-slot="select-trigger"] span {
+    color: var(--color-io-text-muted);
+  }
+</style>
