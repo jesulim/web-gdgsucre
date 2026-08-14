@@ -325,3 +325,18 @@ html {
   animation: soft-pulse 2.2s ease-in-out infinite;
   transform-origin: center;
 }
+
+@keyframes shimmer-move {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.shimmer {
+  background-size: 200% 200%;
+  animation: shimmer-move 3s ease infinite;
+}

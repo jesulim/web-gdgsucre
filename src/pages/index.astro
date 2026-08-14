@@ -301,6 +301,7 @@ const topics: TopicPillData[] = [
 
         <!-- Countdown Items -->
         <div
+          id="countdown-items"
           class="flex items-center justify-center gap-[5px] md:gap-[28px] shrink-0"
         >
           {
@@ -330,6 +331,14 @@ const topics: TopicPillData[] = [
             ))
           }
         </div>
+
+        <p
+          id="countdown-live"
+          class="hidden text-[42px] sm:text-[60px] md:text-[56px] font-bold tracking-tight bg-clip-text text-transparent text-center shimmer py-4"
+          style="background-image: radial-gradient(circle at center, #4285F4 10%, #EA4335 41%, #F9AB00 61%, #34A853 100%);"
+        >
+          ¡Empezó el Google I/O Sucre 2026!
+        </p>
       </section>
 
       <!-- About Section -->
@@ -533,8 +542,18 @@ const topics: TopicPillData[] = [
 <script>
   function updateCountdown() {
     const targetDate = new Date("2026-08-15T08:00:00-04:00").getTime();
-    const now = Date.now();
-    const diff = Math.max(0, targetDate - now);
+    const diff = targetDate - Date.now();
+
+    const itemsEl = document.getElementById("countdown-items");
+    const liveEl = document.getElementById("countdown-live");
+    const titleEl = document.getElementById("countdown-title");
+
+    if (diff <= 0) {
+      titleEl?.parentElement?.classList.add("hidden");
+      itemsEl?.classList.add("hidden");
+      liveEl?.classList.remove("hidden");
+      return;
+    }
 
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
