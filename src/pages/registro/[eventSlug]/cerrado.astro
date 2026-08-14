@@ -1,5 +1,5 @@
 ---
-import Header from "@/components/events/bwai-26/Header.astro"
+import IoExtendedHeader from "@/components/events/io-extended-26/Header.astro"
 import BaseLayout from "@/layout/BaseLayout.astro"
 
 import { getEvent } from "@/lib/services/eventService"
@@ -18,9 +18,9 @@ if (!event) return new Response(null, { status: 404 })
 if (event.registration_open === true) return Astro.redirect(`/registro/${eventSlug}`)
 ---
 
-<BaseLayout theme="light">
-  <Header />
-  <main class="mt-16 pt-12">
+<BaseLayout theme="dark">
+  <IoExtendedHeader />
+  <main class="bg-io-bg min-h-screen pt-[64px] md:pt-[96px] text-io-text">
     <div class="mx-auto px-4">
       <h1 class="text-xl mb-4">¡Hola, {user?.user_metadata?.full_name?.split(" ")[0]}!</h1>
       <p>

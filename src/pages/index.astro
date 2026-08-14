@@ -11,22 +11,25 @@ import Facebook from "@/assets/icons/social/Facebook.svg"
 import Instagram from "@/assets/icons/social/Instagram.svg"
 import LinkedIn from "@/assets/icons/social/Linkedin.svg"
 import Twitter from "@/assets/icons/social/Twitter.svg"
-import figmaBaseWhite from "@/assets/logos/figma_base_white.webp"
 import figmaGradI from "@/assets/logos/figma_grad_i.webp"
 import figmaGradO from "@/assets/logos/figma_grad_o.webp"
 import figmaSlashHeader from "@/assets/logos/figma_slash_header.svg"
 import figmaSlashHero from "@/assets/logos/figma_slash_hero.svg"
+import googleIOExtendedLogo from "@/assets/logos/google_io_extended_sucre_logo.webp"
 import topicAndroid from "@/assets/logos/topic_android.webp"
 import topicCloud from "@/assets/logos/topic_cloud.webp"
 import topicIA from "@/assets/logos/topic_ia.webp"
 import topicUXUI from "@/assets/logos/topic_uxui.webp"
 import topicWeb from "@/assets/logos/topic_web.webp"
-import Avatar from "@/components/Avatar.astro"
+import IoExtendedHeader from "@/components/events/io-extended-26/Header.astro"
 import PackageSection from "@/components/events/io-extended-26/PackageSection.astro"
-import SpeakersSection from "@/components/events/io-extended-26/SpeakersSection.astro"
 import Schedule from "@/components/events/io-extended-26/Schedule.astro"
+import SpeakersSection from "@/components/events/io-extended-26/SpeakersSection.astro"
 import TopicPill from "@/components/events/io-extended-26/TopicPill.astro"
 import BaseLayout from "@/layout/BaseLayout.astro"
+import { getProfile } from "@/lib/services/profileService"
+import { getEventRegistration } from "@/lib/services/registrationService"
+import { createSupabaseServerClient } from "@/lib/supabase"
 
 interface CountdownUnit {
   id: string
@@ -42,29 +45,38 @@ interface TopicPillData {
   isCodeIcon?: boolean
 }
 
-const isLoggedIn = Astro.cookies.has("sb-access-token") || Astro.cookies.has("sb-refresh-token")
-const redirectHref = isLoggedIn
-  ? "/registro/io-extended-26"
-  : "/api/auth/signin?next=/registro/io-extended-26";
+const supabase = createSupabaseServerClient({ request: Astro.request, cookies: Astro.cookies })
+const profile = await getProfile(supabase)
+const registration = profile?.id
+  ? await getEventRegistration(supabase, profile.id, "io-extended-26")
+  : null
 
-const targetDate = new Date("2026-08-15T08:00:00-04:00");
-const now = new Date();
-const diff = Math.max(0, targetDate.getTime() - now.getTime());
+const ctaHref = !profile
+  ? "/api/auth/signin?next=/registro/io-extended-26"
+  : registration?.status === "confirmed"
+    ? "/registro/io-extended-26/confirmado"
+    : registration?.status === "pending"
+      ? "/registro/io-extended-26/pendiente"
+      : "/registro/io-extended-26"
 
-const initialDays = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(
+const ctaLabel =
+  registration?.status === "confirmed"
+    ? "Ver Credencial"
+    : registration?.status === "pending"
+      ? "Estado de Registro"
+      : "Regístrate ahora"
+
+const targetDate = new Date("2026-08-15T08:00:00-04:00")
+const now = new Date()
+const diff = Math.max(0, targetDate.getTime() - now.getTime())
+
+const initialDays = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, "0")
+const initialHours = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(
   2,
-  "0",
-);
-const initialHours = String(
-  Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-).padStart(2, "0");
-const initialMinutes = String(
-  Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
-).padStart(2, "0");
-const initialSeconds = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(
-  2,
-  "0",
-);
+  "0"
+)
+const initialMinutes = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, "0")
+const initialSeconds = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, "0")
 
 const countdown: CountdownUnit[] = [
   {
@@ -78,8 +90,7 @@ const countdown: CountdownUnit[] = [
     id: "countdown-hours",
     value: initialHours,
     label: "HORAS",
-    className:
-      "h-[82px] md:h-[216px] w-[82px] md:w-[216px] rounded-[41px] md:rounded-[108px]",
+    className: "h-[82px] md:h-[216px] w-[82px] md:w-[216px] rounded-[41px] md:rounded-[108px]",
     style:
       "background-image: linear-gradient(120.466deg, rgb(79, 195, 247) 11.111%, rgb(66, 133, 244) 48.148%, rgb(251, 188, 4) 85.185%)",
   },
@@ -87,8 +98,7 @@ const countdown: CountdownUnit[] = [
     id: "countdown-minutes",
     value: initialMinutes,
     label: "MINUTOS",
-    className:
-      "h-[82px] md:h-[216px] w-[72px] md:w-[190px] rounded-[24px] md:rounded-[64px]",
+    className: "h-[82px] md:h-[216px] w-[72px] md:w-[190px] rounded-[24px] md:rounded-[64px]",
     style:
       "background-image: linear-gradient(117.316deg, rgb(251, 188, 4) 11.111%, rgb(234, 67, 53) 48.148%, rgb(161, 66, 244) 85.185%)",
   },
@@ -99,7 +109,7 @@ const countdown: CountdownUnit[] = [
     className:
       "h-[82px] md:h-[216px] w-[68px] md:w-[180px] rounded-tl-[34px] md:rounded-tl-[90px] rounded-tr-[34px] md:rounded-tr-[90px] rounded-bl-[11px] md:rounded-bl-[28px] rounded-br-[11px] md:rounded-br-[28px] bg-gradient-to-b from-io-green-light via-green-500 to-blue-500",
   },
-];
+]
 
 const topics: TopicPillData[] = [
   { label: "Web", iconAsset: topicWeb.src },
@@ -114,92 +124,7 @@ const topics: TopicPillData[] = [
 <BaseLayout theme="dark" title="Google I/O Extended Sucre" description="Landing de Google I/O Extended Sucre">
   <div class="relative min-h-screen bg-io-bg text-white font-sans antialiased overflow-x-hidden">
     <!-- Navbar -->
-    <header
-      class="relative z-10 flex items-center justify-between px-[20px] md:px-[80px] py-[16px] md:py-[20px] w-full max-w-[1440px] mx-auto"
-    >
-      <a href="/#" class="block shrink-0">
-        <div
-          class="grid-cols-[max-content] grid-rows-[max-content] inline-grid leading-[0] place-items-start relative shrink-0"
-        >
-          <div
-            class="col-1 h-[33.35px] md:h-[44.29px] ml-0 mt-0 relative row-1 w-[128px] md:w-[170px]"
-          >
-            <div class="absolute inset-0 overflow-hidden pointer-events-none">
-              <img
-                alt="Google I/O Extended Sucre"
-                class="absolute h-[132.54%] left-[-0.05%] max-w-none top-[-23.41%] w-[100.1%]"
-                src={figmaBaseWhite.src}
-              />
-            </div>
-          </div>
-          <div
-            class="col-1 grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[57.03px] md:ml-[75.74px] mt-[5.58px] md:mt-[7.41px] place-items-start relative row-1"
-          >
-            <div
-              class="col-1 grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-0 mt-[1.18px] md:mt-[1.57px] place-items-start relative row-1"
-            >
-              <div
-                class="col-1 h-[12.58px] md:h-[16.71px] ml-0 mt-0 relative row-1 w-[6.46px] md:w-[8.58px]"
-              >
-                <img
-                  alt=""
-                  class="absolute left-0 max-w-none size-full top-0"
-                  src={figmaGradI.src}
-                />
-              </div>
-            </div>
-            <div
-              class="col-1 h-[14.43px] md:h-[19.16px] ml-[6.56px] md:ml-[8.72px] mt-0 relative row-1 w-[4.64px] md:w-[6.17px]"
-            >
-              <img
-                alt=""
-                class="absolute block inset-0 max-w-none size-full"
-                src={figmaSlashHeader.src}
-              />
-            </div>
-            <div
-              class="col-1 grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[10.57px] md:ml-[14.03px] mt-[0.8px] md:mt-[1.06px] place-items-start relative row-1"
-            >
-              <div
-                class="col-1 h-[12.95px] md:h-[17.20px] ml-0 mt-0 relative row-1 w-[12.65px] md:w-[16.81px]"
-              >
-                <img
-                  alt=""
-                  class="absolute left-0 max-w-none size-full top-0"
-                  src={figmaGradO.src}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </a>
-
-      <!-- Desktop Links -->
-      <nav class="hidden md:flex gap-[32px] items-center text-io-text text-[14px] font-medium">
-        <a href="#about" class="hover:text-white transition-colors">El evento</a>
-        <a href="#speakers" class="hover:text-white transition-colors">Speakers</a>
-        <a href="#experiencia" class="hover:text-white transition-colors">Agenda</a>
-        <a href="#experiencia" class="hover:text-white transition-colors">Sponsors</a>
-      </nav>
-
-      <!-- Header Actions / Avatar -->
-      <div class="flex gap-[12px] items-center">
-        {
-          !isLoggedIn ? (
-            <a href={redirectHref} class="hidden md:block bg-io-accent px-[20px] py-[10px] rounded-[999px] text-io-on-accent text-[14px] font-medium hover:bg-io-accent-hover transition-colors">
-              Registrarme
-            </a>
-          ) : (
-            <Avatar server:defer eventSlug="io-extended-26">
-              <div
-                class="bg-gray-700/50 rounded-full size-10 animate-pulse"
-                slot="fallback"
-              />
-            </Avatar>
-          )
-        }
-      </div>
-    </header>
+    <IoExtendedHeader />
 
     <main class="relative z-10 flex w-full flex-col items-center">
       <!-- Hero Section -->
@@ -221,15 +146,15 @@ const topics: TopicPillData[] = [
             />
           </div>
           <div
-            class="absolute left-[-10%] md:left-[15%] top-[10px] size-[320px] md:size-[500px] bg-[radial-gradient(circle,_rgba(66,133,244,0.55)_0%,_rgba(79,195,247,0.25)_50%,_transparent_75%)] blur-2xl animate-lava-blob-1 will-change-transform"
+            class="absolute left-[-10%] md:left-[15%] top-[10px] size-[320px] md:size-[500px] bg-[radial-gradient(circle,_rgba(66,133,244,0.55)_0%,_rgba(79,195,247,0.25)_50%,_transparent_75%)] blur-2xl lava-blob-1 animate-lava-blob-1 will-change-transform"
           >
           </div>
           <div
-            class="absolute right-[-15%] md:right-[15%] top-[80px] size-[300px] md:size-[450px] bg-[radial-gradient(circle,_rgba(161,66,244,0.4)_0%,_rgba(66,133,244,0.25)_55%,_transparent_75%)] blur-3xl animate-lava-blob-2 will-change-transform"
+            class="absolute right-[-15%] md:right-[15%] top-[80px] size-[300px] md:size-[450px] bg-[radial-gradient(circle,_rgba(161,66,244,0.4)_0%,_rgba(66,133,244,0.25)_55%,_transparent_75%)] blur-3xl lava-blob-2 animate-lava-blob-2 will-change-transform"
           >
           </div>
           <div
-            class="absolute left-[20%] md:left-[40%] top-[160px] size-[250px] md:size-[400px] bg-[radial-gradient(circle,_rgba(79,195,247,0.45)_0%,_rgba(66,133,244,0.15)_60%,_transparent_75%)] blur-2xl animate-lava-blob-3 will-change-transform"
+            class="absolute left-[20%] md:left-[40%] top-[160px] size-[250px] md:size-[400px] bg-[radial-gradient(circle,_rgba(79,195,247,0.45)_0%,_rgba(66,133,244,0.15)_60%,_transparent_75%)] blur-2xl lava-blob-3 animate-lava-blob-3 will-change-transform"
           >
           </div>
         </div>
@@ -276,7 +201,7 @@ const topics: TopicPillData[] = [
               <img
                 alt="Google I/O Extended Sucre"
                 class="absolute h-[132.54%] left-[-0.05%] max-w-none top-[-23.41%] w-[100.1%]"
-                src={figmaBaseWhite.src}
+                src={googleIOExtendedLogo.src}
               />
             </div>
           </div>
@@ -336,10 +261,10 @@ const topics: TopicPillData[] = [
 
         <!-- CTA Button -->
         <a
-          href={redirectHref}
+          href={ctaHref}
           class="flex w-full md:w-auto items-center justify-center rounded-[999px] bg-io-accent px-[36px] py-[16px] text-[16px] font-medium text-io-on-accent transition-transform duration-200 active:scale-[0.98]"
         >
-          Regístrate ahora
+          {ctaLabel}
         </a>
 
         <!-- Info Cards -->
@@ -462,7 +387,7 @@ const topics: TopicPillData[] = [
                 <img
                   alt="Google I/O Extended Sucre"
                   class="absolute h-[132.54%] left-[-0.05%] max-w-none top-[-23.41%] w-[100.1%]"
-                  src={figmaBaseWhite.src}
+                  src={googleIOExtendedLogo.src}
                 />
               </div>
             </div>
@@ -538,21 +463,32 @@ const topics: TopicPillData[] = [
 </BaseLayout>
 
 <style>
+  /* Siluetas orgánicas fijas: se rasterizan UNA vez con el blur y luego solo se
+     transforman, evitando re-aplicar el filtro en cada frame (era el costo gordo). */
+  .lava-blob-1 {
+    border-radius: 42% 58% 60% 40% / 45% 55% 45% 55%;
+  }
+
+  .lava-blob-2 {
+    border-radius: 50% 50% 30% 70% / 50% 30% 70% 50%;
+  }
+
+  .lava-blob-3 {
+    border-radius: 60% 40% 50% 50% / 40% 60% 50% 50%;
+  }
+
   @keyframes lavaBlob1 {
     0%,
     100% {
       transform: translate3d(0px, 0px, 0px) scale(1) rotate(0deg);
-      border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
       opacity: 0.85;
     }
     33% {
       transform: translate3d(75px, -65px, 0px) scale(1.3) rotate(140deg);
-      border-radius: 60% 40% 30% 70% / 50% 60% 40% 60%;
       opacity: 1;
     }
     66% {
       transform: translate3d(-55px, 45px, 0px) scale(0.85) rotate(280deg);
-      border-radius: 50% 50% 60% 40% / 60% 40% 50% 50%;
       opacity: 0.8;
     }
   }
@@ -561,12 +497,10 @@ const topics: TopicPillData[] = [
     0%,
     100% {
       transform: translate3d(0px, 0px, 0px) scale(1.05) rotate(0deg);
-      border-radius: 50% 50% 30% 70% / 50% 30% 70% 50%;
       opacity: 0.75;
     }
     50% {
       transform: translate3d(-80px, -60px, 0px) scale(1.35) rotate(-180deg);
-      border-radius: 30% 70% 60% 40% / 70% 40% 60% 30%;
       opacity: 1;
     }
   }
@@ -575,12 +509,10 @@ const topics: TopicPillData[] = [
     0%,
     100% {
       transform: translate3d(0px, 0px, 0px) scale(0.9);
-      border-radius: 60% 40% 50% 50% / 40% 60% 50% 50%;
       opacity: 0.8;
     }
     50% {
       transform: translate3d(65px, 70px, 0px) scale(1.25);
-      border-radius: 40% 60% 60% 40% / 50% 40% 60% 50%;
       opacity: 1;
     }
   }
