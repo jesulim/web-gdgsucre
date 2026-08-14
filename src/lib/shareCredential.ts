@@ -13,23 +13,16 @@ export interface CredentialData {
   bgImageUrl: string;
 }
 
-// ─── Canvas dimensions ───────────────────────────────────────
-// The visual card has aspect-ratio 0.6699 and max-height 540px.
-// We render at 2x for crisp output.
 const SCALE = 2;
-const BASE_W = 362; // Math.round(540 * 0.6699)
+const BASE_W = 362;
 const BASE_H = 540;
 const W = BASE_W * SCALE;
 const H = BASE_H * SCALE;
 const RADIUS = 16 * SCALE;
 
-// ─── Helpers ─────────────────────────────────────────────────
-
-/** Load an image, fetching via JS first to avoid CORS canvas tainting. */
 function loadImage(src: string): Promise<HTMLImageElement> {
   return new Promise(async (resolve, reject) => {
     try {
-      // Fetch via JS → blob → object URL to sidestep CORS tainting
       const res = await fetch(src);
       const blob = await res.blob();
       const objectUrl = URL.createObjectURL(blob);
@@ -50,7 +43,6 @@ function loadImage(src: string): Promise<HTMLImageElement> {
   });
 }
 
-/** Draw a rounded rectangle path (does NOT fill or stroke). */
 function roundedRectPath(
   ctx: CanvasRenderingContext2D,
   x: number,
@@ -72,7 +64,6 @@ function roundedRectPath(
   ctx.closePath();
 }
 
-/** Word-wrap text to fit within maxWidth, returns lines. */
 function wrapText(
   ctx: CanvasRenderingContext2D,
   text: string,
@@ -95,8 +86,6 @@ function wrapText(
   return lines;
 }
 
-// ─── Canvas renderer ─────────────────────────────────────────
-
 async function renderCredentialCanvas(
   data: CredentialData,
 ): Promise<HTMLCanvasElement> {
@@ -105,18 +94,15 @@ async function renderCredentialCanvas(
   canvas.height = H;
   const ctx = canvas.getContext("2d")!;
 
-  // Load all images in parallel (settle — don't fail if one misses)
   const [bgResult, avatarResult, qrResult] = await Promise.allSettled([
     loadImage(data.bgImageUrl),
     loadImage(data.avatarUrl),
     loadImage(data.qrUrl),
   ]);
 
-  // ── 1. Clip to rounded card shape ──
   roundedRectPath(ctx, 0, 0, W, H, RADIUS);
   ctx.clip();
 
-  // ── 2. Background ──
   if (bgResult.status === "fulfilled") {
     ctx.drawImage(bgResult.value, 0, 0, W, H);
   } else {
@@ -124,7 +110,6 @@ async function renderCredentialCanvas(
     ctx.fillRect(0, 0, W, H);
   }
 
-  // ── 3. Name (top 9%, centered, max 69% width) ──
   const nameY = H * 0.09;
   const nameMaxWidth = W * 0.69;
   const nameFontSize = 16 * SCALE;
@@ -144,7 +129,6 @@ async function renderCredentialCanvas(
     ctx.fillText(nameLines[i], W / 2, nameStartY + i * nameLineHeight);
   }
 
-  // ── 4. Avatar (top 29.8%, centered, 38% width, circular) ──
   const avatarCenterY = H * 0.298;
   const avatarDiameter = W * 0.38;
   const avatarRadius = avatarDiameter / 2;
@@ -156,17 +140,14 @@ async function renderCredentialCanvas(
   ctx.clip();
 
   if (avatarResult.status === "fulfilled") {
-    // Draw avatar centered in the circle, covering it fully
     const img = avatarResult.value;
     const imgAspect = img.naturalWidth / img.naturalHeight;
     let drawW: number, drawH: number;
 
     if (imgAspect > 1) {
-      // Wider than tall — fit height, crop width
       drawH = avatarDiameter;
       drawW = avatarDiameter * imgAspect;
     } else {
-      // Taller than wide — fit width, crop height
       drawW = avatarDiameter;
       drawH = avatarDiameter / imgAspect;
     }
@@ -179,7 +160,6 @@ async function renderCredentialCanvas(
       drawH,
     );
   } else {
-    // Fallback: grey circle with initials
     ctx.fillStyle = "#e5e7eb";
     ctx.fillRect(
       W / 2 - avatarRadius,
@@ -203,7 +183,6 @@ async function renderCredentialCanvas(
   }
   ctx.restore();
 
-  // ── 5. Role (top 51.2%, centered, Google gradient text) ──
   const roleCenterY = H * 0.512;
   const roleFontSize = 20 * SCALE;
 
@@ -211,7 +190,6 @@ async function renderCredentialCanvas(
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
 
-  // Google-colored radial gradient
   const roleWidth = ctx.measureText(data.role).width;
   const gradientR = Math.max(roleWidth / 2, 40 * SCALE);
   const gradient = ctx.createRadialGradient(
@@ -230,7 +208,6 @@ async function renderCredentialCanvas(
   ctx.fillStyle = gradient;
   ctx.fillText(data.role, W / 2, roleCenterY);
 
-  // ── 6. QR code (top 71%, centered, 128px, white rounded container) ──
   const qrCenterY = H * 0.71;
   const qrBoxSize = 128 * SCALE;
   const qrPadding = 8 * SCALE;
@@ -238,7 +215,6 @@ async function renderCredentialCanvas(
   const qrX = W / 2 - qrBoxSize / 2;
   const qrY = qrCenterY - qrBoxSize / 2;
 
-  // White container with shadow
   ctx.save();
   ctx.shadowColor = "rgba(0, 0, 0, 0.1)";
   ctx.shadowBlur = 6 * SCALE;
@@ -247,9 +223,8 @@ async function renderCredentialCanvas(
   roundedRectPath(ctx, qrX, qrY, qrBoxSize, qrBoxSize, qrCornerR);
   ctx.fillStyle = "#ffffff";
   ctx.fill();
-  ctx.restore(); // removes shadow
+  ctx.restore();
 
-  // QR image inside the container
   if (qrResult.status === "fulfilled") {
     const qrImgSize = qrBoxSize - qrPadding * 2;
     ctx.drawImage(
@@ -263,8 +238,6 @@ async function renderCredentialCanvas(
 
   return canvas;
 }
-
-// ─── Public API ──────────────────────────────────────────────
 
 export async function shareOrDownloadCredential(
   data: CredentialData,
