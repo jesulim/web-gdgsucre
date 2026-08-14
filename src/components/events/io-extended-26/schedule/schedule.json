@@ -1,14 +1,67 @@
 [
-  { "type": "activity", "time": "8:00 - 8:30", "title": "Registro" },
-  { "type": "activity", "time": "8:30 - 8:40", "title": "Bienvenida" },
-  { "type": "talk", "time": "8:40 - 9:20", "title": "El fin del determinismo!", "speaker": "Ariel Ortuño Solis" },
-  { "type": "activity", "time": "9:20 - 9:25", "title": "Dinámica interactiva" },
-  { "type": "talk", "time": "9:25 - 10:05", "title": "¿Y Si la IA Construyera la Pantalla?", "speaker": "Jimy Dolores" },
-  { "type": "activity", "time": "10:05 - 10:10", "title": "Dinámica interactiva" },
-  { "type": "talk", "time": "10:10 - 10:50", "title": "Generative UI: Como la IA cambia el UX", "speaker": "Carlos Collazos" },
-  { "type": "break", "time": "10:50 - 11:05", "title": "BREAK - Refrigerio" },
-  { "type": "talk", "time": "11:05 - 11:45", "title": "Detrás de la pantalla, como cuidar tu seguridad digital?", "speaker": "Lupe Canaviri Maydana" },
-  { "type": "activity", "time": "11:45 - 11:50", "title": "Dinámica interactiva" },
-  { "type": "talk", "time": "11:50 - 12:30", "title": "GenUI y el Futuro de las Interfaces en Flutter", "speaker": "Josue Lemus Miranda" },
-  { "type": "activity", "time": "12:30 - 13:00", "title": "Cierre + Entrega de reconocimientos + Foto grupal" }
+  {
+    "type": "activity",
+    "time": "8:00 - 8:30",
+    "title": "Registro"
+  },
+  {
+    "type": "activity",
+    "time": "8:30 - 8:40",
+    "title": "Bienvenida"
+  },
+  {
+    "type": "talk",
+    "time": "8:40 - 9:20",
+    "title": "¡El fin del determinismo!",
+    "speaker": "Ariel Ortuño Solís"
+  },
+  {
+    "type": "activity",
+    "time": "9:20 - 9:25",
+    "title": "Dinámica interactiva"
+  },
+  {
+    "type": "talk",
+    "time": "9:25 - 10:05",
+    "title": "¿Y si la IA construyera la pantalla?",
+    "speaker": "Jimy Dolores"
+  },
+  {
+    "type": "activity",
+    "time": "10:05 - 10:10",
+    "title": "Dinámica interactiva"
+  },
+  {
+    "type": "talk",
+    "time": "10:10 - 10:50",
+    "title": "Generative UI: ¿cómo la IA cambia la UX?",
+    "speaker": "Carlos Collazos"
+  },
+  {
+    "type": "break",
+    "time": "10:50 - 11:05",
+    "title": "BREAK - Refrigerio"
+  },
+  {
+    "type": "talk",
+    "time": "11:05 - 11:45",
+    "title": "Detrás de la pantalla: ¿cómo cuidar tu seguridad digital?",
+    "speaker": "Lupe Canaviri Maydana"
+  },
+  {
+    "type": "activity",
+    "time": "11:45 - 11:50",
+    "title": "Dinámica interactiva"
+  },
+  {
+    "type": "talk",
+    "time": "11:50 - 12:30",
+    "title": "GenUI y el futuro de las interfaces en Flutter",
+    "speaker": "Josué Lemus Miranda"
+  },
+  {
+    "type": "activity",
+    "time": "12:30 - 13:00",
+    "title": "Cierre + Entrega de reconocimientos + Foto grupal"
+  }
 ]
