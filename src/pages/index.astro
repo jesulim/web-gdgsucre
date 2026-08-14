@@ -11,11 +11,11 @@ import Facebook from "@/assets/icons/social/Facebook.svg"
 import Instagram from "@/assets/icons/social/Instagram.svg"
 import LinkedIn from "@/assets/icons/social/Linkedin.svg"
 import Twitter from "@/assets/icons/social/Twitter.svg"
-import figmaBaseWhite from "@/assets/logos/figma_base_white.webp"
 import figmaGradI from "@/assets/logos/figma_grad_i.webp"
 import figmaGradO from "@/assets/logos/figma_grad_o.webp"
 import figmaSlashHeader from "@/assets/logos/figma_slash_header.svg"
 import figmaSlashHero from "@/assets/logos/figma_slash_hero.svg"
+import googleIOExtendedLogo from "@/assets/logos/google_io_extended_sucre_logo.webp"
 import topicAndroid from "@/assets/logos/topic_android.webp"
 import topicCloud from "@/assets/logos/topic_cloud.webp"
 import topicIA from "@/assets/logos/topic_ia.webp"
@@ -146,15 +146,15 @@ const topics: TopicPillData[] = [
             />
           </div>
           <div
-            class="absolute left-[-10%] md:left-[15%] top-[10px] size-[320px] md:size-[500px] bg-[radial-gradient(circle,_rgba(66,133,244,0.55)_0%,_rgba(79,195,247,0.25)_50%,_transparent_75%)] blur-2xl animate-lava-blob-1 will-change-transform"
+            class="absolute left-[-10%] md:left-[15%] top-[10px] size-[320px] md:size-[500px] bg-[radial-gradient(circle,_rgba(66,133,244,0.55)_0%,_rgba(79,195,247,0.25)_50%,_transparent_75%)] blur-2xl lava-blob-1 animate-lava-blob-1 will-change-transform"
           >
           </div>
           <div
-            class="absolute right-[-15%] md:right-[15%] top-[80px] size-[300px] md:size-[450px] bg-[radial-gradient(circle,_rgba(161,66,244,0.4)_0%,_rgba(66,133,244,0.25)_55%,_transparent_75%)] blur-3xl animate-lava-blob-2 will-change-transform"
+            class="absolute right-[-15%] md:right-[15%] top-[80px] size-[300px] md:size-[450px] bg-[radial-gradient(circle,_rgba(161,66,244,0.4)_0%,_rgba(66,133,244,0.25)_55%,_transparent_75%)] blur-3xl lava-blob-2 animate-lava-blob-2 will-change-transform"
           >
           </div>
           <div
-            class="absolute left-[20%] md:left-[40%] top-[160px] size-[250px] md:size-[400px] bg-[radial-gradient(circle,_rgba(79,195,247,0.45)_0%,_rgba(66,133,244,0.15)_60%,_transparent_75%)] blur-2xl animate-lava-blob-3 will-change-transform"
+            class="absolute left-[20%] md:left-[40%] top-[160px] size-[250px] md:size-[400px] bg-[radial-gradient(circle,_rgba(79,195,247,0.45)_0%,_rgba(66,133,244,0.15)_60%,_transparent_75%)] blur-2xl lava-blob-3 animate-lava-blob-3 will-change-transform"
           >
           </div>
         </div>
@@ -201,7 +201,7 @@ const topics: TopicPillData[] = [
               <img
                 alt="Google I/O Extended Sucre"
                 class="absolute h-[132.54%] left-[-0.05%] max-w-none top-[-23.41%] w-[100.1%]"
-                src={figmaBaseWhite.src}
+                src={googleIOExtendedLogo.src}
               />
             </div>
           </div>
@@ -387,7 +387,7 @@ const topics: TopicPillData[] = [
                 <img
                   alt="Google I/O Extended Sucre"
                   class="absolute h-[132.54%] left-[-0.05%] max-w-none top-[-23.41%] w-[100.1%]"
-                  src={figmaBaseWhite.src}
+                  src={googleIOExtendedLogo.src}
                 />
               </div>
             </div>
@@ -463,21 +463,32 @@ const topics: TopicPillData[] = [
 </BaseLayout>
 
 <style>
+  /* Siluetas orgánicas fijas: se rasterizan UNA vez con el blur y luego solo se
+     transforman, evitando re-aplicar el filtro en cada frame (era el costo gordo). */
+  .lava-blob-1 {
+    border-radius: 42% 58% 60% 40% / 45% 55% 45% 55%;
+  }
+
+  .lava-blob-2 {
+    border-radius: 50% 50% 30% 70% / 50% 30% 70% 50%;
+  }
+
+  .lava-blob-3 {
+    border-radius: 60% 40% 50% 50% / 40% 60% 50% 50%;
+  }
+
   @keyframes lavaBlob1 {
     0%,
     100% {
       transform: translate3d(0px, 0px, 0px) scale(1) rotate(0deg);
-      border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
       opacity: 0.85;
     }
     33% {
       transform: translate3d(75px, -65px, 0px) scale(1.3) rotate(140deg);
-      border-radius: 60% 40% 30% 70% / 50% 60% 40% 60%;
       opacity: 1;
     }
     66% {
       transform: translate3d(-55px, 45px, 0px) scale(0.85) rotate(280deg);
-      border-radius: 50% 50% 60% 40% / 60% 40% 50% 50%;
       opacity: 0.8;
     }
   }
@@ -486,12 +497,10 @@ const topics: TopicPillData[] = [
     0%,
     100% {
       transform: translate3d(0px, 0px, 0px) scale(1.05) rotate(0deg);
-      border-radius: 50% 50% 30% 70% / 50% 30% 70% 50%;
       opacity: 0.75;
     }
     50% {
       transform: translate3d(-80px, -60px, 0px) scale(1.35) rotate(-180deg);
-      border-radius: 30% 70% 60% 40% / 70% 40% 60% 30%;
       opacity: 1;
     }
   }
@@ -500,12 +509,10 @@ const topics: TopicPillData[] = [
     0%,
     100% {
       transform: translate3d(0px, 0px, 0px) scale(0.9);
-      border-radius: 60% 40% 50% 50% / 40% 60% 50% 50%;
       opacity: 0.8;
     }
     50% {
       transform: translate3d(65px, 70px, 0px) scale(1.25);
-      border-radius: 40% 60% 60% 40% / 50% 40% 60% 50%;
       opacity: 1;
     }
   }
