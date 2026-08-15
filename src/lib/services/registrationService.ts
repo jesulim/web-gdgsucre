@@ -240,12 +240,12 @@ export async function getRandomRegistrations(
   supabase: SupabaseClient,
   limit: number | null = null,
   role: string | null = null,
-  eventSlug: string | null = "devfest-25"
+  eventSlug: string | null = "io-extended-26"
 ) {
   const { data: registrations, error } = await supabase
     .from("registrations")
     .select(
-      "id, created_at, profiles(id, first_name, last_name, email, phone_number), status, role, responses, events!inner(slug)"
+      "id, created_at, profiles(id, first_name, last_name, email, phone_number), status, responses, events!inner(slug)"
     )
     .eq("events.slug", eventSlug)
 
