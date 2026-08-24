@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Toaster } from "@/components/ui/sonner"
-import useTeamsWithMembers from "@/hooks/useTeamsWithMembers"
+import useTeamsWithMembers from "@/hooks/admin/useTeamsWithMembers"
 import type { AdminTeamGroup, AdminTeamMember } from "@/lib/services/teamService"
 
 function normalizeString(str: string) {
@@ -650,10 +650,4 @@ export function TeamsManager({ eventId, eventSlug }: { eventId: number; eventSlu
       />
     </div>
   )
-}
-
-type Event = {
-  id: string
-  name: string
-  slug: string
 }

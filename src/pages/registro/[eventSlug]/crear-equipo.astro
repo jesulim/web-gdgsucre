@@ -14,7 +14,7 @@ const supabase = await createUserClient(Astro.cookies)
 
 const eventSlug = Astro.params.eventSlug || ""
 const event = await getEvent(supabase, eventSlug)
-if (!event) return Astro.redirect("/")
+if (!event) return new Response(null, { status: 404 })
 
 const profile = await getProfile(supabase)
 const registration = await getEventRegistration(supabase, profile?.id, eventSlug)
@@ -30,7 +30,7 @@ if (registration?.status === "confirmed") {
   return Astro.redirect(`/registro/${eventSlug}/confirmado`)
 }
 
-const formFields = await getFormFieldsByEvent(supabase, eventSlug)
+const formFields = await getFormFieldsByEvent(supabase, event?.id)
 ---
 
 <BaseLayout theme="light">

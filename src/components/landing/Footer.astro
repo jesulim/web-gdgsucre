@@ -5,66 +5,89 @@ import LinkedIn from "@/assets/icons/social/Linkedin.svg"
 import Tiktok from "@/assets/icons/social/Tiktok.svg"
 import Twitter from "@/assets/icons/social/Twitter.svg"
 import YouTube from "@/assets/icons/social/Youtube.svg"
+
+const socialLinks = [
+  {
+    name: "LinkedIn",
+    ariaLabel: "LinkedIn page",
+    href: "https://www.linkedin.com/company/gdgsucre/",
+    icon: LinkedIn,
+    color: "var(--color-brand-linkedin)",
+  },
+  {
+    name: "Twitter",
+    ariaLabel: "Twitter profile",
+    href: "https://twitter.com/gdg_sucre",
+    icon: Twitter,
+    color: "var(--color-brand-twitter)",
+  },
+  {
+    name: "Instagram",
+    ariaLabel: "Instagram page",
+    href: "https://www.instagram.com/gdg.sucre/",
+    icon: Instagram,
+    color: "var(--color-brand-instagram)",
+  },
+  {
+    name: "Facebook",
+    ariaLabel: "Facebook page",
+    href: "https://www.facebook.com/gdgsucre",
+    icon: Facebook,
+    color: "var(--color-brand-facebook)",
+  },
+  {
+    name: "Tiktok",
+    ariaLabel: "Tiktok profile",
+    href: "https://www.tiktok.com/@gdgsucre",
+    icon: Tiktok,
+    color: "var(--color-brand-tiktok)",
+  },
+  {
+    name: "YouTube",
+    ariaLabel: "YouTube channel",
+    href: "https://www.youtube.com/@gdgsucre",
+    icon: YouTube,
+    color: "var(--color-brand-youtube)",
+  },
+]
 ---
 
 <footer class="w-full border-t-2 border-off-white">
-  <div class="p-4 flex justify-around gap-8 opacity-40 md:px-8">
-    <a
-      href="https://www.linkedin.com/company/gdgsucre/"
-      target="_blank"
-      rel="noopener noreferer"
-      aria-label="LinkedIn page"
-    >
-      <LinkedIn class="size-5 md:size-6" />
-    </a>
-
-    <a
-      href="https://twitter.com/gdg_sucre"
-      target="_blank"
-      rel="noopener noreferer"
-      aria-label="Twitter profile"
-    >
-      <Twitter class="size-5 md:size-6" />
-    </a>
-
-    <a
-      href="https://www.instagram.com/gdg.sucre/"
-      target="_blank"
-      rel="noopener noreferer"
-      aria-label="Instagram page"
-    >
-      <Instagram class="size-5 md:size-6" />
-    </a>
-
-    <a
-      href="https://www.facebook.com/gdgsucre"
-      target="_blank"
-      rel="noopener noreferer"
-      aria-label="Facebook page"
-    >
-      <Facebook class="size-5 md:size-6" />
-    </a>
-
-    <a
-      href="https://www.tiktok.com/@gdgsucre"
-      target="_blank"
-      rel="noopener noreferer"
-      aria-label="Tiktok profile"
-    >
-      <Tiktok class="size-5 md:size-6" />
-    </a>
-
-    <a
-      href="https://www.youtube.com/@gdgsucre"
-      target="_blank"
-      rel="noopener noreferer"
-      aria-label="YouTube channel"
-    >
-      <YouTube class="size-5 md:size-6" />
-    </a>
+  <div class="p-4 flex justify-around gap-8 md:px-8">
+    {
+      socialLinks.map(link => {
+        const Icon = link.icon
+        return (
+          <a
+            href={link.href}
+            target="_blank"
+            rel="noopener noreferer"
+            aria-label={link.ariaLabel}
+            class="social-link"
+            style={`--brand: ${link.color}`}
+          >
+            <Icon class="size-5 md:size-6" />
+          </a>
+        )
+      })
+    }
   </div>
 
   <p class="uppercase text-center pt-4 pb-8 md:pb-4 bg-gray-100 dark:bg-black border-t-2 border-gray-200 dark:border-off-white dark:text-white">
     &copy; {new Date().getFullYear()} GDG Sucre.
   </p>
 </footer>
+
+<style>
+  .social-link {
+    opacity: 0.4;
+    transition:
+      opacity 200ms ease,
+      color 200ms ease;
+  }
+
+  .social-link:hover {
+    opacity: 1;
+    color: var(--brand);
+  }
+</style>

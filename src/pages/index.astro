@@ -1,19 +1,576 @@
 ---
-import Featured from "@/components/landing/Featured.astro"
-import Footer from "@/components/landing/Footer.astro"
-import Header from "@/components/landing/Header.astro"
-import Hero from "@/components/landing/Hero.astro"
-import Info from "@/components/landing/Info.astro"
-
+import decoHero1 from "@/assets/decos/deco_hero_1.webp"
+import decoHero2 from "@/assets/decos/deco_hero_2.webp"
+import decoHero3 from "@/assets/decos/deco_hero_3.webp"
+import decoHero4 from "@/assets/decos/deco_hero_4.webp"
+import figmaCalendarIcon from "@/assets/figma/figma_calendar.svg"
+import figmaCountdownSlash from "@/assets/figma/figma_countdown_slash.svg"
+import figmaGlow from "@/assets/figma/figma_glow.svg"
+import figmaLocationIcon from "@/assets/figma/figma_location.svg"
+import Facebook from "@/assets/icons/social/Facebook.svg"
+import Instagram from "@/assets/icons/social/Instagram.svg"
+import LinkedIn from "@/assets/icons/social/Linkedin.svg"
+import Twitter from "@/assets/icons/social/Twitter.svg"
+import figmaGradI from "@/assets/logos/figma_grad_i.webp"
+import figmaGradO from "@/assets/logos/figma_grad_o.webp"
+import figmaSlashHeader from "@/assets/logos/figma_slash_header.svg"
+import figmaSlashHero from "@/assets/logos/figma_slash_hero.svg"
+import googleIOExtendedLogo from "@/assets/logos/google_io_extended_sucre_logo.webp"
+import topicAndroid from "@/assets/logos/topic_android.webp"
+import topicCloud from "@/assets/logos/topic_cloud.webp"
+import topicIA from "@/assets/logos/topic_ia.webp"
+import topicUXUI from "@/assets/logos/topic_uxui.webp"
+import topicWeb from "@/assets/logos/topic_web.webp"
+import IoExtendedHeader from "@/components/events/io-extended-26/Header.astro"
+import PackageSection from "@/components/events/io-extended-26/PackageSection.astro"
+import Schedule from "@/components/events/io-extended-26/Schedule.astro"
+import SpeakersSection from "@/components/events/io-extended-26/SpeakersSection.astro"
+import TopicPill from "@/components/events/io-extended-26/TopicPill.astro"
 import BaseLayout from "@/layout/BaseLayout.astro"
+import { getProfile } from "@/lib/services/profileService"
+import { getEventRegistration } from "@/lib/services/registrationService"
+import { createSupabaseServerClient } from "@/lib/supabase"
+
+interface CountdownUnit {
+  id: string
+  value: string
+  label: string
+  className: string
+  style?: string
+}
+
+interface TopicPillData {
+  label: string
+  iconAsset?: string
+  isCodeIcon?: boolean
+}
+
+const supabase = createSupabaseServerClient({ request: Astro.request, cookies: Astro.cookies })
+const profile = await getProfile(supabase)
+const registration = profile?.id
+  ? await getEventRegistration(supabase, profile.id, "io-extended-26")
+  : null
+
+const ctaHref = !profile
+  ? "/api/auth/signin?next=/registro/io-extended-26"
+  : registration?.status === "confirmed"
+    ? "/registro/io-extended-26/confirmado"
+    : registration?.status === "pending"
+      ? "/registro/io-extended-26/pendiente"
+      : "/registro/io-extended-26"
+
+const ctaLabel =
+  registration?.status === "confirmed"
+    ? "Ver Credencial"
+    : registration?.status === "pending"
+      ? "Estado de Registro"
+      : "Regístrate ahora"
+
+const targetDate = new Date("2026-08-15T08:00:00-04:00")
+const now = new Date()
+const diff = Math.max(0, targetDate.getTime() - now.getTime())
+
+const initialDays = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, "0")
+const initialHours = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(
+  2,
+  "0"
+)
+const initialMinutes = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, "0")
+const initialSeconds = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, "0")
+
+const countdown: CountdownUnit[] = [
+  {
+    id: "countdown-days",
+    value: initialDays,
+    label: "DÍAS",
+    className:
+      "h-[82px] md:h-[216px] w-[57px] md:w-[150px] rounded-[17px] md:rounded-[44px] bg-gradient-to-b from-green-500 via-blue-500 to-red-500",
+  },
+  {
+    id: "countdown-hours",
+    value: initialHours,
+    label: "HORAS",
+    className: "h-[82px] md:h-[216px] w-[82px] md:w-[216px] rounded-[41px] md:rounded-[108px]",
+    style:
+      "background-image: linear-gradient(120.466deg, rgb(79, 195, 247) 11.111%, rgb(66, 133, 244) 48.148%, rgb(251, 188, 4) 85.185%)",
+  },
+  {
+    id: "countdown-minutes",
+    value: initialMinutes,
+    label: "MINUTOS",
+    className: "h-[82px] md:h-[216px] w-[72px] md:w-[190px] rounded-[24px] md:rounded-[64px]",
+    style:
+      "background-image: linear-gradient(117.316deg, rgb(251, 188, 4) 11.111%, rgb(234, 67, 53) 48.148%, rgb(161, 66, 244) 85.185%)",
+  },
+  {
+    id: "countdown-seconds",
+    value: initialSeconds,
+    label: "SEGUNDOS",
+    className:
+      "h-[82px] md:h-[216px] w-[68px] md:w-[180px] rounded-tl-[34px] md:rounded-tl-[90px] rounded-tr-[34px] md:rounded-tr-[90px] rounded-bl-[11px] md:rounded-bl-[28px] rounded-br-[11px] md:rounded-br-[28px] bg-gradient-to-b from-io-green-light via-green-500 to-blue-500",
+  },
+]
+
+const topics: TopicPillData[] = [
+  { label: "Web", iconAsset: topicWeb.src },
+  { label: "Código", isCodeIcon: true },
+  { label: "Android", iconAsset: topicAndroid.src },
+  { label: "UX/UI", iconAsset: topicUXUI.src },
+  { label: "IA", iconAsset: topicIA.src },
+  { label: "Cloud", iconAsset: topicCloud.src },
+]
 ---
 
-<BaseLayout theme="light" title="GDG Sucre" description="GDG Sucre">
-  <Header />
-  <main class="flex-1 overflow-x-hidden mt-16">
-    <Hero />
-    <Info />
-    <Featured />
-  </main>
-  <Footer />
+<BaseLayout theme="dark" title="Google I/O Extended Sucre" description="Landing de Google I/O Extended Sucre">
+  <div class="relative min-h-screen bg-io-bg text-white font-sans antialiased overflow-x-hidden">
+    <!-- Navbar -->
+    <IoExtendedHeader />
+
+    <main class="relative z-10 flex w-full flex-col items-center">
+      <!-- Hero Section -->
+      <section
+        class="relative flex flex-col items-center gap-[20px] md:gap-[28px] px-[24px] md:px-[80px] pt-[36px] md:pt-[64px] pb-[64px] md:pb-[96px] w-full text-center"
+      >
+        <!-- Hardware-Accelerated Hero Lava Lamp Ambient Glows -->
+        <div
+          aria-hidden="true"
+          class="absolute pointer-events-none inset-0 overflow-hidden -z-10"
+        >
+          <div
+            class="absolute h-[340px] md:h-[500px] w-[440px] md:w-[900px] left-[-20px] md:left-[50%] md:-translate-x-1/2 top-[10px] md:top-[60px] opacity-75 motion-safe:animate-pulse"
+          >
+            <img
+              alt=""
+              class="block size-full max-w-none"
+              src={figmaGlow.src}
+            />
+          </div>
+          <div
+            class="absolute left-[-10%] md:left-[15%] top-[10px] size-[320px] md:size-[500px] bg-[radial-gradient(circle,_rgba(66,133,244,0.55)_0%,_rgba(79,195,247,0.25)_50%,_transparent_75%)] blur-2xl lava-blob-1 animate-lava-blob-1 will-change-transform"
+          >
+          </div>
+          <div
+            class="absolute right-[-15%] md:right-[15%] top-[80px] size-[300px] md:size-[450px] bg-[radial-gradient(circle,_rgba(161,66,244,0.4)_0%,_rgba(66,133,244,0.25)_55%,_transparent_75%)] blur-3xl lava-blob-2 animate-lava-blob-2 will-change-transform"
+          >
+          </div>
+          <div
+            class="absolute left-[20%] md:left-[40%] top-[160px] size-[250px] md:size-[400px] bg-[radial-gradient(circle,_rgba(79,195,247,0.45)_0%,_rgba(66,133,244,0.15)_60%,_transparent_75%)] blur-2xl lava-blob-3 animate-lava-blob-3 will-change-transform"
+          >
+          </div>
+        </div>
+
+        <!-- Desktop Decorative Tech Ornaments (Figma 19:73, 19:82, 19:91, 19:100) -->
+        <div
+          aria-hidden="true"
+          class="hidden lg:block absolute inset-0 pointer-events-none -z-5"
+        >
+          <!-- Top-Right Deco 1 -->
+          <div
+            class="absolute top-[80px] right-[6%] xl:right-[10%] w-[155px] h-[115px] opacity-90 mix-blend-screen animate-pulse"
+          >
+            <img alt="" class="size-full object-contain" src={decoHero1.src} />
+          </div>
+          <!-- Top-Left Deco 4 -->
+          <div
+            class="absolute top-[100px] left-[6%] xl:left-[10%] w-[146px] h-[146px] opacity-95 mix-blend-screen"
+          >
+            <img alt="" class="size-full object-contain" src={decoHero4.src} />
+          </div>
+          <!-- Bottom-Left Deco 2 -->
+          <div
+            class="absolute bottom-[60px] left-[7%] xl:left-[11%] w-[122px] h-[122px] opacity-85 mix-blend-screen"
+          >
+            <img alt="" class="size-full object-contain" src={decoHero2.src} />
+          </div>
+          <!-- Bottom-Right Deco 3 -->
+          <div
+            class="absolute bottom-[70px] right-[7%] xl:right-[11%] w-[106px] h-[133px] opacity-85 mix-blend-screen"
+          >
+            <img alt="" class="size-full object-contain" src={decoHero3.src} />
+          </div>
+        </div>
+
+        <!-- Hero Lockup Logo -->
+        <div
+          class="grid-cols-[max-content] grid-rows-[max-content] inline-grid leading-[0] place-items-start relative shrink-0"
+        >
+          <div
+            class="col-1 h-[78px] md:h-[130.26px] ml-0 mt-0 relative row-1 w-[300px] md:w-[500px]"
+          >
+            <div class="absolute inset-0 overflow-hidden pointer-events-none">
+              <img
+                alt="Google I/O Extended Sucre"
+                class="absolute h-[132.54%] left-[-0.05%] max-w-none top-[-23.41%] w-[100.1%]"
+                src={googleIOExtendedLogo.src}
+              />
+            </div>
+          </div>
+          <div
+            class="col-1 grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[134.75px] md:ml-[222.77px] mt-[14.56px] md:mt-[21.8px] place-items-start relative row-1"
+          >
+            <div
+              class="col-1 grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-0 mt-[2.58px] md:mt-[4.61px] place-items-start relative row-1"
+            >
+              <div
+                class="col-1 h-[27.52px] md:h-[49.15px] ml-0 mt-0 relative row-1 w-[14.13px] md:w-[25.22px]"
+              >
+                <img
+                  alt=""
+                  class="absolute left-0 max-w-none size-full top-0"
+                  src={figmaGradI.src}
+                />
+              </div>
+            </div>
+            <div
+              class="col-1 h-[31.56px] md:h-[56.36px] ml-[14.36px] md:ml-[25.64px] mt-0 relative row-1 w-[10.16px] md:w-[18.14px]"
+            >
+              <img
+                alt=""
+                class="absolute block inset-0 max-w-none size-full"
+                src={figmaSlashHero.src}
+              />
+            </div>
+            <div
+              class="col-1 grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[23.12px] md:ml-[41.28px] mt-[1.75px] md:mt-[3.13px] place-items-start relative row-1"
+            >
+              <div
+                class="col-1 h-[28.33px] md:h-[50.60px] ml-0 mt-0 relative row-1 w-[27.68px] md:w-[49.43px]"
+              >
+                <img
+                  alt=""
+                  class="absolute left-0 max-w-none size-full top-0"
+                  src={figmaGradO.src}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Heading -->
+        <div
+          class="text-[28px] md:text-[56px] font-semibold leading-[1.2] md:leading-[66px] text-white"
+        >
+          <p class="mb-0">Aprende de los mejores.</p>
+          <p>Conecta con tu futuro.</p>
+        </div>
+
+        <!-- Subtitle -->
+        <p class="text-io-text-secondary text-[14px] md:text-[18px] leading-[1.2] md:leading-[normal] w-[300px] md:w-auto">
+          Descubre lo nuevo en Web, Cloud, AI, UX/UI y más, junto a expertos de la región.
+        </p>
+
+        <!-- CTA Button -->
+        <a
+          href={ctaHref}
+          class="flex w-full md:w-auto items-center justify-center rounded-[999px] bg-io-accent px-[36px] py-[16px] text-[16px] font-medium text-io-on-accent transition-transform duration-200 active:scale-[0.98]"
+        >
+          {ctaLabel}
+        </a>
+
+        <!-- Info Cards -->
+        <div class="flex flex-col md:flex-row gap-[10px] md:gap-[16px] items-center justify-center shrink-0 w-full">
+          <div class="flex items-center gap-[8px] rounded-[20px] pl-[16px] pr-[20px] py-[10px] md:py-[12px] shrink-0">
+            <img alt="Calendario" class="size-[16px] md:size-[20px] shrink-0" src={figmaCalendarIcon.src} />
+            <p class="text-io-text text-[13px] md:text-[14px] font-medium whitespace-nowrap">
+              Sábado 15 de Agosto — 8:00 Hrs
+            </p>
+          </div>
+
+          <div class="flex items-center gap-[8px] rounded-[20px] pl-[16px] pr-[20px] py-[10px] md:py-[12px] shrink-0">
+            <img alt="Ubicación" class="size-[20px] shrink-0" src={figmaLocationIcon.src} />
+            <div class="text-[#e8eaed] text-[13px] md:text-[14px] font-medium text-center whitespace-nowrap">
+              Facultad de Tecnología <br> Salón Rosendo Carreras Fumaña
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Countdown Section -->
+      <section class="flex flex-col items-center gap-[28px] md:gap-[40px] px-[16px] md:px-[80px] pt-[56px] md:pt-[96px] pb-[64px] md:pb-[120px] w-full text-center" aria-labelledby="countdown-title">
+        <div class="flex flex-col gap-[8px] md:gap-[12px] items-center shrink-0">
+          <p class="text-io-accent text-[11px] md:text-[14px] font-medium tracking-[2.5px] md:tracking-[3px]">
+            CUENTA REGRESIVA
+          </p>
+          <h2
+            id="countdown-title"
+            class="text-[26px] md:text-[40px] font-semibold text-white"
+          >
+            El evento comienza en
+          </h2>
+        </div>
+
+        <!-- Countdown Items -->
+        <div
+          id="countdown-items"
+          class="flex items-center justify-center gap-[5px] md:gap-[28px] shrink-0"
+        >
+          {
+            countdown.map((unit, index) => (
+              <>
+                <div class="flex flex-col items-center gap-[8px] md:gap-[14px] shrink-0">
+                  <div
+                    class={`flex items-center justify-center overflow-hidden shrink-0 ${unit.className}`}
+                    style={unit.style}
+                  >
+                    <span id={unit.id} class="text-[30px] md:text-[84px] font-semibold leading-normal text-io-digits">{unit.value}</span>
+                  </div>
+                  <span class="text-[9px] md:text-[13px] font-medium tracking-[1.5px] md:tracking-[3px] text-io-text-muted">{unit.label}</span>
+                </div>
+
+                {index < countdown.length - 1 && (
+                  <div class="h-[42px] md:h-[110px] w-[13.2px] md:w-[34.6px] shrink-0 relative">
+                    <img
+                      alt=""
+                      aria-hidden="true"
+                      class="block size-full max-w-none"
+                      src={figmaCountdownSlash.src}
+                    />
+                  </div>
+                )}
+              </>
+            ))
+          }
+        </div>
+
+        <p
+          id="countdown-live"
+          class="hidden text-[42px] sm:text-[60px] md:text-[56px] font-bold tracking-tight bg-clip-text text-transparent text-center shimmer py-4"
+          style="background-image: radial-gradient(circle at center, #4285F4 10%, #EA4335 41%, #F9AB00 61%, #34A853 100%);"
+        >
+          ¡Empezó el Google I/O Sucre 2026!
+        </p>
+      </section>
+
+      <!-- About Section -->
+      <section class="bg-io-bg flex flex-col gap-[20px] md:gap-[32px] items-center px-[24px] md:px-[80px] pt-[64px] md:pt-[110px] pb-[72px] md:pb-[110px] w-full text-center" id="about">
+        <div class="flex flex-col gap-[8px] md:gap-[12px] items-center shrink-0">
+          <p class="text-io-accent text-[11px] md:text-[14px] font-medium tracking-[2.5px] md:tracking-[3px]">
+            EL EVENTO
+          </p>
+          <h2
+            class="text-[26px] md:text-[40px] font-semibold leading-[33px] md:leading-[48px] text-white w-[300px] md:w-auto"
+          >
+            ¿Qué es Google I/O Extended Sucre?
+          </h2>
+        </div>
+
+        <div class="flex flex-col gap-[12px] items-center text-io-text-secondary text-[15px] md:text-[17px] leading-[23px] md:leading-[26px] w-[330px] md:w-[620px]">
+          <p>
+            Google I/O Extended Sucre es el evento oficial que reúne a
+            desarrolladores, diseñadores, estudiantes y entusiastas de la
+            tecnología en un solo lugar.
+          </p>
+          <p>
+            Durante una jornada llena de charlas, demos en vivo, talleres y
+            networking, exploramos las últimas novedades del universo Google.
+          </p>
+        </div>
+
+        <!-- Topics Pills -->
+        <div class="flex flex-wrap gap-2.5 md:gap-3.5 items-start justify-center w-full max-w-[342px] md:max-w-none md:w-auto shrink-0">
+          {
+            topics.map(topic => (
+              <TopicPill {...topic} />
+            ))
+          }
+        </div>
+      </section>
+
+      <SpeakersSection />
+
+      <PackageSection />
+
+      <Schedule />
+
+      <!-- Footer Section -->
+      <footer class="bg-io-bg-deep flex flex-col gap-[24px] md:gap-[32px] items-center px-[24px] md:px-[80px] pt-[48px] md:pt-[72px] pb-[32px] md:pb-[40px] w-full text-center">
+        <div class="flex flex-col md:flex-row items-center justify-between w-full gap-[20px] md:gap-0">
+          <!-- Footer Logo -->
+          <div
+            class="grid-cols-[max-content] grid-rows-[max-content] inline-grid leading-[0] place-items-start relative shrink-0"
+          >
+            <div
+              class="col-1 h-[46.89px] md:h-[54.71px] ml-0 mt-0 relative row-1 w-[180px] md:w-[210px]"
+            >
+              <div class="absolute inset-0 overflow-hidden pointer-events-none">
+                <img
+                  alt="Google I/O Extended Sucre"
+                  class="absolute h-[132.54%] left-[-0.05%] max-w-none top-[-23.41%] w-[100.1%]"
+                  src={googleIOExtendedLogo.src}
+                />
+              </div>
+            </div>
+            <div
+              class="col-1 grid-cols-[max-content] grid-rows-[max-content] inline-grid ml-[80.2px] md:ml-[93.57px] mt-[7.85px] md:mt-[9.16px] place-items-start relative row-1"
+            >
+              <div
+                class="col-1 h-[17.69px] md:h-[20.64px] ml-0 mt-0 relative row-1 w-[9.08px] md:w-[10.59px]"
+              >
+                <img
+                  alt=""
+                  class="absolute left-0 max-w-none size-full top-0"
+                  src={figmaGradI.src}
+                />
+              </div>
+              <div
+                class="col-1 h-[20.29px] md:h-[23.67px] ml-[9.23px] md:ml-[10.77px] mt-0 relative row-1 w-[6.53px] md:w-[7.62px]"
+              >
+                <img
+                  alt=""
+                  class="absolute block inset-0 max-w-none size-full"
+                  src={figmaSlashHeader.src}
+                />
+              </div>
+              <div
+                class="col-1 h-[18.22px] md:h-[21.26px] ml-[14.86px] md:ml-[17.34px] mt-[1.13px] relative row-1 w-[17.79px] md:w-[20.76px]"
+              >
+                <img
+                  alt=""
+                  class="absolute left-0 max-w-none size-full top-0"
+                  src={figmaGradO.src}
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Social Buttons -->
+          <div class="flex gap-[10px] items-center shrink-0">
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="bg-io-surface-3 border border-io-border-3 border-solid flex size-[40px] items-center justify-center rounded-[20px] text-io-text text-[14px] font-medium transition-colors hover:bg-white/10">
+              <Facebook class="size-[18px]" />
+            </a>
+            <a href="https://instagram.com/gdg.sucre" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="bg-io-surface-3 border border-io-border-3 border-solid flex size-[40px] items-center justify-center rounded-[20px] text-io-text text-[14px] font-medium transition-colors hover:bg-white/10">
+              <Instagram class="size-[18px]" />
+            </a>
+            <a href="https://x.com/gdg_sucre" target="_blank" rel="noopener noreferrer" aria-label="Twitter / X" class="bg-io-surface-3 border border-io-border-3 border-solid flex size-[40px] items-center justify-center rounded-[20px] text-io-text text-[14px] font-medium transition-colors hover:bg-white/10">
+              <Twitter class="size-[18px]" />
+            </a>
+            <a href="https://linkedin.com/company/gdgsucre" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="bg-io-surface-3 border border-io-border-3 border-solid flex size-[40px] items-center justify-center rounded-[20px] text-io-text text-[14px] font-medium transition-colors hover:bg-white/10">
+              <LinkedIn class="size-[18px]" />
+            </a>
+          </div>
+        </div>
+
+        <!-- Divider Line -->
+        <div class="bg-io-surface-3 h-px w-full shrink-0"></div>
+
+        <div
+          class="flex flex-col md:flex-row items-center justify-between w-full gap-[12px] md:gap-0 text-center md:text-left"
+        >
+          <!-- Disclaimer -->
+          <p class="text-io-text-faint text-[11px] md:text-[12px] leading-[16px] md:leading-[18px] w-[300px] md:w-[480px]">
+            Google I/O Extended Sucre es un evento independiente organizado por la comunidad, inspirado en Google I/O.
+          </p>
+
+          <!-- Copyright -->
+          <p class="text-io-text-muted text-[11px] md:text-[12px]">
+            © {new Date().getFullYear()} Google I/O Extended Sucre · GDG Sucre
+          </p>
+        </div>
+      </footer>
+    </main>
+  </div>
 </BaseLayout>
+
+<style>
+  /* Siluetas orgánicas fijas: se rasterizan UNA vez con el blur y luego solo se
+     transforman, evitando re-aplicar el filtro en cada frame (era el costo gordo). */
+  .lava-blob-1 {
+    border-radius: 42% 58% 60% 40% / 45% 55% 45% 55%;
+  }
+
+  .lava-blob-2 {
+    border-radius: 50% 50% 30% 70% / 50% 30% 70% 50%;
+  }
+
+  .lava-blob-3 {
+    border-radius: 60% 40% 50% 50% / 40% 60% 50% 50%;
+  }
+
+  @keyframes lavaBlob1 {
+    0%,
+    100% {
+      transform: translate3d(0px, 0px, 0px) scale(1) rotate(0deg);
+      opacity: 0.85;
+    }
+    33% {
+      transform: translate3d(75px, -65px, 0px) scale(1.3) rotate(140deg);
+      opacity: 1;
+    }
+    66% {
+      transform: translate3d(-55px, 45px, 0px) scale(0.85) rotate(280deg);
+      opacity: 0.8;
+    }
+  }
+
+  @keyframes lavaBlob2 {
+    0%,
+    100% {
+      transform: translate3d(0px, 0px, 0px) scale(1.05) rotate(0deg);
+      opacity: 0.75;
+    }
+    50% {
+      transform: translate3d(-80px, -60px, 0px) scale(1.35) rotate(-180deg);
+      opacity: 1;
+    }
+  }
+
+  @keyframes lavaBlob3 {
+    0%,
+    100% {
+      transform: translate3d(0px, 0px, 0px) scale(0.9);
+      opacity: 0.8;
+    }
+    50% {
+      transform: translate3d(65px, 70px, 0px) scale(1.25);
+      opacity: 1;
+    }
+  }
+
+  .animate-lava-blob-1 {
+    animation: lavaBlob1 7s ease-in-out infinite;
+  }
+
+  .animate-lava-blob-2 {
+    animation: lavaBlob2 9s ease-in-out infinite;
+  }
+
+  .animate-lava-blob-3 {
+    animation: lavaBlob3 8s ease-in-out infinite;
+  }
+</style>
+
+<script>
+  function updateCountdown() {
+    const targetDate = new Date("2026-08-15T08:00:00-04:00").getTime();
+    const diff = targetDate - Date.now();
+
+    const itemsEl = document.getElementById("countdown-items");
+    const liveEl = document.getElementById("countdown-live");
+    const titleEl = document.getElementById("countdown-title");
+
+    if (diff <= 0) {
+      titleEl?.parentElement?.classList.add("hidden");
+      itemsEl?.classList.add("hidden");
+      liveEl?.classList.remove("hidden");
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    const daysEl = document.getElementById("countdown-days");
+    const hoursEl = document.getElementById("countdown-hours");
+    const minutesEl = document.getElementById("countdown-minutes");
+    const secondsEl = document.getElementById("countdown-seconds");
+
+    if (daysEl) daysEl.textContent = String(days).padStart(2, "0");
+    if (hoursEl) hoursEl.textContent = String(hours).padStart(2, "0");
+    if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, "0");
+    if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, "0");
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+</script>

@@ -1,10 +1,12 @@
 @import "tailwindcss";
+@import "shadcn/tailwind.css";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme {
   --color-blue-500: #4285f4;
+  --color-blue-600: #1a73e8;
   --color-green-500: #34a853;
   --color-yellow-600: #f9ab00;
   --color-red-500: #ea4335;
@@ -24,6 +26,38 @@
   --color-off-white: #f0f0f0;
 
   --color-green-lime: #c5f24c;
+
+  /* Paleta de la landing Google I/O Extended (dark theme propio del evento) */
+  --color-io-bg: #131316;
+  --color-io-bg-deep: #0b0b0e;
+  --color-io-surface: #1b1c21;
+  --color-io-surface-2: #202127;
+  --color-io-surface-3: #26272d;
+  --color-io-surface-4: #1e2a47;
+  --color-io-border: #2a2b31;
+  --color-io-border-2: #3c4043;
+  --color-io-border-3: #34353b;
+  --color-io-text: #e8eaed;
+  --color-io-text-secondary: #bdc1c6;
+  --color-io-text-muted: #9aa0a6;
+  --color-io-text-faint: #80868b;
+  --color-io-text-quiet: #5f6368;
+  --color-io-accent: #8ab4f8;
+  --color-io-accent-hover: #aecbfa;
+  --color-io-on-accent: #202124;
+  --color-io-digits: #17181c;
+  --color-io-blue-light: #4fc3f7;
+  --color-io-purple: #a142f4;
+  --color-io-yellow: #fbbc04;
+  --color-io-green-light: #81c995;
+
+  /* Colores de marca de redes sociales (hover de íconos del footer) */
+  --color-brand-linkedin: #0a66c2;
+  --color-brand-twitter: #1da1f2;
+  --color-brand-instagram: #e4405fd1;
+  --color-brand-facebook: #1877f2;
+  --color-brand-tiktok: #fe2c55;
+  --color-brand-youtube: #ff0000;
 }
 
 @theme inline {
@@ -66,6 +100,16 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/* Gradiente de marca de la landing Google I/O Extended (borde del paquete y precio) */
+@utility bg-io-brand-gradient {
+  background-image: linear-gradient(
+    140.194deg,
+    var(--color-io-blue-light) 11.111%,
+    var(--color-blue-500) 48.148%,
+    var(--color-io-purple) 85.185%
+  );
 }
 
 :root {
@@ -280,4 +324,19 @@ html {
 .animate-soft-pulse {
   animation: soft-pulse 2.2s ease-in-out infinite;
   transform-origin: center;
+}
+
+@keyframes shimmer-move {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.shimmer {
+  background-size: 200% 200%;
+  animation: shimmer-move 3s ease infinite;
 }

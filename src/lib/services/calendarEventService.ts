@@ -95,9 +95,6 @@ export async function updateCalendarEvent(
     return null
   }
 
-  // RLS filtra silenciosamente las filas que no cumplen la política de UPDATE
-  // (en vez de lanzar un error), así que un array vacío significa que no se
-  // modificó nada: no existe el id o el usuario no tiene permiso.
   if (data.length === 0) return null
 
   return data
