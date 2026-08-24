@@ -4,8 +4,8 @@ interface CalendarEvent {
   id?: number
   name: string
   community_id: number
-  start_datetime: string
-  end_datetime: string
+  start_datetime?: string
+  end_datetime?: string
   format?: string
   registration_link?: string
   location?: string
@@ -35,10 +35,10 @@ export async function getUpcomingCalendarEvents(supabase: SupabaseClient, limit:
   const { data: calendarEvents, error } = await supabase
     .from("calendar_events")
     .select(
-      "id, name, start_datetime, end_datetime, format, registration_link, location, communities(id, name, short_name, image)"
+      `id, name, start_datetime, end_datetime, format, registration_link, location,
+      communities(id, name, short_name, image)`
     )
-    .eq("accepted", true)
-    .gte("start_datetime", startOfToday.toISOString())
+    .or(`start_datetime.gte.${startOfToday.toISOString()},start_datetime.is.null`)
     .order("start_datetime", { ascending: true })
     .limit(limit)
 

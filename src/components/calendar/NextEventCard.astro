@@ -1,6 +1,6 @@
 ---
 import ArrowOutward from "@/assets/icons/arrow_outward.svg"
-import { formatEventDate, type UpcomingCalendarEvent } from "@/lib/calendar"
+import { formatEventDate, type UpcomingCalendarEvent } from "@/lib/calendarUtils"
 
 interface Props {
   event: UpcomingCalendarEvent
@@ -113,14 +113,18 @@ const position = String(index + 1).padStart(2, "0")
       <p class="text-muted-foreground truncate text-sm">// {community}</p>
     </div>
 
-    <div
-      class:list={[
-        "flex items-center justify-center border-l p-4",
-        isNext ? "border-green-lime" : "border-white/15",
-      ]}
-    >
-      <span class="text-white">{time}</span>
-    </div>
+    {
+      time && (
+        <div
+          class:list={[
+            "flex items-center justify-center border-l p-4",
+            isNext ? "border-green-lime" : "border-white/15",
+          ]}
+        >
+          <span class="text-white">{time}</span>
+        </div>
+      )
+    }
 
     <div
       class:list={[
@@ -139,17 +143,19 @@ const position = String(index + 1).padStart(2, "0")
             )
           }
         </span>
-        <a
-          class="group flex gap-2 text-green-lime hover:underline"
-          href={event.registration_link}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Regístrate
-          <ArrowOutward
-            class="fill-green-lime size-5 transition-transform ease-in-out translate-y-0.5 group-hover:translate-0.5 group-hover:-translate-y-0.5"
-          />
-        </a>
+        {
+          event.registration_link && (
+            <a
+              class="group flex gap-2 text-green-lime hover:underline"
+              href={event.registration_link}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Regístrate
+              <ArrowOutward class="fill-green-lime size-5 transition-transform ease-in-out translate-y-0.5 group-hover:translate-0.5 group-hover:-translate-y-0.5" />
+            </a>
+          )
+        }
       </div>
     </div>
   </div>

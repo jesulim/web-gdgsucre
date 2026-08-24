@@ -59,7 +59,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       location,
     } = body
 
-    if (!name || !community_id || !start_datetime || !end_datetime) {
+    if (!name || !community_id) {
       return new Response(JSON.stringify({ error: "Invalid request body" }), {
         status: 400,
         headers: { "Content-Type": "application/json" },
