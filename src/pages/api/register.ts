@@ -26,27 +26,6 @@ const sendEmail = async (supabase: SupabaseClient, event_name: string, event_slu
   })
 }
 
-const sendEmail = async (supabase: SupabaseClient, event_name: string, event_slug: string) => {
-  const userProfile = await getProfile(supabase)
-
-  if (!userProfile || !("email" in userProfile)) {
-    console.warn("No se pudo obtener el email del usuario")
-    return
-  }
-
-  supabase.functions.invoke("send-email", {
-    body: {
-      type: "registration",
-      data: {
-        userEmail: userProfile.email,
-        userName: userProfile.first_name ?? "",
-        eventName: event_name,
-        eventSlug: event_slug,
-      },
-    },
-  })
-}
-
 export const POST: APIRoute = async ({ request, cookies }) => {
   const supabase = createSupabaseServerClient({ request, cookies })
   const formData = await request.formData()
