@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 
-export interface AdminCalendarEvent {
+export interface CalendarEvent {
   id: number
   created_at: string
   name: string
@@ -18,7 +18,7 @@ export interface AdminCalendarEvent {
   accepted: boolean
 }
 
-export function useAdminCalendarEvents() {
+export function useCalendarEvents() {
   const {
     data: calendarEvents,
     isLoading,
@@ -26,7 +26,7 @@ export function useAdminCalendarEvents() {
     refetch,
   } = useQuery({
     queryKey: ["admin", "calendar-events"],
-    queryFn: async ({ signal }): Promise<AdminCalendarEvent[]> => {
+    queryFn: async ({ signal }): Promise<CalendarEvent[]> => {
       const url = new URL("/api/calendar-events", window.location.origin)
       const response = await fetch(url, { signal })
       if (!response.ok) throw new Error("Network response was not ok")

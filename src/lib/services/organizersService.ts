@@ -1,6 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
-import { createProfileOfOrganizer, getProfileByEmail } from "./profileService"
-import { getRegistrationData } from "./registrationService"
+import { getProfileByEmail } from "./profileService"
 
 const capitalizeName = (name: string) => {
   if (!name) return ""
@@ -8,6 +7,20 @@ const capitalizeName = (name: string) => {
     .split(" ")
     .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(" ")
+}
+
+async function getOrganizerBadgeId(supabase: SupabaseClient, eventName: string) {
+  const { data: badge, error: badgeError } = await supabase
+    .from("badges")
+    .select("id")
+    .eq("name", `Organizador ${eventName}`)
+    .maybeSingle()
+
+  if (badgeError || !badge) {
+    throw new Error(`Error fetching badge: ${badgeError?.message}`)
+  }
+
+  return badge.id
 }
 
 export async function getOrganizers(supabase: SupabaseClient, eventSlug: string) {
@@ -31,20 +44,45 @@ export async function getOrganizers(supabase: SupabaseClient, eventSlug: string)
   })
 }
 
-export async function addOrganizer(supabase: SupabaseClient, registrationId: string) {
-  const registrationData = await getRegistrationData(supabase, registrationId)
+async function issueOrganizerBadge(supabase: SupabaseClient, user_id: string, eventName: string) {
+  const badgeId = await getOrganizerBadgeId(supabase, eventName)
 
-  if (!registrationData) {
-    return { success: false, reason: "registration_not_found" }
+  const { error: userBadgeError } = await supabase
+    .from("user_badges")
+    .upsert({ badge_id: badgeId, user_id: user_id }, { onConflict: "badge_id,user_id" })
+
+  if (userBadgeError) {
+    throw new Error(`Error adding badge: ${userBadgeError.message}`)
+  }
+}
+
+export async function addOrganizer(supabase: SupabaseClient, registrationId: string) {
+  const { data: registration, error } = await supabase
+    .from("registrations")
+    .select("user_id, event_id, events(name)")
+    .eq("id", registrationId)
+    .single()
+
+  if (error || !registration) {
+    return { success: false, reason: "registration_not_found", message: error?.message }
   }
 
-  const { error } = await supabase.from("organizers").insert({
-    profile_id: registrationData.profile_id,
-    event_id: registrationData.event_id,
-  })
+  const { error: organizerError } = await supabase.from("organizers").upsert(
+    {
+      profile_id: registration.user_id,
+      event_id: registration.event_id,
+    },
+    { onConflict: "profile_id,event_id" }
+  )
 
-  if (error) {
-    return { success: false, reason: "insert_failed", message: error.message }
+  if (organizerError) {
+    return { success: false, reason: "insert_failed", message: organizerError.message }
+  }
+
+  try {
+    await issueOrganizerBadge(supabase, registration.user_id, registration.events.name)
+  } catch (error) {
+    console.error("Error al emitir badge:", error)
   }
 
   return { success: true }
@@ -80,9 +118,6 @@ export async function uploadOrganizerByGmail(
 
 export async function addOrganizerAndProfile(
   supabase: SupabaseClient,
-  first_name: string,
-  last_name: string,
-  phone_number: string,
   email: string,
   eventSlug: string
 ) {
@@ -130,18 +165,42 @@ export async function addOrganizerAndProfile(
   return { success: true }
 }
 
-export async function removeOrganizer(supabase: SupabaseClient, registrationId: string) {
-  const registrationData = await getRegistrationData(supabase, registrationId)
+async function deleteOrganizerBadge(supabase: SupabaseClient, userId: number, eventName: string) {
+  const badgeId = await getOrganizerBadgeId(supabase, eventName)
 
-  if (!registrationData) {
+  const { error: userBadgeError } = await supabase
+    .from("user_badges")
+    .delete()
+    .eq("user_id", userId)
+    .eq("badge_id", badgeId)
+
+  if (userBadgeError) {
+    throw new Error(`Error deleting badge: ${userBadgeError.message}`)
+  }
+}
+
+export async function removeOrganizer(supabase: SupabaseClient, registrationId: string) {
+  const { data: registration, error } = await supabase
+    .from("registrations")
+    .select("user_id, event_id, events(name)")
+    .eq("id", registrationId)
+    .maybeSingle()
+
+  if (error || !registration) {
     return false
   }
 
-  const { error } = await supabase
+  const { error: organizerError } = await supabase
     .from("organizers")
     .delete()
-    .eq("profile_id", registrationData.profile_id)
-    .eq("event_id", registrationData.event_id)
+    .eq("profile_id", registration.user_id)
+    .eq("event_id", registration.event_id)
 
-  return !error
+  try {
+    await deleteOrganizerBadge(supabase, registration.user_id, registration.events.name)
+  } catch (error) {
+    console.error("Error al eliminar badge:", error)
+  }
+
+  return !organizerError
 }

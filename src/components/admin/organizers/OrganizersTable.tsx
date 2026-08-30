@@ -22,7 +22,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-import useOrganizers from "@/hooks/useOrganizers"
+import useOrganizers from "@/hooks/admin/useOrganizers"
 
 import { OrganizerFormModal } from "./OrganizerFormModal"
 

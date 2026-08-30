@@ -1,7 +1,7 @@
 ---
 import ArrowOutward from "@/assets/icons/arrow_outward.svg"
 
-import { formatHeroDate, toEventSlug, type UpcomingCalendarEvent } from "@/lib/calendar"
+import { formatHeroDate, nameToSlug, type UpcomingCalendarEvent } from "@/lib/calendarUtils"
 
 import RocketIllustration from "./RocketIllustration.astro"
 
@@ -12,7 +12,7 @@ interface Props {
 const { event } = Astro.props
 
 const terminalLine = event
-  ? `próximo: ${toEventSlug(event.name)} · ${formatHeroDate(event.start_datetime)}`
+  ? `próximo: ${nameToSlug(event.name)} · ${formatHeroDate(event.start_datetime)}`
   : "sin eventos próximos"
 ---
 

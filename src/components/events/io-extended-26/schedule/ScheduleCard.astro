@@ -1,0 +1,98 @@
+---
+interface Props {
+  type: "talk" | "activity" | "break";
+  time: string;
+  title: string;
+  speaker?: string;
+  gradient?: string;
+  talkGradient?: string;
+}
+
+const { type, time, title, speaker, gradient, talkGradient } = Astro.props;
+
+const isTalk = type === "talk";
+const isBreak = type === "break";
+---
+
+<article
+  class:list={[
+    "relative flex flex-col gap-3 rounded-[20px] p-[1.5px] transition-transform duration-200 hover:scale-[1.05]",
+    isTalk ? talkGradient : gradient,
+    isTalk && "shadow-[0_20px_80px_rgba(66,133,244,0.22)]",
+  ]}
+>
+  <div
+    class:list={[
+      "flex h-full w-full flex-col gap-3 rounded-[18.5px] p-4 md:p-5",
+      {
+        "bg-[#111217] border border-[rgba(251,188,4,1)]": isTalk,
+        "bg-[#14151a]": !isTalk,
+      },
+    ]}
+  >
+    <div class="flex flex-row gap-2">
+      <!-- Time badge -->
+      <div class="flex items-start gap-4 shrink-0">
+        <div
+          class:list={[
+            "inline-flex items-center gap-1.5 rounded-[999px] px-3 py-1 shrink-0",
+            {
+              "bg-white/15 text-white border border-white/10": isTalk,
+              "bg-[#2a2b31] text-[#9aa0a6] border border-[#3c4043]": isBreak,
+              "bg-[#26272d] text-[#9aa0a6] border border-[#34353b]": !isBreak && !isTalk,
+            },
+          ]}
+        >
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+            class="shrink-0"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          <time
+            datetime={time.split(" - ")[0]}
+            class:list={[
+              "text-[11px] md:text-[12px] font-medium tracking-[0.5px] whitespace-nowrap",
+              {
+                "text-white": isTalk,
+                "text-[#9aa0a6]": !isTalk,
+              },
+            ]}
+          >
+            {time}
+          </time>
+        </div>
+      </div>
+      <!-- Content -->
+      <div class="flex flex-col w-full gap-1">
+        <h3
+          class:list={[
+            "text-[15px] md:text-[17px] font-semibold leading-snug",
+            {
+              "text-white": isTalk || isBreak,
+              "text-[#bdc1c6]": !isTalk && !isBreak,
+            },
+          ]}
+        >
+          {title}
+        </h3>
+        {
+          speaker && (
+            <p class="text-[13px] md:text-[14px] text-white/80 font-medium">
+              {speaker}
+            </p>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</article>

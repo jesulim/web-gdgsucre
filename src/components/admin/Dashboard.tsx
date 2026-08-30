@@ -2,8 +2,11 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
 
 import { AccreditationTable } from "@/components/admin/AccreditationTable"
+import { ActivitiesManager } from "@/components/admin/activities/ActivitiesTable"
 import { CalendarEventsTable } from "@/components/admin/calendar-events/CalendarEventsTable"
 import { CommunitiesTable } from "@/components/admin/communities/CommunitiesTable"
+import { EventsTable } from "@/components/admin/events/EventsTable"
+import { FormFieldsManager } from "@/components/admin/formFields/FormFieldsTable"
 import { OrganizersTable } from "@/components/admin/organizers/OrganizersTable"
 import { QRScanner } from "@/components/admin/QRScanner"
 import { RegistrationsTable } from "@/components/admin/registrations/RegistrationsTable"
@@ -22,6 +25,9 @@ export type ViewType =
   | "organizers"
   | "communities"
   | "calendarEvents"
+  | "events"
+  | "activities"
+  | "formFields"
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -32,6 +38,7 @@ const queryClient = new QueryClient({
 })
 
 export interface Activity {
+  id: number
   name: string
   label: string
 }
@@ -57,7 +64,13 @@ export interface DashboardProps {
 }
 
 function DashboardContainer({ userData, events }: DashboardProps) {
-  const [eventSlug, setEventSlug] = useState(events[0]?.slug ?? "")
+  const [eventSlug, setEventSlug] = useState(() => {
+    if (userData.isAdmin) return events[0]?.slug ?? ""
+    const userEvents = Object.keys(userData.staffRoles)
+    const match = events.find(e => userEvents.includes(e.slug))
+    return match?.slug ?? userEvents[0] ?? events[0]?.slug ?? ""
+  })
+
   const selectedEvent = events.find(e => e.slug === eventSlug)
   const currentRole = userData.staffRoles[eventSlug]
 
@@ -101,6 +114,18 @@ function DashboardContainer({ userData, events }: DashboardProps) {
       title: "Organizadores",
       component: <OrganizersTable eventSlug={eventSlug} />,
     },
+    formFields: {
+      title: "Formulario de Registro",
+      component: <FormFieldsManager eventId={selectedEvent.id} />,
+    },
+    activities: {
+      title: "Actividades",
+      component: <ActivitiesManager eventId={selectedEvent.id} />,
+    },
+    events: {
+      title: "Eventos",
+      component: <EventsTable />,
+    },
     calendarEvents: {
       title: "Eventos del Calendario",
       component: <CalendarEventsTable />,
@@ -110,6 +135,8 @@ function DashboardContainer({ userData, events }: DashboardProps) {
       component: <CommunitiesTable />,
     },
   }
+
+  const isPlatformView = ["events", "calendarEvents", "communities"].includes(currentView)
 
   return (
     <SidebarProvider
@@ -121,7 +148,7 @@ function DashboardContainer({ userData, events }: DashboardProps) {
       }
     >
       <AdminSidebar
-        variant="inset"
+        variant="floating"
         collapsible="icon"
         userData={userData}
         currentRole={currentRole}
@@ -134,6 +161,7 @@ function DashboardContainer({ userData, events }: DashboardProps) {
           events={events}
           eventSlug={eventSlug}
           setEventSlug={setEventSlug}
+          showEventSelector={!isPlatformView}
         />
         <main className="p-4 lg:px-6">{views[currentView].component}</main>
       </SidebarInset>

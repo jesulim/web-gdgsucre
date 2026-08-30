@@ -31,6 +31,7 @@ export function useCommunities(search: string) {
   })
 
   return {
+    refetch: query.refetch,
     communities: query.data ?? [],
     isLoading: query.isLoading,
     isFetching: query.isFetching,

@@ -1,0 +1,19 @@
+---
+import Featured from "@/components/landing/Featured.astro"
+import Footer from "@/components/landing/Footer.astro"
+import Header from "@/components/landing/Header.astro"
+import Hero from "@/components/landing/Hero.astro"
+import Info from "@/components/landing/Info.astro"
+
+import BaseLayout from "@/layout/BaseLayout.astro"
+---
+
+<BaseLayout theme="light" title="GDG Sucre" description="GDG Sucre">
+  <Header />
+  <main class="flex-1 overflow-x-hidden mt-16">
+    <Hero />
+    <Info />
+    <Featured />
+  </main>
+  <Footer />
+</BaseLayout>

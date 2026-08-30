@@ -18,9 +18,7 @@ export interface UpcomingCalendarEvent {
   } | null
 }
 
-// `start_datetime` is a timestamptz, but the publish form sends the value with
-// no offset (see SendEvent.tsx), so Postgres stores it as UTC. Formatting back
-// in UTC therefore renders the same wall-clock time the community typed in.
+// Default to Bolivian time zone, as it is the one used by the form.
 const TIME_ZONE = "America/La_Paz"
 const LOCALE = "es-BO"
 
@@ -39,6 +37,7 @@ const timeFormatter = new Intl.DateTimeFormat(LOCALE, {
 const withoutTrailingDot = (value: string) => value.replace(/\.$/, "")
 
 export function formatEventDate(datetime: string) {
+  if (!datetime) return { day: "", month: "", weekday: "", time: "" }
   const date = new Date(datetime)
 
   return {
@@ -51,14 +50,14 @@ export function formatEventDate(datetime: string) {
 
 /** Builds the "15.ago.2026" date shown in the hero's terminal line. */
 export function formatHeroDate(datetime: string) {
+  if (!datetime) return "Fecha por definir"
+
   const date = new Date(datetime)
   const { day, month } = formatEventDate(datetime)
-
   return `${day}.${month}.${yearFormatter.format(date)}`
 }
 
-/** Turns an event name into a "terminal slug": "I/O Extended Sucre 2026" → "io_extended_sucre_2026". */
-export function toEventSlug(name: string) {
+export function nameToSlug(name: string) {
   return name
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")

@@ -36,7 +36,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-import { useAdminCommunities } from "@/hooks/useAdminCommunities"
+import { useCommunities } from "@/hooks/useCommunities"
 import CommunityRowActions from "./CommunityRowActions"
 
 export interface Community {
@@ -54,7 +54,7 @@ const defaultCommunities: Community[] = []
 export function CommunitiesTable() {
   const [globalFilter, setGlobalFilter] = useState("")
 
-  const { communities, isLoading, isFetching, refetch } = useAdminCommunities()
+  const { communities, isLoading, isFetching, refetch } = useCommunities("")
 
   const queryClient = useQueryClient()
 

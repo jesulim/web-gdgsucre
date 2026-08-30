@@ -1,8 +1,8 @@
 ---
 const navLinks = [
-  { href: "#agenda", label: "agenda" },
-  { href: "#calendario", label: "calendario" },
-  { href: "#publicar", label: "publicar evento" },
+  { href: "#agenda", label: "Agenda" },
+  { href: "#calendario", label: "Calendario" },
+  { href: "#publicar", label: "Publicar evento" },
 ]
 
 const socialLinks = [
@@ -15,16 +15,16 @@ const socialLinks = [
 ]
 ---
 
-<footer class="w-full bg-black border-t border-white/15 font-monospace">
+<footer class="w-full bg-black border-t border-red-500 font-monospace">
   <div class="max-w-7xl mx-auto flex flex-col gap-8 px-8 p-4 md:p-8">
-    <div class="w-full flex flex-col md:flex-row gap-8 md:justify-between">
+    <div class="w-full flex flex-col md:flex-row gap-8 md:justify-between transition-colors">
       <div>
-        <h3 class="text-4xl md:text-5xl mt-2 mb-4">sucre.tech</h3>
+        <h3 class="text-4xl md:text-5xl mt-2 mb-4 font-medium">sucre.tech</h3>
         <p class="text-muted-foreground leading-loose">
           Agenda de eventos tecnológicos en Sucre, Bolivia. <br />
           <span class="text-muted-foreground">
             hecho por: <a
-              class="text-white font-bold hover:underline"
+              class="hover:text-white font-medium hover:underline"
               href="https://www.gdgsucre.com.bo/"
               target="_blank"
               rel="noopener noreferrer"
@@ -41,7 +41,7 @@ const socialLinks = [
           {
             navLinks.map(link => (
               <li>
-                <a class="text-muted-foreground hover:underline" href={link.href}>
+                <a class="text-muted-foreground hover:text-white hover:underline" href={link.href}>
                   {link.label}
                 </a>
               </li>
@@ -57,7 +57,7 @@ const socialLinks = [
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-muted-foreground hover:underline"
+                  class="text-muted-foreground hover:text-white hover:underline"
                   href={link.href}
                 >
                   {link.label}
@@ -76,6 +76,6 @@ const socialLinks = [
         · proyecto comunitario · sin fines de lucro
       </span>
     </span>
-    <div class="bg-green-lime w-48 h-1"></div>
+    <div class="bg-red-500 w-48 h-1"></div>
   </div>
 </footer>
