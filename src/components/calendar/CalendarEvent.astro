@@ -1,0 +1,29 @@
+---
+import { BookingCalendar } from "@/components/calendar/BookingCalendar"
+---
+
+<section
+  id="calendario"
+  class="font-monospace mx-auto max-w-6xl px-4 pt-16 lg:pt-24"
+>
+  <div class="grid gap-8 lg:grid-cols-[2fr_3fr] lg:items-start lg:gap-16">
+    <section class="flex flex-col gap-6 lg:sticky lg:top-28">
+      <div class="flex flex-col gap-4">
+        <p class="text-green-lime text-xs uppercase">[ 03 · calendario ]</p>
+
+        <h2 class="text-white text-4xl leading-none font-bold md:text-5xl">
+          Marca tu<br />calendario
+        </h2>
+
+        <p class="text-muted-foreground text-sm leading-relaxed">
+          Explorá los próximos eventos de las comunidades tech de Sucre, mes a mes.
+          Cada comunidad tiene su propio color en la agenda.
+        </p>
+      </div>
+
+      <hr class="border-t border-white/10" />
+    </section>
+
+    <BookingCalendar client:load />
+  </div>
+</section>
