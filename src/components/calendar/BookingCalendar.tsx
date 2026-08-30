@@ -1,10 +1,12 @@
 import { ChevronLeftIcon, ChevronRightIcon, Loader2Icon } from "lucide-react"
 import moment from "moment"
+import "moment/locale/es"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { Calendar, momentLocalizer, type SlotInfo } from "react-big-calendar"
 
 import "react-big-calendar/lib/css/react-big-calendar.css"
 
+moment.locale("es")
 const localizer = momentLocalizer(moment)
 
 export interface BookingCalendarEvent {
@@ -66,12 +68,12 @@ function formatMonthShort(date: Date) {
 
 function BookingToolbar({ date, eventCount, loading, onPrev, onNext }: BookingToolbarProps) {
   return (
-    <div className="booking-calendar__toolbar font-monospace mb-4 flex items-center justify-between gap-4 border-b border-white/15 pb-4">
+    <div className="booking-calendar__toolbar font-monospace mb-4 flex items-center justify-between gap-4 border-b border-white/25 pb-4">
       <div className="flex items-center gap-3 text-white">
         <button
           type="button"
           aria-label="Mes anterior"
-          className="flex size-9 items-center justify-center border border-white/15 bg-white/5 transition-colors hover:bg-white/10"
+          className="flex size-9 items-center justify-center border border-white bg-white/5 transition-colors hover:bg-white/15"
           onClick={onPrev}
         >
           <ChevronLeftIcon className="size-5" />
@@ -84,7 +86,7 @@ function BookingToolbar({ date, eventCount, loading, onPrev, onNext }: BookingTo
         <button
           type="button"
           aria-label="Mes siguiente"
-          className="flex size-9 items-center justify-center border border-white/15 bg-white/5 transition-colors hover:bg-white/10"
+          className="flex size-9 items-center justify-center border border-white bg-white/5 transition-colors hover:bg-white/15"
           onClick={onNext}
         >
           <ChevronRightIcon className="size-5" />
@@ -190,9 +192,10 @@ export function BookingCalendar({ onSelectSlot }: BookingCalendarProps) {
   )
 
   return (
-    <div className="booking-calendar font-monospace bg-black/40 p-3 text-white sm:p-4">
+    <div className="booking-calendar font-monospace p-3 text-white sm:p-4">
       <Calendar
         localizer={localizer}
+        culture="es"
         events={events}
         startAccessor="start"
         endAccessor="end"
@@ -252,7 +255,15 @@ export function BookingCalendar({ onSelectSlot }: BookingCalendarProps) {
         .booking-calendar .rbc-month-row + .rbc-month-row,
         .booking-calendar .rbc-day-bg,
         .booking-calendar .rbc-header + .rbc-header {
-          border-color: rgba(255, 255, 255, 0.15) !important;
+          border-color: rgb(255, 255, 255) !important;
+        }
+
+        .booking-calendar .rbc-month-view {
+          border-color: rgb(255, 255, 255) !important;
+        }
+
+        .booking-calendar .rbc-month-row {
+          border-color: rgb(255, 255, 255) !important;
         }
 
         .booking-calendar .rbc-off-range,
@@ -306,11 +317,6 @@ export function BookingCalendar({ onSelectSlot }: BookingCalendarProps) {
         .booking-calendar__toolbar {
           position: relative;
           z-index: 1;
-        }
-
-        .booking-calendar .rbc-month-view,
-        .booking-calendar .rbc-month-row {
-          border-color: rgba(255, 255, 255, 0.15) !important;
         }
       `}</style>
     </div>
