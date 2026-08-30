@@ -202,7 +202,7 @@ export function BookingCalendar({ onSelectSlot }: BookingCalendarProps) {
         events={events}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: 600 }}
+        style={{ height: 500 }}
         views={["month"]}
         date={date}
         onNavigate={setDate}
