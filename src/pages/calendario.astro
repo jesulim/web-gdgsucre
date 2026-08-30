@@ -1,4 +1,5 @@
 ---
+import CalendarEvent from "@/components/calendar/CalendarEvent.astro"
 import CalendarHero from "@/components/calendar/CalendarHero.astro"
 import Footer from "@/components/calendar/Footer.astro"
 import Header from "@/components/calendar/Header.astro"
@@ -24,6 +25,7 @@ const upcomingEvents = await getUpcomingCalendarEvents(supabase)
   <main class="flex-1 overflow-x-hidden mt-16">
     <CalendarHero event={upcomingEvents[0]} />
     <NextEvents events={upcomingEvents} />
+    <CalendarEvent />
     <PublishEvent />
   </main>
 
