@@ -58,12 +58,15 @@ interface BookingToolbarProps {
 
 function formatMonthName(date: Date) {
   const month = moment(date).locale("es").format("MMMM")
+  const year = moment(date).year()
 
-  return `${month.charAt(0).toUpperCase()}${month.slice(1)}`
+  return `${month.charAt(0).toUpperCase()}${month.slice(1)} ${year}`
 }
 
 function formatMonthShort(date: Date) {
-  return formatMonthName(date).slice(0, 4)
+  const month = moment(date).locale("es").format("MMM")
+
+  return `${month.charAt(0).toUpperCase()}${month.slice(1).replace(/\.$/, "")}`
 }
 
 function BookingToolbar({ date, eventCount, loading, onPrev, onNext }: BookingToolbarProps) {
@@ -255,15 +258,38 @@ export function BookingCalendar({ onSelectSlot }: BookingCalendarProps) {
         .booking-calendar .rbc-month-row + .rbc-month-row,
         .booking-calendar .rbc-day-bg,
         .booking-calendar .rbc-header + .rbc-header {
-          border-color: rgb(255, 255, 255) !important;
+          border-color: rgb(255, 255, 255, 0.65) !important;
         }
 
         .booking-calendar .rbc-month-view {
-          border-color: rgb(255, 255, 255) !important;
+          border-color: rgb(255, 255, 255, 0.65) !important;
         }
 
         .booking-calendar .rbc-month-row {
-          border-color: rgb(255, 255, 255) !important;
+          border-color: rgb(255, 255, 255, 0.65) !important;
+        }
+
+        .booking-calendar .rbc-month-view .rbc-row-content {
+          display: flex;
+          flex-direction: column;
+          min-height: 100%;
+        }
+
+        .booking-calendar .rbc-month-view .rbc-row-content > .rbc-row:first-child {
+          flex: 1;
+          display: flex;
+        }
+
+        .booking-calendar .rbc-row-content .rbc-date-cell {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .booking-calendar .rbc-row-content .rbc-date-cell .rbc-button-link {
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
 
         .booking-calendar .rbc-off-range,
