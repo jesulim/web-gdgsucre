@@ -7,7 +7,7 @@ const navLinks = [
 ]
 ---
 
-<header class="w-full bg-black border-b border-white/20 p-4 sticky inset-0 font-monospace z-10">
+<header class="w-full bg-black border-b border-red-500 p-4 sticky inset-0 font-monospace z-10">
   <div class="max-w-6xl mx-auto flex flex-row items-center justify-between gap-6">
     <a href="#" class="sm:text-xl leading-none font-monospace font-bold">sucre.tech</a>
 
@@ -16,7 +16,7 @@ const navLinks = [
         {
           navLinks.map(link => (
             <li>
-              <a href={link.href} class="">
+              <a href={link.href} class="text-muted-foreground hover:text-white hover:underline">
                 {link.label}
               </a>
             </li>
@@ -26,7 +26,7 @@ const navLinks = [
     </nav>
     <a
       href="#publicar"
-      class="group bg-lime-300 hover:shadow-[4px_4px_0_0_var(--color-blue-500)] inline-flex items-center gap-2 px-4 py-2 text-xs font-bold text-black md:text-base transition-all"
+      class="group bg-white hover:shadow-[4px_4px_0_0_var(--color-red-500)] inline-flex items-center gap-2 px-4 py-2 text-xs font-bold text-black md:text-base transition-all"
     >
       Sumar evento
       <ArrowOutward
