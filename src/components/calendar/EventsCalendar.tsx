@@ -1,22 +1,62 @@
 import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query"
-import { addMonths, format, getDay, getMonth, getYear, isSameDay, startOfWeek } from "date-fns"
-import { es } from "date-fns/locale/es"
+import clsx from "clsx"
 import { ChevronLeftIcon, ChevronRightIcon, Loader2Icon } from "lucide-react"
 import { useCallback, useMemo, useState } from "react"
-import { Calendar, dateFnsLocalizer, type SlotInfo } from "react-big-calendar"
 
-import "react-big-calendar/lib/css/react-big-calendar.css"
-import "./EventsCalendar.css"
+const fmt = (date: Date, opts: Intl.DateTimeFormatOptions) =>
+  new Intl.DateTimeFormat("es", opts).format(date)
 
-const locales = { es }
+const fullMonth = (date: Date) => fmt(date, { month: "long" })
+const dayNumber = (date: Date) => fmt(date, { day: "2-digit" })
+const weekdayLong = (date: Date) => fmt(date, { weekday: "long" })
+const timeStr = (date: Date) => fmt(date, { hour: "2-digit", minute: "2-digit", hour12: false })
 
-const localizer = dateFnsLocalizer({
-  format,
-  parse: Date.parse,
-  startOfWeek: (date, options) => startOfWeek(date, { ...options, weekStartsOn: 1 }),
-  getDay,
-  locales,
-})
+const sameDay = (a: Date, b: Date) =>
+  a.getFullYear() === b.getFullYear() &&
+  a.getMonth() === b.getMonth() &&
+  a.getDate() === b.getDate()
+
+const sameMonth = (a: Date, b: Date) =>
+  a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth()
+
+const today = () => {
+  const d = new Date()
+  d.setHours(0, 0, 0, 0)
+  return d
+}
+
+function buildGrid(date: Date): Date[] {
+  const first = new Date(date.getFullYear(), date.getMonth(), 1)
+  const start = new Date(first)
+  start.setDate(start.getDate() - ((start.getDay() + 6) % 7))
+  const current = new Date(start)
+
+  const last = new Date(date.getFullYear(), date.getMonth() + 1, 0)
+  const end = new Date(last)
+  const endWeekDay = end.getDay()
+  if (endWeekDay !== 0) {
+    end.setDate(end.getDate() + (7 - endWeekDay))
+  }
+
+  const days: Date[] = []
+  while (current <= end) {
+    days.push(new Date(current))
+    current.setDate(current.getDate() + 1)
+  }
+
+  return days
+}
+
+const ACCENT_COLORS = ["bg-blue-500", "bg-red-500", "bg-yellow-500", "bg-green-500"] as const
+
+function colorForCommunity(id: number | null | undefined) {
+  if (id == null) return ACCENT_COLORS[3]
+  return ACCENT_COLORS[id % ACCENT_COLORS.length]
+}
+
+function capitalize(s: string) {
+  return s.charAt(0).toUpperCase() + s.slice(1)
+}
 
 interface CalendarEventPayload {
   id: number
@@ -24,11 +64,9 @@ interface CalendarEventPayload {
   community_id: number
   start_datetime: string
   end_datetime: string
-  communities: {
-    id: number
-    name: string
-    short_name: string | null
-  } | null
+  location?: string
+  registration_link?: string
+  communities: { id: number; name: string; short_name: string | null } | null
 }
 
 interface CalendarEvent {
@@ -36,96 +74,45 @@ interface CalendarEvent {
   name: string
   start: Date
   end: Date
-  label: string
   community_id: number
   community: string
+  location?: string
+  registration_link?: string
 }
-
-const ACCENT_COLORS = [
-  { key: "blue", color: "#4285f4" },
-  { key: "red", color: "#ea4335" },
-  { key: "yellow", color: "#f9ab00" },
-  { key: "green", color: "#34a853" },
-] as const
-
-function colorForCommunity(communityId: number | null | undefined) {
-  if (communityId == null) return ACCENT_COLORS[3]
-  return ACCENT_COLORS[Math.abs(communityId) % ACCENT_COLORS.length]
-}
-
-function capitalize(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1)
-}
-
-function formatMonthName(date: Date) {
-  return `${capitalize(format(date, "MMMM", { locale: es }))} ${format(date, "yyyy")}`
-}
-
-function formatMonthShort(date: Date) {
-  return capitalize(format(date, "MMM", { locale: es }).replace(/\.$/, ""))
-}
-
-function formatDayName(date: Date) {
-  return capitalize(format(date, "EEEE", { locale: es }))
-}
-
-function formatDayNumber(date: Date) {
-  return format(date, "d")
-}
-
-function formatMonthYear(date: Date) {
-  return `${capitalize(format(date, "MMMM", { locale: es }))} ${format(date, "yyyy")}`
-}
-
-function formatEventTime(date: Date) {
-  return format(date, "HH:mm")
-}
-
 function transformEvent(raw: CalendarEventPayload): CalendarEvent {
   return {
     ...raw,
     start: new Date(raw.start_datetime),
     end: new Date(raw.end_datetime),
-    title: raw.name,
     community: raw.communities?.short_name ?? raw.communities?.name ?? "",
   }
 }
 
 const queryClient = new QueryClient()
 
-function useCalendarEvents(year: number, month: number) {
+function useCalendarEvents(start: string, end: string) {
   return useQuery<CalendarEvent[]>({
-    queryKey: ["calendar-events", year, month],
+    queryKey: ["calendar-events", start, end],
     queryFn: async () => {
-      const response = await fetch(`/api/calendar-events?year=${year}&month=${month}`)
-      if (!response.ok) throw new Error(`HTTP ${response.status}`)
-      const payload = (await response.json()) as CalendarEventPayload[]
-      return payload.map(transformEvent)
+      const res = await fetch(`/api/calendar-events?start=${start}&end=${end}`)
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      return ((await res.json()) as CalendarEventPayload[]).map(transformEvent)
     },
   })
 }
 
-interface DayDetailPanelProps {
-  selectedDate: Date | null
-  events: CalendarEvent[]
-}
-
-function DayDetailPanel({ selectedDate, events }: DayDetailPanelProps) {
-  if (!selectedDate) {
-    selectedDate = new Date()
-  }
-
-  const dayEvents = events.filter(event => isSameDay(event.start, selectedDate))
+function DayDetailPanel({ date, events }: { date: Date; events: CalendarEvent[] }) {
+  const dayEvents = events.filter(e => sameDay(e.start, date))
 
   return (
-    <div className="border border-white bg-red-500/20 p-8 py-4 text-white">
+    <div className="border border-white bg-black p-4 sm:p-8 text-white">
       <div className="flex items-center gap-4 pb-4">
-        <span className="text-2xl leading-none font-bold md:text-5xl">
-          {formatDayNumber(selectedDate)}
-        </span>
-        <div className="flex flex-col text-sm text-white">
-          <span>{formatDayName(selectedDate)}</span>
-          <span className="text-muted-foreground">{formatMonthYear(selectedDate)}</span>
+        <span className="text-3xl sm:text-5xl leading-none font-bold">{dayNumber(date)}</span>
+        <div className="flex flex-col text-sm">
+          <span>{weekdayLong(date)}</span>
+          <span className="text-muted-foreground">
+            {fullMonth(date)} {date.getFullYear()}
+          </span>
         </div>
       </div>
 
@@ -133,24 +120,22 @@ function DayDetailPanel({ selectedDate, events }: DayDetailPanelProps) {
 
       <div className="flex flex-col gap-3">
         {dayEvents.length === 0 ? (
-          <p className="text-sm text-white/60">Sin eventos para este día.</p>
+          <p className="text-sm text-muted-foreground">Sin eventos para este día.</p>
         ) : (
           dayEvents.map(event => (
             <div key={event.id} className="flex gap-4 text-white">
-              <div
-                className="w-2 mb-1"
-                style={{ background: colorForCommunity(event.community_id).color }}
-              ></div>
+              <div className={clsx("w-2 min-h-full mb-1", colorForCommunity(event.community_id))} />
               <div className="flex flex-col gap-1">
-                <h3 className="text-lg leading-tight font-bold">{event.title}</h3>
-                <p className="text-muted-foreground mt-1 text-sm">
-                  {formatEventTime(event.start)} · {event.location} · {event.community}
+                <h3 className="text-lg leading-tight font-bold">{event.name}</h3>
+                <p className="text-sm text-muted-foreground">
+                  {timeStr(event.start)} · {event.location} · {event.community}
                 </p>
                 {event.registration_link && (
                   <a
                     href={event.registration_link}
+                    target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:underline"
+                    className="text-sm hover:underline"
                   >
                     Regístrate
                   </a>
@@ -164,136 +149,183 @@ function DayDetailPanel({ selectedDate, events }: DayDetailPanelProps) {
   )
 }
 
-interface EventsToolbarProps {
-  date: Date
-  eventCount: number
-  loading: boolean
-  onPrev: () => void
-  onNext: () => void
+interface DayCellProps {
+  day: Date
+  todayDate: Date
+  currentDate: Date
+  selectedDate: Date
+  setSelectedDate: (date: Date) => void
+  dayEvents: CalendarEvent[]
 }
 
-function EventsToolbar({ date, eventCount, loading, onPrev, onNext }: EventsToolbarProps) {
+function DayCell({
+  day,
+  todayDate,
+  currentDate,
+  selectedDate,
+  setSelectedDate,
+  dayEvents,
+}: DayCellProps) {
+  const inMonth = sameMonth(day, currentDate)
+  const isToday = sameDay(day, todayDate)
+  const isSelected = sameDay(day, selectedDate)
+
   return (
-    <div className="booking-calendar__toolbar font-monospace mb-4 flex items-center justify-between gap-4">
-      <button
-        type="button"
-        aria-label="Mes anterior"
-        className="flex size-9 items-center justify-center border border-white transition-colors hover:bg-red-500/50"
-        onClick={onPrev}
-      >
-        <ChevronLeftIcon className="size-5" />
-      </button>
-      <button
-        type="button"
-        aria-label="Mes siguiente"
-        className="flex size-9 items-center justify-center border border-white transition-colors hover:bg-red-500/50"
-        onClick={onNext}
-      >
-        <ChevronRightIcon className="size-5" />
-      </button>
+    <button
+      type="button"
+      onClick={() => setSelectedDate(day)}
+      className={`
+        flex flex-col items-center border border-white
+        transition-colors cursor-pointer w-full p-1
+        sm:min-h-16 min-h-12
+        ${isToday ? "bg-red-500" : isSelected ? "bg-white/30" : "hover:bg-white/10"}
+        ${!inMonth ? "text-muted-foreground" : ""}
+      `}
+    >
+      <span className="text-xs sm:text-sm md:text-base">{dayNumber(day)}</span>
 
-      <span className="min-w-28 text-center text-base font-semibold text-white">
-        {formatMonthName(date)}
-      </span>
+      {dayEvents.length > 0 && (
+        <div className="mt-auto justify-center w-full flex gap-0.5">
+          {dayEvents.slice(0, 4).map(event => (
+            <span
+              key={event.id}
+              className={clsx(
+                "min-w-2 min-h-2 text-xs text-black line-clamp-1 text-ellipsis",
 
-      <div className="hidden sm:block ml-auto min-w-0 text-right text-sm font-medium text-white">
-        {loading ? (
-          <span className="inline-flex items-center gap-2">
-            <Loader2Icon className="size-4 animate-spin" />
-            cargando
-          </span>
-        ) : (
-          `${eventCount} eventos · ${formatMonthShort(date)}`
-        )}
-      </div>
-    </div>
+                colorForCommunity(event.community_id)
+              )}
+            >
+              <span className="hidden sm:inline mx-0.5">{event.name}</span>
+            </span>
+          ))}
+        </div>
+      )}
+    </button>
   )
 }
+
+const weekdays = ["lun", "mar", "mié", "jue", "vie", "sáb", "dom"]
 
 function EventsCalendarInner() {
-  const [date, setDate] = useState(() => new Date())
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
+  const [currentDate, setCurrentDate] = useState(today)
+  const [selectedDate, setSelectedDate] = useState(today)
 
-  const year = getYear(date)
-  const month = getMonth(date) + 1
+  const grid = useMemo(() => buildGrid(currentDate), [currentDate])
 
-  const { data: events = [], isLoading } = useCalendarEvents(year, month)
+  const gridStart = useMemo(() => {
+    const d = new Date(grid[0])
+    d.setUTCHours(0, 0, 0, 0)
+    return d.toISOString()
+  }, [grid])
 
-  const navigateMonth = useCallback((offset: number) => {
-    setDate(current => addMonths(current, offset))
-  }, [])
+  const gridEnd = useMemo(() => {
+    const d = new Date(grid[grid.length - 1])
+    d.setUTCHours(23, 59, 59, 999)
+    return d.toISOString()
+  }, [grid])
 
-  const onPrev = useCallback(() => navigateMonth(-1), [navigateMonth])
-  const onNext = useCallback(() => navigateMonth(1), [navigateMonth])
+  const { data: events = [], isLoading } = useCalendarEvents(gridStart, gridEnd)
 
-  const handleSelectSlot = useCallback((slotInfo: SlotInfo) => {
-    setSelectedDate(slotInfo.start)
-  }, [])
+  const todayDate = useMemo(() => today(), [])
 
-  const communities = useMemo(() => {
-    const map = new Map<string, { label: string; color: string }>()
-
+  const eventsByDay = useMemo(() => {
+    const map = new Map<string, CalendarEvent[]>()
     for (const event of events) {
-      if (event.community_id == null) continue
-      const key = String(event.community_id)
-      if (map.has(key)) continue
-      map.set(key, {
-        label: event.community,
-        color: colorForCommunity(event.community_id).color,
-      })
+      const key = `${event.start.getFullYear()}-${event.start.getMonth()}-${event.start.getDate()}`
+      const list = map.get(key)
+      if (list) list.push(event)
+      else map.set(key, [event])
     }
-
-    return [...map.values()]
+    return map
   }, [events])
 
-  const eventPropGetter = useCallback(
-    (event: CalendarEvent) => ({
-      style: { backgroundColor: colorForCommunity(event.community_id).color, borderRadius: 0 },
-    }),
-    []
+  const monthEvents = useMemo(
+    () => events.filter(e => sameMonth(e.start, currentDate)),
+    [events, currentDate]
   )
 
+  const communities = useMemo(() => {
+    const seen = new Map<number, string>()
+    for (const e of monthEvents) {
+      if (!seen.has(e.community_id)) seen.set(e.community_id, e.community)
+    }
+    return [...seen.entries()].map(([id, label]) => ({ id, label }))
+  }, [monthEvents])
+
+  const navigate = useCallback((offset: number) => {
+    setCurrentDate(d => new Date(d.getFullYear(), d.getMonth() + offset, 1))
+  }, [])
+
   return (
-    <section id="calendario" className="font-monospace mx-auto max-w-6xl px-4 pt-16 lg:pt-24">
-      <div className="grid gap-8 lg:grid-cols-[2fr_3fr] lg:items-start lg:gap-16">
-        <section className="flex flex-col gap-6 lg:sticky lg:top-28">
-          <p className="text-xs uppercase">[ 04 · calendario ]</p>
-          <DayDetailPanel selectedDate={selectedDate} events={events} />
+    <section className="mx-auto max-w-6xl px-4 pt-16 font-monospace text-white lg:pt-24">
+      <p className="text-xs uppercase pb-8">[ 04 · calendario ]</p>
+      <div className="grid gap-8 lg:grid-cols-[1fr_1.5fr] lg:items-start lg:gap-16">
+        <section className="flex flex-col gap-6 order-1 lg:order-0">
+          <DayDetailPanel date={selectedDate} events={events} />
         </section>
 
-        <div className="booking-calendar font-monospace p-3 text-white sm:p-4">
-          <Calendar
-            localizer={localizer}
-            culture="es"
-            events={events}
-            startAccessor="start"
-            endAccessor="end"
-            style={{ height: "100%" }}
-            views={["month"]}
-            date={date}
-            onNavigate={setDate}
-            components={{
-              toolbar: ({ date }) => (
-                <EventsToolbar
-                  date={date}
-                  eventCount={events.length}
-                  loading={isLoading}
-                  onPrev={onPrev}
-                  onNext={onNext}
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center justify-between">
+            <button
+              type="button"
+              aria-label="Mes anterior"
+              className="flex size-10 items-center justify-center border border-white transition-colors hover:bg-red-500/50"
+              onClick={() => navigate(-1)}
+            >
+              <ChevronLeftIcon className="size-5" />
+            </button>
+
+            <span className="flex gap-4 text-base font-medium">
+              {capitalize(fullMonth(currentDate))} {currentDate.getFullYear()}
+              <span className="flex items-center gap-2 text-muted-foreground font-normal">
+                {isLoading ? <Loader2Icon className="size-4 animate-spin" /> : monthEvents.length}{" "}
+                eventos
+              </span>
+            </span>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                aria-label="Mes siguiente"
+                className="flex size-10 items-center justify-center border border-white transition-colors hover:bg-red-500/50"
+                onClick={() => navigate(1)}
+              >
+                <ChevronRightIcon className="size-5" />
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-7 border border-white">
+            {weekdays.map(day => (
+              <div key={day} className="flex justify-center border border-white py-2">
+                {day}
+              </div>
+            ))}
+
+            {grid.map(day => {
+              const dayKey = `${day.getFullYear()}-${day.getMonth()}-${day.getDate()}`
+              const dayEvents = eventsByDay.get(dayKey) ?? []
+
+              return (
+                <DayCell
+                  key={day.toISOString()}
+                  day={day}
+                  todayDate={todayDate}
+                  currentDate={currentDate}
+                  selectedDate={selectedDate}
+                  setSelectedDate={setSelectedDate}
+                  dayEvents={dayEvents}
                 />
-              ),
-            }}
-            eventPropGetter={eventPropGetter}
-            selectable
-            onSelectSlot={handleSelectSlot}
-          />
+              )
+            })}
+          </div>
 
           {communities.length > 0 && (
-            <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 ">
-              {communities.map(item => (
-                <span key={item.label} className="flex items-center gap-2 text-sm text-white/80">
-                  <span className="size-3 shrink-0" style={{ backgroundColor: item.color }} />
-                  {item.label}
+            <div className="flex flex-wrap gap-x-5 gap-y-2">
+              {communities.map(community => (
+                <span key={community.label} className="flex items-center gap-2 text-sm text-white">
+                  <span className={clsx("size-3 shrink-0", colorForCommunity(community.id))} />
+                  {community.label}
                 </span>
               ))}
             </div>

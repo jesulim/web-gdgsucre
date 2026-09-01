@@ -12,15 +12,23 @@ interface CalendarEvent {
   accepted?: boolean
 }
 
-export async function getCalendarEvents(supabase: SupabaseClient, year: number, month: number) {
-  const start = new Date(Date.UTC(year, month - 1, 1))
-  const end = new Date(Date.UTC(year, month, 1))
-
+export async function getCalendarEvents(supabase: SupabaseClient, start: string, end: string) {
   const { data: calendarEvents, error } = await supabase
     .from("calendar_events")
-    .select("*, communities(id, name, short_name, image)")
-    .gte("start_datetime", start.toISOString())
-    .lt("start_datetime", end.toISOString())
+    .select(`
+      id,
+      name,
+      community_id,
+      start_datetime,
+      end_datetime,
+      format,
+      registration_link,
+      location,
+      communities(id, name, short_name)
+    `)
+    .is("accepted", true)
+    .gte("start_datetime", start)
+    .lte("start_datetime", end)
     .order("start_datetime", { ascending: true })
 
   if (error) throw new Error(error.message)
