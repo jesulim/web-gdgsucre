@@ -15,14 +15,16 @@ const OPTIONS: { value: EventFormat; label: string }[] = [
 
 export function FormatToggle({ value, onChange, disabled, name = "format" }: FormatToggleProps) {
   return (
-    <div className="flex border">
+    <div className="flex">
       {OPTIONS.map((option, index) => (
         <label
           key={option.value}
           className={cn(
             "flex-1 cursor-pointer px-4 py-3 text-center text-sm font-bold transition-colors has-disabled:cursor-not-allowed has-disabled:opacity-50",
             index > 0 && "border-l",
-            value === option.value ? "bg-lime-300 text-black" : "text-white hover:bg-white/10"
+            value === option.value
+              ? "bg-red-500 text-white"
+              : "border border-white text-muted-foreground hover:bg-red-500/20"
           )}
         >
           <input

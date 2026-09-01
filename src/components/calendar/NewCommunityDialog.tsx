@@ -54,20 +54,20 @@ export function NewCommunityDialog({ onCreate, disabled }: NewCommunityDialogPro
       <DialogTrigger asChild>
         <Button
           type="button"
-          variant="outline"
+          variant="secondary"
           size="icon"
           disabled={disabled}
-          className="shrink-0 rounded-none"
+          className="shrink-0 rounded-none border border-white"
           aria-label="Agregar nueva comunidad"
         >
           <PlusIcon className="size-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="rounded-none border-black font-monospace text-black">
+      <DialogContent className="bg-black rounded-none border-white font-monospace text-white">
         <DialogHeader>
           <DialogTitle>Nueva comunidad</DialogTitle>
           <DialogDescription className="normal-case">
-            Se envía junto con el evento y queda pendiente de revisión.
+            Se envía junto al evento y queda pendiente de revisión.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -79,7 +79,11 @@ export function NewCommunityDialog({ onCreate, disabled }: NewCommunityDialogPro
                 <FormItem>
                   <FormLabel className="text-xs uppercase">Nombre</FormLabel>
                   <FormControl>
-                    <Input {...field} className="rounded-none border-black" />
+                    <Input
+                      {...field}
+                      className="rounded-none"
+                      placeholder="Google Developer Group Sucre"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -92,7 +96,7 @@ export function NewCommunityDialog({ onCreate, disabled }: NewCommunityDialogPro
                 <FormItem>
                   <FormLabel className="text-xs uppercase">Nombre corto</FormLabel>
                   <FormControl>
-                    <Input {...field} className="rounded-none border-black" />
+                    <Input {...field} className="rounded-none" placeholder="GDG Sucre" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -109,7 +113,7 @@ export function NewCommunityDialog({ onCreate, disabled }: NewCommunityDialogPro
                       {...field}
                       type="url"
                       placeholder="https://..."
-                      className="rounded-none border-black"
+                      className="rounded-none"
                     />
                   </FormControl>
                   <FormMessage />
@@ -123,7 +127,7 @@ export function NewCommunityDialog({ onCreate, disabled }: NewCommunityDialogPro
                 <FormItem>
                   <FormLabel className="text-xs uppercase">Email de contacto</FormLabel>
                   <FormControl>
-                    <Input {...field} type="email" className="rounded-none border-black" />
+                    <Input {...field} type="email" className="rounded-none" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -132,7 +136,7 @@ export function NewCommunityDialog({ onCreate, disabled }: NewCommunityDialogPro
             <DialogFooter>
               <Button
                 type="submit"
-                className="bg-lime-300 hover:bg-lime-300/90 w-full rounded-none font-bold text-black"
+                className="bg-white hover:bg-white hover:shadow-[4px_4px_0_0_var(--color-red-500)] w-full rounded-none font-bold text-black"
               >
                 Agregar comunidad
               </Button>

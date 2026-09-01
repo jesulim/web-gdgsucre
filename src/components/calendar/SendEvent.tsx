@@ -190,7 +190,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                     {...field}
                     disabled={disabled}
                     placeholder="DevFest Sucre 2026"
-                    className="rounded-none"
+                    className="rounded-none border-white"
                   />
                 </FormControl>
                 <FormMessage />
@@ -238,7 +238,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                       }
                     }}
                     disabled={disabled}
-                    className="rounded-none"
+                    className="rounded-none border-white"
                   />
                 </FormControl>
                 <FormLabel className="text-xs uppercase">Fechas por definir</FormLabel>
@@ -259,7 +259,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                         {...field}
                         type="datetime-local"
                         disabled={disabled}
-                        className="rounded-none"
+                        className="rounded-none border-white"
                       />
                     </FormControl>
                     <FormMessage />
@@ -278,7 +278,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                         {...field}
                         type="datetime-local"
                         disabled={disabled}
-                        className="rounded-none"
+                        className="rounded-none border-white"
                       />
                     </FormControl>
                     <FormMessage />
@@ -320,7 +320,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                     {...field}
                     disabled={disabled}
                     placeholder="Hub de innovación USFX / Link de acceso"
-                    className="rounded-none"
+                    className="rounded-none border-white"
                   />
                 </FormControl>
                 <FormMessage />
@@ -339,7 +339,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                     {...field}
                     disabled={disabled}
                     placeholder="https://..."
-                    className="rounded-none"
+                    className="rounded-none border-white"
                   />
                 </FormControl>
                 <FormMessage />
@@ -350,7 +350,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
           <Button
             type="submit"
             disabled={disabled}
-            className="bg-lime-300 hover:bg-lime-300/90 w-full rounded-none py-6 font-bold text-black uppercase"
+            className="bg-white hover:bg-white hover:shadow-[4px_4px_0_0_var(--color-red-500)] w-full rounded-none py-6 font-bold text-black uppercase transition-all"
           >
             {loading && <Loader2Icon className="animate-spin" />}
             Enviar evento
@@ -360,9 +360,9 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
       </Form>
 
       {!isLoggedIn && (
-        <div className="absolute inset-0 flex flex-col items-center pt-20 md:pt-40 gap-4 p-6 text-center text-white bg-black/70 backdrop-blur-xs">
+        <div className="absolute inset-0 flex flex-col items-center pt-20 md:pt-40 lg:pt-64 gap-4 p-6 text-center text-white bg-white/10 backdrop-blur-xs">
           <p className="text-sm uppercase">Inicia sesión para publicar tu evento</p>
-          <Button asChild className="bg-lime-300 hover:bg-lime-300/90 rounded-none text-black">
+          <Button asChild className="bg-white rounded-none text-black">
             <a href="/api/auth/signin?next=/calendario">Iniciar sesión</a>
           </Button>
         </div>
