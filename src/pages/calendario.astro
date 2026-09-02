@@ -1,5 +1,6 @@
 ---
 import CalendarHero from "@/components/calendar/CalendarHero.astro"
+import Communities from "@/components/calendar/Communities.astro"
 import { EventsCalendar } from "@/components/calendar/EventsCalendar"
 import Footer from "@/components/calendar/Footer.astro"
 import Header from "@/components/calendar/Header.astro"
@@ -7,12 +8,16 @@ import NextEvents from "@/components/calendar/NextEvents.astro"
 import PublishEvent from "@/components/calendar/PublishEvent.astro"
 
 import BaseLayout from "@/layout/BaseLayout.astro"
-
 import { getUpcomingCalendarEvents } from "@/lib/services/calendarEventService"
+import { getCommunitiesWithEventCount } from "@/lib/services/communityService"
 import { createUserClient } from "@/lib/supabase"
 
 const supabase = await createUserClient(Astro.cookies)
-const upcomingEvents = await getUpcomingCalendarEvents(supabase)
+
+const [upcomingEvents, communities] = await Promise.all([
+  getUpcomingCalendarEvents(supabase),
+  getCommunitiesWithEventCount(supabase),
+])
 ---
 
 <BaseLayout
@@ -22,11 +27,12 @@ const upcomingEvents = await getUpcomingCalendarEvents(supabase)
 >
   <Header />
 
-  <main class="flex-1 overflow-x-hidden mt-16">
+  <main class="flex-1 overflow-x-hidden mt-8">
     <CalendarHero event={upcomingEvents[0]} />
     <NextEvents events={upcomingEvents} />
     <EventsCalendar client:visible />
     <PublishEvent />
+    <Communities communities={communities} />
   </main>
 
   <Footer />

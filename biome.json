@@ -7,12 +7,7 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": [
-      "**",
-      "!src/components/ui",
-      "!**/templates/*.html",
-      "!**/*.svg"
-    ]
+    "includes": ["**", "!src/components/ui", "!**/templates/*.html", "!**/*.svg"]
   },
   "formatter": {
     "enabled": true,
@@ -45,11 +40,7 @@
   },
   "overrides": [
     {
-      "includes": [
-        "**/*.svelte",
-        "**/*.astro",
-        "**/*.vue"
-      ],
+      "includes": ["**/*.svelte", "**/*.astro", "**/*.vue"],
       "linter": {
         "rules": {
           "style": {

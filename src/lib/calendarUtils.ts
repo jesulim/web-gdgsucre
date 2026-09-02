@@ -1,7 +1,3 @@
-/**
- * Shape returned by `GET /api/calendar-events/upcoming`, matching the embedded
- * `communities` join already used by `getCalendarEvents`.
- */
 export interface UpcomingCalendarEvent {
   id: number
   name: string

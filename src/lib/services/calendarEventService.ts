@@ -36,7 +36,9 @@ export async function getCalendarEvents(supabase: SupabaseClient, start: string,
   return calendarEvents
 }
 
-export async function getUpcomingCalendarEvents(supabase: SupabaseClient, limit: number) {
+export async function getUpcomingCalendarEvents(supabase: SupabaseClient) {
+  const NEXT_EVENTS_LIMIT = 4
+
   const startOfToday = new Date(Date.now() - 4 * 60 * 60 * 1000)
   startOfToday.setUTCHours(0, 0, 0, 0)
 
@@ -48,7 +50,7 @@ export async function getUpcomingCalendarEvents(supabase: SupabaseClient, limit:
     )
     .or(`start_datetime.gte.${startOfToday.toISOString()},start_datetime.is.null`)
     .order("start_datetime", { ascending: true })
-    .limit(limit)
+    .limit(NEXT_EVENTS_LIMIT)
 
   if (error) throw new Error(error.message)
 
@@ -116,7 +118,5 @@ export async function deleteCalendarEvent(supabase: SupabaseClient, id: number) 
     return false
   }
 
-  // Igual que en updateCalendarEvent: RLS filtra silenciosamente sin dar
-  // error, así que un array vacío significa que no se borró ninguna fila.
   return data.length > 0
 }

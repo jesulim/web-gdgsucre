@@ -360,9 +360,9 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
       </Form>
 
       {!isLoggedIn && (
-        <div className="absolute inset-0 flex flex-col items-center pt-20 md:pt-40 lg:pt-64 gap-4 p-6 text-center text-white bg-white/10 backdrop-blur-xs">
+        <div className="absolute inset-0 flex flex-col items-center pt-20 md:pt-40 lg:pt-64 gap-4 p-6 text-center text-white bg-black/50 backdrop-blur-xs">
           <p className="text-sm uppercase">Inicia sesión para publicar tu evento</p>
-          <Button asChild className="bg-white rounded-none text-black">
+          <Button asChild className="bg-white rounded-none text-black font-bold">
             <a href="/api/auth/signin?next=/calendario">Iniciar sesión</a>
           </Button>
         </div>

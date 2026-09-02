@@ -3,6 +3,8 @@ import clsx from "clsx"
 import { ChevronLeftIcon, ChevronRightIcon, Loader2Icon } from "lucide-react"
 import { useCallback, useMemo, useState } from "react"
 
+const WEEKDAYS = ["lun", "mar", "mié", "jue", "vie", "sáb", "dom"]
+
 const fmt = (date: Date, opts: Intl.DateTimeFormatOptions) =>
   new Intl.DateTimeFormat("es", opts).format(date)
 
@@ -105,11 +107,13 @@ function DayDetailPanel({ date, events }: { date: Date; events: CalendarEvent[] 
   const dayEvents = events.filter(e => sameDay(e.start, date))
 
   return (
-    <div className="border border-white bg-black p-4 sm:p-8 text-white">
+    <div className="border border-white bg-black p-4 md:p-8 text-white order-2 sm:order-0">
       <div className="flex items-center gap-4 pb-4">
-        <span className="text-3xl sm:text-5xl leading-none font-bold">{dayNumber(date)}</span>
+        <span className="text-3xl sm:text-4xl lg:text-6xl leading-none font-bold">
+          {dayNumber(date)}
+        </span>
         <div className="flex flex-col text-sm">
-          <span>{weekdayLong(date)}</span>
+          <span className="text-lg">{weekdayLong(date)}</span>
           <span className="text-muted-foreground">
             {fullMonth(date)} {date.getFullYear()}
           </span>
@@ -120,7 +124,7 @@ function DayDetailPanel({ date, events }: { date: Date; events: CalendarEvent[] 
 
       <div className="flex flex-col gap-3">
         {dayEvents.length === 0 ? (
-          <p className="text-sm text-muted-foreground">Sin eventos para este día.</p>
+          <p className="text-muted-foreground">Sin eventos para este día.</p>
         ) : (
           dayEvents.map(event => (
             <div key={event.id} className="flex gap-4 text-white">
@@ -182,7 +186,7 @@ function DayCell({
         ${!inMonth ? "text-muted-foreground" : ""}
       `}
     >
-      <span className="text-xs sm:text-sm md:text-base">{dayNumber(day)}</span>
+      <span className="text-sm md:text-base">{dayNumber(day)}</span>
 
       {dayEvents.length > 0 && (
         <div className="mt-auto justify-center w-full flex gap-0.5">
@@ -191,7 +195,6 @@ function DayCell({
               key={event.id}
               className={clsx(
                 "min-w-2 min-h-2 text-xs text-black line-clamp-1 text-ellipsis",
-
                 colorForCommunity(event.community_id)
               )}
             >
@@ -204,28 +207,25 @@ function DayCell({
   )
 }
 
-const weekdays = ["lun", "mar", "mié", "jue", "vie", "sáb", "dom"]
+interface CalendarProps {
+  events: CalendarEvent[]
+  isLoading: boolean
+  currentDate: Date
+  setCurrentDate: (date: Date) => void
+  selectedDate: Date
+  setSelectedDate: (date: Date) => void
+  grid: Date[]
+}
 
-function EventsCalendarInner() {
-  const [currentDate, setCurrentDate] = useState(today)
-  const [selectedDate, setSelectedDate] = useState(today)
-
-  const grid = useMemo(() => buildGrid(currentDate), [currentDate])
-
-  const gridStart = useMemo(() => {
-    const d = new Date(grid[0])
-    d.setUTCHours(0, 0, 0, 0)
-    return d.toISOString()
-  }, [grid])
-
-  const gridEnd = useMemo(() => {
-    const d = new Date(grid[grid.length - 1])
-    d.setUTCHours(23, 59, 59, 999)
-    return d.toISOString()
-  }, [grid])
-
-  const { data: events = [], isLoading } = useCalendarEvents(gridStart, gridEnd)
-
+function Calendar({
+  events,
+  isLoading,
+  currentDate,
+  setCurrentDate,
+  selectedDate,
+  setSelectedDate,
+  grid,
+}: CalendarProps) {
   const todayDate = useMemo(() => today(), [])
 
   const eventsByDay = useMemo(() => {
@@ -252,85 +252,122 @@ function EventsCalendarInner() {
     return [...seen.entries()].map(([id, label]) => ({ id, label }))
   }, [monthEvents])
 
-  const navigate = useCallback((offset: number) => {
-    setCurrentDate(d => new Date(d.getFullYear(), d.getMonth() + offset, 1))
-  }, [])
+  const navigate = useCallback(
+    (offset: number) => {
+      setCurrentDate(d => new Date(d.getFullYear(), d.getMonth() + offset, 1))
+    },
+    [setCurrentDate]
+  )
 
   return (
-    <section className="mx-auto max-w-6xl px-4 pt-16 font-monospace text-white lg:pt-24">
-      <p className="text-xs uppercase pb-8">[ 04 · calendario ]</p>
-      <div className="grid gap-8 lg:grid-cols-[1fr_1.5fr] lg:items-start lg:gap-16">
-        <section className="flex flex-col gap-6 order-1 lg:order-0">
-          <DayDetailPanel date={selectedDate} events={events} />
-        </section>
+    <div className="order-1 flex flex-col gap-4 col-span-1 row-span-2">
+      <div className="flex items-center justify-between">
+        <button
+          type="button"
+          aria-label="Mes anterior"
+          className="flex size-10 items-center justify-center border border-white transition-colors hover:bg-red-500/50"
+          onClick={() => navigate(-1)}
+        >
+          <ChevronLeftIcon className="size-5" />
+        </button>
 
-        <div className="flex flex-col gap-4">
-          <div className="flex items-center justify-between">
-            <button
-              type="button"
-              aria-label="Mes anterior"
-              className="flex size-10 items-center justify-center border border-white transition-colors hover:bg-red-500/50"
-              onClick={() => navigate(-1)}
-            >
-              <ChevronLeftIcon className="size-5" />
-            </button>
+        <span className="flex items-center gap-2 text-muted-foreground font-normal">
+          {isLoading ? <Loader2Icon className="size-4 animate-spin" /> : monthEvents.length} eventos
+          · {fullMonth(currentDate).substring(0, 3)}
+        </span>
 
-            <span className="flex gap-4 text-base font-medium">
-              {capitalize(fullMonth(currentDate))} {currentDate.getFullYear()}
-              <span className="flex items-center gap-2 text-muted-foreground font-normal">
-                {isLoading ? <Loader2Icon className="size-4 animate-spin" /> : monthEvents.length}{" "}
-                eventos
-              </span>
-            </span>
-
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                aria-label="Mes siguiente"
-                className="flex size-10 items-center justify-center border border-white transition-colors hover:bg-red-500/50"
-                onClick={() => navigate(1)}
-              >
-                <ChevronRightIcon className="size-5" />
-              </button>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-7 border border-white">
-            {weekdays.map(day => (
-              <div key={day} className="flex justify-center border border-white py-2">
-                {day}
-              </div>
-            ))}
-
-            {grid.map(day => {
-              const dayKey = `${day.getFullYear()}-${day.getMonth()}-${day.getDate()}`
-              const dayEvents = eventsByDay.get(dayKey) ?? []
-
-              return (
-                <DayCell
-                  key={day.toISOString()}
-                  day={day}
-                  todayDate={todayDate}
-                  currentDate={currentDate}
-                  selectedDate={selectedDate}
-                  setSelectedDate={setSelectedDate}
-                  dayEvents={dayEvents}
-                />
-              )
-            })}
-          </div>
-
-          {communities.length > 0 && (
-            <div className="flex flex-wrap gap-x-5 gap-y-2">
-              {communities.map(community => (
-                <span key={community.label} className="flex items-center gap-2 text-sm text-white">
-                  <span className={clsx("size-3 shrink-0", colorForCommunity(community.id))} />
-                  {community.label}
-                </span>
-              ))}
-            </div>
-          )}
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            aria-label="Mes siguiente"
+            className="flex size-10 items-center justify-center border border-white transition-colors hover:bg-red-500/50"
+            onClick={() => navigate(1)}
+          >
+            <ChevronRightIcon className="size-5" />
+          </button>
         </div>
+      </div>
+
+      <div className="grid grid-cols-7 border border-white">
+        {WEEKDAYS.map(day => (
+          <div key={day} className="flex justify-center border border-white py-2">
+            {day}
+          </div>
+        ))}
+
+        {grid.map(day => {
+          const dayKey = `${day.getFullYear()}-${day.getMonth()}-${day.getDate()}`
+          const dayEvents = eventsByDay.get(dayKey) ?? []
+
+          return (
+            <DayCell
+              key={day.toISOString()}
+              day={day}
+              todayDate={todayDate}
+              currentDate={currentDate}
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+              dayEvents={dayEvents}
+            />
+          )
+        })}
+      </div>
+
+      <div className="flex flex-wrap gap-x-5 gap-y-2 h-5">
+        {communities?.map(community => (
+          <span key={community.label} className="flex items-center gap-2 text-sm text-white">
+            <span className={clsx("size-3 shrink-0", colorForCommunity(community.id))} />
+            {community.label}
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function EventsCalendarInner() {
+  const [currentDate, setCurrentDate] = useState(today)
+  const [selectedDate, setSelectedDate] = useState(today)
+
+  const grid = useMemo(() => buildGrid(currentDate), [currentDate])
+
+  const gridStart = useMemo(() => {
+    const d = new Date(grid[0])
+    d.setUTCHours(0, 0, 0, 0)
+    return d.toISOString()
+  }, [grid])
+
+  const gridEnd = useMemo(() => {
+    const d = new Date(grid[grid.length - 1])
+    d.setUTCHours(23, 59, 59, 999)
+    return d.toISOString()
+  }, [grid])
+
+  const { data: events = [], isLoading } = useCalendarEvents(gridStart, gridEnd)
+
+  return (
+    <section
+      id="calendario"
+      className="mx-auto max-w-6xl flex flex-col gap-8 px-4 font-monospace text-white py-8 md:py-12"
+    >
+      <p className="[grid-area:label] text-xs uppercase col-span-2">[ 04 · calendario ]</p>
+
+      <span className="font-bold text-3xl md:text-4xl lg:text-6xl">
+        {capitalize(fullMonth(currentDate))} {currentDate.getFullYear()}
+      </span>
+
+      <div className="grid gap-8 grid-cols-1 sm:grid-cols-[1fr_1.5fr]">
+        <DayDetailPanel date={selectedDate} events={events} />
+
+        <Calendar
+          events={events}
+          isLoading={isLoading}
+          currentDate={currentDate}
+          setCurrentDate={setCurrentDate}
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+          grid={grid}
+        />
       </div>
     </section>
   )

@@ -20,8 +20,9 @@ const googleGradients = [
 ]
 
 const baseGradient = googleGradients[0]
-const talkGradient = "bg-[linear-gradient(135deg,_rgb(251,188,4)_0%,_rgb(234,67,53)_50%,_rgb(161,66,244)_100%)]"
-const enrichedData = scheduleData.map((entry) => ({
+const talkGradient =
+  "bg-[linear-gradient(135deg,_rgb(251,188,4)_0%,_rgb(234,67,53)_50%,_rgb(161,66,244)_100%)]"
+const enrichedData = scheduleData.map(entry => ({
   ...entry,
   gradient: baseGradient,
   talkGradient: entry.type === "talk" ? talkGradient : undefined,

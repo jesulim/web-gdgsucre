@@ -17,27 +17,27 @@ const terminalLine = event
 ---
 
 <section
-  class="font-monospace mx-auto grid max-w-6xl gap-10 px-4 md:grid-cols-2 lg:items-center lg:gap-16"
+  class="font-monospace mx-auto grid max-w-6xl gap-4 sm:gap-8 px-4 md:grid-cols-2 lg:items-center lg:gap-16 pb-4"
 >
-  <div class="flex min-w-0 flex-col gap-6">
-    <p class=" text-xs uppercase">[ 01 · señal ]</p>
+  <div class="flex min-w-0 flex-col gap-4 sm:gap-6">
+    <p class="text-xs uppercase">[ 01 · señal ]</p>
 
-    <h1 class="text-3xl sm:text-4xl leading-tight font-bold text-white md:text-5xl lg:text-6xl">
+    <h1 class="text-3xl md:text-4xl lg:text-6xl leading-tight font-bold text-white">
       La agenda tech de Sucre
     </h1>
 
-    <div class="flex items-center gap-3 border border-white bg-black p-2 md:p-4">
-      <span class="text-red-400 text-xs">&gt;</span>
-      <span class="min-w-0 flex-1 truncate text-xs text-white/70 md:text-sm">
+    <div class="p-3 sm:p-4 flex items-center border border-white bg-black">
+      <span class="text-red-500 font-bold mr-2">&gt;</span>
+      <span class="min-w-0 flex-1 truncate text-sm text-white">
         {terminalLine}
       </span>
-      <span class="bg-red-500 w-1 h-3 shrink-0 animate-pulse"></span>
+      <span class="bg-red-500 w-2 h-4 shrink-0 animate-pulse"></span>
     </div>
 
     <div class="flex flex-wrap items-center gap-4">
       <a
         href="#publicar"
-        class="group bg-white hover:shadow-[4px_4px_0_0_var(--color-red-500)] inline-flex items-center gap-2 px-2 sm:px-6 py-2 md:py-4 text-sm font-bold text-black md:text-base transition-all"
+        class="group bg-white hover:shadow-[4px_4px_0_0_var(--color-red-500)] inline-flex items-center gap-2 px-4 sm:px-6 py-3 md:py-4 text-sm font-bold text-black lg:text-base transition-all"
       >
         Sumar evento
         <ArrowOutward
@@ -47,14 +47,12 @@ const terminalLine = event
 
       <a
         href="#agenda"
-        class="border border-white px-4 md:px-6 py-2 md:py-4 text-sm text-white transition-colors hover:bg-red-500/50 md:text-base"
+        class="border border-white px-4 md:px-6 py-3 md:py-4 text-sm text-white transition-colors hover:bg-red-500/50 lg:text-base"
       >
         Ver agenda
       </a>
     </div>
   </div>
 
-  <!-- <div class="max-w-full h-auto"> -->
-    <Cathedral />
-  <!-- </div> -->
+  <Cathedral />
 </section>
