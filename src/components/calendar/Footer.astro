@@ -1,8 +1,8 @@
 ---
 const navLinks = [
-  { href: "#agenda", label: "Agenda" },
+  { href: "#agenda", label: "Próximos eventos" },
   { href: "#calendario", label: "Calendario" },
-  { href: "#publicar", label: "Publicar evento" },
+  { href: "#comunidades", label: "Aliados" },
 ]
 
 const socialLinks = [
@@ -20,11 +20,11 @@ const socialLinks = [
     <div class="w-full flex flex-col md:flex-row gap-8 md:justify-between transition-colors">
       <div>
         <h3 class="text-4xl md:text-5xl mt-2 mb-4 font-medium">sucre.tech</h3>
-        <p class="text-muted-foreground leading-loose">
+        <p class="text-muted-foreground leading-relaxed">
           Agenda de eventos tecnológicos en Sucre, Bolivia. <br />
           <span class="text-muted-foreground">
             hecho por: <a
-              class="hover:text-white font-medium hover:underline"
+              class="text-white font-medium hover:underline"
               href="https://www.gdgsucre.com.bo/"
               target="_blank"
               rel="noopener noreferrer"
@@ -35,7 +35,7 @@ const socialLinks = [
         </p>
       </div>
 
-      <div class="grid sm:grid-cols-2 gap-8 md:gap-4">
+      <div class="grid sm:grid-cols-2 gap-8 md:gap-6">
         <ul class="grid grid-cols-1 gap-y-2">
           <li>EXPLORAR</li>
           {
@@ -50,7 +50,7 @@ const socialLinks = [
         </ul>
 
         <ul class="w-fit grid grid-cols-2 gap-y-2 gap-x-8">
-          <li class="col-span-2">REDES</li>
+          <li class="col-span-2">REDES GDG SUCRE</li>
           {
             socialLinks.map(link => (
               <li>
@@ -72,7 +72,7 @@ const socialLinks = [
     <hr class="border-t border-white/15" />
 
     <span class="text-muted-foreground text-xs md:text-sm">
-      &copy; {new Date().getFullYear()} sucre.tech <span class="hidden sm:inline">
+      &copy; {new Date().getFullYear()} Google Developer Group Sucre <span class="hidden sm:inline">
         · proyecto comunitario · sin fines de lucro
       </span>
     </span>

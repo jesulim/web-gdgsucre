@@ -62,16 +62,3 @@ export function nameToSlug(name: string) {
     .trim()
     .replace(/\s+/g, "_")
 }
-
-/** Builds the "jul—ago · 04" summary shown next to the section title. */
-export function formatRangeLabel(events: UpcomingCalendarEvent[]) {
-  const count = String(events.length).padStart(2, "0")
-
-  if (events.length === 0) return count
-
-  const first = formatEventDate(events[0].start_datetime).month
-  const last = formatEventDate(events[events.length - 1].start_datetime).month
-  const range = first === last ? first : `${first}—${last}`
-
-  return `${range} · ${count}`
-}

@@ -350,7 +350,7 @@ function EventsCalendarInner() {
       id="calendario"
       className="mx-auto max-w-6xl flex flex-col gap-8 px-4 font-monospace text-white py-8 md:py-12"
     >
-      <p className="[grid-area:label] text-xs uppercase col-span-2">[ 04 · calendario ]</p>
+      <p className="[grid-area:label] text-xs uppercase col-span-2">[ 03 · calendario ]</p>
 
       <span className="font-bold text-3xl md:text-4xl lg:text-6xl">
         {capitalize(fullMonth(currentDate))} {currentDate.getFullYear()}

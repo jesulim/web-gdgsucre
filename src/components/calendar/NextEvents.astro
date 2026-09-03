@@ -1,5 +1,5 @@
 ---
-import { formatRangeLabel, type UpcomingCalendarEvent } from "@/lib/calendarUtils"
+import { type UpcomingCalendarEvent } from "@/lib/calendarUtils"
 
 import NextEventCard from "./NextEventCard.astro"
 
@@ -8,8 +8,6 @@ interface Props {
 }
 
 const { events } = Astro.props
-
-const rangeLabel = formatRangeLabel(events)
 ---
 
 <section
@@ -22,7 +20,7 @@ const rangeLabel = formatRangeLabel(events)
     <h2 class="text-2xl font-bold text-white md:text-5xl">
       <span>Próximos eventos</span>
     </h2>
-    <span class="text-muted-foreground shrink-0">{rangeLabel}</span>
+    <span class="text-muted-foreground shrink-0">{`${events.length}`.padStart(2, "0")}</span>
   </div>
 
   {
@@ -33,8 +31,11 @@ const rangeLabel = formatRangeLabel(events)
         ))}
       </div>
     ) : (
-      <p class="text-muted-foreground border border-white/15 p-6 text-center text-sm">
-        Todavía no hay eventos próximos. Publicá el tuyo acá abajo.
+      <p class="bg-black text-muted-foreground border border-muted-foreground p-6 text-center text-sm">
+        No hay eventos próximos.{" "}
+        <a href="#publicar" class="text-white hover:underline">
+          Suma el tuyo.
+        </a>
       </p>
     )
   }
