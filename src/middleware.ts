@@ -13,9 +13,6 @@ export const onRequest = defineMiddleware(async (context, next) => {
     if (path === "/") {
       return context.rewrite("/calendario")
     }
-    if (path === "/calendario") {
-      return context.redirect("https://calendario.gdgsucre.com/", 301)
-    }
   }
 
   if ((host === "gdgsucre.com" || host === "www.gdgsucre.com") && path === "/calendario") {
