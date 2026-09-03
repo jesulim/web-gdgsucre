@@ -55,12 +55,12 @@ export async function getEventRegistration(
     return null
   }
 
-  const { data, error } = await supabase
+  const { data } = await supabase
     .from("registrations")
     .select("id, status, events!inner(slug), qr_url")
     .eq("user_id", user_id)
     .eq("events.slug", eventSlug)
-    .single()
+    .maybeSingle()
 
   const { data: organizer } = await supabase
     .from("organizers")
@@ -68,10 +68,6 @@ export async function getEventRegistration(
     .eq("profile_id", user_id)
     .eq("events.slug", eventSlug)
     .maybeSingle()
-
-  if (error) {
-    return null
-  }
 
   return { ...data, role: organizer ? "Organizador" : "Participante" }
 }

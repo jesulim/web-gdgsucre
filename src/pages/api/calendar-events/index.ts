@@ -11,6 +11,8 @@ import { createUserClient } from "@/lib/supabase"
 
 export const GET: APIRoute = async ({ url, cookies }) => {
   try {
+    const startParam = url.searchParams.get("start")
+    const endParam = url.searchParams.get("end")
     const yearParam = url.searchParams.get("year")
     const monthParam = url.searchParams.get("month")
 
@@ -18,7 +20,9 @@ export const GET: APIRoute = async ({ url, cookies }) => {
 
     let calendarEvents: Awaited<ReturnType<typeof getCalendarEvents>>
 
-    if (yearParam || monthParam) {
+    if (startParam && endParam) {
+      calendarEvents = await getCalendarEvents(supabase, startParam, endParam)
+    } else if (yearParam || monthParam) {
       const now = new Date()
       const year = yearParam ? Number(yearParam) : now.getUTCFullYear()
       const month = monthParam ? Number(monthParam) : now.getUTCMonth() + 1
@@ -30,7 +34,9 @@ export const GET: APIRoute = async ({ url, cookies }) => {
         })
       }
 
-      calendarEvents = await getCalendarEvents(supabase, year, month)
+      const start = new Date(Date.UTC(year, month - 1, 1)).toISOString()
+      const end = new Date(Date.UTC(year, month, 1)).toISOString()
+      calendarEvents = await getCalendarEvents(supabase, start, end)
     } else {
       calendarEvents = await getAllCalendarEvents(supabase)
     }
@@ -59,7 +65,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       location,
     } = body
 
-    if (!name || !community_id || !start_datetime || !end_datetime) {
+    if (!name || !community_id) {
       return new Response(JSON.stringify({ error: "Invalid request body" }), {
         status: 400,
         headers: { "Content-Type": "application/json" },

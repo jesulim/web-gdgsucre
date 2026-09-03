@@ -7,7 +7,7 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": ["**", "!src/components/ui", "!**/templates/*.html"]
+    "includes": ["**", "!src/components/ui", "!**/templates/*.html", "!**/*.svg"]
   },
   "formatter": {
     "enabled": true,
@@ -17,7 +17,7 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "preset": "recommended"
     }
   },
   "javascript": {

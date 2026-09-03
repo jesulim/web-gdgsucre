@@ -10,9 +10,6 @@ interface Community {
   accepted?: boolean
 }
 
-// Escapa los caracteres que PostgREST interpreta como sintaxis dentro de un
-// filtro .or(): una coma o un paréntesis sin escapar en el input del usuario
-// puede alterar el árbol de filtros o romper el parseo de la request.
 function escapePostgrestPattern(value: string) {
   return value.replace(/[,()]/g, "\\$&")
 }
@@ -59,9 +56,6 @@ export async function updateCommunity(
     return null
   }
 
-  // RLS filtra silenciosamente las filas que no cumplen la política de UPDATE
-  // (en vez de lanzar un error), así que un array vacío significa que no se
-  // modificó nada: no existe el id o el usuario no tiene permiso.
   if (data.length === 0) return null
 
   return data
@@ -75,7 +69,43 @@ export async function deleteCommunity(supabase: SupabaseClient, id: number) {
     return false
   }
 
-  // Igual que en updateCommunity: RLS filtra silenciosamente sin dar error,
-  // así que un array vacío significa que no se borró ninguna fila.
   return data.length > 0
+}
+
+export interface CommunityWithCount {
+  id: number
+  name: string
+  short_name: string | null
+  website: string | null
+  event_count: number
+}
+
+export async function getCommunitiesWithEventCount(
+  supabase: SupabaseClient
+): Promise<CommunityWithCount[]> {
+  const { data: communities, error: communitiesError } = await supabase
+    .from("communities")
+    .select("id, name, short_name, website")
+    .eq("accepted", true)
+    .order("name")
+
+  if (communitiesError) throw new Error(communitiesError.message)
+  if (!communities || communities.length === 0) return []
+
+  const { data: events, error: eventsError } = await supabase
+    .from("calendar_events")
+    .select("community_id")
+    .eq("accepted", true)
+
+  if (eventsError) throw new Error(eventsError.message)
+
+  const countByCommunity = new Map<number, number>()
+  for (const event of events ?? []) {
+    countByCommunity.set(event.community_id, (countByCommunity.get(event.community_id) ?? 0) + 1)
+  }
+
+  return communities.map(c => ({
+    ...c,
+    event_count: countByCommunity.get(c.id) ?? 0,
+  }))
 }

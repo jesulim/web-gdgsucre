@@ -1,17 +1,17 @@
 ---
 interface Props {
-  type: "talk" | "activity" | "break";
-  time: string;
-  title: string;
-  speaker?: string;
-  gradient?: string;
-  talkGradient?: string;
+  type: "talk" | "activity" | "break"
+  time: string
+  title: string
+  speaker?: string
+  gradient?: string
+  talkGradient?: string
 }
 
-const { type, time, title, speaker, gradient, talkGradient } = Astro.props;
+const { type, time, title, speaker, gradient, talkGradient } = Astro.props
 
-const isTalk = type === "talk";
-const isBreak = type === "break";
+const isTalk = type === "talk"
+const isBreak = type === "break"
 ---
 
 <article

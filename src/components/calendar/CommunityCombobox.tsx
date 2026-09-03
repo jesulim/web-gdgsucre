@@ -30,12 +30,12 @@ export function CommunityCombobox({ value, label, onChange, disabled }: Communit
       <PopoverTrigger asChild>
         <Button
           type="button"
-          variant="outline"
+          variant="secondary"
           role="combobox"
           aria-expanded={open}
           disabled={disabled}
           className={cn(
-            "w-full justify-between rounded-none font-normal",
+            "border border-white w-full justify-between rounded-none font-normal",
             !label && "text-muted-foreground"
           )}
         >
@@ -47,7 +47,7 @@ export function CommunityCombobox({ value, label, onChange, disabled }: Communit
           is not inherited and has to be declared here. */}
       <PopoverContent
         align="start"
-        className="font-monospace w-[var(--radix-popover-trigger-width)] rounded-none p-0"
+        className="font-monospace w-(--radix-popover-trigger-width) rounded-none p-0"
       >
         <div className="border-b p-2">
           <Input

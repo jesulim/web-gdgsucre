@@ -1,32 +1,38 @@
 ---
+import CalendarHero from "@/components/calendar/CalendarHero.astro"
+import Communities from "@/components/calendar/Communities.astro"
+import { EventsCalendar } from "@/components/calendar/EventsCalendar"
+import Footer from "@/components/calendar/Footer.astro"
+import Header from "@/components/calendar/Header.astro"
 import NextEvents from "@/components/calendar/NextEvents.astro"
-import PublishHero from "@/components/calendar/PublishHero.astro"
-import { SendEvent } from "@/components/calendar/SendEvent"
-import Footer from "@/components/landing/Footer.astro"
-import Header from "@/components/landing/Header.astro"
+import PublishEvent from "@/components/calendar/PublishEvent.astro"
 
 import BaseLayout from "@/layout/BaseLayout.astro"
-
-import { getProfile } from "@/lib/services/profileService"
+import { getUpcomingCalendarEvents } from "@/lib/services/calendarEventService"
+import { getCommunitiesWithEventCount } from "@/lib/services/communityService"
 import { createUserClient } from "@/lib/supabase"
 
 const supabase = await createUserClient(Astro.cookies)
-const profile = await getProfile(supabase)
+
+const [upcomingEvents, communities] = await Promise.all([
+  getUpcomingCalendarEvents(supabase),
+  getCommunitiesWithEventCount(supabase),
+])
 ---
 
-<BaseLayout theme="dark" title="Calendario - GDG Sucre" description="Publica tu evento en la agenda de comunidades de Sucre">
+<BaseLayout
+  theme="dark"
+  title="Calendario - GDG Sucre"
+  description="Publica tu evento en la agenda de comunidades de Sucre"
+>
   <Header />
 
-  <main class="flex-1 overflow-x-hidden mt-16">
-    <NextEvents />
-
-    <div class="mx-auto grid max-w-6xl gap-12 px-4 py-16 lg:grid-cols-[2fr_3fr] lg:items-start lg:gap-20 lg:py-24">
-      <div class="lg:sticky lg:top-24">
-        <PublishHero />
-      </div>
-
-      <SendEvent isLoggedIn={!!profile} client:visible />
-    </div>
+  <main class="flex-1 overflow-x-hidden mt-8">
+    <CalendarHero event={upcomingEvents[0]} />
+    <NextEvents events={upcomingEvents} />
+    <EventsCalendar client:visible />
+    <PublishEvent />
+    <Communities communities={communities} />
   </main>
 
   <Footer />

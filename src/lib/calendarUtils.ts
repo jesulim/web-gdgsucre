@@ -1,7 +1,3 @@
-/**
- * Shape returned by `GET /api/calendar-events/upcoming`, matching the embedded
- * `communities` join already used by `getCalendarEvents`.
- */
 export interface UpcomingCalendarEvent {
   id: number
   name: string
@@ -18,16 +14,14 @@ export interface UpcomingCalendarEvent {
   } | null
 }
 
-// `start_datetime` is a timestamptz, but the publish form sends the value with
-// no offset (see SendEvent.tsx), so Postgres stores it as UTC. Formatting back
-// in UTC therefore renders the same wall-clock time the community typed in.
-// Switch this to "America/La_Paz" only once the POST starts sending the offset.
-const TIME_ZONE = "UTC"
+// Default to Bolivian time zone, as it is the one used by the form.
+const TIME_ZONE = "America/La_Paz"
 const LOCALE = "es-BO"
 
 const dayFormatter = new Intl.DateTimeFormat(LOCALE, { day: "2-digit", timeZone: TIME_ZONE })
 const monthFormatter = new Intl.DateTimeFormat(LOCALE, { month: "short", timeZone: TIME_ZONE })
 const weekdayFormatter = new Intl.DateTimeFormat(LOCALE, { weekday: "short", timeZone: TIME_ZONE })
+const yearFormatter = new Intl.DateTimeFormat(LOCALE, { year: "numeric", timeZone: TIME_ZONE })
 const timeFormatter = new Intl.DateTimeFormat(LOCALE, {
   hour: "2-digit",
   minute: "2-digit",
@@ -39,6 +33,7 @@ const timeFormatter = new Intl.DateTimeFormat(LOCALE, {
 const withoutTrailingDot = (value: string) => value.replace(/\.$/, "")
 
 export function formatEventDate(datetime: string) {
+  if (!datetime) return { day: "", month: "", weekday: "", time: "" }
   const date = new Date(datetime)
 
   return {
@@ -47,6 +42,25 @@ export function formatEventDate(datetime: string) {
     weekday: withoutTrailingDot(weekdayFormatter.format(date)),
     time: timeFormatter.format(date),
   }
+}
+
+/** Builds the "15.ago.2026" date shown in the hero's terminal line. */
+export function formatHeroDate(datetime: string) {
+  if (!datetime) return "Fecha por definir"
+
+  const date = new Date(datetime)
+  const { day, month } = formatEventDate(datetime)
+  return `${day}.${month}.${yearFormatter.format(date)}`
+}
+
+export function nameToSlug(name: string) {
+  return name
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, "")
+    .trim()
+    .replace(/\s+/g, "_")
 }
 
 /** Builds the "jul—ago · 04" summary shown next to the section title. */

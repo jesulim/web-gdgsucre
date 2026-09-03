@@ -15,15 +15,41 @@ export const calendarEventSchema = z
       .number()
       .int()
       .refine(value => value !== 0, { error: "Elige una comunidad" }),
-    start_datetime: z.string().trim().min(1, "La fecha de inicio es requerida"),
-    end_datetime: z.string().trim().min(1, "La fecha de fin es requerida"),
+    start_datetime: z.string(),
+    end_datetime: z.string(),
     format: z.enum(EVENT_FORMATS, { error: "Elige una modalidad" }),
     location: z.string().trim().min(1, "Este campo es requerido"),
     registration_link: optionalUrl,
+    dates_tbd: z.boolean(),
   })
-  .refine(values => new Date(values.end_datetime) > new Date(values.start_datetime), {
-    error: "La fecha de fin debe ser posterior a la de inicio",
-    path: ["end_datetime"],
+  .superRefine((values, ctx) => {
+    if (values.dates_tbd) return
+
+    const start = values.start_datetime.trim()
+    const end = values.end_datetime.trim()
+
+    if (!start) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["start_datetime"],
+        message: "La fecha de inicio es requerida",
+      })
+    }
+    if (!end) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["end_datetime"],
+        message: "La fecha de fin es requerida",
+      })
+    }
+
+    if (start && end && !(new Date(end) > new Date(start))) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["end_datetime"],
+        message: "La fecha de fin debe ser posterior a la de inicio",
+      })
+    }
   })
 
 export type CalendarEventFormValues = z.infer<typeof calendarEventSchema>

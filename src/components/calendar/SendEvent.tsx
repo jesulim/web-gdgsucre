@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form"
 import { Toaster, toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import {
   Form,
   FormControl,
@@ -29,6 +30,12 @@ import { NewCommunityDialog } from "./NewCommunityDialog"
 // Sentinel used while a brand-new community is staged locally (see NewCommunityDialog):
 // it is not a real id yet, it only marks "create the community first, then use its id".
 const NEW_COMMUNITY_ID = -1
+
+const LA_PAZ_TIME_ZONE = "America/La_Paz"
+const LA_PAZ_OFFSET = "-04:00"
+
+const browserTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone ?? LA_PAZ_TIME_ZONE
+const isOutsideBolivia = browserTimeZone !== LA_PAZ_TIME_ZONE
 
 const queryClient = new QueryClient()
 
@@ -62,8 +69,11 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
       format: "in-person",
       location: "",
       registration_link: "",
+      dates_tbd: false,
     },
   })
+
+  const datesTbd = form.watch("dates_tbd")
 
   function handleSelectCommunity(id: number, label: string) {
     setPendingCommunity(null)
@@ -82,8 +92,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
     try {
       let communityId = values.community_id
 
-      // Si se está agregando una nueva comunidad, se crea primero: si esto
-      // falla se corta acá y el evento no llega a enviarse.
+      // Si se está agregando una nueva comunidad, se crea primero
       if (communityId === NEW_COMMUNITY_ID) {
         if (!pendingCommunity) {
           form.setError("community_id", { type: "manual", message: "Elige una comunidad" })
@@ -116,8 +125,10 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
         body: JSON.stringify({
           name: values.name,
           community_id: communityId,
-          start_datetime: `${values.start_datetime}:00`,
-          end_datetime: `${values.end_datetime}:00`,
+          start_datetime: values.dates_tbd
+            ? undefined
+            : `${values.start_datetime}:00${LA_PAZ_OFFSET}`,
+          end_datetime: values.dates_tbd ? undefined : `${values.end_datetime}:00${LA_PAZ_OFFSET}`,
           format: values.format,
           registration_link: values.registration_link || undefined,
           location: values.location,
@@ -163,10 +174,11 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
   }
 
   return (
-    <div className="font-monospace relative border text-white">
+    <div className="font-monospace relative border">
       <Toaster position="top-right" richColors />
+
       <Form {...form}>
-        <form className="flex flex-col gap-6 p-6" onSubmit={form.handleSubmit(onSubmit)}>
+        <form className="flex flex-col gap-6 p-4 md:p-6" onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
             control={form.control}
             name="name"
@@ -178,7 +190,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                     {...field}
                     disabled={disabled}
                     placeholder="DevFest Sucre 2026"
-                    className="rounded-none"
+                    className="rounded-none border-white"
                   />
                 </FormControl>
                 <FormMessage />
@@ -210,45 +222,78 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
             )}
           />
 
-          <div className="grid gap-6 md:grid-cols-2">
-            <FormField
-              control={form.control}
-              name="start_datetime"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xs uppercase">Inicio</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      type="datetime-local"
-                      disabled={disabled}
-                      className="rounded-none"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <FormField
+            control={form.control}
+            name="dates_tbd"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-center gap-3 space-y-0">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={checked => {
+                      field.onChange(checked === true)
+                      if (checked) {
+                        form.clearErrors("start_datetime")
+                        form.clearErrors("end_datetime")
+                      }
+                    }}
+                    disabled={disabled}
+                    className="rounded-none border-white"
+                  />
+                </FormControl>
+                <FormLabel className="text-xs uppercase">Fechas por definir</FormLabel>
+              </FormItem>
+            )}
+          />
 
-            <FormField
-              control={form.control}
-              name="end_datetime"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xs uppercase">Fin</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      type="datetime-local"
-                      disabled={disabled}
-                      className="rounded-none"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+          {!datesTbd && (
+            <div className="grid gap-6 md:grid-cols-2">
+              <FormField
+                control={form.control}
+                name="start_datetime"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs uppercase">Inicio</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="datetime-local"
+                        disabled={disabled}
+                        className="rounded-none border-white"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="end_datetime"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs uppercase">Fin</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="datetime-local"
+                        disabled={disabled}
+                        className="rounded-none border-white"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          )}
+
+          {!datesTbd && isOutsideBolivia && (
+            <p className="text-muted-foreground text-xs">
+              Tu zona horaria es {browserTimeZone}: los horarios se publican en hora de Bolivia
+              (UTC-4).
+            </p>
+          )}
 
           <FormField
             control={form.control}
@@ -275,7 +320,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                     {...field}
                     disabled={disabled}
                     placeholder="Hub de innovación USFX / Link de acceso"
-                    className="rounded-none"
+                    className="rounded-none border-white"
                   />
                 </FormControl>
                 <FormMessage />
@@ -294,7 +339,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                     {...field}
                     disabled={disabled}
                     placeholder="https://..."
-                    className="rounded-none"
+                    className="rounded-none border-white"
                   />
                 </FormControl>
                 <FormMessage />
@@ -305,7 +350,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
           <Button
             type="submit"
             disabled={disabled}
-            className="bg-lime-300 hover:bg-lime-300/90 w-full rounded-none py-6 font-bold text-black uppercase"
+            className="bg-white hover:bg-white hover:shadow-[4px_4px_0_0_var(--color-red-500)] w-full rounded-none py-6 font-bold text-black uppercase transition-all"
           >
             {loading && <Loader2Icon className="animate-spin" />}
             Enviar evento
@@ -315,9 +360,9 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
       </Form>
 
       {!isLoggedIn && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-6 text-center text-white bg-black/70 backdrop-blur-xs">
+        <div className="absolute inset-0 flex flex-col items-center pt-20 md:pt-40 lg:pt-64 gap-4 p-6 text-center text-white bg-black/50 backdrop-blur-xs">
           <p className="text-sm uppercase">Inicia sesión para publicar tu evento</p>
-          <Button asChild className="bg-lime-300 hover:bg-lime-300/90 rounded-none text-black">
+          <Button asChild className="bg-white rounded-none text-black font-bold">
             <a href="/api/auth/signin?next=/calendario">Iniciar sesión</a>
           </Button>
         </div>

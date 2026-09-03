@@ -8,7 +8,7 @@ const eventSlug = Astro.params.eventSlug || "bwai-26"
 const isIoExtended = eventSlug.includes("io-extended")
 const imgLogo = isIoExtended ? LogoBlackIO.src : "/events/bwai-26/logotipo.svg"
 
-const registroPath = "/registro/" + eventSlug
+const registroPath = `/registro/${eventSlug}`
 const isOnRegistroPage = Astro.url.pathname.startsWith(registroPath)
 
 const accessToken = Astro.cookies.has("sb-access-token")

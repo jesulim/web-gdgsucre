@@ -1,67 +1,41 @@
 ---
-import { formatRangeLabel, type UpcomingCalendarEvent } from "@/lib/calendar"
-import { getMockUpcomingEvents } from "@/lib/mocks/upcomingCalendarEvents"
+import { formatRangeLabel, type UpcomingCalendarEvent } from "@/lib/calendarUtils"
 
 import NextEventCard from "./NextEventCard.astro"
 
-const UPCOMING_LIMIT = 4
-
-let events: UpcomingCalendarEvent[] = []
-// The endpoint is owned by another branch. Until it ships the fetch fails, and
-// the section is skipped rather than breaking the page around it.
-let endpointAvailable = false
-
-try {
-  const endpoint = new URL(`/api/calendar-events/upcoming?limit=${UPCOMING_LIMIT}`, Astro.url)
-  const response = await fetch(endpoint)
-
-  if (response.ok) {
-    events = await response.json()
-    endpointAvailable = true
-  } else {
-    console.error(`NextEvents: /api/calendar-events/upcoming respondió ${response.status}`)
-  }
-} catch (error) {
-  console.error("NextEvents: no se pudieron obtener los próximos eventos", error)
+interface Props {
+  events: UpcomingCalendarEvent[]
 }
 
-// TEMPORARY: keeps the agenda reviewable while the endpoint does not exist.
-// Gated to `astro dev`, so a production build still degrades to a hidden
-// section instead of shipping fake events. Remove this block, the import and
-// src/lib/mocks/upcomingCalendarEvents.ts once the endpoint is merged.
-if (!endpointAvailable && import.meta.env.DEV) {
-  events = getMockUpcomingEvents(UPCOMING_LIMIT)
-  endpointAvailable = true
-  console.warn("NextEvents: mostrando datos mockeados (solo dev) porque el endpoint no existe")
-}
+const { events } = Astro.props
 
 const rangeLabel = formatRangeLabel(events)
 ---
 
-{
-  endpointAvailable && (
-    <section class="font-monospace mx-auto flex max-w-6xl flex-col gap-6 px-4 pt-16 lg:pt-24">
-      <p class="text-green-lime text-sm uppercase">[ 03 · agenda ]</p>
+<section
+  id="agenda"
+  class="font-monospace mx-auto flex max-w-6xl flex-col gap-4 md:gap-6 px-4 py-8 md:py-12"
+>
+  <p class="text-xs uppercase">[ 02 · agenda ]</p>
 
-      <div class="flex items-baseline justify-between gap-4">
-        <h2 class="text-4xl font-bold text-white md:text-5xl">
-          <span class="md:hidden">Próximos</span>
-          <span class="hidden md:inline">próximos / vistazo</span>
-        </h2>
-        <span class="text-muted-foreground shrink-0 text-sm">{rangeLabel}</span>
+  <div class="flex justify-between gap-4 items-center">
+    <h2 class="text-2xl font-bold text-white md:text-5xl">
+      <span>Próximos eventos</span>
+    </h2>
+    <span class="text-muted-foreground shrink-0">{rangeLabel}</span>
+  </div>
+
+  {
+    events.length > 0 ? (
+      <div class="flex flex-col gap-3">
+        {events.map((event, index) => (
+          <NextEventCard event={event} index={index} />
+        ))}
       </div>
-
-      {events.length > 0 ? (
-        <div class="flex flex-col gap-3">
-          {events.map((event, index) => (
-            <NextEventCard event={event} index={index} />
-          ))}
-        </div>
-      ) : (
-        <p class="text-muted-foreground border border-white/15 p-6 text-center text-sm">
-          Todavía no hay eventos próximos. Publicá el tuyo acá abajo.
-        </p>
-      )}
-    </section>
-  )
-}
+    ) : (
+      <p class="text-muted-foreground border border-white/15 p-6 text-center text-sm">
+        Todavía no hay eventos próximos. Publicá el tuyo acá abajo.
+      </p>
+    )
+  }
+</section>

@@ -1,0 +1,39 @@
+---
+import ArrowOutward from "@/assets/icons/arrow_outward.svg"
+
+const navLinks = [
+  { href: "#agenda", label: "agenda" },
+  { href: "#calendario", label: "calendario" },
+  { href: "#publicar", label: "publicar" },
+  { href: "#comunidades", label: "comunidades" },
+]
+---
+
+<header class="w-full bg-black border-b border-red-500 p-4 sticky inset-0 font-monospace z-10">
+  <div class="max-w-6xl mx-auto flex flex-row items-center justify-between gap-6">
+    <a href="#" class="sm:text-xl leading-none font-monospace font-bold">sucre.tech</a>
+
+    <nav class="hidden md:flex items-center gap-8">
+      <ul class="flex flex-row gap-8">
+        {
+          navLinks.map(link => (
+            <li>
+              <a href={link.href} class="text-muted-foreground hover:text-white hover:underline">
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+    <a
+      href="#publicar"
+      class="group bg-white hover:shadow-[4px_4px_0_0_var(--color-red-500)] inline-flex items-center gap-2 px-4 py-2 text-xs font-bold text-black md:text-base transition-all"
+    >
+      Sumar evento
+      <ArrowOutward
+        class="size-5 transition-transform ease-in-out group-hover:translate-1 group-hover:-translate-y-1"
+      />
+    </a>
+  </div>
+</header>
