@@ -6,6 +6,18 @@ import { deleteSupabaseCookies, setSupabaseCookies } from "@/lib/utils"
 export const onRequest = defineMiddleware(async (context, next) => {
   const { cookies, request, url } = context
   const path = url.pathname
+  const host =
+    request.headers.get("x-forwarded-host") || request.headers.get("host") || url.hostname
+
+  if (host.includes("calendario.gdgsucre.com")) {
+    if (path === "/") {
+      return context.rewrite("/calendario")
+    }
+  }
+
+  if ((host === "gdgsucre.com" || host === "www.gdgsucre.com") && path === "/calendario") {
+    return context.redirect("https://calendario.gdgsucre.com", 301)
+  }
 
   if (path.startsWith("/api/auth")) return next()
 
