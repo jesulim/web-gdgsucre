@@ -1,95 +1,81 @@
-import { CheckIcon, ChevronsUpDownIcon, Loader2Icon } from "lucide-react"
-import { useState } from "react"
+import { Loader2Icon } from "lucide-react"
+import { useMemo, useState } from "react"
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { useCommunities } from "@/hooks/useCommunities"
-import { cn } from "@/lib/utils"
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "@/components/ui/combobox"
+import { type Community, useCommunities } from "@/hooks/useCommunities"
+import type { NewCommunityFormValues } from "@/lib/validators/calendarEvent"
+
+import { NewCommunityDialog } from "./NewCommunityDialog"
 
 interface CommunityComboboxProps {
-  value: number
-  label: string | null
-  onChange: (id: number, label: string) => void
+  value: Community | null
+  onChange: (community: Community | null) => void
+  onCreateCommunity: (values: NewCommunityFormValues) => void
   disabled?: boolean
 }
 
-export function CommunityCombobox({ value, label, onChange, disabled }: CommunityComboboxProps) {
-  const [open, setOpen] = useState(false)
+export function CommunityCombobox({
+  value,
+  onChange,
+  onCreateCommunity,
+  disabled,
+}: CommunityComboboxProps) {
   const [search, setSearch] = useState("")
   const { communities, isFetching } = useCommunities(search)
 
+  const items = useMemo(() => {
+    // Keep the selected community visible for new communities.
+    if (!value || communities.some(community => community.id === value.id)) return communities
+    return [...communities, value]
+  }, [communities, value])
+
   return (
-    <Popover
-      open={open}
-      onOpenChange={next => {
-        setOpen(next)
-        if (!next) setSearch("")
+    <Combobox
+      items={items}
+      value={value}
+      onValueChange={next => {
+        onChange(next)
+        // Reset the filter after a selection so the next open shows all results.
+        if (next) setSearch("")
       }}
+      itemToStringLabel={(community: Community) => community.name}
+      itemToStringValue={(community: Community) => community.name}
+      onInputValueChange={setSearch}
+      filter={null}
+      disabled={disabled}
     >
-      <PopoverTrigger asChild>
-        <Button
-          type="button"
-          variant="secondary"
-          role="combobox"
-          aria-expanded={open}
-          disabled={disabled}
-          className={cn(
-            "border border-white w-full justify-between rounded-none font-normal",
-            !label && "text-muted-foreground"
-          )}
-        >
-          <span className="truncate">{label ?? "Comunidad organizadora"}</span>
-          <ChevronsUpDownIcon className="size-4 shrink-0 opacity-50" />
-        </Button>
-      </PopoverTrigger>
-      {/* Radix renders this in a portal, outside the form's tree, so the font
-          is not inherited and has to be declared here. */}
-      <PopoverContent
-        align="start"
-        className="font-monospace w-(--radix-popover-trigger-width) rounded-none p-0"
-      >
-        <div className="border-b p-2">
-          <Input
-            autoFocus
-            placeholder="Buscar comunidad..."
-            value={search}
-            onChange={event => setSearch(event.target.value)}
-            className="rounded-none"
-          />
-        </div>
-        <div role="listbox" aria-label="Comunidades" className="max-h-60 overflow-y-auto p-1">
-          {isFetching && communities.length === 0 && (
-            <div className="text-muted-foreground flex items-center gap-2 px-2 py-3 text-sm">
-              <Loader2Icon className="size-4 animate-spin" /> Buscando...
-            </div>
-          )}
-          {!isFetching && communities.length === 0 && (
-            <div className="text-muted-foreground px-2 py-3 text-sm">Sin resultados</div>
-          )}
-          {communities.map(community => (
-            <button
-              key={community.id}
-              type="button"
-              role="option"
-              aria-selected={community.id === value}
-              onClick={() => {
-                onChange(community.id, community.name)
-                setOpen(false)
-              }}
-              className="hover:bg-accent flex w-full items-center gap-2 px-2 py-2 text-left text-sm"
-            >
-              <CheckIcon
-                className={cn(
-                  "size-4 shrink-0",
-                  community.id === value ? "opacity-100" : "opacity-0"
-                )}
-              />
-              {community.name}
-            </button>
-          ))}
-        </div>
-      </PopoverContent>
-    </Popover>
+      <ComboboxInput
+        placeholder="Buscar comunidad..."
+        disabled={disabled}
+        showClear={!!value}
+        className="border-white rounded-none"
+      />
+      <ComboboxContent className="font-monospace rounded-none">
+        {isFetching && communities.length === 0 ? (
+          <div className="text-muted-foreground flex items-center gap-2 px-2 py-3 text-sm">
+            <Loader2Icon className="size-4 animate-spin" /> Buscando...
+          </div>
+        ) : communities.length === 0 ? (
+          <div className="p-2 border border-white">
+            <p className="text-muted-foreground p-2 text-sm">Sin resultados</p>
+            <NewCommunityDialog onCreate={onCreateCommunity} disabled={disabled} />
+          </div>
+        ) : (
+          <ComboboxList className="border border-white">
+            {community => (
+              <ComboboxItem key={community.id} value={community}>
+                {community.name}
+              </ComboboxItem>
+            )}
+          </ComboboxList>
+        )}
+      </ComboboxContent>
+    </Combobox>
   )
 }

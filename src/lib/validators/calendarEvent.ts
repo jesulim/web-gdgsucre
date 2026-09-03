@@ -6,7 +6,17 @@ z.config(es())
 export const EVENT_FORMATS = ["in-person", "virtual"] as const
 export type EventFormat = (typeof EVENT_FORMATS)[number]
 
-const optionalUrl = z.union([z.literal(""), z.url()]).optional()
+const optionalUrl = z
+  .union([
+    z.literal(""),
+    z
+      .string()
+      .regex(
+        /^(https?:\/\/)?(([a-z0-9]([a-z0-9-]*[a-z0-9])?\.)+)?[a-z0-9]([a-z0-9-]*[a-z0-9])?\.[a-z]{2,}([/?#].*)?$/i,
+        "Ingresa una URL válida"
+      ),
+  ])
+  .optional()
 
 export const calendarEventSchema = z
   .object({
@@ -18,7 +28,7 @@ export const calendarEventSchema = z
     start_datetime: z.string(),
     end_datetime: z.string(),
     format: z.enum(EVENT_FORMATS, { error: "Elige una modalidad" }),
-    location: z.string().trim().min(1, "Este campo es requerido"),
+    location: z.string().optional(),
     registration_link: optionalUrl,
     dates_tbd: z.boolean(),
   })
@@ -58,7 +68,7 @@ export const newCommunitySchema = z.object({
   name: z.string().trim().min(2, "El nombre debe tener al menos 2 caracteres"),
   short_name: z.string().trim().optional(),
   website: optionalUrl,
-  contact_email: z.email("Ingresá un email válido"),
+  contact_email: z.email("Ingresa un email válido"),
 })
 
 export type NewCommunityFormValues = z.infer<typeof newCommunitySchema>

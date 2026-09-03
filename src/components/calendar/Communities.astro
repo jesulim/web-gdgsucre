@@ -1,4 +1,5 @@
 ---
+import ArrowOutward from "@/assets/icons/arrow_outward.svg"
 import type { CommunityWithCount } from "@/lib/services/communityService"
 
 interface Props {
@@ -14,7 +15,7 @@ function colorForCommunity(id: number) {
 }
 ---
 
-<section id="comunidades" class="mx-auto max-w-5xl px-4 font-monospace py-8 md:py-12 md:pb-16">
+<section id="comunidades" class="mx-auto max-w-6xl px-4 font-monospace py-8 md:py-12 md:pb-16">
   <p class="text-xs uppercase pb-4">[ 05 · comunidades ]</p>
 
   <div class="flex items-baseline justify-between gap-4">
@@ -24,7 +25,7 @@ function colorForCommunity(id: number) {
     </span>
   </div>
 
-  <div class="mt-4 grid grid-cols-2 gap-4 md:grid-cols-3">
+  <div class="mt-4 grid grid-cols-2 gap-4 md:gap-8 md:grid-cols-3">
     {
       communities.map(community => (
         <div class="flex flex-col gap-2 border border-white bg-black p-4">
@@ -39,9 +40,10 @@ function colorForCommunity(id: number) {
               href={community.website}
               target="_blank"
               rel="noopener noreferrer"
-              class="text-sm text-muted-foreground hover:underline hover:text-white truncate"
+              class="group w-fit flex gap-2 text-sm text-muted-foreground hover:underline hover:text-white truncate"
             >
               {community.website.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}
+              <ArrowOutward class="fill-muted-foreground group-hover:fill-white size-5 transition-transform ease-in-out group-hover:translate-0.5 group-hover:-translate-y-0.5" />
             </a>
           )}
           <span class="text-sm text-muted-foreground">

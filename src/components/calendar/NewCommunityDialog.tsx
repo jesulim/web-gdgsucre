@@ -55,15 +55,15 @@ export function NewCommunityDialog({ onCreate, disabled }: NewCommunityDialogPro
         <Button
           type="button"
           variant="secondary"
-          size="icon"
+          size="sm"
           disabled={disabled}
-          className="shrink-0 rounded-none border border-white"
+          className="shrink-0 rounded-none border bg-white text-black hover:bg-white"
           aria-label="Agregar nueva comunidad"
         >
-          <PlusIcon className="size-4" />
+          <PlusIcon className="size-4" /> Nueva comunidad
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-black rounded-none border-white font-monospace text-white">
+      <DialogContent className="bg-[#2e2e2e] rounded-none border-white font-monospace text-white py-8">
         <DialogHeader>
           <DialogTitle>Nueva comunidad</DialogTitle>
           <DialogDescription className="normal-case">

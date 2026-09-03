@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 
+import type { Community } from "@/hooks/useCommunities"
 import {
   type CalendarEventFormValues,
   calendarEventSchema,
@@ -25,7 +26,6 @@ import {
 
 import { CommunityCombobox } from "./CommunityCombobox"
 import { FormatToggle } from "./FormatToggle"
-import { NewCommunityDialog } from "./NewCommunityDialog"
 
 // Sentinel used while a brand-new community is staged locally (see NewCommunityDialog):
 // it is not a real id yet, it only marks "create the community first, then use its id".
@@ -56,7 +56,7 @@ async function readErrorMessage(response: Response) {
 function SendEventForm({ isLoggedIn }: SendEventProps) {
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
-  const [communityLabel, setCommunityLabel] = useState<string | null>(null)
+  const [selectedCommunity, setSelectedCommunity] = useState<Community | null>(null)
   const [pendingCommunity, setPendingCommunity] = useState<NewCommunityFormValues | null>(null)
 
   const form = useForm<CalendarEventFormValues>({
@@ -75,15 +75,24 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
 
   const datesTbd = form.watch("dates_tbd")
 
-  function handleSelectCommunity(id: number, label: string) {
+  function handleSelectCommunity(community: Community | null) {
     setPendingCommunity(null)
-    setCommunityLabel(label)
-    form.setValue("community_id", id, { shouldValidate: true })
+    setSelectedCommunity(community)
+    form.setValue("community_id", community?.id ?? 0, { shouldValidate: true })
   }
 
   function handleCreateCommunity(values: NewCommunityFormValues) {
     setPendingCommunity(values)
-    setCommunityLabel(`${values.name} (nueva)`)
+    const staged: Community = {
+      id: NEW_COMMUNITY_ID,
+      name: `${values.name} (nueva)`,
+      short_name: values.short_name ?? null,
+      website: values.website ?? null,
+      contact_email: values.contact_email,
+      image: null,
+      accepted: false,
+    }
+    setSelectedCommunity(staged)
     form.setValue("community_id", NEW_COMMUNITY_ID, { shouldValidate: true })
   }
 
@@ -142,7 +151,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
 
       setSubmitted(true)
       form.reset()
-      setCommunityLabel(null)
+      setSelectedCommunity(null)
       setPendingCommunity(null)
     } catch (error) {
       console.error("Error al enviar el evento:", error)
@@ -205,17 +214,12 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
               <FormItem>
                 <FormLabel className="text-xs uppercase">Comunidad</FormLabel>
                 <FormControl>
-                  <div className="flex gap-2">
-                    <div className="min-w-0 flex-1">
-                      <CommunityCombobox
-                        value={form.watch("community_id")}
-                        label={communityLabel}
-                        onChange={handleSelectCommunity}
-                        disabled={disabled}
-                      />
-                    </div>
-                    <NewCommunityDialog onCreate={handleCreateCommunity} disabled={disabled} />
-                  </div>
+                  <CommunityCombobox
+                    value={selectedCommunity}
+                    onChange={handleSelectCommunity}
+                    onCreateCommunity={handleCreateCommunity}
+                    disabled={disabled}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
