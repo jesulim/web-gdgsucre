@@ -63,7 +63,11 @@ export function NewCommunityDialog({ onCreate, disabled }: NewCommunityDialogPro
           <PlusIcon className="size-4" /> Nueva comunidad
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-[#2e2e2e] rounded-none border-white font-monospace text-white py-8">
+      <DialogContent
+        className="bg-[#2e2e2e] rounded-none border-white font-monospace text-white py-8"
+        onInteractOutside={event => event.preventDefault()}
+        onEscapeKeyDown={event => event.preventDefault()}
+      >
         <DialogHeader>
           <DialogTitle>Nueva comunidad</DialogTitle>
           <DialogDescription className="normal-case">

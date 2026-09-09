@@ -66,6 +66,7 @@ interface CalendarEventPayload {
   community_id: number
   start_datetime: string
   end_datetime: string
+  format: string
   location?: string
   registration_link?: string
   communities: { id: number; name: string; short_name: string | null } | null
@@ -131,8 +132,12 @@ function DayDetailPanel({ date, events }: { date: Date; events: CalendarEvent[] 
               <div className={clsx("w-2 min-h-full mb-1", colorForCommunity(event.community_id))} />
               <div className="flex flex-col gap-1">
                 <h3 className="text-lg leading-tight font-bold">{event.name}</h3>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {event.format === "in-person" ? "Presencial" : "Virtual"} · {timeStr(event.start)}{" "}
+                  - {timeStr(event.end)}
+                </p>
                 <p className="text-sm text-muted-foreground">
-                  {timeStr(event.start)} · {event.location} · {event.community}
+                  {event.location} · {event.community}
                 </p>
                 {event.registration_link && (
                   <a
@@ -271,7 +276,7 @@ function Calendar({
           <ChevronLeftIcon className="size-5" />
         </button>
 
-        <span className="flex items-center gap-2 text-muted-foreground font-normal">
+        <span className="flex items-center gap-2 text-white font-normal">
           {isLoading ? <Loader2Icon className="size-4 animate-spin" /> : monthEvents.length} eventos
           · {fullMonth(currentDate).substring(0, 3)}
         </span>
@@ -350,7 +355,7 @@ function EventsCalendarInner() {
       id="calendario"
       className="mx-auto max-w-6xl flex flex-col gap-8 px-4 font-monospace text-white py-8 md:py-12"
     >
-      <p className="[grid-area:label] text-xs uppercase col-span-2">[ 03 · calendario ]</p>
+      <p className="text-xs uppercase col-span-2">[ 03 · calendario ]</p>
 
       <span className="font-bold text-3xl md:text-4xl lg:text-6xl">
         {capitalize(fullMonth(currentDate))} {currentDate.getFullYear()}

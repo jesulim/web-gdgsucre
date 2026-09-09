@@ -165,15 +165,14 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
 
   if (submitted) {
     return (
-      <div className="font-monospace border p-8 text-center text-white">
+      <div className="font-monospace p-8 bg-white text-foreground">
         <p className="text-lg font-bold">¡Recibimos tu evento!</p>
-        <p className="text-muted-foreground mt-2 text-sm">
+        <p className="text-gray-700 mt-2 text-sm">
           Cuando sea aprobado, se publicará en la agenda.
         </p>
         <Button
           type="button"
-          variant="outline"
-          className="mt-6 rounded-none"
+          className="rounded-none border border-black mt-6"
           onClick={() => setSubmitted(false)}
         >
           Publicar otro evento
@@ -183,7 +182,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
   }
 
   return (
-    <div className="font-monospace relative border">
+    <div className="font-monospace relative border border-white bg-black">
       <Toaster position="top-right" richColors />
 
       <Form {...form}>

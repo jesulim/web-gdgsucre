@@ -76,11 +76,12 @@ function ComboboxInput({
             data-slot="input-group-button"
             className="group-has-data-[slot=combobox-clear]/input-group:hidden data-pressed:bg-transparent"
             disabled={disabled}
+            tabIndex={-1}
           >
             <ComboboxTrigger />
           </InputGroupButton>
         )}
-        {showClear && <ComboboxClear disabled={disabled} />}
+        {showClear && <ComboboxClear disabled={disabled} tabIndex={-1} />}
       </InputGroupAddon>
       {children}
     </InputGroup>

@@ -57,7 +57,7 @@ export function CommunityCombobox({
         className="border-white rounded-none"
       />
       <ComboboxContent className="font-monospace rounded-none">
-        {isFetching && communities.length === 0 ? (
+        {isFetching ? (
           <div className="text-muted-foreground flex items-center gap-2 px-2 py-3 text-sm">
             <Loader2Icon className="size-4 animate-spin" /> Buscando...
           </div>
