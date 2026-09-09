@@ -1,3 +1,10 @@
+interface Community {
+  id: number
+  name: string
+  short_name: string | null
+  image: string | null
+}
+
 export interface UpcomingCalendarEvent {
   id: number
   name: string
@@ -6,12 +13,7 @@ export interface UpcomingCalendarEvent {
   format: string | null
   registration_link: string | null
   location: string | null
-  communities: {
-    id: number
-    name: string
-    short_name: string | null
-    image: string | null
-  } | null
+  communities: Community[] | null
 }
 
 // Default to Bolivian time zone, as it is the one used by the form.
@@ -29,18 +31,20 @@ const timeFormatter = new Intl.DateTimeFormat(LOCALE, {
   timeZone: TIME_ZONE,
 })
 
-// Some ICU builds append a period to abbreviated months and weekdays ("jul.").
 const withoutTrailingDot = (value: string) => value.replace(/\.$/, "")
 
-export function formatEventDate(datetime: string) {
-  if (!datetime) return { day: "", month: "", weekday: "", time: "" }
-  const date = new Date(datetime)
+export function formatEventDate(start_datetime: string, end_datetime: string) {
+  if (!start_datetime) return { day: "", month: "", weekday: "", start: "", end: "" }
+
+  const startDate = new Date(start_datetime)
+  const endDate = new Date(end_datetime)
 
   return {
-    day: dayFormatter.format(date),
-    month: withoutTrailingDot(monthFormatter.format(date)),
-    weekday: withoutTrailingDot(weekdayFormatter.format(date)),
-    time: timeFormatter.format(date),
+    day: dayFormatter.format(startDate),
+    month: withoutTrailingDot(monthFormatter.format(startDate)).slice(0, 3),
+    weekday: withoutTrailingDot(weekdayFormatter.format(startDate)),
+    start: timeFormatter.format(startDate),
+    end: timeFormatter.format(endDate),
   }
 }
 
@@ -49,7 +53,9 @@ export function formatHeroDate(datetime: string) {
   if (!datetime) return "Fecha por definir"
 
   const date = new Date(datetime)
-  const { day, month } = formatEventDate(datetime)
+  const day = dayFormatter.format(date)
+  const month = monthFormatter.format(date).slice(0, 3)
+
   return `${day}.${month}.${yearFormatter.format(date)}`
 }
 
@@ -61,17 +67,4 @@ export function nameToSlug(name: string) {
     .replace(/[^a-z0-9\s]/g, "")
     .trim()
     .replace(/\s+/g, "_")
-}
-
-/** Builds the "jul—ago · 04" summary shown next to the section title. */
-export function formatRangeLabel(events: UpcomingCalendarEvent[]) {
-  const count = String(events.length).padStart(2, "0")
-
-  if (events.length === 0) return count
-
-  const first = formatEventDate(events[0].start_datetime).month
-  const last = formatEventDate(events[events.length - 1].start_datetime).month
-  const range = first === last ? first : `${first}—${last}`
-
-  return `${range} · ${count}`
 }

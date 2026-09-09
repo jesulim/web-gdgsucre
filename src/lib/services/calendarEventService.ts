@@ -48,6 +48,7 @@ export async function getUpcomingCalendarEvents(supabase: SupabaseClient) {
       `id, name, start_datetime, end_datetime, format, registration_link, location,
       communities(id, name, short_name, image)`
     )
+    .eq("accepted", true)
     .or(`start_datetime.gte.${startOfToday.toISOString()},start_datetime.is.null`)
     .order("start_datetime", { ascending: true })
     .limit(NEXT_EVENTS_LIMIT)

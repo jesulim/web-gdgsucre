@@ -142,14 +142,14 @@ export const PUT: APIRoute = async ({ request, cookies }) => {
       })
     }
 
-    if (accepted === true) {
-      supabase.functions.invoke("send-email", {
-        body: {
-          type: "event-accepted",
-          data: { eventId: id },
-        },
-      })
-    }
+    // if (accepted === true) {
+    //   supabase.functions.invoke("send-email", {
+    //     body: {
+    //       type: "event-accepted",
+    //       data: { eventId: id },
+    //     },
+    //   })
+    // }
 
     return new Response(JSON.stringify(result), {
       status: 200,

@@ -66,6 +66,7 @@ interface CalendarEventPayload {
   community_id: number
   start_datetime: string
   end_datetime: string
+  format: string
   location?: string
   registration_link?: string
   communities: { id: number; name: string; short_name: string | null } | null
@@ -76,11 +77,13 @@ interface CalendarEvent {
   name: string
   start: Date
   end: Date
+  format: string
   community_id: number
   community: string
   location?: string
   registration_link?: string
 }
+
 function transformEvent(raw: CalendarEventPayload): CalendarEvent {
   return {
     ...raw,
@@ -107,7 +110,7 @@ function DayDetailPanel({ date, events }: { date: Date; events: CalendarEvent[] 
   const dayEvents = events.filter(e => sameDay(e.start, date))
 
   return (
-    <div className="border border-white bg-black p-4 md:p-8 text-white order-2 sm:order-0">
+    <div className="border border-white bg-black p-4 md:p-8 text-white order-2 md:order-0">
       <div className="flex items-center gap-4 pb-4">
         <span className="text-3xl sm:text-4xl lg:text-6xl leading-none font-bold">
           {dayNumber(date)}
@@ -131,8 +134,12 @@ function DayDetailPanel({ date, events }: { date: Date; events: CalendarEvent[] 
               <div className={clsx("w-2 min-h-full mb-1", colorForCommunity(event.community_id))} />
               <div className="flex flex-col gap-1">
                 <h3 className="text-lg leading-tight font-bold">{event.name}</h3>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {event.format === "in-person" ? "Presencial" : "Virtual"} · {timeStr(event.start)}{" "}
+                  - {timeStr(event.end)}
+                </p>
                 <p className="text-sm text-muted-foreground">
-                  {timeStr(event.start)} · {event.location} · {event.community}
+                  {event.location} · {event.community}
                 </p>
                 {event.registration_link && (
                   <a
@@ -271,7 +278,7 @@ function Calendar({
           <ChevronLeftIcon className="size-5" />
         </button>
 
-        <span className="flex items-center gap-2 text-muted-foreground font-normal">
+        <span className="flex items-center gap-2 text-white font-normal">
           {isLoading ? <Loader2Icon className="size-4 animate-spin" /> : monthEvents.length} eventos
           · {fullMonth(currentDate).substring(0, 3)}
         </span>
@@ -348,15 +355,14 @@ function EventsCalendarInner() {
   return (
     <section
       id="calendario"
-      className="mx-auto max-w-6xl flex flex-col gap-8 px-4 font-monospace text-white py-8 md:py-12"
+      className="mx-auto max-w-6xl flex flex-col gap-8 px-4 font-monospace text-white py-8 md:py-16"
     >
-      <p className="[grid-area:label] text-xs uppercase col-span-2">[ 04 · calendario ]</p>
-
-      <span className="font-bold text-3xl md:text-4xl lg:text-6xl">
+      <span className="font-bold text-2xl md:text-4xl lg:text-5xl">
+        Calendario <br className="sm:hidden" />
         {capitalize(fullMonth(currentDate))} {currentDate.getFullYear()}
       </span>
 
-      <div className="grid gap-8 grid-cols-1 sm:grid-cols-[1fr_1.5fr]">
+      <div className="grid gap-8 grid-cols-1 md:grid-cols-[1fr_1.5fr]">
         <DayDetailPanel date={selectedDate} events={events} />
 
         <Calendar
