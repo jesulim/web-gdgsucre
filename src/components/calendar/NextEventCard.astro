@@ -107,10 +107,11 @@ const position = String(index + 1).padStart(2, "0")
       start && (
         <div
           class:list={[
-            "flex flex-col gap-2 lg:flex-row lg:gap-4 items-center justify-center border-l p-4 border-white",
+            "flex flex-col gap-2 lg:flex-row items-center justify-center border-l p-4 border-white",
           ]}
         >
           <span class="text-white">{start}</span>
+          <span class="hidden lg:block">-</span>
           {end && <span class="text-white">{end}</span>}
         </div>
       )
@@ -119,7 +120,21 @@ const position = String(index + 1).padStart(2, "0")
     <div class:list={["items-center justify-between gap-3 border-l p-4 border-white min-w-72"]}>
       <div class="flex flex-col gap-1">
         <div class="flex justify-between">
-          <div class="text-white">{event.location}</div>
+          {
+            event.format === "virtual" ? (
+              <a
+                href={event.registration_link}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex gap-2 text-white hover:underline"
+              >
+                {event.location}
+              </a>
+            ) : (
+              <span class="text-white">{event.location}</span>
+            )
+          }
+
           {
             isNext ? (
               <span class="text-white shrink-0 font-bold ml-auto">→ próximo</span>

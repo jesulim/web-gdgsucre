@@ -1,3 +1,10 @@
+interface Community {
+  id: number
+  name: string
+  short_name: string | null
+  image: string | null
+}
+
 export interface UpcomingCalendarEvent {
   id: number
   name: string
@@ -6,12 +13,7 @@ export interface UpcomingCalendarEvent {
   format: string | null
   registration_link: string | null
   location: string | null
-  communities: {
-    id: number
-    name: string
-    short_name: string | null
-    image: string | null
-  } | null
+  communities: Community[] | null
 }
 
 // Default to Bolivian time zone, as it is the one used by the form.
@@ -29,7 +31,6 @@ const timeFormatter = new Intl.DateTimeFormat(LOCALE, {
   timeZone: TIME_ZONE,
 })
 
-// Some ICU builds append a period to abbreviated months and weekdays ("jul.").
 const withoutTrailingDot = (value: string) => value.replace(/\.$/, "")
 
 export function formatEventDate(start_datetime: string, end_datetime: string) {

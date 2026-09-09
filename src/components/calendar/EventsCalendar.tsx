@@ -110,7 +110,7 @@ function DayDetailPanel({ date, events }: { date: Date; events: CalendarEvent[] 
   const dayEvents = events.filter(e => sameDay(e.start, date))
 
   return (
-    <div className="border border-white bg-black p-4 md:p-8 text-white order-2 sm:order-0">
+    <div className="border border-white bg-black p-4 md:p-8 text-white order-2 md:order-0">
       <div className="flex items-center gap-4 pb-4">
         <span className="text-3xl sm:text-4xl lg:text-6xl leading-none font-bold">
           {dayNumber(date)}
@@ -357,11 +357,12 @@ function EventsCalendarInner() {
       id="calendario"
       className="mx-auto max-w-6xl flex flex-col gap-8 px-4 font-monospace text-white py-8 md:py-16"
     >
-      <span className="font-bold text-3xl md:text-4xl lg:text-5xl">
-        Calendario {capitalize(fullMonth(currentDate))} {currentDate.getFullYear()}
+      <span className="font-bold text-2xl md:text-4xl lg:text-5xl">
+        Calendario <br className="sm:hidden" />
+        {capitalize(fullMonth(currentDate))} {currentDate.getFullYear()}
       </span>
 
-      <div className="grid gap-8 grid-cols-1 sm:grid-cols-[1fr_1.5fr]">
+      <div className="grid gap-8 grid-cols-1 md:grid-cols-[1fr_1.5fr]">
         <DayDetailPanel date={selectedDate} events={events} />
 
         <Calendar
