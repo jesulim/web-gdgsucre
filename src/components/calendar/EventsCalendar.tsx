@@ -77,11 +77,13 @@ interface CalendarEvent {
   name: string
   start: Date
   end: Date
+  format: string
   community_id: number
   community: string
   location?: string
   registration_link?: string
 }
+
 function transformEvent(raw: CalendarEventPayload): CalendarEvent {
   return {
     ...raw,
@@ -353,12 +355,10 @@ function EventsCalendarInner() {
   return (
     <section
       id="calendario"
-      className="mx-auto max-w-6xl flex flex-col gap-8 px-4 font-monospace text-white py-8 md:py-12"
+      className="mx-auto max-w-6xl flex flex-col gap-8 px-4 font-monospace text-white py-8 md:py-16"
     >
-      <p className="text-xs uppercase col-span-2">[ 03 · calendario ]</p>
-
-      <span className="font-bold text-3xl md:text-4xl lg:text-6xl">
-        {capitalize(fullMonth(currentDate))} {currentDate.getFullYear()}
+      <span className="font-bold text-3xl md:text-4xl lg:text-5xl">
+        Calendario {capitalize(fullMonth(currentDate))} {currentDate.getFullYear()}
       </span>
 
       <div className="grid gap-8 grid-cols-1 sm:grid-cols-[1fr_1.5fr]">

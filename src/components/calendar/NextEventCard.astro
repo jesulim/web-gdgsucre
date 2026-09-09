@@ -13,7 +13,10 @@ const ACCENT_COLORS = ["bg-blue-500", "bg-red-500", "bg-yellow-600", "bg-green-5
 const accent = ACCENT_COLORS[index % ACCENT_COLORS.length]
 
 const isNext = index === 0
-const { day, month, weekday, time } = formatEventDate(event.start_datetime)
+const { day, month, weekday, start, end } = formatEventDate(
+  event.start_datetime,
+  event.end_datetime
+)
 const community = event.communities?.short_name ?? event.communities?.name
 const position = String(index + 1).padStart(2, "0")
 ---
@@ -38,7 +41,7 @@ const position = String(index + 1).padStart(2, "0")
           {event.name}
         </h3>
         <span class="shrink-0 text-xs ml-auto mt-1.25 sm:text-sm sm:mt-0">
-          {time}
+          {start}
         </span>
       </div>
 
@@ -82,7 +85,6 @@ const position = String(index + 1).padStart(2, "0")
     </div>
   </div>
 
-  <!-- Desktop: single row split into cells, as in the agenda table. -->
   <div class="hidden md:flex">
     <div class="w-fit flex items-center gap-3 p-4 shrink-0">
       <span class:list={["size-4 shrink-0", accent]}></span>
@@ -92,25 +94,32 @@ const position = String(index + 1).padStart(2, "0")
       </div>
     </div>
 
-    <div class="w-1/2 flex flex-col justify-center border-l p-4 border-white">
+    <div class="w-full flex flex-col justify-center border-l p-4 border-white">
       <span class="text-xl font-bold text-white">
         {event.name}
       </span>
-      <p class="text-muted-foreground truncate text-sm">// {community}</p>
+      <p class="text-muted-foreground truncate text-sm">
+        {event.format === "in-person" ? "Presencial" : "Virtual"} · {community}
+      </p>
     </div>
 
     {
-      time && (
-        <div class:list={["flex items-center justify-center border-l p-4 border-white"]}>
-          <span class="text-white">{time}</span>
+      start && (
+        <div
+          class:list={[
+            "flex flex-col gap-2 lg:flex-row lg:gap-4 items-center justify-center border-l p-4 border-white",
+          ]}
+        >
+          <span class="text-white">{start}</span>
+          {end && <span class="text-white">{end}</span>}
         </div>
       )
     }
 
-    <div class:list={["w-5/12 items-center justify-between gap-3 border-l p-4 border-white"]}>
+    <div class:list={["items-center justify-between gap-3 border-l p-4 border-white min-w-72"]}>
       <div class="flex flex-col gap-1">
-        <span class="truncate text-muted-foreground flex gap-2">
-          {event.location}
+        <div class="flex justify-between">
+          <div class="text-white">{event.location}</div>
           {
             isNext ? (
               <span class="text-white shrink-0 font-bold ml-auto">→ próximo</span>
@@ -118,7 +127,7 @@ const position = String(index + 1).padStart(2, "0")
               <span class="text-muted-foreground shrink-0 ml-auto">{position}</span>
             )
           }
-        </span>
+        </div>
         {
           event.registration_link && (
             <a

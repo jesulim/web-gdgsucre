@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { Loader2Icon, SendIcon } from "lucide-react"
-import { useState } from "react"
+import { type KeyboardEvent, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Toaster, toast } from "sonner"
 
@@ -38,6 +38,49 @@ const browserTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone ?? LA_P
 const isOutsideBolivia = browserTimeZone !== LA_PAZ_TIME_ZONE
 
 const queryClient = new QueryClient()
+
+// Text-like inputs where Enter should advance focus instead of submitting.
+// (Mobile keyboards send Enter for the "Next" button, which would otherwise
+// trigger implicit form submission from the combobox search input.)
+const ENTER_ADVANCE_TYPES = new Set([
+  "text",
+  "search",
+  "email",
+  "url",
+  "tel",
+  "password",
+  "number",
+  "datetime-local",
+])
+
+// Move focus to the next visible field instead of submitting the form.
+function handleFormKeyDown(event: KeyboardEvent<HTMLFormElement>) {
+  if (event.key !== "Enter" || event.defaultPrevented) return
+  const { target } = event
+  if (!(target instanceof HTMLInputElement)) return
+  // Ignore inputs portaled from elsewhere (e.g. the new-community dialog):
+  // React events bubble through the component tree, not the DOM tree.
+  if (!event.currentTarget.contains(target)) return
+  if (!ENTER_ADVANCE_TYPES.has(target.type)) return
+  // Let the combobox consume Enter while its popup is open (option selection).
+  if (target.getAttribute("aria-expanded") === "true") return
+  if (target.ownerDocument.querySelector('[data-slot="combobox-content"] [role="listbox"]')) return
+  const fields = Array.from(
+    event.currentTarget.querySelectorAll<HTMLElement>("input, button, select, textarea")
+  ).filter(field => {
+    if (field.hasAttribute("disabled")) return false
+    if (field.getAttribute("tabindex") === "-1") return false
+    if (field instanceof HTMLInputElement && (field.type === "hidden" || field.type === "radio"))
+      return false
+    const rect = field.getBoundingClientRect()
+    if (rect.width === 0 && rect.height === 0) return false
+    return true
+  })
+  const next = fields[fields.indexOf(target) + 1]
+  if (!next) return
+  event.preventDefault()
+  next.focus()
+}
 
 interface SendEventProps {
   isLoggedIn: boolean
@@ -186,7 +229,11 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
       <Toaster position="top-right" richColors />
 
       <Form {...form}>
-        <form className="flex flex-col gap-6 p-4 md:p-6" onSubmit={form.handleSubmit(onSubmit)}>
+        <form
+          className="flex flex-col gap-6 p-4 md:p-6"
+          onSubmit={form.handleSubmit(onSubmit)}
+          onKeyDown={handleFormKeyDown}
+        >
           <FormField
             control={form.control}
             name="name"
@@ -198,6 +245,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                     {...field}
                     disabled={disabled}
                     placeholder="DevFest Sucre 2026"
+                    enterKeyHint="next"
                     className="rounded-none border-white"
                   />
                 </FormControl>
@@ -218,6 +266,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                     onChange={handleSelectCommunity}
                     onCreateCommunity={handleCreateCommunity}
                     disabled={disabled}
+                    inputProps={{ enterKeyHint: "next" }}
                   />
                 </FormControl>
                 <FormMessage />
@@ -262,6 +311,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                         {...field}
                         type="datetime-local"
                         disabled={disabled}
+                        enterKeyHint="next"
                         className="rounded-none border-white"
                       />
                     </FormControl>
@@ -281,6 +331,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                         {...field}
                         type="datetime-local"
                         disabled={disabled}
+                        enterKeyHint="next"
                         className="rounded-none border-white"
                       />
                     </FormControl>
@@ -323,6 +374,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                     {...field}
                     disabled={disabled}
                     placeholder="Hub de innovación USFX / Link de acceso"
+                    enterKeyHint="next"
                     className="rounded-none border-white"
                   />
                 </FormControl>
@@ -342,6 +394,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                     {...field}
                     disabled={disabled}
                     placeholder="https://..."
+                    enterKeyHint="done"
                     className="rounded-none border-white"
                   />
                 </FormControl>

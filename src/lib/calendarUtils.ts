@@ -32,15 +32,18 @@ const timeFormatter = new Intl.DateTimeFormat(LOCALE, {
 // Some ICU builds append a period to abbreviated months and weekdays ("jul.").
 const withoutTrailingDot = (value: string) => value.replace(/\.$/, "")
 
-export function formatEventDate(datetime: string) {
-  if (!datetime) return { day: "", month: "", weekday: "", time: "" }
-  const date = new Date(datetime)
+export function formatEventDate(start_datetime: string, end_datetime: string) {
+  if (!start_datetime) return { day: "", month: "", weekday: "", start: "", end: "" }
+
+  const startDate = new Date(start_datetime)
+  const endDate = new Date(end_datetime)
 
   return {
-    day: dayFormatter.format(date),
-    month: withoutTrailingDot(monthFormatter.format(date)),
-    weekday: withoutTrailingDot(weekdayFormatter.format(date)),
-    time: timeFormatter.format(date),
+    day: dayFormatter.format(startDate),
+    month: withoutTrailingDot(monthFormatter.format(startDate)).slice(0, 3),
+    weekday: withoutTrailingDot(weekdayFormatter.format(startDate)),
+    start: timeFormatter.format(startDate),
+    end: timeFormatter.format(endDate),
   }
 }
 
@@ -49,7 +52,9 @@ export function formatHeroDate(datetime: string) {
   if (!datetime) return "Fecha por definir"
 
   const date = new Date(datetime)
-  const { day, month } = formatEventDate(datetime)
+  const day = dayFormatter.format(date)
+  const month = monthFormatter.format(date).slice(0, 3)
+
   return `${day}.${month}.${yearFormatter.format(date)}`
 }
 

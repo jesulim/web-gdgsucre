@@ -1,6 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { PlusIcon } from "lucide-react"
-import { useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { Button } from "@/components/ui/button"
@@ -11,7 +9,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
 import {
   Form,
@@ -25,13 +22,15 @@ import { Input } from "@/components/ui/input"
 import { type NewCommunityFormValues, newCommunitySchema } from "@/lib/validators/calendarEvent"
 
 interface NewCommunityDialogProps {
+  open: boolean
+  onOpenChange: (open: boolean) => void
   onCreate: (values: NewCommunityFormValues) => void
-  disabled?: boolean
 }
 
-export function NewCommunityDialog({ onCreate, disabled }: NewCommunityDialogProps) {
-  const [open, setOpen] = useState(false)
-
+// NOTE: this dialog must stay mounted outside the combobox popup (see
+// CommunityCombobox): the popup unmounts when it closes (e.g. on window blur),
+// which would otherwise destroy the dialog and its form state with it.
+export function NewCommunityDialog({ open, onOpenChange, onCreate }: NewCommunityDialogProps) {
   const form = useForm<NewCommunityFormValues>({
     resolver: zodResolver(newCommunitySchema),
     defaultValues: { name: "", short_name: "", website: "", contact_email: "" },
@@ -40,29 +39,17 @@ export function NewCommunityDialog({ onCreate, disabled }: NewCommunityDialogPro
   function onSubmit(values: NewCommunityFormValues) {
     onCreate(values)
     form.reset()
-    setOpen(false)
+    onOpenChange(false)
   }
 
   return (
     <Dialog
       open={open}
       onOpenChange={next => {
-        setOpen(next)
         if (!next) form.reset()
+        onOpenChange(next)
       }}
     >
-      <DialogTrigger asChild>
-        <Button
-          type="button"
-          variant="secondary"
-          size="sm"
-          disabled={disabled}
-          className="shrink-0 rounded-none border bg-white text-black hover:bg-white"
-          aria-label="Agregar nueva comunidad"
-        >
-          <PlusIcon className="size-4" /> Nueva comunidad
-        </Button>
-      </DialogTrigger>
       <DialogContent
         className="bg-[#2e2e2e] rounded-none border-white font-monospace text-white py-8"
         onInteractOutside={event => event.preventDefault()}
@@ -85,6 +72,7 @@ export function NewCommunityDialog({ onCreate, disabled }: NewCommunityDialogPro
                   <FormControl>
                     <Input
                       {...field}
+                      enterKeyHint="next"
                       className="rounded-none"
                       placeholder="Google Developer Group Sucre"
                     />
@@ -100,7 +88,12 @@ export function NewCommunityDialog({ onCreate, disabled }: NewCommunityDialogPro
                 <FormItem>
                   <FormLabel className="text-xs uppercase">Nombre corto</FormLabel>
                   <FormControl>
-                    <Input {...field} className="rounded-none" placeholder="GDG Sucre" />
+                    <Input
+                      {...field}
+                      enterKeyHint="next"
+                      className="rounded-none"
+                      placeholder="GDG Sucre"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -116,6 +109,7 @@ export function NewCommunityDialog({ onCreate, disabled }: NewCommunityDialogPro
                     <Input
                       {...field}
                       type="url"
+                      enterKeyHint="next"
                       placeholder="https://..."
                       className="rounded-none"
                     />
@@ -131,7 +125,7 @@ export function NewCommunityDialog({ onCreate, disabled }: NewCommunityDialogPro
                 <FormItem>
                   <FormLabel className="text-xs uppercase">Email de contacto</FormLabel>
                   <FormControl>
-                    <Input {...field} type="email" className="rounded-none" />
+                    <Input {...field} type="email" enterKeyHint="done" className="rounded-none" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
