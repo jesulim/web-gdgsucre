@@ -1,41 +1,50 @@
 ---
-import CredentialCard from "@/components/events/bwai-26/CredentialCard"
-import Header from "@/components/events/bwai-26/Header.astro"
+import CredentialCardBWAI26 from "@/components/events/bwai-26/CredentialCard"
+import CredentialCardDevfest25 from "@/components/events/devfest-25/CredentialCard"
+import CredentialCardIO26 from "@/components/events/io-extended-26/CredentialCard"
+import IoExtendedHeader from "@/components/events/io-extended-26/Header.astro"
+import CredentialCardIWD26 from "@/components/events/iwd-26/CredentialCard"
 
 import BaseLayout from "@/layout/BaseLayout.astro"
 
 import { getProfile } from "@/lib/services/profileService"
 import { getEventRegistration } from "@/lib/services/registrationService"
-import { createUserClient } from "@/lib/supabase"
+import { createSupabaseServerClient } from "@/lib/supabase"
 
-const supabase = await createUserClient(Astro.cookies)
+const supabase = createSupabaseServerClient({ request: Astro.request, cookies: Astro.cookies })
 const profile = await getProfile(supabase)
 if (!profile) return Astro.redirect("/")
 
-const registration = await getEventRegistration(supabase, profile?.id, Astro.params.eventSlug || "")
+const eventSlug = Astro.params.eventSlug || "bwai-26"
+const registration = await getEventRegistration(supabase, profile?.id, eventSlug)
 if (!registration) return Astro.redirect("/")
 
-if (registration?.status !== "confirmed")
-  return Astro.redirect(`/registro/${Astro.params.eventSlug}`)
+if (registration?.status !== "confirmed") return Astro.redirect(`/registro/${eventSlug}`)
+
+const cardProps = {
+  avatarUrl: profile.avatar_url,
+  firstName: profile.first_name,
+  lastName: profile.last_name,
+  role: registration.role || "Asistente",
+  handle: profile.email,
+  enableTilt: true,
+  enableMobileTilt: false,
+  innerGradient: `/events/${eventSlug}/bg-credencial.svg`,
+  grainUrl: "/grain.webp",
+  qrUrl: registration?.qr_url,
+}
 ---
 
-<BaseLayout theme="light">
-  <Header />
-  <main class="mt-16 pt-12 flex">
+<BaseLayout theme="dark">
+  <IoExtendedHeader />
+  <main class="bg-io-bg flex min-h-screen pt-[64px] md:pt-[96px] text-white">
     <div class="mx-auto px-4">
-      <CredentialCard
-        client:load
-        avatarUrl={profile.avatar_url}
-        firstName={profile.first_name}
-        lastName={profile.last_name}
-        role={registration.role || "Asistente"}
-        handle={profile.email}
-        enableTilt={true}
-        enableMobileTilt={false}
-        innerGradient={"/events/bwai-26/bg-credencial.svg"}
-        grainUrl="/grain.webp"
-        qrUrl={registration?.qr_url}
-      />
+      {eventSlug === "io-extended-26" && <CredentialCardIO26 client:load {...cardProps} />}
+      {eventSlug === "iwd-26" && <CredentialCardIWD26 client:load {...cardProps} />}
+      {eventSlug === "devfest-25" && <CredentialCardDevfest25 client:load {...cardProps} />}
+      {(eventSlug === "bwai-26" || !["io-extended-26", "iwd-26", "devfest-25"].includes(eventSlug)) && (
+        <CredentialCardBWAI26 client:load {...cardProps} />
+      )}
     </div>
   </main>
 </BaseLayout>

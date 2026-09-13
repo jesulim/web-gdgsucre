@@ -1,7 +1,20 @@
-import { Boxes, List, type LucideIcon, ScanQrCode, UserCog, Users } from "lucide-react"
+import {
+  Boxes,
+  CalendarDays,
+  ClipboardCheck,
+  Form,
+  List,
+  type LucideIcon,
+  ScanQrCode,
+  SquareUserRound,
+  Ticket,
+  UserStar,
+  Users,
+} from "lucide-react"
 
 import {
   SidebarGroup,
+  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -11,6 +24,7 @@ import {
 import type { ViewType } from "../Dashboard"
 
 interface SidebarSection {
+  group?: string
   title: string
   view: ViewType
   icon?: LucideIcon
@@ -19,33 +33,68 @@ interface SidebarSection {
 
 const sidebarSections: SidebarSection[] = [
   {
+    group: "Gestión",
     title: "Registro de Participantes",
     view: "registrations",
     icon: List,
     allowedRoles: ["accreditation"],
   },
   {
-    title: "Registro de Equipos",
-    view: "registrationsTeams",
-    icon: Boxes,
-    allowedRoles: ["accreditation"],
-  },
-  {
+    group: "Gestión",
     title: "Acreditación del Evento",
     view: "accreditation",
-    icon: Users,
+    icon: SquareUserRound,
     allowedRoles: ["accreditation"],
   },
   {
+    group: "Gestión",
     title: "Escanear QR",
     view: "scanner",
     icon: ScanQrCode,
     allowedRoles: ["accreditation"],
   },
   {
+    group: "Gestión",
+    title: "Registro de Equipos",
+    view: "registrationsTeams",
+    icon: Boxes,
+    allowedRoles: ["accreditation"],
+  },
+  {
+    group: "Gestión",
     title: "Organizadores",
     view: "organizers",
-    icon: UserCog,
+    icon: UserStar,
+  },
+  {
+    group: "Configuración",
+    title: "Formulario de Registro",
+    view: "formFields",
+    icon: Form,
+  },
+  {
+    group: "Configuración",
+    title: "Actividades",
+    view: "activities",
+    icon: ClipboardCheck,
+  },
+  {
+    group: "Plataforma",
+    title: "Eventos",
+    view: "events",
+    icon: Ticket,
+  },
+  {
+    group: "Plataforma",
+    title: "Eventos del Calendario",
+    view: "calendarEvents",
+    icon: CalendarDays,
+  },
+  {
+    group: "Plataforma",
+    title: "Comunidades",
+    view: "communities",
+    icon: Users,
   },
 ]
 
@@ -73,10 +122,20 @@ export function NavMain({
     return section.allowedRoles?.includes(currentRole ?? "")
   })
 
-  return (
-    <SidebarGroup>
+  const groupedSections = filteredSections.reduce<Record<string, SidebarSection[]>>(
+    (acc, section) => {
+      const group = section.group ?? "Misceláneo"
+      acc[group] = [...(acc[group] ?? []), section]
+      return acc
+    },
+    {} as Record<string, SidebarSection[]>
+  )
+
+  return Object.keys(groupedSections).map(group => (
+    <SidebarGroup key={group}>
+      <SidebarGroupLabel>{group}</SidebarGroupLabel>
       <SidebarMenu>
-        {filteredSections.map(item => (
+        {groupedSections[group].map(item => (
           <SidebarMenuItem key={item.title}>
             <SidebarMenuButton
               tooltip={item.title}
@@ -90,5 +149,5 @@ export function NavMain({
         ))}
       </SidebarMenu>
     </SidebarGroup>
-  )
+  ))
 }

@@ -55,12 +55,12 @@ export async function getEventRegistration(
     return null
   }
 
-  const { data, error } = await supabase
+  const { data } = await supabase
     .from("registrations")
     .select("id, status, events!inner(slug), qr_url")
     .eq("user_id", user_id)
     .eq("events.slug", eventSlug)
-    .single()
+    .maybeSingle()
 
   const { data: organizer } = await supabase
     .from("organizers")
@@ -68,10 +68,6 @@ export async function getEventRegistration(
     .eq("profile_id", user_id)
     .eq("events.slug", eventSlug)
     .maybeSingle()
-
-  if (error) {
-    return null
-  }
 
   return { ...data, role: organizer ? "Organizador" : "Participante" }
 }
@@ -120,13 +116,7 @@ export async function getRegistrationsByEvent(
     .select(
       `id,
       created_at,
-      profiles(
-        id,
-        first_name,
-        last_name,
-        email,
-        phone_number
-      ),
+      profiles(id, first_name, last_name, email),
       status,
       responses,
       events!inner(slug)`
@@ -171,9 +161,9 @@ export async function confirmRegistration(supabase: SupabaseClient, registration
   }
 
   // Skip token generation if exists
-  if (registration.token) {
-    return { success: true, token: registration.token }
-  }
+  // if (registration.token) {
+  //   return { success: true, token: registration.token }
+  // }
 
   const token = customAlphabetNanoid(6)
 
@@ -192,6 +182,7 @@ export async function confirmRegistration(supabase: SupabaseClient, registration
     throw new Error("Invalid response from QR generation service")
   }
 
+  console.log("Confirming registration", registrationId)
   const { error: updateError } = await supabase
     .from("registrations")
     .update({
@@ -225,75 +216,6 @@ export async function updateRegistration(
   return { success: true }
 }
 
-export async function getRegistrationsWithActivities(
-  supabase: SupabaseClient,
-  event_slug: string,
-  role: string,
-  packageName: string
-) {
-  const query = supabase
-    .from("registrations_with_activities")
-    .select("id, first_name, last_name, role, package, dietary_restriction, activities")
-    .eq("slug", event_slug)
-
-  if (role === "Participante" || role === "Organizer") {
-    query.eq("role", role)
-  }
-
-  if (packageName && packageName !== "Todos los paquetes") {
-    query.eq("package", packageName)
-  }
-
-  const { data, error } = await query.order("first_name", { ascending: true })
-  if (error) {
-    throw new Error(`Error fetching registrations with activities: ${error.message}`)
-  }
-
-  return data?.map(({ activities, ...rest }) => ({ ...rest, ...activities }))
-}
-
-// Caché simple para almacenar los IDs de actividades
-const activityCache = new Map<string, number>()
-
-export async function updateRegistrationActivity(
-  supabase: SupabaseClient,
-  registrationId: number,
-  eventSlug: string,
-  name: string,
-  value: boolean
-) {
-  const cacheKey = `${eventSlug}:${name}`
-  let activityId = activityCache.get(cacheKey)
-
-  // Solo consultar si no está en caché
-  if (!activityId) {
-    const { data: activity, error: activityError } = await supabase
-      .from("activities")
-      .select("id, events!inner(slug)")
-      .eq("name", name)
-      .eq("events.slug", eventSlug)
-      .single()
-
-    if (activityError) throw activityError
-
-    activityId = activity.id
-    activityCache.set(cacheKey, activityId)
-  }
-
-  const { error } = await supabase.from("registration_activities").upsert(
-    {
-      registration_id: registrationId,
-      activity_id: activityId,
-      completed: value,
-    },
-    { onConflict: "registration_id,activity_id" }
-  )
-
-  if (error) throw new Error(`Error updating activity: ${error.message}`)
-
-  return { success: true }
-}
-
 function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array]
 
@@ -314,12 +236,12 @@ export async function getRandomRegistrations(
   supabase: SupabaseClient,
   limit: number | null = null,
   role: string | null = null,
-  eventSlug: string | null = "devfest-25"
+  eventSlug: string | null = "io-extended-26"
 ) {
   const { data: registrations, error } = await supabase
     .from("registrations")
     .select(
-      "id, created_at, profiles(id, first_name, last_name, email, phone_number), status, role, responses, events!inner(slug)"
+      "id, created_at, profiles(id, first_name, last_name, email, phone_number), status, responses, events!inner(slug)"
     )
     .eq("events.slug", eventSlug)
 
@@ -374,23 +296,6 @@ export async function getRandomRegistrations(
   }
 
   return aleatorios
-}
-
-export async function getRegistrationData(supabase: SupabaseClient, registrationId: string) {
-  const { data, error } = await supabase
-    .from("registrations")
-    .select("user_id, event_id")
-    .eq("id", registrationId)
-    .single()
-
-  if (error || !data) {
-    return null
-  }
-
-  return {
-    profile_id: data.user_id,
-    event_id: data.event_id,
-  }
 }
 
 export async function getRegistrationByToken(

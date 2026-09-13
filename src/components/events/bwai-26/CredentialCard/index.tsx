@@ -314,7 +314,7 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
     grid place-items-center bg-white text-black rounded-3xl
     pointer-events-auto"
           >
-            <p className="text-base sm:text-[18px] font-semibold leading-tight wrap-break-word text-center border-2 py-2 px-3 border-blue-500 rounded-2xl">
+            <p className="text-base sm:text-[18px] font-semibold leading-tight wrap-break-word text-center py-2 px-3  rounded-2xl">
               {`${firstName} ${lastName}`}
             </p>
           </div>
@@ -323,7 +323,7 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
             <p className="text-2xl text-white font-bold">{`${role}`}</p>
           </div>
 
-          <div className="absolute bottom-4 right-6 w-40 h-40 border-2 border-blue-500 rounded-2xl p-3">
+          <div className="absolute bottom-4 right-6 w-40 h-40 bg-white rounded-2xl p-2">
             <img
               src={qrUrl}
               alt="Código QR de la credencial"

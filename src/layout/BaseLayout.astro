@@ -1,4 +1,5 @@
 ---
+import { Font } from "astro:assets"
 import "../styles/global.css"
 
 const {
@@ -17,6 +18,8 @@ const {
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
+    <Font cssVariable="--font-google" preload />
+    <Font cssVariable="--font-monospace" preload />
 
     <!-- <ThemeScript /> -->
 

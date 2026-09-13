@@ -87,11 +87,13 @@ export function QRScanner({ eventSlug, activities }: QRScannerProps) {
 
   const updateActivity = async () => {
     try {
-      const response = await fetch("/api/activities", {
+      const response = await fetch("/api/accreditation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          id: pendingRegistration?.id,
+          registrationId: pendingRegistration?.id,
+          activityId: activities.find(a => a.name === activity)?.id,
+          activityName: activity,
           eventSlug,
           field: activity,
           value: true,

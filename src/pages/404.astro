@@ -1,0 +1,55 @@
+---
+import Dino404 from "@/assets/dinosaurio_404_pixel.svg"
+import Footer from "@/components/landing/Footer.astro"
+import Header from "@/components/landing/Header.astro"
+import BaseLayout from "@/layout/BaseLayout.astro"
+---
+
+<BaseLayout theme="light" title="Página no encontrada | GDG Sucre">
+  <Header />
+  <main
+    class="flex-1 overflow-x-hidden mt-16 mx-auto px-8 pt-16 pb-24 max-w-4xl text-center"
+  >
+    <!-- Logo: dinosaurio pixelado mordiendo el 404, sobre una retícula de píxeles -->
+    <div
+      class="border-off-white py-10 md:py-14 px-2 bg-[radial-gradient(circle,color-mix(in_srgb,var(--color-black)_9%,transparent)_1px,transparent_1px)] [background-size:16px_16px]"
+    >
+      <Dino404
+        class="mx-auto w-full max-w-xs sm:max-w-md md:max-w-xl h-auto select-none drop-shadow-[6px_6px_0_rgba(30,30,30,0.12)]"
+      />
+    </div>
+
+    <h1 class="text-4xl md:text-7xl font-bold pb-8 leading-tight">
+      Esta página no existe
+    </h1>
+    <p class="mx-auto max-w-xl mb-10">
+      La dirección que buscás fue movida, cambió de nombre o nunca existió.
+      Mientras tanto, podés volver al inicio o revisar nuestros eventos.
+    </p>
+
+    <!--
+      Botones de acción: primario (relleno negro + sombra azul) y secundario
+      (outline + sombra verde). El hover hace evidente el cambio en AMBOS:
+      el primario se llena de azul, el secundario de verde, con la misma
+      elevación y sombra más grande. Así el contraste es intencional.
+    -->
+    <nav
+      aria-label="Acciones de la página de error"
+      class="flex flex-col sm:flex-row items-center justify-center gap-5"
+    >
+      <a
+        href="/"
+        class="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full border-2 border-black bg-black px-7 py-3.5 font-monospace font-bold uppercase tracking-wide text-white shadow-[4px_4px_0_0_var(--color-blue-500)] transition-all duration-150 hover:-translate-y-1 hover:bg-blue-600 hover:shadow-[6px_6px_0_0_var(--color-blue-500)] active:translate-y-0 active:shadow-[2px_2px_0_0_var(--color-blue-500)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-500"
+      >
+        Volver al inicio
+      </a>
+      <a
+        href="/eventos"
+        class="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full border-2 border-black bg-white px-7 py-3.5 font-monospace font-bold uppercase tracking-wide text-black shadow-[4px_4px_0_0_var(--color-green-500)] transition-all duration-150 hover:-translate-y-1 hover:bg-green-500 hover:text-white hover:shadow-[6px_6px_0_0_var(--color-green-500)] active:translate-y-0 active:shadow-[2px_2px_0_0_var(--color-green-500)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-500"
+      >
+        Ver eventos
+      </a>
+    </nav>
+  </main>
+  <Footer />
+</BaseLayout>

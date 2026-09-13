@@ -1,0 +1,54 @@
+---
+import type { CommunityWithCount } from "@/lib/services/communityService"
+
+interface Props {
+  communities: CommunityWithCount[]
+}
+
+const { communities } = Astro.props
+
+const ACCENT_COLORS = ["bg-blue-500", "bg-red-500", "bg-yellow-500", "bg-green-500"] as const
+
+function colorForCommunity(id: number) {
+  return ACCENT_COLORS[id % ACCENT_COLORS.length]
+}
+---
+
+<section id="comunidades" class="mx-auto max-w-5xl px-4 font-monospace py-8 md:py-12 md:pb-16">
+  <p class="text-xs uppercase pb-4">[ 05 · comunidades ]</p>
+
+  <div class="flex items-baseline justify-between gap-4">
+    <h2 class="text-3xl md:text-4xl lg:text-6xl font-bold">Aliados</h2>
+    <span class="text-muted-foreground shrink-0">
+      {`${communities.length}`.padStart(2, "0")}
+    </span>
+  </div>
+
+  <div class="mt-4 grid grid-cols-2 gap-4 md:grid-cols-3">
+    {
+      communities.map(community => (
+        <div class="flex flex-col gap-2 border border-white bg-black p-4">
+          <div class="flex gap-3">
+            <span class:list={["size-3 shrink-0 mt-1", colorForCommunity(community.id)]} />
+            <span class="font-bold text-base truncate">
+              {community.short_name ?? community.name}
+            </span>
+          </div>
+          {community.website && (
+            <a
+              href={community.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-sm text-muted-foreground hover:underline hover:text-white truncate"
+            >
+              {community.website.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}
+            </a>
+          )}
+          <span class="text-sm text-muted-foreground">
+            // {community.event_count} {community.event_count === 1 ? "evento" : "eventos"}
+          </span>
+        </div>
+      ))
+    }
+  </div>
+</section>

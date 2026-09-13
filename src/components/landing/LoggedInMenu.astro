@@ -1,0 +1,56 @@
+---
+import ArrowOutward from "@/assets/icons/arrow_outward.svg"
+import { getProfile, getStaffRoles } from "@/lib/services/profileService"
+import { createUserClient } from "@/lib/supabase"
+import AvatarDropdown from "./AvatarDropdown"
+
+let userInitials = ""
+
+const supabase = await createUserClient(Astro.cookies)
+const profile = await getProfile(supabase)
+const staffRoles = await getStaffRoles(supabase, profile?.id)
+
+const names = profile?.first_name.split(" ")
+if (names?.length > 1) {
+  userInitials = (names[0][0] + names[1][0]).toUpperCase()
+} else {
+  userInitials = profile?.first_name[0].toUpperCase()
+}
+---
+
+<li class="pl-4 h-full flex items-center sm:hidden">
+  <a href="/perfil" class="flex items-center gap-4 font-monospace hover:underline">
+    Mi Perfil <img
+      class="size-6"
+      src={profile?.avatar_url}
+      alt={userInitials}
+      width={24}
+      height={24}
+    />
+  </a>
+</li>
+<li class="pl-4 h-full flex items-center sm:hidden">
+  <a href="/admin" class="flex items-center gap-4 font-monospace hover:underline">
+    Admin <ArrowOutward class="size-5" />
+  </a>
+</li>
+<li class="pl-4 h-full flex items-center sm:hidden">
+  <a
+    href="/api/auth/signout"
+    class="flex items-center gap-3 font-monospace text-red-500 hover:underline"
+    aria-label="Cerrar sesión"
+  >
+    Cerrar Sesión
+  </a>
+</li>
+
+<li class="hidden sm:block pl-2 border-l-2 border-off-white h-full">
+  <AvatarDropdown
+    client:media="(min-width: 640px)"
+    avatarUrl={profile?.avatar_url}
+    userName={profile?.first_name}
+    userInitials={userInitials}
+    email={profile?.email}
+    admin={profile?.is_admin || Object.keys(staffRoles).length > 0}
+  />
+</li>

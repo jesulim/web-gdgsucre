@@ -23,7 +23,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     const body = await request.json()
     const { name, slug, date, registration_open } = body
 
-    if (!name || !slug || !date || registration_open === undefined || !registration_open === null) {
+    if (!name || !slug || !date || typeof registration_open !== "boolean") {
       return new Response(JSON.stringify({ error: "Invalid request body" }), {
         status: 400,
         headers: { "Content-Type": "application/json" },
@@ -54,7 +54,7 @@ export const PUT: APIRoute = async ({ request, cookies }) => {
     const body = await request.json()
     const { id, name, slug, date, registration_open } = body
 
-    if (!id || !name || !slug || !date || !registration_open) {
+    if (!id || !name || !slug || !date || typeof registration_open !== "boolean") {
       return new Response(JSON.stringify({ error: "Invalid request body" }), {
         status: 400,
         headers: { "Content-Type": "application/json" },
@@ -70,7 +70,7 @@ export const PUT: APIRoute = async ({ request, cookies }) => {
     })
 
     if (!result) {
-      return new Response(JSON.stringify({ error: "Failed to create event" }), {
+      return new Response(JSON.stringify({ error: "Failed to update event" }), {
         status: 500,
         headers: { "Content-Type": "application/json" },
       })

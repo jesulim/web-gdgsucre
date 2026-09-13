@@ -43,7 +43,17 @@ export async function getProfile(supabase: SupabaseClient) {
 
   const { data: profile, error } = await supabase
     .from("profiles")
-    .select("id, first_name, last_name, avatar_url, is_admin")
+    .select(
+      `id,
+      first_name,
+      last_name,
+      avatar_url,
+      is_admin,
+      occupation,
+      phone_number,
+      display_name,
+      share_data`
+    )
     .eq("id", user.id)
     .maybeSingle()
 
@@ -54,10 +64,10 @@ export async function getProfile(supabase: SupabaseClient) {
   if (!profile) {
     return {
       id: user.id,
-      first_name: user.user_metadata.full_name,
+      first_name: user.user_metadata?.full_name || user.user_metadata?.name || "",
       last_name: "",
       avatar_url: user?.user_metadata?.avatar_url,
-      email: user?.user_metadata.email,
+      email: user?.user_metadata?.email,
       is_admin: false,
     }
   }
@@ -128,35 +138,41 @@ export async function createProfile(
   return data
 }
 
-export async function createProfileOfOrganizer(
+export async function updateProfile(
   supabase: SupabaseClient,
-  registrationData: {
+  data: {
     first_name: string
     last_name: string
-    phone_number: string
-    email: string
+    occupation?: string | null
+    phone_number?: string | null
+    avatar_url?: string | null
+    share_data?: boolean | null
+    display_name?: string | null
   }
 ) {
-  return { success: false, reason: "not_implemented" }
+  const user = await getUser(supabase)
+  if (!user) {
+    throw new Error("No se pudo actualizar el perfil: No se pudo obtener el usuario")
+  }
 
-  //   const userId = authData.user.id
+  const { error } = await supabase.from("profiles").upsert(
+    {
+      id: user.id,
+      email: user.user_metadata.email,
+      avatar_url: data.avatar_url || user.user_metadata.avatar_url,
+      first_name: data.first_name,
+      last_name: data.last_name,
+      occupation: data.occupation,
+      phone_number: data.phone_number,
+      display_name: data.display_name,
+      share_data: data.share_data,
+    },
+    { onConflict: "id" }
+  )
 
-  //   const { data, error: profileError } = await supabase
-  //     .from("profiles")
-  //     .insert([
-  //       {
-  //         id: userId,
-  //         first_name: registrationData.first_name,
-  //         last_name: registrationData.last_name,
-  //         phone_number: registrationData.phone_number,
-  //         email: registrationData.email,
-  //       },
-  //     ])
-  //     .select("id")
+  if (error) {
+    throw new Error(`No se pudo actualizar el perfil: ${error.message}`)
+  }
 
-  //   if (profileError) {
-  //     throw new Error(`No se pudo crear el perfil: ${profileError.message}`)
-  //   }
-
-  //   return { success: true, data }
+  return { success: true }
 }

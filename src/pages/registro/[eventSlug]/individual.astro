@@ -1,5 +1,5 @@
 ---
-import Header from "@/components/events/bwai-26/Header.astro"
+import IoExtendedHeader from "@/components/events/io-extended-26/Header.astro"
 import { RegisterForm } from "@/components/registration/RegisterForm"
 import BaseLayout from "@/layout/BaseLayout.astro"
 
@@ -8,13 +8,13 @@ import { getFormFieldsByEvent } from "@/lib/services/formService"
 import { getProfile } from "@/lib/services/profileService"
 import { getEventRegistration } from "@/lib/services/registrationService"
 
-import { createUserClient } from "@/lib/supabase"
+import { createSupabaseServerClient } from "@/lib/supabase"
 
-const supabase = await createUserClient(Astro.cookies)
+const supabase = createSupabaseServerClient({ request: Astro.request, cookies: Astro.cookies })
 
 const eventSlug = Astro.params.eventSlug || ""
 const event = await getEvent(supabase, eventSlug)
-if (!event) return Astro.redirect("/")
+if (!event) return new Response(null, { status: 404 })
 
 const profile = await getProfile(supabase)
 const registration = await getEventRegistration(supabase, profile?.id, eventSlug)
@@ -30,12 +30,12 @@ if (registration?.status === "confirmed") {
   return Astro.redirect(`/registro/${eventSlug}/confirmado`)
 }
 
-const formFields = await getFormFieldsByEvent(supabase, eventSlug)
+const formFields = await getFormFieldsByEvent(supabase, event?.id)
 ---
 
-<BaseLayout theme="light">
-  <Header />
-  <main class="mt-4 flex">
+<BaseLayout theme="dark">
+  <IoExtendedHeader />
+  <main class="bg-io-bg flex min-h-screen pt-[64px] md:pt-[96px] text-io-text">
     <div class="mx-auto px-4 pb-16">
       <h1 class="text-xl mb-4 font-medium">Regístrate al {event.name}</h1>
       {
@@ -45,7 +45,31 @@ const formFields = await getFormFieldsByEvent(supabase, eventSlug)
           </p>
         )
       }
-      <RegisterForm formFields={formFields} profile={profile} event={event} client:load />
+      <div class="io-register-form">
+        <RegisterForm formFields={formFields} profile={profile} event={event} client:load />
+      </div>
     </div>
   </main>
 </BaseLayout>
+
+<style is:global>
+  .io-register-form label {
+    color: var(--color-io-text);
+  }
+
+  .io-register-form input {
+    color: var(--color-io-text);
+  }
+
+  .io-register-form input::placeholder {
+    color: var(--color-io-text-muted);
+  }
+
+  .io-register-form [data-slot="select-trigger"] {
+    color: var(--color-io-text);
+  }
+
+  .io-register-form [data-slot="select-trigger"] span {
+    color: var(--color-io-text-muted);
+  }
+</style>
