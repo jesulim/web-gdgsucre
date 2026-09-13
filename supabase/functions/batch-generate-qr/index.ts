@@ -4,7 +4,13 @@ import { qrcode } from "https://deno.land/x/qrcode@v2.0.0/mod.ts"
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.80.0"
 import { serve } from "jsr:@std/http@0.224.0/server"
 
-const ALLOWED_ORIGINS = ["https://gdgsucre.com", "http://localhost:4321"]
+const ALLOWED_ORIGINS = [
+  "https://gdgsucre.com",
+  "https://www.gdgsucre.com",
+  "https://wtmsucre.com",
+  "https://www.wtmsucre.com",
+  "http://localhost:4321",
+]
 
 function getCorsHeaders(origin: string | null) {
   const allowedOrigin = origin && ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0]
