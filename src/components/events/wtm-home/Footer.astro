@@ -1,0 +1,43 @@
+---
+import wtmLogo from "@/assets/events/wtm-home/wtm-logo-white.png"
+import SocialIcons from "@/components/SocialIcons.astro"
+---
+
+<footer class="bg-[#060D1C] text-white">
+  <div
+    class="max-w-5xl mx-auto px-7 py-12 flex flex-col md:flex-row items-center justify-between gap-8"
+  >
+    <!-- Brand -->
+    <a
+      href="#inicio"
+      class="flex items-center gap-3.5 no-underline text-white"
+    >
+      <img
+        src={wtmLogo.src}
+        alt="WTM Sucre"
+        class="h-10 w-auto block"
+      />
+      <div>
+        <div class="font-grotesk font-bold text-lg lg:text-xl tracking-tight">
+          Women Techmakers
+        </div>
+        <div class="font-grotesk text-xs lg:text-sm text-[#FFBA00] tracking-[0.18em] uppercase mt-0.5">
+          Sucre · Bolivia
+        </div>
+      </div>
+    </a>
+
+    <!-- Social icons -->
+    <SocialIcons
+      class="[&_a]:text-white/50 [&_a:hover]:text-[#FFBA00] [&_svg]:w-5 [&_svg]:h-5 lg:[&_svg]:w-6 lg:[&_svg]:h-6"
+    />
+  </div>
+
+  <!-- Bottom bar -->
+  <div
+    class="max-w-5xl mx-auto px-7 py-4 flex justify-center font-grotesk text-xs lg:text-sm"
+    style="border-top: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.35);"
+  >
+    <span>© 2026 Women Techmakers Sucre</span>
+  </div>
+</footer>

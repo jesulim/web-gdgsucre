@@ -1,0 +1,26 @@
+---
+import About from "@/components/events/md-26/About.astro"
+import Actividad from "@/components/events/md-26/Actividad.astro"
+import Footer from "@/components/events/md-26/Footer.astro"
+import Inicio from "@/components/events/md-26/Inicio.astro"
+import Mural from "@/components/events/md-26/mural/Mural.astro"
+import Nav from "@/components/events/md-26/Nav.astro"
+import Organizers from "@/components/events/md-26/Organizers.astro"
+import BaseLayout from "@/layout/BaseLayout.astro"
+---
+
+<BaseLayout
+  title="WTM Sucre · Mural de Mamá"
+  description="Construye con nosotras el mural colaborativo más grande del Día de la Madre. Women Techmakers Sucre."
+  theme="light"
+>
+  <Nav />
+  <main class="bg-[#FFFCF2]">
+    <Inicio />
+    <Actividad />
+    <Mural />
+    <Organizers />
+    <About />
+  </main>
+  <Footer />
+</BaseLayout>

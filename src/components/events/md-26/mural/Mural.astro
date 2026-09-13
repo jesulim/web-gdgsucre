@@ -1,0 +1,72 @@
+---
+import mural from "../../../../data/md-26/mural.json"
+import MuralCard from "./MuralCard.astro"
+---
+
+<section
+  id="mural"
+  class="w-full py-16 px-4 md:px-8 lg:px-16 border-b-2 border-[#0F1A2B]"
+>
+  <div class="max-w-7xl mx-auto">
+    <!-- <p
+      class="text-xs font-mono font-bold tracking-widest text-[#1F6FE5] uppercase mb-3"
+    >
+      Mural colaborativo
+    </p> -->
+    <div
+      class="inline-flex items-center gap-2 font-mono text-xs lg:text-sm uppercase tracking-[0.18em] text-[#1F6FE5] mb-4"
+    >
+      <span class="w-[18px] h-0.5 bg-[#1F6FE5] flex-shrink-0"></span>
+      Mural colaborativo
+    </div>
+
+    <h2
+      class="font-bold text-4xl lg:text-5xl text-[#0F1A2B] leading-tight mb-4"
+    >
+      Para cada mami,<em
+        class="not-italic text-[#1F6FE5] px-1.5"
+        style="background: linear-gradient(180deg, transparent 65%, #EC6A8B 65%, #EC6A8B 92%, transparent 92%);"
+        >una historia</em
+      >
+    </h2>
+
+    <p class="text-[#3C4A5E] text-lg mb-12 max-w-xl">
+      Estas son algunas de las dedicatorias que ya forman parte del mural.
+      ¿Falta la tuya? Súbela y aparece junto a ellas.
+    </p>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 lg:gap-6">
+      {
+        mural.map((entry, i) => (
+          <MuralCard
+            index={i + 1}
+            nombre={entry.nombre}
+            nombreMami={entry.nombreMami}
+            frase={entry.frase}
+            foto={entry.foto}
+          />
+        ))
+      }
+    </div>
+
+    <div
+      class="mt-12 flex flex-col md:flex-row md:items-center md:justify-between rounded-2xl border-2 border-[#0F1A2B] px-5 py-5 md:px-8 md:py-6 gap-4"
+      style="box-shadow: 5px 5px 0 #0F1A2B"
+    >
+      <div>
+        <p class="text-4xl md:text-5xl font-bold text-[#1F6FE5] font-mono">
+          {mural.length}
+        </p>
+        <p class="text-[#3C4A5E] text-sm mt-1">dedicatorias y subiendo</p>
+      </div>
+      <a
+        href="https://docs.google.com/forms/d/e/1FAIpQLSdDntrgYkaurFk-9M8PBBs10pALf5QY5vooFEYVkpc8MO5RhQ/viewform"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="bg-[#1F6FE5] text-white font-bold px-5 py-2.5 md:px-6 md:py-3 rounded-full hover:bg-[#1859c0] transition-colors text-sm md:text-base w-full md:w-auto text-center"
+      >
+        Sumar la mía →
+      </a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,204 @@
+---
+import { Countdown } from "./Countdown"
+---
+
+<!-- ── HERO ─────────────────────────────────────────────────── -->
+<section
+  id="inicio"
+  class="bg-[#FFF6F4] border-b-2 border-[#0F1A2B]"
+  style="background-image: radial-gradient(circle, rgba(236,106,139,0.20) 1.5px, transparent 1.6px); background-size: 22px 22px; background-color: #FFF6F4;"
+>
+  <div
+    class="max-w-6xl mx-auto px-7 py-20 md:py-24 grid md:grid-cols-[1.15fr_0.85fr] gap-14 items-center"
+  >
+    <!-- Left: copy -->
+    <div>
+      <!-- Eyebrow -->
+      <div
+        class="inline-flex items-center gap-2 font-mono text-xs lg:text-sm uppercase tracking-[0.18em] text-[#1F6FE5] mb-5"
+      >
+        <span class="w-[18px] h-0.5 bg-[#1F6FE5] flex-shrink-0"></span>
+        Women Techmakers · Sucre, Bolivia
+      </div>
+
+      <!-- Title -->
+      <h1
+        class="font-google font-bold text-4xl md:text-6xl lg:text-7xl leading-none tracking-tight text-[#0F1A2B] mb-5"
+      >
+        Construyamos el
+        <em
+          class="not-italic text-[#1F6FE5] px-1.5"
+          style="background: linear-gradient(180deg, transparent 65%, #EC6A8B 65%, #EC6A8B 92%, transparent 92%);"
+          >mural de recuerdos</em
+        >
+        más grande para
+        <em class="not-italic text-[#10A37F] italic">mamá</em>.
+      </h1>
+
+      <!-- Lede -->
+      <p
+        class="font-google text-base lg:text-2xl text-[#3C4A5E] leading-relaxed max-w-[560px] mb-8"
+      >
+        Somos la comunidad de mujeres en tecnología de Sucre. Este mes
+        celebramos a las primeras maestras de nuestras vidas: <strong
+          class="text-[#0F1A2B] font-semibold">nuestras mamás</strong
+        >. Sube una foto con tu mami, escribe una dedicatoria, y aparecerá en el
+        mural digital más grande del Día de la Madre.
+      </p>
+
+      <!-- CTAs -->
+      <div class="flex gap-3.5 flex-wrap mb-9">
+        <a
+          href="#actividad"
+          class="inline-flex items-center gap-2.5 px-[22px] py-3.5 bg-[#1F6FE5] text-white font-semibold text-base lg:text-xl rounded-full border-2 border-[#1452B5] hover:-translate-x-px hover:-translate-y-px transition-transform no-underline"
+          style="box-shadow: 4px 4px 0 #1452B5"
+        >
+          Sube tu foto con mamá <span>→</span>
+        </a>
+        <a
+          href="#sobre"
+          class="inline-flex items-center gap-2.5 px-[22px] py-3.5 text-[#0F1A2B] font-semibold text-base lg:text-xl rounded-full border-2 border-[#0F1A2B] hover:-translate-x-px hover:-translate-y-px transition-transform bg-transparent no-underline"
+        >
+          Sobre la comunidad
+        </a>
+      </div>
+
+      <!-- Meta chips -->
+      <div
+        class="flex gap-5 flex-wrap items-center font-mono text-xs lg:text-base text-[#3C4A5E]"
+      >
+        <span class="inline-flex items-center gap-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#10A37F] flex-shrink-0"
+          ></span>
+          Mural colaborativo
+        </span>
+        <span class="inline-flex items-center gap-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#10A37F] flex-shrink-0"
+          ></span>
+          Abierto a toda la comunidad
+        </span>
+        <span class="inline-flex items-center gap-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#10A37F] flex-shrink-0"
+          ></span>
+          Gratis
+        </span>
+      </div>
+    </div>
+
+    <!-- Right: figure + countdown -->
+    <div class="flex flex-col items-center gap-5">
+      <!-- Mom & child illustration -->
+      <div
+        class="relative w-full max-w-[380px] aspect-square bg-white border-2 border-[#0F1A2B] rounded-2xl overflow-hidden flex items-center justify-center"
+        style="box-shadow: 8px 8px 0 #0F1A2B"
+      >
+        <!-- Gradient wash -->
+        <div
+          class="absolute inset-0"
+          style="background: radial-gradient(circle at 30% 30%, rgba(31,111,229,0.18), transparent 55%), radial-gradient(circle at 70% 70%, rgba(16,163,127,0.18), transparent 55%);"
+        >
+        </div>
+
+        <!-- Pixel mom+child SVG -->
+        <svg
+          width="220"
+          height="220"
+          viewBox="0 0 16 16"
+          shape-rendering="crispEdges"
+          aria-hidden="true"
+          class="relative z-10"
+        >
+          <g fill="#1F6FE5">
+            <rect x="3" y="1" width="2" height="1"></rect>
+            <rect x="7" y="1" width="4" height="1"></rect>
+            <rect x="13" y="1" width="2" height="1"></rect>
+            <rect x="2" y="2" width="12" height="1"></rect>
+            <rect x="1" y="3" width="14" height="1"></rect>
+            <rect x="1" y="4" width="4" height="1"></rect>
+            <rect x="7" y="4" width="2" height="1"></rect>
+            <rect x="11" y="4" width="4" height="1"></rect>
+            <rect x="1" y="5" width="3" height="1"></rect>
+            <rect x="7" y="5" width="2" height="1"></rect>
+            <rect x="12" y="5" width="3" height="1"></rect>
+            <rect x="1" y="6" width="2" height="1"></rect>
+            <rect x="7" y="6" width="2" height="1"></rect>
+            <rect x="13" y="6" width="2" height="1"></rect>
+            <rect x="1" y="7" width="2" height="1"></rect>
+            <rect x="7" y="7" width="2" height="1"></rect>
+            <rect x="13" y="7" width="2" height="1"></rect>
+            <rect x="1" y="8" width="2" height="1"></rect>
+            <rect x="13" y="8" width="2" height="1"></rect>
+            <rect x="1" y="9" width="3" height="1"></rect>
+            <rect x="13" y="9" width="2" height="1"></rect>
+            <rect x="2" y="10" width="12" height="1"></rect>
+            <rect x="3" y="11" width="10" height="1"></rect>
+            <rect x="4" y="12" width="8" height="1"></rect>
+            <rect x="5" y="13" width="6" height="1"></rect>
+            <rect x="6" y="14" width="4" height="1"></rect>
+            <rect x="7" y="15" width="2" height="1"></rect>
+          </g>
+          <g fill="#10A37F">
+            <rect x="5" y="4" width="2" height="1"></rect>
+            <rect x="4" y="5" width="3" height="1"></rect>
+            <rect x="3" y="6" width="4" height="1"></rect>
+            <rect x="3" y="7" width="4" height="1"></rect>
+            <rect x="3" y="8" width="6" height="1"></rect>
+            <rect x="4" y="9" width="4" height="1"></rect>
+          </g>
+          <g fill="#EC6A8B">
+            <rect x="9" y="4" width="2" height="1"></rect>
+            <rect x="9" y="5" width="3" height="1"></rect>
+            <rect x="9" y="6" width="4" height="1"></rect>
+            <rect x="9" y="7" width="4" height="1"></rect>
+            <rect x="9" y="8" width="4" height="1"></rect>
+            <rect x="8" y="9" width="5" height="1"></rect>
+          </g>
+        </svg>
+
+        <!-- Tag: "mami + yo" -->
+        <div
+          class="absolute left-4 top-4 z-20 bg-[#0F1A2B] text-[#FFF6F4] px-3 py-1.5 rounded-full font-mono text-xs lg:text-sm flex items-center gap-1.5"
+        >
+          <span class="text-[#EC6A8B]">♥</span> mami + yo
+        </div>
+
+        <!-- Pixel rose (bottom-right) -->
+        <div class="absolute right-4 bottom-4 z-20">
+          <svg
+            width="52"
+            height="52"
+            viewBox="0 0 12 12"
+            shape-rendering="crispEdges"
+            aria-hidden="true"
+          >
+            <g fill="#EC6A8B">
+              <rect x="4" y="0" width="4" height="1"></rect>
+              <rect x="3" y="1" width="6" height="1"></rect>
+              <rect x="2" y="2" width="8" height="1"></rect>
+              <rect x="2" y="3" width="8" height="1"></rect>
+              <rect x="3" y="4" width="6" height="1"></rect>
+              <rect x="4" y="5" width="4" height="1"></rect>
+            </g>
+            <g fill="#B94767">
+              <rect x="4" y="2" width="2" height="2"></rect>
+            </g>
+            <g fill="#10A37F">
+              <rect x="5" y="6" width="1" height="1"></rect>
+              <rect x="3" y="7" width="4" height="1"></rect>
+              <rect x="2" y="8" width="1" height="1"></rect>
+              <rect x="4" y="8" width="2" height="1"></rect>
+              <rect x="5" y="9" width="2" height="1"></rect>
+              <rect x="5" y="10" width="2" height="1"></rect>
+              <rect x="6" y="11" width="1" height="1"></rect>
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Countdown -->
+      <div class="w-full max-w-[380px]">
+        <Countdown client:load />
+      </div>
+    </div>
+  </div>
+</section>

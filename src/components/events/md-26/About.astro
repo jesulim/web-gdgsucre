@@ -1,0 +1,86 @@
+---
+
+---
+
+<section id="sobre" class="bg-[#FFF6F4] border-b-2 border-[#0F1A2B]">
+  <div
+    class="max-w-6xl mx-auto px-7 py-20 md:py-24 grid md:grid-cols-[1.05fr_0.95fr] gap-14 items-start"
+  >
+    <!-- Left: copy -->
+    <div>
+      <div
+        class="inline-flex items-center gap-2 font-mono text-xs lg:text-sm uppercase tracking-[0.18em] text-[#1F6FE5] mb-4"
+      >
+        <span class="w-[18px] h-0.5 bg-[#1F6FE5] flex-shrink-0"></span>
+        Sobre WTM Sucre
+      </div>
+
+      <h2
+        class="font-google font-bold text-4xl lg:text-6xl leading-none tracking-tight text-[#0F1A2B] mb-5"
+      >
+        Comunidad de
+        <em
+          class="not-italic text-[#1F6FE5] px-1"
+          style="background: linear-gradient(180deg, transparent 65%, #EC6A8B 65%, #EC6A8B 92%, transparent 92%);"
+          >mujeres en tecnología</em
+        >
+        en la capital de Bolivia.
+      </h2>
+
+      <p
+        class="text-base lg:text-2xl text-[#3C4A5E] leading-relaxed max-w-[540px] mt-5"
+      >
+        Women Techmakers Sucre es el capítulo local de la red global de WTM.
+        Desde Sucre, organizamos meetups, talleres prácticos, mentorías y
+        actividades como este mural para celebrar a quienes nos inspiran.
+      </p>
+      <p
+        class="text-base lg:text-2xl text-[#3C4A5E] leading-relaxed max-w-[540px] mt-4"
+      >
+        Si trabajas, estudias o sueñas con la tecnología — bienvenida. No
+        importa si recién estás empezando o si llevas años codeando: hay un
+        lugar para ti en esta comunidad.
+      </p>
+    </div>
+
+    <!-- Right: values list -->
+    <div>
+      <ul class="list-none p-0 m-0">
+        {
+          [
+            {
+              k: "Comunidad",
+              v: "Espacios seguros donde aprender, equivocarse y crecer juntas.",
+            },
+            {
+              k: "Mentoría",
+              v: "Acompañamos a quien empieza. Y a quien recién se anima.",
+            },
+            {
+              k: "Impacto",
+              v: "Hackathons, charlas y proyectos con identidad sucrense.",
+            },
+            {
+              k: "Diversidad",
+              v: "Tech construido por mujeres, para todas las personas.",
+            },
+          ].map((item, i) => (
+            <li class="flex gap-4 items-start py-5 lg:py-7 border-t-[1.5px] border-[#0F1A2B] last:border-b-[1.5px] last:border-b-[#0F1A2B]">
+              <span class="font-mono font-bold text-xs lg:text-sm text-[#1F6FE5] tracking-[0.06em] pt-1 min-w-[32px]">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <div>
+                <div class="font-google font-bold text-xl lg:text-2xl tracking-tight text-[#0F1A2B] mb-1">
+                  {item.k}
+                </div>
+                <div class="text-sm lg:text-xl text-[#3C4A5E] leading-relaxed">
+                  {item.v}
+                </div>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>

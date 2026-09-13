@@ -7,7 +7,10 @@ import { Eta } from "@bgub/eta"
 
 const ALLOWED_ORIGINS = [
   "https://gdgsucre.com",
+  "https://www.gdgsucre.com",
   "https://web-gdgsucre.vercel.app",
+  "https://wtmsucre.com",
+  "https://www.wtmsucre.com",
   "http://localhost:4321",
 ]
 

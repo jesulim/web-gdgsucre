@@ -1,6 +1,8 @@
 interface ImportMetaEnv {
   readonly SUPABASE_URL: string
   readonly SUPABASE_ANON_KEY: string
+  /** Sitio que se despliega: "gdg" (default) | "wtm" */
+  readonly PUBLIC_SITE?: "gdg" | "wtm"
 }
 
 interface ImportMeta {

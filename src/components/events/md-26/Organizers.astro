@@ -1,0 +1,109 @@
+---
+import organizers from "@/data/md-26/organizers.json"
+
+const networkLabel: Record<string, string> = {
+  linkedin: "in",
+  instagram: "ig",
+  github: "gh",
+  facebook: "fb",
+  twitter: "x",
+}
+---
+
+<section id="organizadoras" class="bg-[#FFF6F4] border-b-2 border-[#0F1A2B]">
+  <div class="max-w-6xl mx-auto px-7 py-20 md:py-24">
+
+    <!-- Header -->
+    <div class="flex items-end justify-between flex-wrap gap-6 mb-12">
+      <div>
+        <div
+          class="inline-flex items-center gap-2 font-mono text-xs lg:text-sm uppercase tracking-[0.18em] text-[#1F6FE5] mb-4"
+        >
+          <span class="w-[18px] h-0.5 bg-[#1F6FE5] flex-shrink-0"></span>
+          Organizadoras
+        </div>
+        <h2
+          class="font-google font-bold text-4xl lg:text-6xl leading-none tracking-tight text-[#0F1A2B] mb-4"
+        >
+          Las que hacen posible<br />WTM Sucre.
+        </h2>
+        <p class="text-base lg:text-xl text-[#3C4A5E] leading-relaxed max-w-[520px]">
+          Un equipo de mujeres en tech que dedica su tiempo a abrir puertas para
+          otras.
+        </p>
+      </div>
+    </div>
+
+    <!-- Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+      {
+        organizers.map((org) => (
+          <div
+            class="bg-[#FFF6F4] border-2 border-[#0F1A2B] rounded-2xl overflow-hidden flex flex-col hover:-translate-x-px hover:-translate-y-px transition-transform"
+            style="box-shadow: 6px 6px 0 #0F1A2B"
+          >
+            <!-- Portrait -->
+            <div class="aspect-square overflow-hidden bg-[#e8f0fe]">
+              <img
+                src={org.img}
+                alt={org.full_name}
+                class="w-full h-full object-cover object-center"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+
+            <!-- Info -->
+            <div class="p-5 border-t-2 border-[#0F1A2B] bg-[#FFF6F4] flex flex-col gap-3">
+              <h3 class="font-google font-bold text-lg lg:text-xl tracking-tight text-[#0F1A2B] leading-snug">
+                {org.full_name}
+              </h3>
+
+              {org.socialNetworks.length > 0 && (
+                <div class="flex gap-2 flex-wrap">
+                  {org.socialNetworks.map((sn) => (
+                    <a
+                      href={sn.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={sn.type}
+                      data-network={sn.type}
+                      class="social-btn"
+                    >
+                      {networkLabel[sn.type] ?? sn.type.slice(0, 2)}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .social-btn {
+    width: 2rem;
+    height: 2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    border: 2px solid #0f1a2b;
+    background: #fff6f4;
+    font-family: var(--font-mono, monospace);
+    font-size: 11px;
+    font-weight: 700;
+    color: #0f1a2b;
+    text-decoration: none;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+  }
+  .social-btn[data-network="linkedin"]:hover  { background: #1f6fe5; border-color: #1f6fe5; color: #fff; }
+  .social-btn[data-network="instagram"]:hover { background: #ec6a8b; border-color: #ec6a8b; color: #fff; }
+  .social-btn[data-network="github"]:hover    { background: #0f1a2b; border-color: #0f1a2b; color: #fff; }
+  .social-btn[data-network="facebook"]:hover  { background: #1877f2; border-color: #1877f2; color: #fff; }
+  .social-btn[data-network="twitter"]:hover   { background: #10a37f; border-color: #10a37f; color: #fff; }
+</style>

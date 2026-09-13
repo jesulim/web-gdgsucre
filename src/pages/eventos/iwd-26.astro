@@ -1,16 +1,26 @@
 ---
 import About from "@/components/events/iwd-26/About.astro"
+import Agenda from "@/components/events/iwd-26/agenda/Agenda.astro"
+import Footer from "@/components/events/iwd-26/Footer.astro"
 import Header from "@/components/events/iwd-26/Header.astro"
 import Hero from "@/components/events/iwd-26/Hero.astro"
-
+import Organizers from "@/components/events/iwd-26/organizers/Organizers.astro"
+import PackageSection from "@/components/events/iwd-26/PackageSection.astro"
+import Sponsors from "@/components/events/iwd-26/Sponsors.astro"
+import Speakers from "@/components/events/iwd-26/speakers/Speakers.astro"
 import BaseLayout from "@/layout/BaseLayout.astro"
 ---
 
 <BaseLayout title="Women Techmakers Sucre 2026 - Break the Pattern" theme="dark">
   <Header />
-  <main class="flex-1 bg-[#232323]">
+  <main class="flex-1 bg-white">
     <Hero />
     <About />
+    <PackageSection />
+    <Speakers />
+    <Agenda />
+    <Sponsors />
+    <Organizers />
   </main>
-  <!-- <Footer /> Coming soon -->
+  <Footer />
 </BaseLayout>

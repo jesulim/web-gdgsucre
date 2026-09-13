@@ -1,14 +1,15 @@
 ---
 import { Font } from "astro:assets"
+import { site } from "@/lib/site"
 import "../styles/global.css"
 
 const {
   theme,
-  title = "Google Developer Group Sucre",
-  description = "Google Developer Group Sucre",
+  title = site.name,
+  description = site.description,
   ogTitle = title,
   ogDescription = description,
-  ogImage = "/og.png",
+  ogImage = site.ogImage,
 } = Astro.props
 ---
 
@@ -16,7 +17,7 @@ const {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href={site.favicon} />
     <meta name="generator" content={Astro.generator} />
     <Font cssVariable="--font-google" preload />
     <Font cssVariable="--font-monospace" preload />

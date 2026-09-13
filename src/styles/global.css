@@ -4,6 +4,12 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("../assets/fonts/SpaceGrotesk-VariableFont_wght.ttf") format("truetype");
+  font-weight: 300 700;
+}
+
 @theme {
   --color-blue-500: #4285f4;
   --color-blue-600: #1a73e8;
@@ -62,6 +68,7 @@
   --font-google: var(--font-google);
   --font-sans: var(--font-google);
   --font-monospace: var(--font-monospace);
+  --font-grotesk: "Space Grotesk", sans-serif;
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);

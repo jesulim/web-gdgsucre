@@ -1,0 +1,151 @@
+---
+import wtmLogo from "@/assets/events/wtm-home/LogoHeader.svg"
+
+interface Section {
+  href: string
+  label: string
+}
+
+interface Props {
+  sections?: Section[]
+}
+
+const {
+  sections = [
+    { href: "#inicio", label: "Inicio" },
+    // { href: "#beneficios", label: "Beneficios" },
+    { href: "#eventos", label: "Eventos" },
+    // { href: "#testimonios", label: "Testimonios" },
+    { href: "#quienes-somos", label: "¿Quiénes somos?" },
+  ],
+} = Astro.props
+---
+
+<header class="sticky top-0 z-50 bg-[#0A1229]">
+  <div
+    class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-6"
+  >
+    <!-- Logo -->
+    <a href="#inicio" class="flex items-center gap-3 no-underline text-white">
+      <img src={wtmLogo.src} alt="WTM Sucre" class="h-9 lg:h-11 w-auto block" />
+    </a>
+
+    <!-- Desktop Navigation -->
+    <nav class="hidden md:flex items-center gap-7 lg:gap-9">
+      {
+        sections.map((section) => (
+          <a
+            href={section.href}
+            class="text-sm lg:text-base text-[#D1D5DB] font-grotesk font-medium hover:text-white transition-colors no-underline"
+          >
+            {section.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <!-- Mobile Hamburger Button -->
+    <button
+      id="menu-toggle"
+      class="md:hidden flex flex-col justify-between w-6 h-3.5 text-white focus:outline-none z-50 cursor-pointer"
+      aria-label="Abrir menú"
+    >
+      <span
+        class="w-full h-0.5 bg-current transition-all duration-300 origin-center line-1"
+      ></span>
+      <span class="w-full h-0.5 bg-current transition-all duration-300 line-2"
+      ></span>
+      <span
+        class="w-full h-0.5 bg-current transition-all duration-300 origin-center line-3"
+      ></span>
+    </button>
+  </div>
+
+  <!-- Mobile Menu Dropdown -->
+  <div
+    id="mobile-menu"
+    class="absolute top-full left-0 w-full bg-[#0A1229] backdrop-blur-lg border-b border-white/10 transition-all duration-300 ease-in-out opacity-0 translate-y-2.5 pointer-events-none md:hidden flex flex-col py-6 px-6 gap-4 shadow-xl"
+  >
+    {
+      sections.map((section) => (
+        <a
+          href={section.href}
+          class="text-base text-[#D1D5DB] font-medium hover:text-white transition-colors no-underline py-2 border-b border-white/5 last:border-none"
+        >
+          {section.label}
+        </a>
+      ))
+    }
+    <a
+      href="#unete"
+      class="mt-2 font-grotesk font-medium inline-flex items-center justify-center gap-2 bg-[#FFBA00] hover:bg-[#FFC93C] text-[#0A1229] text-base px-5 py-3 rounded-full transition-colors no-underline"
+    >
+      Únete
+      <span aria-hidden="true">→</span>
+    </a>
+  </div>
+</header>
+
+<script>
+  const menuToggle = document.getElementById("menu-toggle");
+  const mobileMenu = document.getElementById("mobile-menu");
+
+  if (menuToggle && mobileMenu) {
+    // Toggle menu
+    menuToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isOpen = mobileMenu.classList.contains("open");
+
+      if (isOpen) {
+        mobileMenu.classList.remove("open");
+        menuToggle.classList.remove("open");
+      } else {
+        mobileMenu.classList.add("open");
+        menuToggle.classList.add("open");
+      }
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener("click", (event) => {
+      const target = event.target as Node;
+      if (
+        mobileMenu.classList.contains("open") &&
+        !mobileMenu.contains(target) &&
+        !menuToggle.contains(target)
+      ) {
+        mobileMenu.classList.remove("open");
+        menuToggle.classList.remove("open");
+      }
+    });
+
+    // Close menu when clicking a link
+    const links = mobileMenu.querySelectorAll("a");
+    links.forEach((link) => {
+      link.addEventListener("click", () => {
+        mobileMenu.classList.remove("open");
+        menuToggle.classList.remove("open");
+      });
+    });
+  }
+</script>
+
+<style>
+  #mobile-menu.open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  #menu-toggle.open .line-1 {
+    transform: translateY(6px) rotate(45deg);
+  }
+
+  #menu-toggle.open .line-2 {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  #menu-toggle.open .line-3 {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+</style>

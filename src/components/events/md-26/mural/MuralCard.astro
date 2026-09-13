@@ -1,0 +1,87 @@
+---
+import { Image } from "astro:assets"
+
+interface Props {
+  index: number
+  nombre: string
+  nombreMami: string
+  frase: string
+  foto?: string
+}
+const { index, nombre, nombreMami, frase, foto } = Astro.props
+
+// const colors = ["#1F6FE5", "#1D9E75", "#BA7517", "#3B6D11"]
+const colors = ["#FFFFFF"]
+const bg = colors[(index - 1) % colors.length]
+const num = String(index).padStart(2, "0")
+
+const rotations = ["-2deg", "1.5deg", "-1deg", "2deg", "-1.5deg", "1deg"]
+const rotate = rotations[(index - 1) % rotations.length]
+const isPriority = index <= 4
+---
+
+<div
+  class="mural-card rounded-2xl overflow-hidden"
+  style={`border: 2.5px solid #0F1A2B; box-shadow: 5px 5px 0 #0F1A2B; background: white; transform: rotate(${rotate}); transition: transform 0.3s ease;`}
+>
+  <div
+    class="relative"
+    style={`background: ${bg}; aspect-ratio: 1/1;`}
+  >
+    <div
+      class="absolute inset-0"
+      style="opacity:0.15; background-image:radial-gradient(#fff 1px,transparent 1px); background-size:18px 18px;"
+    ></div>
+
+    <span
+      class="absolute top-2 left-2 font-mono font-bold text-white text-xs px-2 py-1 rounded-md z-10"
+      style="background:#0F1A2B; letter-spacing:0.05em;"
+    >
+      FOTO #{num}
+    </span>
+
+    <span class="absolute top-2 right-3 text-xl z-10" aria-hidden="true">📍</span>
+
+    {foto ? (
+      <Image
+        src={foto}
+        alt={`Foto de ${nombre} con`}
+        width={400}
+        height={400}
+        sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+        loading={isPriority ? "eager" : "lazy"}
+        decoding="async"
+        fetchpriority={isPriority ? "high" : "auto"}
+        class="absolute inset-0 w-full h-full object-cover p-2 rounded-tl-2xl rounded-tr-2xl"
+      />
+    ) : (
+      <div class="absolute inset-0 flex items-end justify-center pb-4">
+        <div class="flex items-end gap-1">
+          <svg width="64" height="64" viewBox="0 0 36 36" aria-hidden="true">
+            <circle cx="18" cy="12" r="8" fill="rgba(255,255,255,0.7)" />
+            <path d="M2 34c0-8.8 7.2-16 16-16s16 7.2 16 16" fill="rgba(255,255,255,0.7)" />
+          </svg>
+          <svg width="46" height="46" viewBox="0 0 36 36" aria-hidden="true">
+            <circle cx="18" cy="12" r="8" fill="rgba(255,255,255,0.6)" />
+            <path d="M2 34c0-8.8 7.2-16 16-16s16 7.2 16 16" fill="rgba(255,255,255,0.6)" />
+          </svg>
+        </div>
+      </div>
+    )}
+  </div>
+
+  <div class="p-4" style="background:white;">
+    <p class="text-sm italic leading-relaxed mb-2" style="color:#0F1A2B;">
+      "{frase}"
+    </p>
+    <p class="text-xs" style="color:#3C4A5E;">
+      <strong style="color:#1F6FE5;">— {nombre}</strong> · para {nombreMami}
+    </p>
+  </div>
+</div>
+
+<style>
+  .mural-card:hover {
+    transform: rotate(0deg) scale(1.03) !important;
+  }
+</style>
