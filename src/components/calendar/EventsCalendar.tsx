@@ -110,35 +110,33 @@ function DayDetailPanel({ date, events }: { date: Date; events: CalendarEvent[] 
   const dayEvents = events.filter(e => sameDay(e.start, date))
 
   return (
-    <div className="border border-white bg-black p-4 md:p-8 text-white order-2 md:order-0">
+    <div className="border border-white bg-white p-4 md:p-6 text-black order-2 md:order-0">
       <div className="flex items-center gap-4 pb-4">
-        <span className="text-3xl sm:text-4xl lg:text-6xl leading-none font-bold">
-          {dayNumber(date)}
-        </span>
+        <span className="text-3xl sm:text-5xl leading-none font-bold">{dayNumber(date)}</span>
         <div className="flex flex-col text-sm">
           <span className="text-lg">{weekdayLong(date)}</span>
-          <span className="text-muted-foreground">
+          <span className="text-gray-600">
             {fullMonth(date)} {date.getFullYear()}
           </span>
         </div>
       </div>
 
-      <hr className="border-white pb-4" />
+      <hr className="border-black pb-4" />
 
       <div className="flex flex-col gap-3">
         {dayEvents.length === 0 ? (
-          <p className="text-muted-foreground">Sin eventos para este día.</p>
+          <p className="text-gray-600">Sin eventos para este día.</p>
         ) : (
           dayEvents.map(event => (
-            <div key={event.id} className="flex gap-4 text-white">
+            <div key={event.id} className="flex gap-4">
               <div className={clsx("w-2 min-h-full mb-1", colorForCommunity(event.community_id))} />
               <div className="flex flex-col gap-1">
                 <h3 className="text-lg leading-tight font-bold">{event.name}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">
+                <p className="mt-1 text-sm text-gray-600">
                   {event.format === "in-person" ? "Presencial" : "Virtual"} · {timeStr(event.start)}{" "}
                   - {timeStr(event.end)}
                 </p>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-gray-600">
                   {event.location} · {event.community}
                 </p>
                 {event.registration_link && (
@@ -146,7 +144,7 @@ function DayDetailPanel({ date, events }: { date: Date; events: CalendarEvent[] 
                     href={event.registration_link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm hover:underline"
+                    className="text-black text-sm hover:underline"
                   >
                     Regístrate
                   </a>
@@ -278,9 +276,9 @@ function Calendar({
           <ChevronLeftIcon className="size-5" />
         </button>
 
-        <span className="flex items-center gap-2 text-white font-normal">
+        <span className="flex items-center gap-2 text-white text-lg">
           {isLoading ? <Loader2Icon className="size-4 animate-spin" /> : monthEvents.length} eventos
-          · {fullMonth(currentDate).substring(0, 3)}
+          · {fullMonth(currentDate)}
         </span>
 
         <div className="flex items-center gap-2">
@@ -355,7 +353,7 @@ function EventsCalendarInner() {
   return (
     <section
       id="calendario"
-      className="mx-auto max-w-6xl flex flex-col gap-8 px-4 font-monospace text-white py-8 md:py-16"
+      className="mx-auto max-w-7xl flex flex-col gap-8 px-4 font-monospace text-white py-8 md:py-16"
     >
       <span className="font-bold text-2xl md:text-4xl lg:text-5xl">
         Calendario <br className="sm:hidden" />

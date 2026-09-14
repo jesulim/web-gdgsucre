@@ -73,7 +73,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     }
 
     const supabase = await createUserClient(cookies)
-    const success = await createCalendarEvent(supabase, {
+    const id = await createCalendarEvent(supabase, {
       name,
       community_id,
       start_datetime,
@@ -83,12 +83,19 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       location,
     })
 
-    if (!success) {
+    if (!id) {
       return new Response(JSON.stringify({ error: "Failed to create calendar event" }), {
         status: 500,
         headers: { "Content-Type": "application/json" },
       })
     }
+
+    supabase.functions.invoke("send-email", {
+      body: {
+        type: "event-received",
+        data: { eventId: id },
+      },
+    })
 
     return new Response(JSON.stringify({ message: "Evento creado exitosamente" }), {
       headers: { "Content-Type": "application/json" },
@@ -142,14 +149,14 @@ export const PUT: APIRoute = async ({ request, cookies }) => {
       })
     }
 
-    // if (accepted === true) {
-    //   supabase.functions.invoke("send-email", {
-    //     body: {
-    //       type: "event-accepted",
-    //       data: { eventId: id },
-    //     },
-    //   })
-    // }
+    if (accepted === true) {
+      supabase.functions.invoke("send-email", {
+        body: {
+          type: "event-accepted",
+          data: { eventId: id },
+        },
+      })
+    }
 
     return new Response(JSON.stringify(result), {
       status: 200,

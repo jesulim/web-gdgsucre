@@ -6,16 +6,11 @@ z.config(es())
 export const EVENT_FORMATS = ["in-person", "virtual"] as const
 export type EventFormat = (typeof EVENT_FORMATS)[number]
 
+const URL_REGEX =
+  /^(https?:\/\/)?(([a-z0-9]([a-z0-9-]*[a-z0-9])?\.)+)?[a-z0-9]([a-z0-9-]*[a-z0-9])?\.[a-z]{2,}([/?#].*)?$/i
+
 const optionalUrl = z
-  .union([
-    z.literal(""),
-    z
-      .string()
-      .regex(
-        /^(https?:\/\/)?(([a-z0-9]([a-z0-9-]*[a-z0-9])?\.)+)?[a-z0-9]([a-z0-9-]*[a-z0-9])?\.[a-z]{2,}([/?#].*)?$/i,
-        "Ingresa una URL válida"
-      ),
-  ])
+  .union([z.literal(""), z.string().regex(URL_REGEX, "Ingresa una URL válida")])
   .optional()
 
 export const calendarEventSchema = z
@@ -28,11 +23,22 @@ export const calendarEventSchema = z
     start_datetime: z.string(),
     end_datetime: z.string(),
     format: z.enum(EVENT_FORMATS, { error: "Elige una modalidad" }),
-    location: z.string().optional(),
+    location: z.string().trim().min(1, "La ubicación es requerida"),
     registration_link: optionalUrl,
     dates_tbd: z.boolean(),
+    accept_moderation: z.literal(true, {
+      error: "Debes aceptar la moderación para enviar tu evento",
+    }),
   })
   .superRefine((values, ctx) => {
+    if (values.format === "virtual" && values.location && !URL_REGEX.test(values.location)) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["location"],
+        message: "Ingresa una URL válida",
+      })
+    }
+
     if (values.dates_tbd) return
 
     const start = values.start_datetime.trim()

@@ -68,7 +68,9 @@ export function NewCommunityDialog({ open, onOpenChange, onCreate }: NewCommunit
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-xs uppercase">Nombre</FormLabel>
+                  <FormLabel className="text-xs uppercase">
+                    Nombre <span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -123,7 +125,9 @@ export function NewCommunityDialog({ open, onOpenChange, onCreate }: NewCommunit
               name="contact_email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-xs uppercase">Email de contacto</FormLabel>
+                  <FormLabel className="text-xs uppercase">
+                    Email de contacto <span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input {...field} type="email" enterKeyHint="done" className="rounded-none" />
                   </FormControl>

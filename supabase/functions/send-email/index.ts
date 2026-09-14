@@ -2,8 +2,8 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts"
 
 import { SMTPClient } from "https://deno.land/x/denomailer@1.6.0/mod.ts"
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.111.0"
+import { Eta } from "jsr:@bgub/eta"
 import { serve } from "jsr:@std/http@0.224.0/server"
-import { Eta } from "@bgub/eta"
 
 const ALLOWED_ORIGINS = [
   "https://gdgsucre.com",
@@ -11,7 +11,12 @@ const ALLOWED_ORIGINS = [
   "http://localhost:4321",
 ]
 
-type EmailType = "registration" | "registration-team" | "payment" | "event-accepted"
+type EmailType =
+  | "registration"
+  | "registration-team"
+  | "payment"
+  | "event-received"
+  | "event-accepted"
 
 interface RequestBody {
   type: EmailType
@@ -43,9 +48,11 @@ async function getPaymentData(data: Record<string, unknown>) {
   }
 }
 
-function formatDate(iso: string): string {
-  const d = new Date(iso)
-  return d.toLocaleDateString("es-BO", {
+function formatDate(dateString: string | null): string {
+  if (!dateString) return "Por definir"
+
+  const date = new Date(dateString)
+  return date.toLocaleDateString("es-BO", {
     weekday: "long",
     year: "numeric",
     month: "long",
@@ -56,7 +63,7 @@ function formatDate(iso: string): string {
   })
 }
 
-async function getEventAcceptedData(data: Record<string, unknown>) {
+async function formatCalendarEvent(data: Record<string, unknown>) {
   const FORMAT_MAP: Record<string, string> = {
     "in-person": "Presencial",
     online: "Virtual",
@@ -104,7 +111,7 @@ async function getEventAcceptedData(data: Record<string, unknown>) {
 
   return {
     to: community.contact_email,
-    subject: `¡Tu evento "${calendarEvent.name}" fue aceptado! 🎉`,
+    subject: `¡Tu evento "${calendarEvent.name}" fue ${calendarEvent.accepted ? "aceptado" : "recibido"}! 🎉`,
     data: {
       eventName: calendarEvent.name,
       communityName: community.name,
@@ -113,7 +120,7 @@ async function getEventAcceptedData(data: Record<string, unknown>) {
       endDatetime: formatDate(calendarEvent.end_datetime),
       format: FORMAT_MAP[calendarEvent.format] ?? "No especificada",
       location: calendarEvent.location ?? "No especificada",
-      registrationLink: calendarEvent.registration_link ?? "#",
+      registrationLink: calendarEvent.registration_link,
     },
   }
 }
@@ -131,9 +138,13 @@ const EMAIL_TYPES: Record<EmailType, TemplateConfig> = {
     file: "paymentConfirmationEmail.html",
     formatEmail: getPaymentData,
   },
+  "event-received": {
+    file: "eventReceivedEmail.html",
+    formatEmail: formatCalendarEvent,
+  },
   "event-accepted": {
     file: "eventAcceptedEmail.html",
-    formatEmail: getEventAcceptedData,
+    formatEmail: formatCalendarEvent,
   },
 }
 

@@ -80,14 +80,18 @@ export async function getAllCalendarEvents(supabase: SupabaseClient) {
 }
 
 export async function createCalendarEvent(supabase: SupabaseClient, calendarEvent: CalendarEvent) {
-  const { error } = await supabase.from("calendar_events").insert(calendarEvent)
+  const { data, error } = await supabase
+    .from("calendar_events")
+    .insert(calendarEvent)
+    .select("id")
+    .single()
 
   if (error) {
     console.error(`error creating calendar event: ${error.message}`)
-    return false
+    return null
   }
 
-  return true
+  return data.id
 }
 
 export async function updateCalendarEvent(

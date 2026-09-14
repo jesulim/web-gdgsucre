@@ -113,10 +113,13 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
       location: "",
       registration_link: "",
       dates_tbd: false,
+      accept_moderation: false,
     },
   })
 
   const datesTbd = form.watch("dates_tbd")
+  const format = form.watch("format")
+  const isVirtual = format === "virtual"
 
   function handleSelectCommunity(community: Community | null) {
     setPendingCommunity(null)
@@ -239,7 +242,9 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs uppercase">Nombre del evento</FormLabel>
+                <FormLabel className="text-xs uppercase">
+                  Nombre del evento <span className="text-red-500">*</span>
+                </FormLabel>
                 <FormControl>
                   <Input
                     {...field}
@@ -259,7 +264,9 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
             name="community_id"
             render={() => (
               <FormItem>
-                <FormLabel className="text-xs uppercase">Comunidad</FormLabel>
+                <FormLabel className="text-xs uppercase">
+                  Comunidad <span className="text-red-500">*</span>
+                </FormLabel>
                 <FormControl>
                   <CommunityCombobox
                     value={selectedCommunity}
@@ -356,7 +363,14 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
               <FormItem>
                 <FormLabel className="text-xs uppercase">Modalidad</FormLabel>
                 <FormControl>
-                  <FormatToggle value={field.value} onChange={field.onChange} disabled={disabled} />
+                  <FormatToggle
+                    value={field.value}
+                    onChange={value => {
+                      field.onChange(value)
+                      form.clearErrors("location")
+                    }}
+                    disabled={disabled}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -368,12 +382,19 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
             name="location"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs uppercase">Ubicación / Link de acceso</FormLabel>
+                <FormLabel className="text-xs uppercase">
+                  {isVirtual ? "Link de acceso" : "Ubicación"}{" "}
+                  <span className="text-red-500">*</span>
+                </FormLabel>
                 <FormControl>
                   <Input
                     {...field}
+                    type={isVirtual ? "url" : "text"}
+                    inputMode={isVirtual ? "url" : "text"}
                     disabled={disabled}
-                    placeholder="Hub de innovación USFX / Link de acceso"
+                    placeholder={
+                      isVirtual ? "https://meet.google.com/..." : "Hub de innovación USFX, Sucre"
+                    }
                     enterKeyHint="next"
                     className="rounded-none border-white"
                   />
@@ -398,6 +419,29 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                     className="rounded-none border-white"
                   />
                 </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="accept_moderation"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex flex-row items-start gap-3 space-y-0">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={checked => field.onChange(checked === true)}
+                      disabled={disabled}
+                      className="rounded-none border-white"
+                    />
+                  </FormControl>
+                  <FormLabel className="text-sm font-normal normal-case">
+                    Acepto que mi evento sea moderado conforme a las normas de la comunidad
+                  </FormLabel>
+                </div>
                 <FormMessage />
               </FormItem>
             )}
