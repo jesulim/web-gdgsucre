@@ -72,6 +72,32 @@ export async function deleteCommunity(supabase: SupabaseClient, id: number) {
   return data.length > 0
 }
 
+export async function accepCommunityOnFirstEvent(supabase: SupabaseClient, event_id: number) {
+  const { data: event, error } = await supabase
+    .from("calendar_events")
+    .select("communities(id, accepted)")
+    .eq("id", event_id)
+    .single()
+
+  if (error) {
+    console.error(`Error getting community: ${error.message}`)
+    return false
+  }
+
+  const community = event.communities
+
+  if (community.accepted) return
+
+  const { error: updateError } = await supabase
+    .from("communities")
+    .update({ accepted: true })
+    .eq("id", community.id)
+
+  if (updateError) {
+    console.error(`Error updating community: ${updateError.message}`)
+  }
+}
+
 export interface CommunityWithCount {
   id: number
   name: string

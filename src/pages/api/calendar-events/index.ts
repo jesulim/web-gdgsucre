@@ -7,6 +7,7 @@ import {
   updateCalendarEvent,
 } from "@/lib/services/calendarEventService"
 
+import { accepCommunityOnFirstEvent } from "@/lib/services/communityService"
 import { createUserClient } from "@/lib/supabase"
 
 export const GET: APIRoute = async ({ url, cookies }) => {
@@ -150,6 +151,8 @@ export const PUT: APIRoute = async ({ request, cookies }) => {
     }
 
     if (accepted === true) {
+      await accepCommunityOnFirstEvent(supabase, id)
+
       supabase.functions.invoke("send-email", {
         body: {
           type: "event-accepted",
