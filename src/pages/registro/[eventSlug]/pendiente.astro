@@ -1,5 +1,6 @@
 ---
-import Header from "@/components/events/bwai-26/Header.astro"
+import { ConfettiEffect } from "@/components/ConfettiEffect"
+import IoExtendedHeader from "@/components/events/io-extended-26/Header.astro"
 import BaseLayout from "@/layout/BaseLayout.astro"
 
 import { getProfile } from "@/lib/services/profileService"
@@ -13,12 +14,13 @@ if (!profile) return Astro.redirect("/")
 
 const registration = await getEventRegistration(supabase, profile?.id, Astro.params.eventSlug || "")
 
-if (!registration || registration?.status !== "pending") return Astro.redirect("/")
+if (registration?.status !== "pending") return Astro.redirect("/")
 ---
 
-<BaseLayout theme="light">
-  <Header />
-  <main class="mt-16 pt-12 flex">
+<BaseLayout theme="dark">
+  <IoExtendedHeader />
+  <ConfettiEffect client:load />
+  <main class="bg-io-bg flex min-h-screen pt-16 md:pt-24 text-io-text">
     <div class="mx-auto px-4">
       <h1 class="text-xl mb-4">¡Hola, {profile?.first_name}!</h1>
       <p>

@@ -6,3 +6,9 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv
 }
+
+declare module "react-big-calendar" {
+  export type SlotInfo = unknown
+  export const Calendar: any
+  export function momentLocalizer(moment: any): any
+}

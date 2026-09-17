@@ -31,7 +31,7 @@ const AnimatedValue = memo<AnimatedValueProps>(({ value }) => {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -15, opacity: 0 }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
-          className="absolute inset-0 flex items-center justify-center"
+          className="inset-0 flex items-center justify-center"
         >
           {zeroPad(value)}
         </motion.div>
@@ -39,7 +39,7 @@ const AnimatedValue = memo<AnimatedValueProps>(({ value }) => {
     )
   }
 
-  return <div className="absolute inset-0 flex items-center justify-center">{zeroPad(value)}</div>
+  return <div className="inset-0 flex items-center justify-center">{zeroPad(value)}</div>
 })
 
 AnimatedValue.displayName = "AnimatedValue"
@@ -47,35 +47,14 @@ AnimatedValue.displayName = "AnimatedValue"
 interface TimeUnitProps {
   label: string
   value: number
-  large?: boolean
 }
 
-// Mobile cell: white bg, border-[1.5px], py-3, text-36px
-// Desktop cell: rgba(255,255,255,0.08) bg, border-[1.5px], px-[6px] py-[14px], text-60px
-const TimeUnit = memo<TimeUnitProps>(({ label, value, large = false }) => (
-  <div
-    className={
-      large
-        ? "bg-[rgba(255,255,255,0.08)] border-black border-2 border-solid flex flex-col flex-1 items-center overflow-hidden px-1.5 py-3.5 relative rounded-[14px]"
-        : "bg-white border-black border-[1.5px] border-solid flex flex-col flex-1 items-center overflow-hidden py-3 px-1 relative rounded-[14px]"
-    }
-  >
-    <div className={`relative w-full text-center ${large ? "h-15" : "h-10"}`}>
-      <div
-        className={`relative h-full w-full font-bold text-black ${
-          large ? "text-[60px] tracking-[-1.8px]" : "text-[36px] tracking-tight"
-        }`}
-      >
-        <AnimatedValue value={value} />
-      </div>
+const TimeUnit = memo<TimeUnitProps>(({ label, value }) => (
+  <div className="border-black border-2 flex flex-col flex-1 items-center overflow-hidden px-1.5 py-2 md:py-4 relative rounded-xl">
+    <div className="font-bold text-black text-4xl md:text-7xl">
+      <AnimatedValue value={value} />
     </div>
-    <span
-      className={`font-bold uppercase ${
-        large
-          ? "text-[16px] tracking-[2.88px] opacity-75 mt-0"
-          : "text-[10px] tracking-[1.5px] opacity-75 mt-1"
-      }`}
-    >
+    <span className="block font-bold uppercase text-sm md:text-lg tracking-widest opacity-75 mt-0">
       {label}
     </span>
   </div>
@@ -86,7 +65,6 @@ TimeUnit.displayName = "TimeUnit"
 interface TimerProps {
   initialTime: number
   targetDate: Date
-  large?: boolean
   labels?: {
     days: string
     hours: string
@@ -98,7 +76,6 @@ interface TimerProps {
 export const Timer = ({
   initialTime,
   targetDate,
-  large = false,
   labels = {
     days: "Días",
     hours: "Hrs",
@@ -106,36 +83,40 @@ export const Timer = ({
     seconds: "Seg",
   },
 }: TimerProps) => {
-  const [mounted, setMounted] = useState(false)
   const endDate = targetDate instanceof Date ? targetDate : new Date(targetDate)
 
   const { days, hours, minutes, seconds } = useTimer(initialTime, endDate)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!mounted) {
-    return null
-  }
 
   const clampedDays = days > 0 ? days : 0
   const clampedHours = hours > 0 ? hours : 0
   const clampedMinutes = minutes > 0 ? minutes : 0
   const clampedSeconds = seconds > 0 ? seconds : 0
 
+  if (clampedDays === 0 && clampedHours === 0 && clampedMinutes === 0 && clampedSeconds === 0) {
+    return (
+      <p className="text-3xl font-medium animate-bounce pt-4">
+        ¡Comenzó el Build With AI Sucre 2026!
+      </p>
+    )
+  }
+
   const timeUnits: TimeUnitProps[] = [
-    { label: labels.days, value: clampedDays, large },
-    { label: labels.hours, value: clampedHours, large },
-    { label: labels.minutes, value: clampedMinutes, large },
-    { label: labels.seconds, value: clampedSeconds, large },
+    { label: labels.days, value: clampedDays },
+    { label: labels.hours, value: clampedHours },
+    { label: labels.minutes, value: clampedMinutes },
+    { label: labels.seconds, value: clampedSeconds },
   ]
 
   return (
-    <div className="flex gap-2 w-full">
-      {timeUnits.map(unit => (
-        <TimeUnit key={unit.label} {...unit} />
-      ))}
-    </div>
+    <>
+      <p className="font-bold text-xl tracking-tight leading-tight lg:text-4xl">
+        Faltan para comenzar
+      </p>
+      <div className="flex gap-2 w-full">
+        {timeUnits.map(unit => (
+          <TimeUnit key={unit.label} {...unit} />
+        ))}
+      </div>
+    </>
   )
 }

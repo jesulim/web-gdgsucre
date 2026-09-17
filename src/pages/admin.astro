@@ -2,23 +2,33 @@
 import { Dashboard } from "@/components/admin/Dashboard.tsx"
 
 import BaseLayout from "@/layout/BaseLayout.astro"
-import { getProfile } from "@/lib/services/profileService"
+import { getEvents } from "@/lib/services/eventService"
+import { getProfile, getStaffRoles } from "@/lib/services/profileService"
 import { createUserClient } from "@/lib/supabase"
 
 const supabase = await createUserClient(Astro.cookies)
 const profile = await getProfile(supabase)
 
+let staffRoles: Record<string, string> = {}
 if (!profile?.is_admin) {
+  staffRoles = await getStaffRoles(supabase, profile?.id)
+}
+
+if (!profile?.is_admin && Object.keys(staffRoles).length === 0) {
   return Astro.redirect("/")
 }
 
+const events = await getEvents(supabase)
+
 const userData = {
-  name: `${profile.first_name} ${profile.last_name}`.trim(),
-  email: profile.email,
-  avatar: profile.avatar_url,
+  name: `${profile?.first_name || ""} ${profile?.last_name || ""}`.trim(),
+  email: profile?.email || "",
+  avatar: profile?.avatar_url || "",
+  isAdmin: !!profile?.is_admin,
+  staffRoles,
 }
 ---
 
 <BaseLayout title="Admin GDG Sucre">
-  <Dashboard client:only="react" userData={userData} />
+  <Dashboard client:only="react" userData={userData} events={events} />
 </BaseLayout>

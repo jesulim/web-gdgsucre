@@ -1,13 +1,6 @@
 ---
+import { Font } from "astro:assets"
 import "../styles/global.css"
-
-import CommandMenu from "@/components/CommandMenu"
-import { getProfile } from "@/lib/services/profileService"
-import { createUserClient } from "@/lib/supabase"
-
-const supabase = await createUserClient(Astro.cookies)
-const profile = await getProfile(supabase)
-const isAdmin = !!profile?.is_admin
 
 const {
   theme,
@@ -30,6 +23,8 @@ const {
       href="/WTM_Logo_Icon_32x32.png"
     />
     <meta name="generator" content={Astro.generator} />
+    <Font cssVariable="--font-google" preload />
+    <Font cssVariable="--font-monospace" preload />
 
     <!-- <ThemeScript /> -->
 
@@ -54,7 +49,6 @@ const {
   <body
     class="min-h-screen flex flex-col font-google bg-white dark:bg-[#232323] dark:text-white"
   >
-    {isAdmin && <CommandMenu isAdmin={isAdmin} client:load />}
     <slot />
   </body>
 </html>

@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query"
 import {
   createColumnHelper,
   flexRender,
@@ -9,10 +10,9 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import { Loader2Icon } from "lucide-react"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useState } from "react"
 import { toast } from "sonner"
 
-import EventSelector from "@/components/admin/EventSelector"
 import {
   customFilterFn,
   DateCell,
@@ -38,8 +38,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-import useEvents from "@/hooks/useEvents"
-import useRegistrations from "@/hooks/useRegistrations"
+import useRegistrations from "@/hooks/admin/useRegistrations"
 import RegistrationRowActions from "./RegistrationRowActions"
 
 export interface Registrations {
@@ -48,7 +47,6 @@ export interface Registrations {
   first_name: string
   last_name: string
   email: string
-  phone_number: string
   role: string
   status: string
   package: string
@@ -72,24 +70,83 @@ function StatusBadge({ status }: { status: string }) {
 
 const defaultRegistrations: Registrations[] = []
 
-export function RegistrationsTable() {
-  const [globalFilter, setGlobalFilter] = useState("")
-  const [eventSlug, setEventSlug] = useState("")
+function PackageCount({ rows }: { rows: Row<Registrations>[] }) {
+  if (!rows.length) return
 
-  const { events } = useEvents()
-  const { registrations, isLoading, isFetching, refetch } = useRegistrations(eventSlug)
+  const packageCounts: Record<string, { name: string; price: number; qty: number }> = {}
 
-  useEffect(() => {
-    if (events?.length > 0 && !eventSlug) {
-      setEventSlug(events[0].slug)
+  for (const row of rows) {
+    const match = String(row.getValue("package")).match(/^(.*)\s\((\d+).Bs\)$/)
+    if (!match) continue
+    const [, name, price] = match
+
+    if (!packageCounts[name]) {
+      packageCounts[name] = { name, price: Number(price), qty: 0 }
     }
-  }, [events, eventSlug])
+    packageCounts[name].qty++
+  }
+
+  return (
+    <div className="flex flex-col sm:flex-row sm:items-center text-nowrap gap-2 my-4 ">
+      <span className="font-medium">Cantidad de paquetes:</span>
+      <p className="flex gap-2">
+        {Object.values(packageCounts)
+          .sort((a, b) => a.price - b.price)
+          .map(({ name, qty }) => (
+            <span key={name}>
+              {name}: {qty}
+            </span>
+          ))}
+      </p>
+    </div>
+  )
+}
+
+function StatusCount({ rows }: { rows: Row<Registrations>[] }) {
+  if (!rows.length) return
+  const statusCounts: Record<string, number> = {}
+  for (const row of rows) {
+    const status = row.getValue("status") === "confirmed" ? "Confirmado" : "Pendiente"
+    if (!statusCounts[status]) statusCounts[status] = 0
+    statusCounts[status]++
+  }
+
+  return (
+    <div className="flex flex-col sm:flex-row sm:items-center text-nowrap gap-2 my-4 ">
+      <span className="font-medium">Total por estado:</span>
+      <p className="flex gap-2">
+        {Object.entries(statusCounts).map(([status, qty]) => (
+          <span key={status}>
+            {status}: {qty}
+          </span>
+        ))}
+      </p>
+    </div>
+  )
+}
+
+export function RegistrationsTable({
+  eventSlug,
+  eventName,
+}: {
+  eventSlug: string
+  eventName: string
+}) {
+  const [globalFilter, setGlobalFilter] = useState("")
+
+  const { registrations, isLoading, isFetching, refetch } = useRegistrations(eventSlug)
+  const queryClient = useQueryClient()
 
   const switchRole = useCallback(
     async (id: number, role: string) => {
-      try {
-        toast.info("Actualizando rol")
+      const queryKey = ["registrations", eventSlug]
+      const previous = queryClient.getQueryData<Registrations[]>(queryKey)
 
+      queryClient.setQueryData<Registrations[]>(queryKey, old =>
+        old?.map(reg => (reg.id === id ? { ...reg, role } : reg))
+      )
+
+      try {
         const res = await fetch("/api/organizers", {
           method: role === "Organizer" ? "POST" : "DELETE",
           headers: {
@@ -102,10 +159,11 @@ export function RegistrationsTable() {
         toast.success("Rol actualizado")
         await refetch()
       } catch {
+        queryClient.setQueryData(queryKey, previous)
         toast.error("Error al actualizar el rol")
       }
     },
-    [refetch]
+    [queryClient, refetch, eventSlug]
   )
 
   const columnHelper = createColumnHelper<Registrations>()
@@ -115,9 +173,8 @@ export function RegistrationsTable() {
       id: "rowNumber",
       header: "#",
       cell: ({ row }) => {
-        const filteredRows = table.getFilteredRowModel().rows
-        const index = filteredRows.findIndex(r => r.id === row.id)
-        return <span className="text-gray-600">{index + 1}</span>
+        const totalRows = table.getCoreRowModel().rows.length
+        return <span className="text-gray-600">{totalRows - row.index}</span>
       },
     }),
     columnHelper.accessor("created_at", {
@@ -127,13 +184,13 @@ export function RegistrationsTable() {
     columnHelper.accessor("first_name", { header: "Nombre(s)", filterFn: "includesString" }),
     columnHelper.accessor("last_name", { header: "Apellido(s)", filterFn: "includesString" }),
     columnHelper.accessor("email", { header: "Correo electrónico", filterFn: "includesString" }),
-    columnHelper.accessor("phone_number", { header: "Teléfono", enableGlobalFilter: false }),
     columnHelper.display({
       id: "role",
       header: "Rol",
       cell: ({ row }) => {
         return (
           <Select
+            key={row.original.id}
             onValueChange={value => {
               switchRole(row.original.id, value)
             }}
@@ -187,10 +244,7 @@ export function RegistrationsTable() {
       id: "actions",
       header: "Acciones",
       cell: ({ row }) => (
-        <RegistrationRowActions
-          row={row}
-          eventName={events.find(e => e.slug === eventSlug)?.name}
-        />
+        <RegistrationRowActions row={row} eventName={eventName} refetch={refetch} />
       ),
     }),
   ]
@@ -210,17 +264,14 @@ export function RegistrationsTable() {
       globalFilter,
     },
     onGlobalFilterChange: setGlobalFilter,
+    autoResetPageIndex: false,
   })
 
   return (
     <div>
       <Toaster position="top-right" />
 
-      <div className="grid grid-cols-[1fr_auto] md:grid-cols-[1fr_1fr_auto] gap-4 mb-4">
-        <div className="col-span-2 md:col-span-1">
-          <EventSelector events={events} eventSlug={eventSlug} setEventSlug={setEventSlug} />
-        </div>
-
+      <div className="grid grid-cols-[1fr_auto] md:grid-cols-[1fr_auto] gap-4 mb-4">
         <SearchInput
           placeholder="Buscar por nombre, apellido o correo electrónico..."
           globalFilter={globalFilter}
@@ -275,38 +326,7 @@ export function RegistrationsTable() {
       </div>
 
       <PackageCount rows={table.getFilteredRowModel().rows} />
-    </div>
-  )
-}
-
-function PackageCount({ rows }: { rows: Row<Registrations>[] }) {
-  if (!rows.length) return
-
-  const packageCounts: Record<string, { name: string; price: number; qty: number }> = {}
-
-  for (const row of rows) {
-    const match = String(row.getValue("package")).match(/^(.*)\s\((\d+).Bs\)$/)
-    if (!match) continue
-    const [, name, price] = match
-
-    if (!packageCounts[name]) {
-      packageCounts[name] = { name, price: Number(price), qty: 0 }
-    }
-    packageCounts[name].qty++
-  }
-
-  return (
-    <div className="flex flex-col sm:flex-row sm:items-center text-nowrap gap-2 my-4 ">
-      <span className="font-medium">Cantidad de paquetes:</span>
-      <p className="flex gap-2">
-        {Object.values(packageCounts)
-          .sort((a, b) => a.price - b.price)
-          .map(({ name, qty }) => (
-            <span key={name}>
-              {name}: {qty}
-            </span>
-          ))}
-      </p>
+      <StatusCount rows={table.getFilteredRowModel().rows} />
     </div>
   )
 }

@@ -48,7 +48,7 @@ export function OrganizadoresCarousel({ organizers }: { organizers: Organizador[
         className="w-full"
       >
         <CarouselContent className="-ml-2 md:-ml-4">
-          {organizers.map(organizador => (
+          {organizers?.map(organizador => (
             <CarouselItem key={organizador.id} className="max-w-64 lg:max-w-68">
               <Card className="bg-black rounded-3xl overflow-hidden p-4">
                 <CardContent className="flex flex-col items-center justify-center p-4 text-white">
@@ -77,7 +77,7 @@ export function OrganizadoresCarousel({ organizers }: { organizers: Organizador[
 
       {/* Indicadores de puntos */}
       <div className="flex flex-wrap justify-center mt-4 gap-2">
-        {organizers.slice(0, count).map((_, index) => (
+        {organizers?.slice(0, count).map((_, index) => (
           <button
             key={`carousel-dot-${organizers[index]?.id || index}`}
             type="button"

@@ -1,0 +1,5 @@
+{
+  "imports": {
+    "@bgub/eta": "jsr:@bgub/eta@4.6.0"
+  }
+}

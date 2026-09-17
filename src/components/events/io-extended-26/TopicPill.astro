@@ -1,0 +1,49 @@
+---
+import figmaCodeVector1 from "@/assets/figma/figma_code_vector1.svg"
+import figmaCodeVector2 from "@/assets/figma/figma_code_vector2.svg"
+
+interface Props {
+  label: string
+  iconAsset?: string
+  isCodeIcon?: boolean
+  variant?: "default" | "small"
+}
+
+const { label, iconAsset, isCodeIcon = false, variant = "default" } = Astro.props
+
+const variants = {
+  default: {
+    surface: "bg-io-surface border-io-border",
+    gap: "gap-2 md:gap-2.5",
+    padding: "pl-3.5 md:pl-4.5 pr-4 md:pr-5 py-2.5 md:py-3",
+    icon: "h-4.5 md:h-5.5",
+    code: "w-2.25 md:w-2.75",
+    label: "text-[13px] md:text-sm",
+  },
+  small: {
+    surface: "bg-io-surface-3 border-io-border-2",
+    gap: "gap-1.5",
+    padding: "pl-2.5 pr-3 py-1.25",
+    icon: "h-3 md:h-[13px]",
+    code: "w-1.75 md:w-2",
+    label: "text-[11px] md:text-xs",
+  },
+} as const
+
+const v = variants[variant]
+---
+
+<div
+  class={`border border-solid flex items-center rounded-full shrink-0 ${v.surface} ${v.gap} ${v.padding}`}
+>
+  {iconAsset && (
+    <img alt="" class={`w-auto max-w-none shrink-0 ${v.icon}`} src={iconAsset} />
+  )}
+  {isCodeIcon && (
+    <div class={`flex gap-0.5 items-center shrink-0 ${v.icon}`}>
+      <img alt="" class={`${v.icon} ${v.code} mix-blend-screen`} src={figmaCodeVector1.src} />
+      <img alt="" class={`${v.icon} ${v.code} mix-blend-screen`} src={figmaCodeVector2.src} />
+    </div>
+  )}
+  <span class={`text-io-text font-medium ${v.label}`}>{label}</span>
+</div>

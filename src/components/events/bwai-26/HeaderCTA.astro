@@ -1,0 +1,17 @@
+---
+import { hasRegistration } from "@/lib/services/registrationService"
+import { createUserClient } from "@/lib/supabase"
+
+const { eventSlug } = Astro.props
+const accessToken = Astro.cookies.get("sb-access-token")?.value
+
+let show = true
+if (accessToken) {
+  const supabase = await createUserClient(Astro.cookies)
+  const { data } = await supabase.auth.getClaims(accessToken)
+  const registered = await hasRegistration(supabase, data?.claims?.sub ?? "", eventSlug)
+  if (registered) show = false
+}
+---
+
+{show && <slot />}

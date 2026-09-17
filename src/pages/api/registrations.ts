@@ -1,16 +1,16 @@
 import type { APIRoute } from "astro"
 
 import { getRegistrationsByEvent, updateRegistration } from "@/lib/services/registrationService"
-import { createUserClient } from "@/lib/supabase"
+import { createSupabaseServerClient, createUserClient } from "@/lib/supabase"
 
-export const GET: APIRoute = async ({ url, cookies }) => {
+export const GET: APIRoute = async ({ request, url, cookies }) => {
   const slug = url.searchParams.get("slug")
   if (!slug) {
     return new Response("Event slug is required", { status: 400 })
   }
 
   try {
-    const supabase = await createUserClient(cookies)
+    const supabase = createSupabaseServerClient({ request, cookies })
     const registrations = await getRegistrationsByEvent(supabase, slug)
 
     return new Response(JSON.stringify(registrations), {
@@ -54,10 +54,24 @@ export const DELETE: APIRoute = async ({ cookies, request }) => {
   }
 
   try {
-    const supabase = await createUserClient(cookies)
-    const { error } = await supabase.from("registrations").delete().eq("id", registrationId)
+    const supabase = createSupabaseServerClient({ request, cookies })
+    const { data: registration, error } = await supabase
+      .from("registrations")
+      .select("*")
+      .eq("id", registrationId)
+      .single()
 
-    if (error) {
+    console.log(registration, error)
+
+    const { data, error: deleteError } = await supabase
+      .from("registrations")
+      .delete()
+      .eq("id", registrationId)
+      .select()
+
+    console.log(data, deleteError)
+
+    if (deleteError) {
       return new Response(
         JSON.stringify({ success: false, message: `Error al eliminar el registro ${error}` }),
         {
