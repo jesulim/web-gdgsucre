@@ -69,6 +69,8 @@ const FORMAT_LABELS: Record<string, string> = {
 }
 
 function DateTimeCell({ value }: { value: string }) {
+  if (!value) return <span>Por definir</span>
+
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return <span>-</span>
 

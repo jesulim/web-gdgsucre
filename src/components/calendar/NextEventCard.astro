@@ -9,10 +9,14 @@ interface Props {
 
 const { event, index } = Astro.props
 
-const ACCENT_COLORS = ["bg-blue-500", "bg-red-500", "bg-yellow-600", "bg-green-500"]
-const accent = ACCENT_COLORS[index % ACCENT_COLORS.length]
+const ACCENT_COLORS = ["bg-blue-500", "bg-red-500", "bg-yellow-500", "bg-green-500"]
+const accentClass = ACCENT_COLORS[event.communities?.id % ACCENT_COLORS.length]
+const accentStyle = event.communities?.color
+  ? `background-color: ${event.communities.color}`
+  : undefined
 
 const isNext = index === 0
+const isLocationUrl = /^https?:\/\//.test(event.location)
 const { day, month, weekday, start, end } = formatEventDate(
   event.start_datetime,
   event.end_datetime
@@ -25,9 +29,10 @@ const position = String(index + 1).padStart(2, "0")
   <div class="md:hidden p-2 sm:p-4 flex gap-3 sm:gap-4">
     <div>
       <div
+        style={accentStyle}
         class:list={[
           "size-10 sm:size-14 shrink-0 flex flex-col items-center justify-center text-black",
-          accent,
+          accentClass,
         ]}
       >
         <span class="text-xl sm:text-2xl leading-none font-bold">{day}</span>
@@ -65,7 +70,20 @@ const position = String(index + 1).padStart(2, "0")
           <circle cx="12" cy="10" r="3"></circle>
         </svg>
         <span class="flex gap-2">
-          {event.location}
+          {
+            isLocationUrl ? (
+              <a
+                href={event.location}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex hover:underline"
+              >
+                {event.location}
+              </a>
+            ) : (
+              <span>{event.location}</span>
+            )
+          }
           {isNext && <span class="text-white hidden sm:block shrink-0 font-bold"> → próximo</span>}
         </span>
       </p>
@@ -87,7 +105,7 @@ const position = String(index + 1).padStart(2, "0")
 
   <div class="hidden md:flex">
     <div class="w-fit flex items-center gap-3 p-4 shrink-0">
-      <span class:list={["size-4 shrink-0", accent]}></span>
+      <span style={accentStyle} class:list={["size-4 shrink-0", accentClass]}></span>
       <div>
         <p class="font-bold shrink-0 w-fit">{day} {month.toUpperCase()}</p>
         <p class="text-muted-foreground text-sm">{weekday}</p>
@@ -121,12 +139,12 @@ const position = String(index + 1).padStart(2, "0")
       <div class="flex flex-col gap-1">
         <div class="flex justify-between">
           {
-            event.format === "virtual" ? (
+            isLocationUrl ? (
               <a
-                href={event.registration_link}
+                href={event.location}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="flex gap-2 text-white hover:underline"
+                class="flex text-white hover:underline"
               >
                 {event.location}
               </a>

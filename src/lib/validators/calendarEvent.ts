@@ -75,6 +75,7 @@ export const newCommunitySchema = z.object({
   short_name: z.string().trim().optional(),
   website: optionalUrl,
   contact_email: z.email("Ingresa un email válido"),
+  color: z.string().trim().optional(),
 })
 
 export type NewCommunityFormValues = z.infer<typeof newCommunitySchema>

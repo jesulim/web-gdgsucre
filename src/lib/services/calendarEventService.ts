@@ -24,7 +24,7 @@ export async function getCalendarEvents(supabase: SupabaseClient, start: string,
       format,
       registration_link,
       location,
-      communities(id, name, short_name)
+      communities(id, name, short_name, color)
     `)
     .is("accepted", true)
     .gte("start_datetime", start)
@@ -46,7 +46,7 @@ export async function getUpcomingCalendarEvents(supabase: SupabaseClient) {
     .from("calendar_events")
     .select(
       `id, name, start_datetime, end_datetime, format, registration_link, location,
-      communities(id, name, short_name, image)`
+      communities(id, name, short_name, image, color)`
     )
     .eq("accepted", true)
     .or(`start_datetime.gte.${startOfToday.toISOString()},start_datetime.is.null`)
@@ -71,7 +71,7 @@ export async function getAllCalendarEvents(supabase: SupabaseClient) {
       registration_link,
       location,
       accepted,
-      communities(id, name, short_name, image)`)
+      communities(id, name, short_name, image, color)`)
     .order("start_datetime", { ascending: false })
 
   if (error) throw new Error(error.message)

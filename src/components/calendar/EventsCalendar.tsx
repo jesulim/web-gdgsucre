@@ -51,7 +51,11 @@ function buildGrid(date: Date): Date[] {
 
 const ACCENT_COLORS = ["bg-blue-500", "bg-red-500", "bg-yellow-500", "bg-green-500"] as const
 
-function colorForCommunity(id: number | null | undefined) {
+function communityColorStyle(color: string | null | undefined): React.CSSProperties | undefined {
+  return color ? { backgroundColor: color } : undefined
+}
+
+function communityColorClass(id: number | null | undefined) {
   if (id == null) return ACCENT_COLORS[3]
   return ACCENT_COLORS[id % ACCENT_COLORS.length]
 }
@@ -69,7 +73,7 @@ interface CalendarEventPayload {
   format: string
   location?: string
   registration_link?: string
-  communities: { id: number; name: string; short_name: string | null } | null
+  communities: { id: number; name: string; short_name: string | null; color: string | null } | null
 }
 
 interface CalendarEvent {
@@ -80,6 +84,7 @@ interface CalendarEvent {
   format: string
   community_id: number
   community: string
+  communityColor: string | null
   location?: string
   registration_link?: string
 }
@@ -90,6 +95,7 @@ function transformEvent(raw: CalendarEventPayload): CalendarEvent {
     start: new Date(raw.start_datetime),
     end: new Date(raw.end_datetime),
     community: raw.communities?.short_name ?? raw.communities?.name ?? "",
+    communityColor: raw.communities?.color ?? null,
   }
 }
 
@@ -129,7 +135,10 @@ function DayDetailPanel({ date, events }: { date: Date; events: CalendarEvent[] 
         ) : (
           dayEvents.map(event => (
             <div key={event.id} className="flex gap-4">
-              <div className={clsx("w-2 min-h-full mb-1", colorForCommunity(event.community_id))} />
+              <div
+                style={communityColorStyle(event.communityColor)}
+                className={clsx("w-2 min-h-full mb-1", communityColorClass(event.community_id))}
+              />
               <div className="flex flex-col gap-1">
                 <h3 className="text-lg leading-tight font-bold">{event.name}</h3>
                 <p className="mt-1 text-sm text-gray-600">
@@ -198,9 +207,10 @@ function DayCell({
           {dayEvents.slice(0, 4).map(event => (
             <span
               key={event.id}
+              style={communityColorStyle(event.communityColor)}
               className={clsx(
                 "min-w-2 min-h-2 text-xs text-black line-clamp-1 text-ellipsis",
-                colorForCommunity(event.community_id)
+                communityColorClass(event.community_id)
               )}
             >
               <span className="hidden sm:inline mx-0.5">{event.name}</span>
@@ -250,11 +260,12 @@ function Calendar({
   )
 
   const communities = useMemo(() => {
-    const seen = new Map<number, string>()
+    const seen = new Map<number, { label: string; color: string | null }>()
     for (const e of monthEvents) {
-      if (!seen.has(e.community_id)) seen.set(e.community_id, e.community)
+      if (!seen.has(e.community_id))
+        seen.set(e.community_id, { label: e.community, color: e.communityColor })
     }
-    return [...seen.entries()].map(([id, label]) => ({ id, label }))
+    return [...seen.entries()].map(([id, { label, color }]) => ({ id, label, color }))
   }, [monthEvents])
 
   const navigate = useCallback(
@@ -321,7 +332,10 @@ function Calendar({
       <div className="flex flex-wrap gap-x-5 gap-y-2 h-5">
         {communities?.map(community => (
           <span key={community.label} className="flex items-center gap-2 text-sm text-white">
-            <span className={clsx("size-3 shrink-0", colorForCommunity(community.id))} />
+            <span
+              style={communityColorStyle(community.color)}
+              className={clsx("size-3 shrink-0", communityColorClass(community.id))}
+            />
             {community.label}
           </span>
         ))}

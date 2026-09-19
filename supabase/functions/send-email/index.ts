@@ -66,7 +66,7 @@ function formatDate(dateString: string | null): string {
 async function formatCalendarEvent(data: Record<string, unknown>) {
   const FORMAT_MAP: Record<string, string> = {
     "in-person": "Presencial",
-    online: "Virtual",
+    virtual: "Virtual",
   }
 
   const supabaseUrl = Deno.env.get("SUPABASE_URL")
@@ -169,6 +169,8 @@ serve(async req => {
   try {
     const body: RequestBody = await req.json()
 
+    console.info("Body received:", body)
+
     if (!body.type || !body.data) {
       return new Response(JSON.stringify({ error: "Email type and data are required" }), {
         status: 400,
@@ -211,7 +213,7 @@ serve(async req => {
 
     await client.close()
 
-    console.info(`Email sent (${body.type}) to ${to}`)
+    console.info(`Email '${body.type}' sent to ${to}`)
 
     return new Response(JSON.stringify({ success: true, message: "Email sent" }), {
       status: 200,

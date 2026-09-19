@@ -13,6 +13,7 @@ import {
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -27,13 +28,10 @@ interface NewCommunityDialogProps {
   onCreate: (values: NewCommunityFormValues) => void
 }
 
-// NOTE: this dialog must stay mounted outside the combobox popup (see
-// CommunityCombobox): the popup unmounts when it closes (e.g. on window blur),
-// which would otherwise destroy the dialog and its form state with it.
 export function NewCommunityDialog({ open, onOpenChange, onCreate }: NewCommunityDialogProps) {
   const form = useForm<NewCommunityFormValues>({
     resolver: zodResolver(newCommunitySchema),
-    defaultValues: { name: "", short_name: "", website: "", contact_email: "" },
+    defaultValues: { name: "", short_name: "", website: "", contact_email: "", color: "#f0f0f0" },
   })
 
   function onSubmit(values: NewCommunityFormValues) {
@@ -51,7 +49,7 @@ export function NewCommunityDialog({ open, onOpenChange, onCreate }: NewCommunit
       }}
     >
       <DialogContent
-        className="bg-[#2e2e2e] rounded-none border-white font-monospace text-white py-8"
+        className="bg-black rounded-none border-white font-monospace text-white py-8"
         onInteractOutside={event => event.preventDefault()}
         onEscapeKeyDown={event => event.preventDefault()}
       >
@@ -130,6 +128,30 @@ export function NewCommunityDialog({ open, onOpenChange, onCreate }: NewCommunit
                   </FormLabel>
                   <FormControl>
                     <Input {...field} type="email" enterKeyHint="done" className="rounded-none" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="color"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xs uppercase">Color de acento</FormLabel>
+                  <FormDescription>Elige un color claro con suficiente contraste.</FormDescription>
+                  <FormControl>
+                    <label
+                      className="relative flex m-2 h-10 cursor-pointer items-center justify-center border border-off-white font-mono text-base font-bold text-black"
+                      style={{ backgroundColor: field.value }}
+                    >
+                      {field.value}
+                      <input
+                        {...field}
+                        type="color"
+                        className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+                      />
+                    </label>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

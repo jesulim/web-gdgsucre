@@ -136,6 +136,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
       website: values.website ?? null,
       contact_email: values.contact_email,
       image: null,
+      color: values.color ?? null,
       accepted: false,
     }
     setSelectedCommunity(staged)
@@ -162,6 +163,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
             short_name: pendingCommunity.short_name || undefined,
             website: pendingCommunity.website || undefined,
             contact_email: pendingCommunity.contact_email,
+            color: pendingCommunity.color || undefined,
           }),
         })
 

@@ -7,6 +7,7 @@ interface Community {
   website?: string
   contact_email: string
   image?: string
+  color?: string
   accepted?: boolean
 }
 
@@ -17,7 +18,7 @@ function escapePostgrestPattern(value: string) {
 export async function getCommunities(supabase: SupabaseClient, name?: string) {
   let query = supabase
     .from("communities")
-    .select("id, created_at, name, short_name, website, contact_email, accepted")
+    .select("id, created_at, name, short_name, website, contact_email, color, accepted")
     .order("created_at", { ascending: false })
 
   if (name) {
@@ -103,6 +104,7 @@ export interface CommunityWithCount {
   name: string
   short_name: string | null
   website: string | null
+  color: string | null
   event_count: number
 }
 
@@ -111,7 +113,7 @@ export async function getCommunitiesWithEventCount(
 ): Promise<CommunityWithCount[]> {
   const { data: communities, error: communitiesError } = await supabase
     .from("communities")
-    .select("id, name, short_name, website")
+    .select("id, name, short_name, website, color")
     .eq("accepted", true)
     .order("name")
 

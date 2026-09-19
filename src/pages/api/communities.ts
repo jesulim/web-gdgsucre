@@ -28,7 +28,7 @@ export const GET: APIRoute = async ({ url, cookies }) => {
 export const POST: APIRoute = async ({ request, cookies }) => {
   try {
     const body = await request.json()
-    const { name, short_name, website, contact_email, image } = body
+    const { name, short_name, website, contact_email, image, color } = body
 
     if (!name || !contact_email) {
       return new Response(JSON.stringify({ error: "Invalid request body" }), {
@@ -44,6 +44,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       website,
       contact_email,
       image,
+      color,
     })
 
     if (id === null) {
@@ -67,7 +68,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 export const PUT: APIRoute = async ({ request, cookies }) => {
   try {
     const body = await request.json()
-    const { id, name, short_name, website, contact_email, image, accepted } = body
+    const { id, name, short_name, website, contact_email, image, color, accepted } = body
 
     if (!id) {
       return new Response(JSON.stringify({ error: "Invalid request body" }), {
@@ -83,6 +84,7 @@ export const PUT: APIRoute = async ({ request, cookies }) => {
       website,
       contact_email,
       image,
+      color,
       accepted,
     })
 

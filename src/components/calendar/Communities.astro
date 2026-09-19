@@ -10,25 +10,21 @@ const { communities } = Astro.props
 
 const ACCENT_COLORS = ["bg-blue-500", "bg-red-500", "bg-yellow-500", "bg-green-500"] as const
 
-function colorForCommunity(id: number) {
-  return ACCENT_COLORS[id % ACCENT_COLORS.length]
+function communityAccent(community: CommunityWithCount) {
+  if (community.color) return { style: `background-color: ${community.color}`, class: "" }
+  return { style: undefined, class: ACCENT_COLORS[community.id % ACCENT_COLORS.length] }
 }
 ---
 
 <section id="comunidades" class="mx-auto max-w-6xl px-4 font-monospace py-8 md:py-16 md:pb-16">
-  <div class="flex items-baseline justify-between gap-4">
-    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold">Comunidades</h2>
-    <span class="text-muted-foreground shrink-0">
-      {`${communities.length}`.padStart(2, "0")}
-    </span>
-  </div>
+  <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold">Comunidades</h2>
 
   <div class="mt-4 grid grid-cols-2 gap-4 md:gap-8 md:grid-cols-3">
     {
       communities.map(community => (
         <div class="flex flex-col gap-2 border border-white bg-black p-4">
           <div class="flex gap-3">
-            <span class:list={["size-3 shrink-0 mt-1", colorForCommunity(community.id)]} />
+            <span style={communityAccent(community).style} class:list={["size-3 shrink-0 mt-1", communityAccent(community).class]} />
             <span class="font-bold text-base truncate">
               {community.short_name ?? community.name}
             </span>

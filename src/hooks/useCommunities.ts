@@ -9,6 +9,7 @@ export interface Community {
   website: string | null
   contact_email: string
   image: string | null
+  color: string | null
   accepted: boolean
 }
 

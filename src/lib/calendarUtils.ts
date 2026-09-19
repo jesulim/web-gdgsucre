@@ -3,6 +3,7 @@ interface Community {
   name: string
   short_name: string | null
   image: string | null
+  color: string | null
 }
 
 export interface UpcomingCalendarEvent {
