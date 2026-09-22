@@ -141,17 +141,27 @@ export function NewCommunityDialog({ open, onOpenChange, onCreate }: NewCommunit
                   <FormLabel className="text-xs uppercase">Color de acento</FormLabel>
                   <FormDescription>Elige un color claro con suficiente contraste.</FormDescription>
                   <FormControl>
-                    <label
-                      className="relative flex m-2 h-10 cursor-pointer items-center justify-center border border-off-white font-mono text-base font-bold text-black"
-                      style={{ backgroundColor: field.value }}
-                    >
-                      {field.value}
-                      <input
+                    <div className="flex items-center gap-2">
+                      <Input
                         {...field}
-                        type="color"
-                        className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+                        type="text"
+                        enterKeyHint="done"
+                        className="rounded-none font-mono"
+                        placeholder="#f0f0f0"
                       />
-                    </label>
+                      <label
+                        className="size-10 shrink-0 cursor-pointer border border-off-white"
+                        style={{ backgroundColor: field.value }}
+                        title="Abrir selector de color"
+                      >
+                        <input
+                          type="color"
+                          value={field.value}
+                          onChange={e => field.onChange(e.target.value)}
+                          className="size-0 opacity-0"
+                        />
+                      </label>
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
