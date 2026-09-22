@@ -90,6 +90,7 @@ async function formatCalendarEvent(data: Record<string, unknown>) {
       format,
       location,
       registration_link,
+      accepted,
       communities(name, short_name, contact_email)`
     )
     .eq("id", data.eventId)
