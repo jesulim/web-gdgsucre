@@ -64,6 +64,8 @@ function capitalize(s: string) {
   return s.charAt(0).toUpperCase() + s.slice(1)
 }
 
+const isUrl = (value?: string) => /^https?:\/\//.test(value ?? "")
+
 interface CalendarEventPayload {
   id: number
   name: string
@@ -146,7 +148,19 @@ function DayDetailPanel({ date, events }: { date: Date; events: CalendarEvent[] 
                   - {timeStr(event.end)}
                 </p>
                 <p className="text-sm text-gray-600">
-                  {event.location} · {event.community}
+                  {isUrl(event.location) ? (
+                    <a
+                      href={event.location}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="break-all hover:underline"
+                    >
+                      {event.location}
+                    </a>
+                  ) : (
+                    event.location
+                  )}{" "}
+                  · {event.community}
                 </p>
                 {event.registration_link && (
                   <a

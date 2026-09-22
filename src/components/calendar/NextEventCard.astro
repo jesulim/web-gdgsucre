@@ -21,6 +21,7 @@ const { day, month, weekday, start, end } = formatEventDate(
   event.start_datetime,
   event.end_datetime
 )
+
 const community = event.communities?.short_name ?? event.communities?.name
 const position = String(index + 1).padStart(2, "0")
 ---
@@ -76,7 +77,7 @@ const position = String(index + 1).padStart(2, "0")
                 href={event.location}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="flex hover:underline"
+                class="flex break-all hover:underline"
               >
                 {event.location}
               </a>
@@ -144,7 +145,7 @@ const position = String(index + 1).padStart(2, "0")
                 href={event.location}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="flex text-white hover:underline"
+                class="flex break-all text-white hover:underline"
               >
                 {event.location}
               </a>
