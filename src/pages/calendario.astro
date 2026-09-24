@@ -22,19 +22,27 @@ const [upcomingEvents, communities] = await Promise.all([
 
 <BaseLayout
   theme="dark"
-  title="La agenda tech de Sucre · sucre.tech"
-  description="Eventos, talleres y conferencias de tecnología en Sucre. Sumá tu evento o descubrí la agenda de las comunidades."
-  ogTitle="La agenda tech de Sucre · sucre.tech"
-  ogDescription="Eventos, talleres y conferencias de tecnología en Sucre. Sumá tu evento o descubrí la agenda de las comunidades."
-  ogImage="/og-calendario.jpg"
+  title="La agenda tecnológica de Sucre · sucre.tech"
+  description="Eventos de tecnología en Sucre. Descubre la agenda o publica tu evento."
+  ogTitle="La agenda tecnológica de Sucre · sucre.tech"
+  ogDescription="Eventos de tecnología en Sucre. Descubre la agenda o publica tu evento."
+  ogImage="/og-calendario.webp"
 >
   <Header />
 
   <main class="flex-1 overflow-x-hidden mt-8">
     <CalendarHero event={upcomingEvents[0]} />
+    <hr class="border-t border-muted-foreground" />
+
     <NextEvents events={upcomingEvents} />
+    <hr class="border-t border-muted-foreground" />
+
     <EventsCalendar client:visible />
+    <hr class="border-t border-muted-foreground" />
+
     <PublishEvent />
+    <hr class="border-t border-muted-foreground" />
+
     <Communities communities={communities} />
   </main>
 

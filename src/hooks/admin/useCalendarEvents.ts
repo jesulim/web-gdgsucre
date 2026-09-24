@@ -9,6 +9,7 @@ export interface CalendarEvent {
     id: number
     name: string
     short_name: string | null
+    contact_email: string | null
   } | null
   start_datetime: string
   end_datetime: string

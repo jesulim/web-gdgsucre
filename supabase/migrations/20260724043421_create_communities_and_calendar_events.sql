@@ -69,17 +69,17 @@ CREATE OR REPLACE TRIGGER "update_updated_at_calendar_events"
 ALTER TABLE "public"."communities" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "public"."calendar_events" ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Can view accepted communities" ON "public"."communities" FOR SELECT TO "anon", "authenticated" USING ("accepted" OR "public"."is_admin"(auth.uid()));
+CREATE POLICY "Can view communities" ON "public"."communities" FOR SELECT TO "anon", "authenticated" USING (true);
 
-CREATE POLICY "Can insert communities" ON "public"."communities" FOR INSERT TO "anon", "authenticated" WITH CHECK (NOT "accepted" OR "public"."is_admin"(auth.uid()));
+CREATE POLICY "Can insert communities" ON "public"."communities" FOR INSERT TO "anon", "authenticated" WITH CHECK (true);
 
 CREATE POLICY "Can update communities" ON "public"."communities" FOR UPDATE TO "authenticated" USING ("public"."is_admin"(auth.uid()));
 
 CREATE POLICY "Can delete communities" ON "public"."communities" FOR DELETE TO "authenticated" USING ("public"."is_admin"(auth.uid()));
 
-CREATE POLICY "Can view accepted calendar events" ON "public"."calendar_events" FOR SELECT TO "anon", "authenticated" USING ("accepted" OR "public"."is_admin"(auth.uid()));
+CREATE POLICY "Can view calendar events" ON "public"."calendar_events" FOR SELECT TO "anon", "authenticated" USING (true);
 
-CREATE POLICY "Can insert calendar events" ON "public"."calendar_events" FOR INSERT TO "anon", "authenticated" WITH CHECK (NOT "accepted" OR "public"."is_admin"(auth.uid()));
+CREATE POLICY "Can insert calendar events" ON "public"."calendar_events" FOR INSERT TO "anon", "authenticated" WITH CHECK (true);
 
 CREATE POLICY "Can update calendar events" ON "public"."calendar_events" FOR UPDATE TO "authenticated" USING ("public"."is_admin"(auth.uid()));
 

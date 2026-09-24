@@ -21,6 +21,7 @@ export function FormatToggle({ value, onChange, disabled, name = "format" }: For
           key={option.value}
           className={cn(
             "flex-1 cursor-pointer px-4 py-3 text-center text-sm font-bold transition-colors has-disabled:cursor-not-allowed has-disabled:opacity-50",
+            "has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-white has-[:focus-visible]:ring-offset-2 has-[:focus-visible]:ring-offset-black",
             index > 0 && "border-l",
             value === option.value
               ? "bg-red-500 text-white"

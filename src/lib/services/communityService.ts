@@ -7,6 +7,7 @@ interface Community {
   website?: string
   contact_email: string
   image?: string
+  color?: string
   accepted?: boolean
 }
 
@@ -17,7 +18,7 @@ function escapePostgrestPattern(value: string) {
 export async function getCommunities(supabase: SupabaseClient, name?: string) {
   let query = supabase
     .from("communities")
-    .select("id, created_at, name, short_name, website, contact_email, accepted")
+    .select("id, created_at, name, short_name, website, contact_email, color, accepted")
     .order("created_at", { ascending: false })
 
   if (name) {
@@ -72,11 +73,38 @@ export async function deleteCommunity(supabase: SupabaseClient, id: number) {
   return data.length > 0
 }
 
+export async function accepCommunityOnFirstEvent(supabase: SupabaseClient, event_id: number) {
+  const { data: event, error } = await supabase
+    .from("calendar_events")
+    .select("communities(id, accepted)")
+    .eq("id", event_id)
+    .single()
+
+  if (error) {
+    console.error(`Error getting community: ${error.message}`)
+    return false
+  }
+
+  const community = event.communities
+
+  if (community.accepted) return
+
+  const { error: updateError } = await supabase
+    .from("communities")
+    .update({ accepted: true })
+    .eq("id", community.id)
+
+  if (updateError) {
+    console.error(`Error updating community: ${updateError.message}`)
+  }
+}
+
 export interface CommunityWithCount {
   id: number
   name: string
   short_name: string | null
   website: string | null
+  color: string | null
   event_count: number
 }
 
@@ -85,7 +113,7 @@ export async function getCommunitiesWithEventCount(
 ): Promise<CommunityWithCount[]> {
   const { data: communities, error: communitiesError } = await supabase
     .from("communities")
-    .select("id, name, short_name, website")
+    .select("id, name, short_name, website, color")
     .eq("accepted", true)
     .order("name")
 

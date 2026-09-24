@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { Loader2Icon, SendIcon } from "lucide-react"
-import { useState } from "react"
+import { type KeyboardEvent, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Toaster, toast } from "sonner"
 
@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 
+import type { Community } from "@/hooks/useCommunities"
 import {
   type CalendarEventFormValues,
   calendarEventSchema,
@@ -25,7 +26,6 @@ import {
 
 import { CommunityCombobox } from "./CommunityCombobox"
 import { FormatToggle } from "./FormatToggle"
-import { NewCommunityDialog } from "./NewCommunityDialog"
 
 // Sentinel used while a brand-new community is staged locally (see NewCommunityDialog):
 // it is not a real id yet, it only marks "create the community first, then use its id".
@@ -38,6 +38,49 @@ const browserTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone ?? LA_P
 const isOutsideBolivia = browserTimeZone !== LA_PAZ_TIME_ZONE
 
 const queryClient = new QueryClient()
+
+// Text-like inputs where Enter should advance focus instead of submitting.
+// (Mobile keyboards send Enter for the "Next" button, which would otherwise
+// trigger implicit form submission from the combobox search input.)
+const ENTER_ADVANCE_TYPES = new Set([
+  "text",
+  "search",
+  "email",
+  "url",
+  "tel",
+  "password",
+  "number",
+  "datetime-local",
+])
+
+// Move focus to the next visible field instead of submitting the form.
+function handleFormKeyDown(event: KeyboardEvent<HTMLFormElement>) {
+  if (event.key !== "Enter" || event.defaultPrevented) return
+  const { target } = event
+  if (!(target instanceof HTMLInputElement)) return
+  // Ignore inputs portaled from elsewhere (e.g. the new-community dialog):
+  // React events bubble through the component tree, not the DOM tree.
+  if (!event.currentTarget.contains(target)) return
+  if (!ENTER_ADVANCE_TYPES.has(target.type)) return
+  // Let the combobox consume Enter while its popup is open (option selection).
+  if (target.getAttribute("aria-expanded") === "true") return
+  if (target.ownerDocument.querySelector('[data-slot="combobox-content"] [role="listbox"]')) return
+  const fields = Array.from(
+    event.currentTarget.querySelectorAll<HTMLElement>("input, button, select, textarea")
+  ).filter(field => {
+    if (field.hasAttribute("disabled")) return false
+    if (field.getAttribute("tabindex") === "-1") return false
+    if (field instanceof HTMLInputElement && (field.type === "hidden" || field.type === "radio"))
+      return false
+    const rect = field.getBoundingClientRect()
+    if (rect.width === 0 && rect.height === 0) return false
+    return true
+  })
+  const next = fields[fields.indexOf(target) + 1]
+  if (!next) return
+  event.preventDefault()
+  next.focus()
+}
 
 interface SendEventProps {
   isLoggedIn: boolean
@@ -56,7 +99,7 @@ async function readErrorMessage(response: Response) {
 function SendEventForm({ isLoggedIn }: SendEventProps) {
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
-  const [communityLabel, setCommunityLabel] = useState<string | null>(null)
+  const [selectedCommunity, setSelectedCommunity] = useState<Community | null>(null)
   const [pendingCommunity, setPendingCommunity] = useState<NewCommunityFormValues | null>(null)
 
   const form = useForm<CalendarEventFormValues>({
@@ -70,20 +113,33 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
       location: "",
       registration_link: "",
       dates_tbd: false,
+      accept_moderation: false,
     },
   })
 
   const datesTbd = form.watch("dates_tbd")
+  const format = form.watch("format")
+  const isVirtual = format === "virtual"
 
-  function handleSelectCommunity(id: number, label: string) {
+  function handleSelectCommunity(community: Community | null) {
     setPendingCommunity(null)
-    setCommunityLabel(label)
-    form.setValue("community_id", id, { shouldValidate: true })
+    setSelectedCommunity(community)
+    form.setValue("community_id", community?.id ?? 0, { shouldValidate: true })
   }
 
   function handleCreateCommunity(values: NewCommunityFormValues) {
     setPendingCommunity(values)
-    setCommunityLabel(`${values.name} (nueva)`)
+    const staged: Community = {
+      id: NEW_COMMUNITY_ID,
+      name: `${values.name} (nueva)`,
+      short_name: values.short_name ?? null,
+      website: values.website ?? null,
+      contact_email: values.contact_email,
+      image: null,
+      color: values.color ?? null,
+      accepted: false,
+    }
+    setSelectedCommunity(staged)
     form.setValue("community_id", NEW_COMMUNITY_ID, { shouldValidate: true })
   }
 
@@ -107,6 +163,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
             short_name: pendingCommunity.short_name || undefined,
             website: pendingCommunity.website || undefined,
             contact_email: pendingCommunity.contact_email,
+            color: pendingCommunity.color || undefined,
           }),
         })
 
@@ -142,7 +199,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
 
       setSubmitted(true)
       form.reset()
-      setCommunityLabel(null)
+      setSelectedCommunity(null)
       setPendingCommunity(null)
     } catch (error) {
       console.error("Error al enviar el evento:", error)
@@ -156,15 +213,14 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
 
   if (submitted) {
     return (
-      <div className="font-monospace border p-8 text-center text-white">
+      <div className="font-monospace p-8 bg-white text-foreground">
         <p className="text-lg font-bold">¡Recibimos tu evento!</p>
-        <p className="text-muted-foreground mt-2 text-sm">
+        <p className="text-gray-700 mt-2 text-sm">
           Cuando sea aprobado, se publicará en la agenda.
         </p>
         <Button
           type="button"
-          variant="outline"
-          className="mt-6 rounded-none"
+          className="rounded-none border border-black mt-6"
           onClick={() => setSubmitted(false)}
         >
           Publicar otro evento
@@ -174,22 +230,29 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
   }
 
   return (
-    <div className="font-monospace relative border">
+    <div className="font-monospace relative border border-white bg-black">
       <Toaster position="top-right" richColors />
 
       <Form {...form}>
-        <form className="flex flex-col gap-6 p-4 md:p-6" onSubmit={form.handleSubmit(onSubmit)}>
+        <form
+          className="flex flex-col gap-6 p-4 md:p-6"
+          onSubmit={form.handleSubmit(onSubmit)}
+          onKeyDown={handleFormKeyDown}
+        >
           <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs uppercase">Nombre del evento</FormLabel>
+                <FormLabel className="text-xs uppercase">
+                  Nombre del evento <span className="text-red-500">*</span>
+                </FormLabel>
                 <FormControl>
                   <Input
                     {...field}
                     disabled={disabled}
                     placeholder="DevFest Sucre 2026"
+                    enterKeyHint="next"
                     className="rounded-none border-white"
                   />
                 </FormControl>
@@ -203,19 +266,17 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
             name="community_id"
             render={() => (
               <FormItem>
-                <FormLabel className="text-xs uppercase">Comunidad</FormLabel>
+                <FormLabel className="text-xs uppercase">
+                  Comunidad <span className="text-red-500">*</span>
+                </FormLabel>
                 <FormControl>
-                  <div className="flex gap-2">
-                    <div className="min-w-0 flex-1">
-                      <CommunityCombobox
-                        value={form.watch("community_id")}
-                        label={communityLabel}
-                        onChange={handleSelectCommunity}
-                        disabled={disabled}
-                      />
-                    </div>
-                    <NewCommunityDialog onCreate={handleCreateCommunity} disabled={disabled} />
-                  </div>
+                  <CommunityCombobox
+                    value={selectedCommunity}
+                    onChange={handleSelectCommunity}
+                    onCreateCommunity={handleCreateCommunity}
+                    disabled={disabled}
+                    inputProps={{ enterKeyHint: "next" }}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -259,6 +320,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                         {...field}
                         type="datetime-local"
                         disabled={disabled}
+                        enterKeyHint="next"
                         className="rounded-none border-white"
                       />
                     </FormControl>
@@ -278,6 +340,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                         {...field}
                         type="datetime-local"
                         disabled={disabled}
+                        enterKeyHint="next"
                         className="rounded-none border-white"
                       />
                     </FormControl>
@@ -302,7 +365,14 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
               <FormItem>
                 <FormLabel className="text-xs uppercase">Modalidad</FormLabel>
                 <FormControl>
-                  <FormatToggle value={field.value} onChange={field.onChange} disabled={disabled} />
+                  <FormatToggle
+                    value={field.value}
+                    onChange={value => {
+                      field.onChange(value)
+                      form.clearErrors("location")
+                    }}
+                    disabled={disabled}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -314,12 +384,20 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
             name="location"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs uppercase">Ubicación / Link de acceso</FormLabel>
+                <FormLabel className="text-xs uppercase">
+                  {isVirtual ? "Link de acceso" : "Ubicación"}{" "}
+                  <span className="text-red-500">*</span>
+                </FormLabel>
                 <FormControl>
                   <Input
                     {...field}
+                    type={isVirtual ? "url" : "text"}
+                    inputMode={isVirtual ? "url" : "text"}
                     disabled={disabled}
-                    placeholder="Hub de innovación USFX / Link de acceso"
+                    placeholder={
+                      isVirtual ? "https://meet.google.com/..." : "Hub de innovación USFX, Sucre"
+                    }
+                    enterKeyHint="next"
                     className="rounded-none border-white"
                   />
                 </FormControl>
@@ -339,9 +417,33 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                     {...field}
                     disabled={disabled}
                     placeholder="https://..."
+                    enterKeyHint="done"
                     className="rounded-none border-white"
                   />
                 </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="accept_moderation"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex flex-row items-start gap-3 space-y-0">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={checked => field.onChange(checked === true)}
+                      disabled={disabled}
+                      className="rounded-none border-white"
+                    />
+                  </FormControl>
+                  <FormLabel className="text-sm font-normal normal-case">
+                    Acepto que mi evento sea moderado conforme a las normas de la comunidad
+                  </FormLabel>
+                </div>
                 <FormMessage />
               </FormItem>
             )}

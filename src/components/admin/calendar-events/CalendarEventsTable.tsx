@@ -39,6 +39,7 @@ export interface CalendarEvent {
     id: number
     name: string
     short_name: string | null
+    contact_email: string | null
   } | null
   start_datetime: string
   end_datetime: string
@@ -68,7 +69,11 @@ const FORMAT_LABELS: Record<string, string> = {
   virtual: "Virtual",
 }
 
+const isUrl = (value?: string | null) => /^https?:\/\//.test(value ?? "")
+
 function DateTimeCell({ value }: { value: string }) {
+  if (!value) return <span>Por definir</span>
+
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return <span>-</span>
 
@@ -112,6 +117,23 @@ export function CalendarEventsTable() {
       header: "Comunidad",
       filterFn: "includesString",
     }),
+    columnHelper.accessor(row => row.communities?.contact_email || "-", {
+      id: "community_email",
+      header: "Email comunidad",
+      filterFn: "includesString",
+      cell: info => {
+        const value = info.getValue()
+        if (value === "-") return <span className="text-gray-600">-</span>
+        return (
+          <a
+            href={`mailto:${value}`}
+            className="block max-w-48 truncate text-blue-500 hover:underline"
+          >
+            {value}
+          </a>
+        )
+      },
+    }),
     columnHelper.accessor("start_datetime", {
       header: "Inicio",
       cell: info => <DateTimeCell value={info.getValue()} />,
@@ -131,7 +153,22 @@ export function CalendarEventsTable() {
     columnHelper.accessor("location", {
       header: "Ubicación",
       filterFn: "includesString",
-      cell: info => info.getValue() ?? "-",
+      cell: info => {
+        const value = info.getValue()
+        if (!value) return <span className="text-gray-600">-</span>
+        if (isUrl(value))
+          return (
+            <a
+              href={value}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block max-w-48 truncate break-all text-blue-500 hover:underline"
+            >
+              {value}
+            </a>
+          )
+        return <span>{value}</span>
+      },
     }),
     columnHelper.accessor("registration_link", {
       header: "Link de registro",

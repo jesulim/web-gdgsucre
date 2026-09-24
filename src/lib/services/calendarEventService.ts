@@ -24,7 +24,7 @@ export async function getCalendarEvents(supabase: SupabaseClient, start: string,
       format,
       registration_link,
       location,
-      communities(id, name, short_name)
+      communities(id, name, short_name, color)
     `)
     .is("accepted", true)
     .gte("start_datetime", start)
@@ -46,8 +46,9 @@ export async function getUpcomingCalendarEvents(supabase: SupabaseClient) {
     .from("calendar_events")
     .select(
       `id, name, start_datetime, end_datetime, format, registration_link, location,
-      communities(id, name, short_name, image)`
+      communities(id, name, short_name, image, color)`
     )
+    .eq("accepted", true)
     .or(`start_datetime.gte.${startOfToday.toISOString()},start_datetime.is.null`)
     .order("start_datetime", { ascending: true })
     .limit(NEXT_EVENTS_LIMIT)
@@ -70,8 +71,8 @@ export async function getAllCalendarEvents(supabase: SupabaseClient) {
       registration_link,
       location,
       accepted,
-      communities(id, name, short_name, image)`)
-    .order("start_datetime", { ascending: false })
+      communities(id, name, short_name, contact_email, image, color)`)
+    .order("start_datetime")
 
   if (error) throw new Error(error.message)
 
@@ -79,14 +80,18 @@ export async function getAllCalendarEvents(supabase: SupabaseClient) {
 }
 
 export async function createCalendarEvent(supabase: SupabaseClient, calendarEvent: CalendarEvent) {
-  const { error } = await supabase.from("calendar_events").insert(calendarEvent)
+  const { data, error } = await supabase
+    .from("calendar_events")
+    .insert(calendarEvent)
+    .select("id")
+    .single()
 
   if (error) {
     console.error(`error creating calendar event: ${error.message}`)
-    return false
+    return null
   }
 
-  return true
+  return data.id
 }
 
 export async function updateCalendarEvent(

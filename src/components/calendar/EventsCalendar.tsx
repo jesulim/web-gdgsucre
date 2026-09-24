@@ -51,7 +51,11 @@ function buildGrid(date: Date): Date[] {
 
 const ACCENT_COLORS = ["bg-blue-500", "bg-red-500", "bg-yellow-500", "bg-green-500"] as const
 
-function colorForCommunity(id: number | null | undefined) {
+function communityColorStyle(color: string | null | undefined): React.CSSProperties | undefined {
+  return color ? { backgroundColor: color } : undefined
+}
+
+function communityColorClass(id: number | null | undefined) {
   if (id == null) return ACCENT_COLORS[3]
   return ACCENT_COLORS[id % ACCENT_COLORS.length]
 }
@@ -60,15 +64,18 @@ function capitalize(s: string) {
   return s.charAt(0).toUpperCase() + s.slice(1)
 }
 
+const isUrl = (value?: string) => /^https?:\/\//.test(value ?? "")
+
 interface CalendarEventPayload {
   id: number
   name: string
   community_id: number
   start_datetime: string
   end_datetime: string
+  format: string
   location?: string
   registration_link?: string
-  communities: { id: number; name: string; short_name: string | null } | null
+  communities: { id: number; name: string; short_name: string | null; color: string | null } | null
 }
 
 interface CalendarEvent {
@@ -76,17 +83,21 @@ interface CalendarEvent {
   name: string
   start: Date
   end: Date
+  format: string
   community_id: number
   community: string
+  communityColor: string | null
   location?: string
   registration_link?: string
 }
+
 function transformEvent(raw: CalendarEventPayload): CalendarEvent {
   return {
     ...raw,
     start: new Date(raw.start_datetime),
     end: new Date(raw.end_datetime),
     community: raw.communities?.short_name ?? raw.communities?.name ?? "",
+    communityColor: raw.communities?.color ?? null,
   }
 }
 
@@ -107,39 +118,56 @@ function DayDetailPanel({ date, events }: { date: Date; events: CalendarEvent[] 
   const dayEvents = events.filter(e => sameDay(e.start, date))
 
   return (
-    <div className="border border-white bg-black p-4 md:p-8 text-white order-2 sm:order-0">
+    <div className="border border-white bg-white p-4 md:p-6 text-black order-2 md:order-0">
       <div className="flex items-center gap-4 pb-4">
-        <span className="text-3xl sm:text-4xl lg:text-6xl leading-none font-bold">
-          {dayNumber(date)}
-        </span>
+        <span className="text-3xl sm:text-5xl leading-none font-bold">{dayNumber(date)}</span>
         <div className="flex flex-col text-sm">
           <span className="text-lg">{weekdayLong(date)}</span>
-          <span className="text-muted-foreground">
+          <span className="text-gray-600">
             {fullMonth(date)} {date.getFullYear()}
           </span>
         </div>
       </div>
 
-      <hr className="border-white pb-4" />
+      <hr className="border-black pb-4" />
 
       <div className="flex flex-col gap-3">
         {dayEvents.length === 0 ? (
-          <p className="text-muted-foreground">Sin eventos para este día.</p>
+          <p className="text-gray-600">Sin eventos para este día.</p>
         ) : (
           dayEvents.map(event => (
-            <div key={event.id} className="flex gap-4 text-white">
-              <div className={clsx("w-2 min-h-full mb-1", colorForCommunity(event.community_id))} />
+            <div key={event.id} className="flex gap-4">
+              <div
+                style={communityColorStyle(event.communityColor)}
+                className={clsx("w-2 min-h-full mb-1", communityColorClass(event.community_id))}
+              />
               <div className="flex flex-col gap-1">
                 <h3 className="text-lg leading-tight font-bold">{event.name}</h3>
-                <p className="text-sm text-muted-foreground">
-                  {timeStr(event.start)} · {event.location} · {event.community}
+                <p className="mt-1 text-sm text-gray-600">
+                  {event.format === "in-person" ? "Presencial" : "Virtual"} · {timeStr(event.start)}{" "}
+                  - {timeStr(event.end)}
+                </p>
+                <p className="text-sm text-gray-600">
+                  {isUrl(event.location) ? (
+                    <a
+                      href={event.location}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="break-all hover:underline"
+                    >
+                      {event.location}
+                    </a>
+                  ) : (
+                    event.location
+                  )}{" "}
+                  · {event.community}
                 </p>
                 {event.registration_link && (
                   <a
                     href={event.registration_link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm hover:underline"
+                    className="text-black text-sm hover:underline"
                   >
                     Regístrate
                   </a>
@@ -193,9 +221,10 @@ function DayCell({
           {dayEvents.slice(0, 4).map(event => (
             <span
               key={event.id}
+              style={communityColorStyle(event.communityColor)}
               className={clsx(
                 "min-w-2 min-h-2 text-xs text-black line-clamp-1 text-ellipsis",
-                colorForCommunity(event.community_id)
+                communityColorClass(event.community_id)
               )}
             >
               <span className="hidden sm:inline mx-0.5">{event.name}</span>
@@ -245,11 +274,12 @@ function Calendar({
   )
 
   const communities = useMemo(() => {
-    const seen = new Map<number, string>()
+    const seen = new Map<number, { label: string; color: string | null }>()
     for (const e of monthEvents) {
-      if (!seen.has(e.community_id)) seen.set(e.community_id, e.community)
+      if (!seen.has(e.community_id))
+        seen.set(e.community_id, { label: e.community, color: e.communityColor })
     }
-    return [...seen.entries()].map(([id, label]) => ({ id, label }))
+    return [...seen.entries()].map(([id, { label, color }]) => ({ id, label, color }))
   }, [monthEvents])
 
   const navigate = useCallback(
@@ -271,9 +301,9 @@ function Calendar({
           <ChevronLeftIcon className="size-5" />
         </button>
 
-        <span className="flex items-center gap-2 text-muted-foreground font-normal">
+        <span className="flex items-center gap-2 text-white text-lg">
           {isLoading ? <Loader2Icon className="size-4 animate-spin" /> : monthEvents.length} eventos
-          · {fullMonth(currentDate).substring(0, 3)}
+          · {fullMonth(currentDate)}
         </span>
 
         <div className="flex items-center gap-2">
@@ -316,7 +346,10 @@ function Calendar({
       <div className="flex flex-wrap gap-x-5 gap-y-2 h-5">
         {communities?.map(community => (
           <span key={community.label} className="flex items-center gap-2 text-sm text-white">
-            <span className={clsx("size-3 shrink-0", colorForCommunity(community.id))} />
+            <span
+              style={communityColorStyle(community.color)}
+              className={clsx("size-3 shrink-0", communityColorClass(community.id))}
+            />
             {community.label}
           </span>
         ))}
@@ -348,15 +381,14 @@ function EventsCalendarInner() {
   return (
     <section
       id="calendario"
-      className="mx-auto max-w-6xl flex flex-col gap-8 px-4 font-monospace text-white py-8 md:py-12"
+      className="mx-auto max-w-7xl flex flex-col gap-8 px-4 font-monospace text-white py-8 md:py-16"
     >
-      <p className="[grid-area:label] text-xs uppercase col-span-2">[ 04 · calendario ]</p>
-
-      <span className="font-bold text-3xl md:text-4xl lg:text-6xl">
+      <span className="font-bold text-2xl md:text-4xl lg:text-5xl">
+        Calendario <br className="sm:hidden" />
         {capitalize(fullMonth(currentDate))} {currentDate.getFullYear()}
       </span>
 
-      <div className="grid gap-8 grid-cols-1 sm:grid-cols-[1fr_1.5fr]">
+      <div className="grid gap-8 grid-cols-1 md:grid-cols-[1fr_1.5fr]">
         <DayDetailPanel date={selectedDate} events={events} />
 
         <Calendar
