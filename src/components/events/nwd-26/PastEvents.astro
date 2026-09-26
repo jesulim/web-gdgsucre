@@ -1,0 +1,74 @@
+---
+import PastEventCard from "@/components/events/nwd-26/PastEventCard.astro"
+import { pastEvents } from "@/data/nwd-26/past-events"
+---
+
+<section
+  id="eventos-pasados"
+  class="past-events relative z-[1] overflow-hidden px-4 sm:px-6 lg:px-14 pb-20 md:pb-24 lg:pb-28"
+  aria-labelledby="past-events-title"
+>
+  <div class="relative z-[1] max-w-[1040px] mx-auto">
+    <header class="max-w-[720px] mb-7 md:mb-8">
+      <p class="past-events__eyebrow">Lo que ya vivimos</p>
+      <h2 id="past-events-title">Eventos pasados</h2>
+      <p class="past-events__intro">
+        Revive los encuentros que nos han unido para aprender, compartir y seguir impulsando a
+        nuestra comunidad tecnológica.
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-stretch">
+      {pastEvents.map(event => <PastEventCard event={event} />)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .past-events {
+    background: linear-gradient(180deg, rgba(250, 252, 255, 0) 0%, #f4faff 100%);
+  }
+
+  .past-events__eyebrow {
+    margin: 0 0 10px;
+    color: #10a7bc;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    margin: 0;
+    color: #1355cc;
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 700;
+    line-height: 0.98;
+    letter-spacing: -0.045em;
+    text-wrap: balance;
+  }
+
+  .past-events__intro {
+    max-width: 700px;
+    margin: 18px 0 0;
+    color: #4b6593;
+    font-size: clamp(14px, 1.35vw, 17px);
+    line-height: 1.55;
+    text-wrap: pretty;
+  }
+
+  @media (max-width: 767px) {
+    .past-events__eyebrow {
+      margin-bottom: 8px;
+      font-size: 10px;
+      letter-spacing: 0.28em;
+    }
+
+    .past-events__intro {
+      margin-top: 14px;
+      line-height: 1.5;
+    }
+
+  }
+</style>

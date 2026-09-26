@@ -1,0 +1,322 @@
+---
+import { Image } from "astro:assets"
+
+import type { PastEvent } from "@/data/nwd-26/past-events"
+
+interface Props {
+  event: PastEvent
+}
+
+const { event } = Astro.props
+---
+
+<article class="past-event-card">
+  <div class="past-event-card__media">
+    <Image
+      src={event.cover}
+      alt={event.coverAlt}
+      widths={[320, 480, 720, 1200]}
+      sizes="(max-width: 639px) calc(100vw - 32px), (max-width: 767px) calc(100vw - 48px), (max-width: 1279px) calc(50vw - 34px), 510px"
+      loading="lazy"
+      decoding="async"
+      class="past-event-card__image"
+    />
+    <span class="past-event-card__year">{event.year}</span>
+  </div>
+
+  <div class="past-event-card__ribbon" aria-hidden="true"></div>
+
+  <div class="past-event-card__body">
+    <h3>{event.title}</h3>
+
+    <dl class="past-event-card__details">
+      <div>
+        <dt class="sr-only">Fecha</dt>
+        <dd>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3.5" y="5" width="17" height="15.5" rx="3"></rect>
+            <path d="M7.5 3.5v3M16.5 3.5v3M3.5 9.5h17"></path>
+            <path d="M8 13h2M14 13h2M8 17h2M14 17h2"></path>
+          </svg>
+          <time datetime={event.dateTime}>{event.date}</time>
+        </dd>
+      </div>
+      <div>
+        <dt class="sr-only">Lugar</dt>
+        <dd>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 10c0 5.2-8 11-8 11S4 15.2 4 10a8 8 0 1 1 16 0Z"></path>
+            <circle cx="12" cy="10" r="2.6"></circle>
+          </svg>
+          <span>{event.venue}<small>{event.city}</small></span>
+        </dd>
+      </div>
+    </dl>
+
+    <p class="past-event-card__description">{event.description}</p>
+
+    {
+      event.href ? (
+        <a class="past-event-card__cta" href={event.href} aria-label={`Ver ${event.title}`}>
+          <span>Ver evento</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 12h13M13 7l5 5-5 5" />
+          </svg>
+        </a>
+      ) : (
+        <button
+          class="past-event-card__cta past-event-card__cta--unavailable"
+          type="button"
+          disabled
+          title="Página de detalle no disponible"
+        >
+          <span>Ver evento</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 12h13M13 7l5 5-5 5" />
+          </svg>
+        </button>
+      )
+    }
+  </div>
+</article>
+
+<style>
+  .past-event-card {
+    display: grid;
+    grid-template-rows: auto 8px 1fr;
+    min-width: 0;
+    height: 100%;
+    overflow: hidden;
+    border: 1px solid rgba(19, 85, 204, 0.08);
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 12px 30px rgba(11, 46, 107, 0.075);
+    transition:
+      box-shadow 220ms ease,
+      border-color 220ms ease;
+  }
+
+  .past-event-card__media {
+    position: relative;
+    aspect-ratio: 3 / 1;
+    overflow: hidden;
+    border-radius: 17px 17px 0 0;
+    background: #eaf4ff;
+  }
+
+  .past-event-card__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .past-event-card__year {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    display: inline-flex;
+    min-height: 28px;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 13px;
+    border: 0;
+    border-radius: 999px;
+    background: #f6be3a;
+    box-shadow: 0 7px 16px rgba(11, 63, 160, 0.16);
+    color: #0b3fa0;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.02em;
+  }
+
+  .past-event-card__ribbon {
+    width: 100%;
+    background-image:
+      repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.85) 0 5px,
+        transparent 5px 11px
+      ),
+      repeating-linear-gradient(
+        -45deg,
+        rgba(255, 255, 255, 0.85) 0 5px,
+        transparent 5px 11px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        #1355cc 0 22px,
+        #10a7bc 22px 44px,
+        #f6be3a 44px 56px,
+        #0b3fa0 56px 78px
+      );
+  }
+
+  .past-event-card__body {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    padding: 15px 20px 16px;
+  }
+
+  h3 {
+    margin: 0 0 10px;
+    color: #0b2e6b;
+    font-size: clamp(19px, 1.7vw, 22px);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  .past-event-card__details {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 7px;
+    margin: 0 0 12px;
+    color: #345189;
+  }
+
+  .past-event-card__details > div {
+    min-width: 0;
+  }
+
+  .past-event-card__details > div + div {
+    margin-left: 0;
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .past-event-card__details dd {
+    display: grid;
+    grid-template-columns: 20px minmax(0, 1fr);
+    align-items: start;
+    gap: 8px;
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+  }
+
+  .past-event-card__details svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: #1355cc;
+    stroke-width: 1.9;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .past-event-card__details small {
+    display: block;
+    margin-top: 1px;
+    color: #6b86b4;
+    font-size: 11.5px;
+    line-height: 1.35;
+  }
+
+  .past-event-card__description {
+    margin: 0 0 14px;
+    color: #4b6593;
+    font-size: 13px;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+    text-wrap: pretty;
+  }
+
+  .past-event-card__cta {
+    display: inline-flex;
+    width: 100%;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: auto;
+    border: 1.5px solid #1355cc;
+    border-radius: 999px;
+    background: transparent;
+    box-shadow: none;
+    color: #1355cc;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      border-color 180ms ease,
+      color 180ms ease,
+      background-color 180ms ease;
+  }
+
+  .past-event-card__cta svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 180ms ease;
+  }
+
+  .past-event-card__cta:not(:disabled):hover {
+    border-color: #0b3fa0;
+    background: #f1f7ff;
+    color: #0b3fa0;
+  }
+
+  .past-event-card__cta:not(:disabled):hover svg {
+    transform: translateX(3px);
+  }
+
+  .past-event-card__cta:focus-visible {
+    outline: 3px solid #f6be3a;
+    outline-offset: 3px;
+  }
+
+  .past-event-card__cta--unavailable {
+    opacity: 0.72;
+    cursor: not-allowed;
+  }
+
+  @media (hover: hover) {
+    .past-event-card:hover {
+      border-color: rgba(19, 85, 204, 0.18);
+      box-shadow: 0 16px 36px rgba(11, 46, 107, 0.1);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .past-event-card__media {
+      min-height: 104px;
+    }
+
+    .past-event-card__year {
+      top: 12px;
+      left: 14px;
+      min-height: 26px;
+      padding: 4px 12px;
+    }
+
+    .past-event-card__body {
+      padding: 14px 16px 15px;
+    }
+  }
+
+  @media (max-width: 359px) {
+    .past-event-card__body {
+      padding-inline: 14px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .past-event-card,
+    .past-event-card__cta,
+    .past-event-card__cta svg {
+      transition: none;
+    }
+  }
+</style>
