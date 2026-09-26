@@ -1,0 +1,118 @@
+---
+import { ArrowLeft, ArrowRight } from "lucide-react"
+import organizers from "@/data/nwd-26/organizers.json"
+import OrganizerCard from "./OrganizerCard.astro"
+---
+
+<section
+    id="organizers"
+    class="relative z-1 px-4 sm:px-6 lg:px-14 pb-10 md:pb-16 lg:pb-18"
+>
+    <div class="max-w-295 mx-auto">
+        <!-- Encabezado -->
+        <div class="mb-12 text-center md:text-left">
+            <p class="font-poppins font-semibold text-nwd-teal tracking-tight">
+                Detrás del evento
+            </p>
+            <h2
+                class="font-google font-extrabold text-[42px] sm:text-5xl text-nwd-blue tracking-tight"
+            >
+                Organizers
+            </h2>
+        </div>
+
+        <!-- Carrusel -->
+        <div class="relative w-full group">
+            <!-- Botón Anterior (estilo shadcn CarouselPrevious) -->
+            <button
+                type="button"
+                id="organizers-prev"
+                class="hidden md:flex opacity-0 pointer-events-none absolute -left-5 top-1/2 -translate-y-1/2 z-20 size-10 rounded-full border border-slate-200 bg-white text-nwd-blue shadow-md hover:bg-slate-50 items-center justify-center transition-all duration-300"
+                aria-label="Anterior"
+            >
+                <ArrowLeft className="size-4" />
+            </button>
+
+            <!-- Contenedor del Carrusel -->
+            <div
+                id="organizers-slider"
+                class="flex gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory py-4 px-1 no-scrollbar select-none"
+            >
+                {
+                    organizers.map((org) => (
+                        <div class="snap-start flex-shrink-0">
+                            <OrganizerCard
+                                full_name={org.full_name}
+                                role={org.role}
+                                img={org.img}
+                                social={org.social}
+                            />
+                        </div>
+                    ))
+                }
+            </div>
+
+            <!-- Botón Siguiente (estilo shadcn CarouselNext) -->
+            <button
+                type="button"
+                id="organizers-next"
+                class="hidden md:flex absolute -right-5 top-1/2 -translate-y-1/2 z-20 size-10 rounded-full border border-slate-200 bg-white text-nwd-blue shadow-md hover:bg-slate-50 items-center justify-center transition-all duration-300"
+                aria-label="Siguiente"
+            >
+                <ArrowRight className="size-4" />
+            </button>
+        </div>
+    </div>
+</section>
+
+<script>
+    const slider = document.getElementById("organizers-slider");
+    const prevBtn = document.getElementById("organizers-prev");
+    const nextBtn = document.getElementById("organizers-next");
+
+    if (slider && prevBtn && nextBtn) {
+        const updateArrows = () => {
+            const scrollLeft = slider.scrollLeft;
+            const maxScroll = slider.scrollWidth - slider.clientWidth;
+
+            // Ocultar flecha izquierda si estamos al principio (primer objeto)
+            if (scrollLeft <= 10) {
+                prevBtn.classList.add("opacity-0", "pointer-events-none");
+            } else {
+                prevBtn.classList.remove("opacity-0", "pointer-events-none");
+            }
+
+            // Ocultar flecha derecha si llegamos al final de la lista
+            if (scrollLeft >= maxScroll - 10) {
+                nextBtn.classList.add("opacity-0", "pointer-events-none");
+            } else {
+                nextBtn.classList.remove("opacity-0", "pointer-events-none");
+            }
+        };
+
+        // Escuchar scroll y redimensionamiento
+        updateArrows();
+        slider.addEventListener("scroll", updateArrows, { passive: true });
+        window.addEventListener("resize", updateArrows, { passive: true });
+
+        const scrollAmount = 240; // Ancho aproximado de tarjeta + gap
+
+        prevBtn.addEventListener("click", () => {
+            slider.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+        });
+
+        nextBtn.addEventListener("click", () => {
+            slider.scrollBy({ left: scrollAmount, behavior: "smooth" });
+        });
+    }
+</script>
+
+<style>
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+</style>

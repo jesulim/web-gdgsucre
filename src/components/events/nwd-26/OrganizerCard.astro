@@ -1,0 +1,96 @@
+---
+interface Props {
+  full_name: string
+  role: string
+  img: string
+  social?: {
+    linkedin?: string
+    instagram?: string
+    github?: string
+  }
+}
+
+const { full_name, role, img, social } = Astro.props
+---
+
+<article
+  class="relative bg-white rounded-3xl border border-[#e4ebf7] h-68 w-56"
+>
+  <div class="absolute top-0 left-0 right-0">
+    <div
+      class="w-full h-18 rounded-t-3xl"
+      style="background: linear-gradient(45deg, #EAF2FE 0%, #E3F7FA 100%);"
+    >
+    </div>
+    <!-- Cinta decorativa superior (estilo NWD) -->
+    <div
+      class="h-2 z-0 opacity-80"
+      style="background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.85) 0 4px, transparent 4px 8px), repeating-linear-gradient(90deg, #1355CC 0 20px, #10A7BC 20px 40px, #F6BE3A 40px 50px, #0B3FA0 50px 70px);"
+      aria-hidden="true"
+    >
+    </div>
+  </div>
+  <article
+    class="relative rounded-3xl flex flex-col items-center text-center h-66 w-54 z-10"
+  >
+    <!-- Foto / Avatar circular -->
+    <div
+      class="relative z-10 w-24 h-24 rounded-full overflow-hidden mb-6 border-2 border-white bg-[#EBF3FE] shadow-sm flex items-center justify-center"
+    >
+      {
+        img ? (
+          <img
+            src={img}
+            alt={full_name}
+            class="w-22 h-22 object-cover mt-3"
+            loading="lazy"
+          />
+        ) : (
+          <span class="font-google font-bold text-xl text-nwd-blue">
+            {full_name.charAt(0)}
+          </span>
+        )
+      }
+    </div>
+
+    <!-- Nombre y Rol -->
+    <div class="flex-1 flex flex-col justify-center mb-4 h-14">
+      <h3 class="font-google font-bold text-lg text-nwd-ink leading-tight mb-1">
+        {full_name}
+      </h3>
+      <p class="font-google text-sm text-slate-500">
+        {role}
+      </p>
+    </div>
+
+    <!-- Enlaces de redes sociales (in / ig como en Figma) -->
+    {
+      social && (
+        <div class="flex items-center justify-center gap-2 pt-2 mb-6">
+          {social.linkedin && (
+            <a
+              href={social.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-7 h-7 rounded-full border border-slate-200 text-nwd-blue hover:border-nwd-blue flex items-center justify-center font-google text-xs font-semibold transition-colors"
+              aria-label={`LinkedIn de ${full_name}`}
+            >
+              in
+            </a>
+          )}
+          {social.instagram && (
+            <a
+              href={social.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-7 h-7 rounded-full border border-slate-200 text-nwd-teal hover:border-nwd-teal flex items-center justify-center font-google text-xs font-semibold transition-colors"
+              aria-label={`Instagram de ${full_name}`}
+            >
+              ig
+            </a>
+          )}
+        </div>
+      )
+    }
+  </article>
+</article>
