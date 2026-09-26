@@ -24,7 +24,10 @@ function communityAccent(community: CommunityWithCount) {
       communities.map(community => (
         <div class="flex flex-col gap-2 border border-white bg-black p-4">
           <div class="flex gap-3">
-            <span style={communityAccent(community).style} class:list={["size-3 shrink-0 mt-1", communityAccent(community).class]} />
+            <span
+              style={communityAccent(community).style}
+              class:list={["size-3 shrink-0 mt-1", communityAccent(community).class]}
+            />
             <span class="font-bold text-base truncate">
               {community.short_name ?? community.name}
             </span>
@@ -34,10 +37,12 @@ function communityAccent(community: CommunityWithCount) {
               href={community.website}
               target="_blank"
               rel="noopener noreferrer"
-              class="group w-fit flex gap-2 text-sm text-muted-foreground hover:underline hover:text-white truncate"
+              class="group flex gap-2 text-sm text-muted-foreground hover:underline hover:text-white"
             >
-              {community.website.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}
-              <ArrowOutward class="fill-muted-foreground group-hover:fill-white size-5 transition-transform ease-in-out group-hover:translate-0.5 group-hover:-translate-y-0.5" />
+              <span class="truncate">
+                {community.website.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}
+              </span>
+              <ArrowOutward class="shrink-0 fill-muted-foreground group-hover:fill-white size-5 transition-transform ease-in-out group-hover:translate-0.5 group-hover:-translate-y-0.5" />
             </a>
           )}
           <span class="text-sm text-muted-foreground">Nro. eventos: {community.event_count}</span>

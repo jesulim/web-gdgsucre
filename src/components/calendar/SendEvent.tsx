@@ -441,7 +441,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                     />
                   </FormControl>
                   <FormLabel className="text-sm font-normal normal-case">
-                    Acepto que mi evento sea moderado conforme a las normas de la comunidad
+                    Acepto que mi evento sea revisado antes de ser publicado
                   </FormLabel>
                 </div>
                 <FormMessage />
