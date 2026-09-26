@@ -27,7 +27,7 @@ export const calendarEventSchema = z
     registration_link: optionalUrl,
     dates_tbd: z.boolean(),
     accept_moderation: z.literal(true, {
-      error: "Debes aceptar la moderación para enviar tu evento",
+      error: "Debes aceptar la revisión para agregar tu evento",
     }),
   })
   .superRefine((values, ctx) => {
