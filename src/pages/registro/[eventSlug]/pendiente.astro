@@ -4,6 +4,7 @@ import { ConfettiEffect } from "@/components/ConfettiEffect"
 import NwdHeader from "@/components/events/nwd-26/Header.astro"
 import BaseLayout from "@/layout/BaseLayout.astro"
 
+import { getEventData } from "@/lib/eventData"
 import { getProfile } from "@/lib/services/profileService"
 import { getEventRegistration } from "@/lib/services/registrationService"
 import { createUserClient } from "@/lib/supabase"
@@ -13,7 +14,10 @@ const supabase = await createUserClient(Astro.cookies)
 const profile = await getProfile(supabase)
 if (!profile) return Astro.redirect("/")
 
-const registration = await getEventRegistration(supabase, profile?.id, Astro.params.eventSlug || "")
+const eventSlug = Astro.params.eventSlug || ""
+const { whatsappLink } = getEventData(eventSlug)
+
+const registration = await getEventRegistration(supabase, profile?.id, eventSlug)
 
 if (registration?.status !== "pending") return Astro.redirect("/")
 ---
@@ -30,7 +34,7 @@ if (registration?.status !== "pending") return Astro.redirect("/")
         <br />
         Mientras esperas, te invitamos a nuestra
         <a
-          href="https://chat.whatsapp.com/J7jqHD4MUZy8LmJNBX68HC"
+          href={whatsappLink}
           class="text-green-500 font-medium underline">Comunidad en WhatsApp</a
         >
       </p>

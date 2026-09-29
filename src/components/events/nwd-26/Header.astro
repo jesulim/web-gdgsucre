@@ -13,7 +13,6 @@ interface Props {
 
 const { sections = [{ href: "#inicio", label: "Inicio" }] } = Astro.props
 const signInHref = `/api/auth/signin?next=${encodeURIComponent(Astro.url.pathname)}`
-const showSignInButton = false
 ---
 
 <header
@@ -46,21 +45,19 @@ const showSignInButton = false
           </a>
         ))
       }
-    </nav>
-
-    <div class="ml-auto md:ml-0 shrink-0 flex items-center gap-3">
       <a
         href="/eventos"
-        class="font-google font-semibold text-[13px] lg:text-sm text-nwd-blue border border-nwd-blue hover:bg-nwd-blue hover:text-white px-4 sm:px-5 py-2.5 rounded-full transition-colors no-underline"
+        class="text-[13px] lg:text-sm text-[#345189] font-google font-medium hover:text-nwd-teal transition-colors no-underline"
       >Eventos pasados</a>
-      {showSignInButton && (
-        <Avatar eventSlug="nwd-26">
-          <a
-            href={signInHref}
-            class="font-google font-semibold text-[13px] lg:text-sm text-white bg-nwd-blue hover:bg-nwd-blue-dark px-4 sm:px-5 py-2.5 rounded-full transition-colors no-underline"
-          >Iniciar sesión</a>
-        </Avatar>
-      )}
+    </nav>
+
+    <div class="ml-auto md:ml-0 shrink-0">
+      <Avatar eventSlug="nwd-26">
+        <a
+          href={signInHref}
+          class="font-google font-semibold text-[13px] lg:text-sm text-white bg-nwd-blue hover:bg-nwd-blue-dark px-4 sm:px-5 py-2.5 rounded-full transition-colors no-underline"
+        >Iniciar sesión</a>
+      </Avatar>
     </div>
 
     <!-- Mobile Hamburger Button -->
@@ -97,7 +94,7 @@ const showSignInButton = false
     }
     <a
       href="/eventos"
-      class="text-base text-nwd-blue font-google font-semibold hover:text-nwd-teal transition-colors no-underline py-2"
+      class="text-base text-[#345189] font-google font-medium hover:text-nwd-teal transition-colors no-underline py-2"
     >Eventos pasados</a>
   </div>
 </header>
