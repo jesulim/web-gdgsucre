@@ -6,6 +6,7 @@ interface Props {
   social?: {
     linkedin?: string
     instagram?: string
+    facebook?: string
     github?: string
   }
 }
@@ -14,7 +15,7 @@ const { full_name, role, img, social } = Astro.props
 ---
 
 <article
-  class="relative bg-white rounded-3xl border border-[#e4ebf7] h-68 w-56"
+  class="relative bg-white rounded-3xl border border-[#e4ebf7] h-68 w-56 overflow-hidden"
 >
   <div class="absolute top-0 left-0 right-0">
     <div
@@ -30,19 +31,19 @@ const { full_name, role, img, social } = Astro.props
     >
     </div>
   </div>
-  <article
-    class="relative rounded-3xl flex flex-col items-center text-center h-66 w-54 z-10"
+  <div
+    class="relative rounded-3xl flex flex-col items-center text-center h-full w-full z-10 px-3"
   >
     <!-- Foto / Avatar circular -->
     <div
-      class="relative z-10 w-24 h-24 rounded-full overflow-hidden mb-6 border-2 border-white bg-[#EBF3FE] shadow-sm flex items-center justify-center"
+      class="relative mt-4 z-10 w-24 h-24 rounded-full overflow-hidden border-2 border-white bg-[#EBF3FE] shadow-sm flex items-center justify-center shrink-0"
     >
       {
         img ? (
           <img
             src={img}
             alt={full_name}
-            class="w-22 h-22 object-cover mt-3"
+            class="w-full h-full object-cover"
             loading="lazy"
           />
         ) : (
@@ -54,11 +55,11 @@ const { full_name, role, img, social } = Astro.props
     </div>
 
     <!-- Nombre y Rol -->
-    <div class="flex-1 flex flex-col justify-center mb-4 h-14">
-      <h3 class="font-google font-bold text-lg text-nwd-ink leading-tight mb-1">
+    <div class="flex-1 flex flex-col justify-center my-2 h-14">
+      <h3 class="font-google font-bold text-base text-nwd-ink leading-tight mb-1 line-clamp-2">
         {full_name}
       </h3>
-      <p class="font-google text-sm text-slate-500">
+      <p class="font-google text-xs text-slate-500 line-clamp-1">
         {role}
       </p>
     </div>
@@ -66,7 +67,7 @@ const { full_name, role, img, social } = Astro.props
     <!-- Enlaces de redes sociales (in / ig como en Figma) -->
     {
       social && (
-        <div class="flex items-center justify-center gap-2 pt-2 mb-6">
+        <div class="flex items-center justify-center gap-2 mb-4">
           {social.linkedin && (
             <a
               href={social.linkedin}
@@ -89,8 +90,19 @@ const { full_name, role, img, social } = Astro.props
               ig
             </a>
           )}
+          {social.facebook && (
+            <a
+              href={social.facebook}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-7 h-7 rounded-full border border-slate-200 text-nwd-blue hover:border-[#1877f2] hover:text-[#1877f2] flex items-center justify-center font-google text-xs font-semibold transition-colors"
+              aria-label={`Facebook de ${full_name}`}
+            >
+              fb
+            </a>
+          )}
         </div>
       )
     }
-  </article>
+  </div>
 </article>
