@@ -1,126 +1,44 @@
 ---
-import { getImage, Image } from "astro:assets"
-import Background from "@/assets/events/iwd-26/packages/background.webp"
+import Pattern from "@/assets/events/iwd-26/patrones.jpg"
+import type { EventPackage } from "@/data/iwd-26/packages"
+import { PackageFeatureIcon } from "./PackageFeatureIcon"
 
-export interface Props {
-  title: string
-  benefits: string[]
-  imageSrc: ImageMetadata
-  imageAlt: string
-  price: string
+interface Props {
+  packageData: EventPackage
 }
-
-const { title, benefits, imageSrc, imageAlt, price } = Astro.props
-
-const optimizedBg = await getImage({ src: Background, format: "webp" })
-
-// Logic for early bird pricing: until March 3, 2026
-const currentDate = new Date()
-const deadline = new Date("2026-03-04T00:00:00-04:00") // Midnight of March 4
-const isEarlyBird = currentDate < deadline
-const showEarlyBird = title === "Build Mode" && isEarlyBird
+const { packageData } = Astro.props
+const accents = {
+  blue: { price: "bg-[#1976D2] text-white", wash: "bg-[#1976D2]/[0.08]" },
+  yellow: { price: "bg-[#ebb842] text-[#123b78]", wash: "bg-[#ebb842]/[0.14]" },
+  turquoise: { price: "bg-[#10a7bc] text-white", wash: "bg-[#10a7bc]/[0.1]" },
+}[packageData.accent]
 ---
 
-<div
-  class="rounded-4xl p-6 flex flex-col justify-between h-[320px] w-[320px] md:max-lg:h-[360px] md:max-lg:w-[320px] md:h-[400px] md:w-[500px] lg:max-xl:h-[380px] lg:max-xl:w-[500px] bg-cover bg-center"
-  style={`background-image: url(${optimizedBg.src}); box-shadow: 4px 4px 12.1px 2px rgba(0, 0, 0, 0.25);`}
->
-  <!-- Card Title -->
-  <div class="text-center mb-3 md:mb-4">
-    <h3
-      class="text-[24px] md:max-lg:text-[28px] md:text-[32px] lg:max-xl:text-[30px] font-bold text-black tracking-tight leading-tight"
-    >
-      {title}
-    </h3>
-  </div>
+<article class:list={["relative isolate flex min-h-[590px] flex-col overflow-hidden rounded-[1.65rem] border bg-white shadow-[0_12px_32px_rgba(17,62,120,0.08)]", packageData.featured ? "border-[#ebb842] shadow-[0_18px_40px_rgba(166,116,20,0.16)] lg:-translate-y-2" : "border-[#1976D2]/10"]}>
+  <div class="h-2 w-full shrink-0 bg-cover bg-center" style={`background-image: url(${Pattern.src})`} aria-hidden="true"></div>
+  <div class:list={["absolute right-8 top-12 size-4", packageData.featured ? "bg-[#ebb842]" : "bg-[#10a7bc]"]} aria-hidden="true"></div>
+  <div class:list={["absolute right-16 top-28 size-2.5", packageData.featured ? "bg-[#1976D2]" : "bg-[#ebb842]"]} aria-hidden="true"></div>
 
-  <!-- Card Content -->
-  <div class="flex-1 flex flex-col justify-center items-center">
-    <div class="flex items-center gap-6">
-      <!-- Left Column - Text List -->
-      <div class="w-fit h-fit">
-        <ul class="space-y-2 md:space-y-3">
-          {
-            benefits.map((benefit) => (
-              <li class="flex items-center group">
-                <span class="text-[16px] md:max-lg:text-[18px] md:text-[22px] lg:max-xl:text-[21px] font-medium text-black leading-tight ">
-                  {benefit}
-                </span>
-              </li>
-            ))
-          }
-        </ul>
+  <div class="relative z-10 flex flex-1 flex-col px-6 pb-7 pt-6 sm:px-8">
+    <p class="text-xs font-bold tracking-[0.24em] text-[#1976D2]">PAQUETE #{packageData.packageNumber}</p>
+    <div class="relative mt-3 min-h-[218px]">
+      <div class="relative z-10 max-w-[67%]">
+        <h3 class="text-[2.25rem] font-bold leading-[0.88] tracking-[-0.055em] text-[#123b78] sm:text-[2.65rem]">{packageData.firstName}</h3>
+        <p class="mt-1 font-serif text-[2.55rem] font-semibold italic leading-[0.85] tracking-[-0.065em] text-[#10a7bc] sm:text-[2.9rem]">{packageData.lastName}</p>
       </div>
-
-      <!-- Right Column - Package Image -->
-      <div class="flex items-center justify-center flex-shrink-0">
-        <div
-          class="w-32 h-32 md:max-lg:w-[150px] md:max-lg:h-[150px] md:w-[220px] md:h-[220px] lg:max-xl:w-[180px] lg:max-xl:h-[180px] overflow-hidden"
-        >
-          <Image
-            src={imageSrc}
-            alt={imageAlt}
-            width={360}
-            height={360}
-            class="w-full h-full object-contain"
-          />
-        </div>
+      <div class:list={["absolute bottom-0 right-[-1rem] grid size-48 place-items-center rounded-full sm:size-52", accents.wash]} aria-hidden="true">
+        <img src={packageData.image} alt={packageData.imageAlt} width="480" height="520" loading="lazy" decoding="async" class="relative z-10 h-[13.8rem] w-[13.8rem] object-contain object-bottom pointer-events-none select-none sm:h-60 sm:w-60" />
       </div>
     </div>
+    <p class="mt-3 max-w-[18rem] text-base leading-relaxed text-slate-600">{packageData.description}</p>
+    <div class="mt-4 h-1.5 w-14 rounded-full bg-[#ebb842]" aria-hidden="true"></div>
+    <div class:list={["mt-6 inline-flex w-fit items-baseline rounded-xl px-5 py-3 font-bold shadow-sm", accents.price]}><span class="mr-2 text-lg">Bs.</span><span class="text-4xl leading-none tracking-[-0.05em]">{packageData.price}</span></div>
+    <ul class:list={["mt-6 grid gap-3", packageData.id === "juana" && "mt-auto pb-2"]}>
+      {packageData.features.map(feature => <li class="flex items-start gap-3 text-[0.95rem] font-medium leading-snug text-[#123b78]"><span class="mt-0.5 grid size-7 shrink-0 place-items-center rounded-lg bg-[#1976D2]/[0.07]"><PackageFeatureIcon type={feature.type} /></span><span>{feature.label}</span></li>)}
+    </ul>
   </div>
+</article>
 
-  <!-- Price Button -->
-  <div class="text-center mt-3 md:mt-2">
-    {
-      showEarlyBird ? (
-        <div class="flex items-center justify-center gap-2 md:gap-4 scale-90 md:scale-100">
-          {/* Original Price with X */}
-          <div class="relative bg-[#ebb842] text-white px-4 md:px-6 py-2 md:py-3 rounded-full font-bold text-[20px] md:text-[28px] inline-block isolate">
-            <span class="text-white">60 Bs</span>
-            <div class="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
-              <svg
-                viewBox="0 0 100 100"
-                class="w-full h-full text-[#1976D2] scale-110 drop-shadow-sm"
-              >
-                <line
-                  x1="10"
-                  y1="10"
-                  x2="90"
-                  y2="90"
-                  stroke="currentColor"
-                  stroke-width="8"
-                  stroke-linecap="round"
-                />
-                <line
-                  x1="90"
-                  y1="10"
-                  x2="10"
-                  y2="90"
-                  stroke="currentColor"
-                  stroke-width="8"
-                  stroke-linecap="round"
-                />
-              </svg>
-            </div>
-          </div>
-
-          {/* Arrow Icon */}
-          <div class="text-[#1976D2]">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M13 5L11.59 6.41L16.17 11H4V13H16.17L11.59 17.59L13 19L20 12L13 5Z" />
-            </svg>
-          </div>
-
-          {/* New Price */}
-          <div class="bg-[#1976D2] text-white px-4 md:px-8 py-2 md:py-3 rounded-full font-bold text-[24px] md:max-lg:text-[28px] md:text-[32px] lg:max-xl:text-[30px] inline-block shadow-lg">
-            50 Bs
-          </div>
-        </div>
-      ) : (
-        <div class="bg-[#1976D2] text-white px-4 md:px-8 py-2 md:py-3 rounded-full font-bold text-[24px] md:max-lg:text-[28px] md:text-[32px] lg:max-xl:text-[30px] inline-block">
-          {price}
-        </div>
-      )
-    }
-  </div>
-</div>
+<style>
+  @media (max-width: 639px) { article { min-height: 0; } }
+</style>

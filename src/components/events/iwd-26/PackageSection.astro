@@ -1,63 +1,20 @@
 ---
-import BreakPackage from "@/assets/events/iwd-26/packages/break.webp"
-import BuildPackage from "@/assets/events/iwd-26/packages/build.webp"
-
+import { packages } from "@/data/iwd-26/packages"
 import PackageCard from "./PackageCard.astro"
 ---
 
-<section id="packages" class="bg-white relative overflow-hidden pb-24 md:pb-32">
-  <div class="relative z-10 max-w-7xl mx-auto px-6">
-    <div class="mb-20 relative pl-8 border-l-4 border-[#ebb842]">
-      <div class="inline-block mb-4">
-        <span
-          class="text-[#ebb842] font-bold text-sm tracking-[0.3em] uppercase"
-          >02</span
-        >
-        <span class="mx-3 text-gray-300">//</span>
-        <span class="text-gray-400 font-medium text-sm tracking-wider uppercase"
-          >Paquetes</span
-        >
-      </div>
-      <h2
-        class="text-4xl md:text-6xl font-bold tracking-tighter leading-none mb-6"
-      >
-        <span class="text-[#1976D2]">NUESTROS PAQUETES</span>
-      </h2>
-      <p class="text-xl md:text-2xl text-gray-600 leading-relaxed">
-        Elige el paquete de tu preferencia y disfruta de un día lleno de
-        actividades y experiencias únicas.
-      </p>
+<section id="packages" class="relative overflow-hidden bg-white py-24 md:py-32">
+  <div class="pointer-events-none absolute left-0 top-32 size-16 bg-[#1976D2]/10" aria-hidden="true"></div>
+  <div class="pointer-events-none absolute right-0 top-48 size-12 bg-[#10a7bc]/15" aria-hidden="true"></div>
+  <div class="relative z-10 mx-auto max-w-7xl px-6">
+    <div class="mb-20 border-l-4 border-[#ebb842] pl-8">
+      <p class="mb-4 text-sm font-bold uppercase tracking-[0.3em] text-[#10a7bc]">Elige cómo participar</p>
+      <h2 class="text-4xl font-bold leading-none tracking-tighter text-[#1976D2] md:text-6xl">Paquetes</h2>
+      <div class="mt-4 h-1.5 w-24 rounded-full bg-[#ebb842]" aria-hidden="true"></div>
+      <p class="mt-5 text-xl leading-relaxed text-gray-600 md:text-2xl">Conoce lo que incluye cada paquete.</p>
     </div>
-    <div class="flex w-full lg:my-12 lg:py-4 relative z-10">
-      <div
-        class="flex flex-col lg:flex-row gap-6 lg:gap-24 mx-auto lg:items-end"
-      >
-        <div class="order-1 lg:order-first">
-          <PackageCard
-            title="Break Mode"
-            benefits={["Credencial", "Stickers", "Refrigerio"]}
-            imageSrc={BreakPackage}
-            imageAlt="Break Mode"
-            price="Bs 20"
-          />
-        </div>
-
-        <div class="order-2 lg:order-last">
-          <PackageCard
-            title="Build Mode"
-            benefits={[
-              "Credencial",
-              "Taza",
-              "Portavaso",
-              "Stickers",
-              "Refrigerio",
-            ]}
-            imageSrc={BuildPackage}
-            imageAlt="Build Mode"
-            price="Bs 60"
-          />
-        </div>
-      </div>
+    <div class="mx-auto grid max-w-[1280px] gap-7 md:grid-cols-2 xl:grid-cols-3 xl:items-stretch">
+      {packages.map(packageData => <PackageCard packageData={packageData} />)}
     </div>
   </div>
 </section>
