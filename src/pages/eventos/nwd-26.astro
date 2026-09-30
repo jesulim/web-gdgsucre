@@ -1,4 +1,5 @@
 ---
+import About from "@/components/events/nwd-26/About.astro"
 import Contador from "@/components/events/nwd-26/Contador.astro"
 import Footer from "@/components/events/nwd-26/Footer.astro"
 import Header from "@/components/events/nwd-26/Header.astro"
@@ -14,12 +15,18 @@ import BaseLayout from "@/layout/BaseLayout.astro"
   ogImage="/events/nwd-26/og-nwd.png"
   theme="light"
 >
-  <Header />
+  <Header
+    sections={[
+      { href: "#inicio", label: "Inicio" },
+      { href: "#sobre-el-evento", label: "Sobre el evento" },
+    ]}
+  />
   <main class="relative flex-1 bg-[#FAFCFF]">
     <PixelBlocks />
     <div class="relative z-[1] -mt-[100vh]">
       <Hero />
       <Contador />
+      <About />
       <PastEvents />
     </div>
   </main>
