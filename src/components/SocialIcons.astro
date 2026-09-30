@@ -1,34 +1,24 @@
 ---
-import Facebook from "../assets/icons/social/Facebook.svg"
-import Instagram from "../assets/icons/social/Instagram.svg"
-import Twitter from "../assets/icons/social/Twitter.svg"
+import { wtmSocialLinks } from "@/data/wtm-social-links"
 
 const { class: className = "", ...props } = Astro.props
 ---
 
 <div class={`flex items-center gap-4 ${className}`} {...props}>
-  <a
-    href="https://www.instagram.com/wtm.sucre/"
-    target="_blank"
-    aria-label="Instagram page"
-    class="text-white/70 hover:text-white transition-colors"
-  >
-    <Instagram class="w-5 h-5" />
-  </a>
-  <a
-    href="https://www.facebook.com/wtmsucre"
-    target="_blank"
-    aria-label="Facebook page"
-    class="text-white/70 hover:text-white transition-colors"
-  >
-    <Facebook class="w-5 h-5" />
-  </a>
-  <a
-    href="https://x.com/wtmsucre"
-    target="_blank"
-    aria-label="Twitter profile"
-    class="text-white/70 hover:text-white transition-colors"
-  >
-    <Twitter class="w-5 h-5" />
-  </a>
+  {
+    wtmSocialLinks.map((link) => {
+      const Icon = link.icon
+      return (
+        <a
+          href={link.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={link.ariaLabel}
+          class="text-white/70 hover:text-white transition-colors"
+        >
+          <Icon class="w-5 h-5" />
+        </a>
+      )
+    })
+  }
 </div>
