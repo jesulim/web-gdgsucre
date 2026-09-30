@@ -244,7 +244,12 @@ export function RegistrationsTable({
       id: "actions",
       header: "Acciones",
       cell: ({ row }) => (
-        <RegistrationRowActions row={row} eventName={eventName} refetch={refetch} />
+        <RegistrationRowActions
+          row={row}
+          eventName={eventName}
+          eventSlug={eventSlug}
+          refetch={refetch}
+        />
       ),
     }),
   ]

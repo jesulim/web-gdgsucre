@@ -9,6 +9,7 @@ const PaymentConfirmationSchema = z.object({
   userEmail: z.email({ message: "Email inválido" }),
   userName: z.string().min(1),
   eventName: z.string().min(1),
+  eventSlug: z.string().min(1),
 })
 
 export const POST: APIRoute = async ({ request, cookies }) => {
@@ -26,13 +27,13 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       )
     }
 
-    const { registrationId, userEmail, userName, eventName } = parsed.data
+    const { registrationId, userEmail, userName, eventName, eventSlug } = parsed.data
 
     const supabase = await createUserClient(cookies)
     await confirmRegistration(supabase, registrationId)
 
     supabase.functions.invoke("send-email", {
-      body: { type: "payment", data: { userEmail, userName, eventName } },
+      body: { type: "payment", data: { userEmail, userName, eventName, eventSlug } },
     })
 
     return new Response(

@@ -17,6 +17,7 @@ import type { Registrations } from "./RegistrationsTable"
 const sendConfirmationEmail = async (
   id: number,
   eventName: string,
+  eventSlug: string,
   email: string,
   name: string,
   refetch: () => void
@@ -30,6 +31,7 @@ const sendConfirmationEmail = async (
       body: JSON.stringify({
         registrationId: id,
         eventName: eventName,
+        eventSlug: eventSlug,
         userEmail: email,
         userName: name,
       }),
@@ -70,10 +72,12 @@ const deleteRegistration = async (id: number, refetch: () => void) => {
 export default function RegistrationRowActions({
   row,
   eventName,
+  eventSlug,
   refetch,
 }: {
   row: Row<Registrations>
   eventName: string
+  eventSlug: string
   refetch: () => void
 }) {
   return (
@@ -91,6 +95,7 @@ export default function RegistrationRowActions({
             sendConfirmationEmail(
               row.original.id,
               eventName,
+              eventSlug,
               row.original.email,
               row.original.first_name,
               refetch

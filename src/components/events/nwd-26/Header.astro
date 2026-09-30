@@ -46,8 +46,8 @@ const signInHref = `/api/auth/signin?next=${encodeURIComponent(Astro.url.pathnam
         ))
       }
       <a
-        href="/eventos"
-        class="text-[13px] lg:text-sm text-[#345189] font-google font-medium hover:text-nwd-teal transition-colors no-underline"
+        href="#eventos-pasados"
+        class="text-[13px] lg:text-sm text-[#345189] font-google font-medium hover:text-nwd-teal focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-nwd-yellow transition-colors no-underline"
       >Eventos pasados</a>
     </nav>
 
@@ -93,8 +93,8 @@ const signInHref = `/api/auth/signin?next=${encodeURIComponent(Astro.url.pathnam
       ))
     }
     <a
-      href="/eventos"
-      class="text-base text-[#345189] font-google font-medium hover:text-nwd-teal transition-colors no-underline py-2"
+      href="#eventos-pasados"
+      class="text-base text-[#345189] font-google font-medium hover:text-nwd-teal focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-nwd-yellow transition-colors no-underline py-2"
     >Eventos pasados</a>
   </div>
 </header>

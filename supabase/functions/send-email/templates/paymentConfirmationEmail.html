@@ -60,14 +60,14 @@
               <%= it.eventName %>
             </h4>
             <p style="font-size: 16px; color: #555; margin: 8px 0; line-height: 1.5">
-              <strong style="color: #333">📅 Fecha:</strong> Sábado 15 de agosto
+              <strong style="color: #333">📅 Fecha:</strong> <%= it.eventDate %>
             </p>
             <p style="font-size: 16px; color: #555; margin: 8px 0; line-height: 1.5">
-              <strong style="color: #333">🕗 Hora:</strong> 08:00 Hrs.
+              <strong style="color: #333">🕗 Hora:</strong> <%= it.eventTime %>
             </p>
             <p style="font-size: 16px; color: #555; margin: 8px 0; line-height: 1.5">
               <strong style="color: #333">📍 Ubicación:</strong>
-              Facultad de Tecnología · Salón Rosendo Carreras
+              <%= it.eventLocation %>
             </p>
           </div>
         </div>
@@ -98,7 +98,7 @@
             ¡Únete a nuestra comunidad y prepárate para el evento!
           </p>
           <a
-            href="https://chat.whatsapp.com/EHtkjWuuhPh8cPDY8U9A7O"
+            href="<%= it.whatsappLink %>"
             style="
               background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
               color: white;
@@ -149,21 +149,21 @@
         <div style="margin-bottom: 15px">
           <div style="display: inline-flex; align-items: center; justify-content: center">
             <div
-              style="width: 8px; height: 8px; background: #4285f4; border-radius: 50%; margin: 0 3px"
+              style="width: 8px; height: 8px; background: <%= it.brandColors[0] %>; border-radius: 50%; margin: 0 3px"
             ></div>
             <div
-              style="width: 8px; height: 8px; background: #ea4335; border-radius: 50%; margin: 0 3px"
+              style="width: 8px; height: 8px; background: <%= it.brandColors[1] %>; border-radius: 50%; margin: 0 3px"
             ></div>
             <div
-              style="width: 8px; height: 8px; background: #fbbc05; border-radius: 50%; margin: 0 3px"
+              style="width: 8px; height: 8px; background: <%= it.brandColors[2] %>; border-radius: 50%; margin: 0 3px"
             ></div>
             <div
-              style="width: 8px; height: 8px; background: #34a853; border-radius: 50%; margin: 0 3px"
+              style="width: 8px; height: 8px; background: <%= it.brandColors[3] %>; border-radius: 50%; margin: 0 3px"
             ></div>
           </div>
         </div>
-        <h4 style="color: #333; margin: 0 0 5px 0; font-size: 16px">GDG Sucre</h4>
-        <p style="color: #666; margin: 0; font-size: 14px">Google Developer Group</p>
+        <h4 style="color: #333; margin: 0 0 5px 0; font-size: 16px"><%= it.organizerShortName %></h4>
+        <p style="color: #666; margin: 0; font-size: 14px"><%= it.organizerTagline %></p>
         <p style="color: #999; margin: 10px 0 0 0; font-size: 12px">
           ¡Nos vemos en el evento! Si tienes alguna pregunta, contáctanos.
         </p>

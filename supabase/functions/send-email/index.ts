@@ -5,6 +5,8 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.111.0"
 import { serve } from "jsr:@std/http@0.224.0/server"
 import { Eta } from "@bgub/eta"
 
+import { getEventConfig } from "./eventConfig.ts"
+
 const ALLOWED_ORIGINS = [
   "https://gdgsucre.com",
   "https://web-gdgsucre.vercel.app",
@@ -174,8 +176,9 @@ serve(async req => {
     }
 
     const { to, subject, data } = await config.formatEmail(body.data ?? {})
+    const eventConfig = getEventConfig(body.data?.eventSlug)
     const template = await Deno.readTextFile(new URL(`./templates/${config.file}`, import.meta.url))
-    const html = eta.renderString(template, data)
+    const html = eta.renderString(template, { ...eventConfig, ...data })
 
     const emailHost = Deno.env.get("EMAIL_HOST")
     const emailPort = Number(Deno.env.get("EMAIL_PORT"))
@@ -192,7 +195,8 @@ serve(async req => {
     })
 
     await client.send({
-      from: `"GDG Sucre" <${emailUser}>`,
+      from: `"${eventConfig.senderName}" <${emailUser}>`,
+      ...(eventConfig.replyTo ? { replyTo: eventConfig.replyTo } : {}),
       to,
       subject,
       html,
