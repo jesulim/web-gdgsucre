@@ -1,4 +1,5 @@
 ---
+import CTALink from "@/components/CTALink.astro"
 import { packages } from "@/data/nwd-26/packages"
 import PackageCard from "./PackageCard.astro"
 ---
@@ -19,7 +20,21 @@ import PackageCard from "./PackageCard.astro"
       {packages.map(pkg => <PackageCard packageData={pkg} />)}
     </div>
 
-    <p class="limited-edition">Edición limitada</p>
+    <div class="mt-5 flex justify-center md:mt-6">
+      <div
+        class="inline-flex items-center justify-center w-full sm:w-auto px-[34px] py-4 sm:py-[18px] rounded-full bg-[#1A73E8] hover:bg-nwd-blue-dark text-white font-google font-semibold tracking-[0.14em] uppercase transition-colors [&_a]:no-underline [&_a]:text-white"
+        style="font-size: clamp(14px, 1.8vw, 17px); box-shadow: 0 14px 30px rgba(26,115,232,0.32);"
+      >
+        <CTALink 
+          server:defer
+          eventSlug="nwd-26"
+          registerLabel="Elige tu paquete"
+          class="block w-full h-full text-center"
+        >
+          <span slot="fallback">Elige tu paquete</span>
+        </CTALink>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -62,28 +77,6 @@ import PackageCard from "./PackageCard.astro"
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: clamp(8px, 2vw, 28px);
     align-items: stretch;
-  }
-
-  .limited-edition {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    margin: 28px 0 0;
-    color: #6c7f9e;
-    font-size: 13px;
-    font-weight: 600;
-    line-height: 1;
-    letter-spacing: 0.12em;
-    text-align: center;
-  }
-
-  .limited-edition::before,
-  .limited-edition::after {
-    width: clamp(38px, 7vw, 78px);
-    height: 1px;
-    background: rgba(19, 85, 204, 0.2);
-    content: "";
   }
 
   @media (max-width: 639px) {

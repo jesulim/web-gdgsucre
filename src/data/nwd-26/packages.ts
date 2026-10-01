@@ -34,7 +34,7 @@ export interface EventPackage {
 export const packages: EventPackage[] = [
   {
     id: "bartolina",
-    packageNumber: 2,
+    packageNumber: 1,
     firstName: "BARTOLINA",
     lastName: "Sisa",
     description: "Un recuerdo especial para vivir el encuentro.",
@@ -57,7 +57,7 @@ export const packages: EventPackage[] = [
   },
   {
     id: "adela",
-    packageNumber: 1,
+    packageNumber: 2,
     firstName: "ADELA",
     lastName: "Zamudio",
     description: "La experiencia más completa del evento.",
