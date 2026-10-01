@@ -16,6 +16,15 @@ const displayFeatureLabel = (label: string) => label.replace(/\s*\([^)]*\)/g, ""
     `package-card--${packageData.id}`,
     packageData.featured && "package-card--featured",
   ]}
+  style={{
+    "--pkg-accent": packageData.colors.accent,
+    "--pkg-border": packageData.colors.border,
+    "--pkg-card-bg": packageData.colors.cardBg ?? "#ffffff",
+    "--pkg-price-bg": packageData.colors.priceBg,
+    "--pkg-divider": packageData.colors.divider,
+    "--pkg-bullet": packageData.colors.bullet,
+    "--pkg-blob": packageData.colors.blob,
+  }}
 >
   <span class="illustration-accent" aria-hidden="true"></span>
 
@@ -72,20 +81,14 @@ const displayFeatureLabel = (label: string) => label.replace(/\s*\([^)]*\)/g, ""
     isolation: isolate;
     container-type: inline-size;
 
-    border: 1px solid #add8ff;
+    border: 1px solid var(--pkg-border);
     border-radius: 16px;
-    background: #fff;
+    background: var(--pkg-card-bg);
     box-shadow: 0 8px 24px rgba(31, 80, 130, 0.035);
   }
 
   .package-card--featured {
-    border-color: #f6be3a;
-    background: #fffdf7;
     box-shadow: 0 8px 24px rgba(187, 139, 21, 0.045);
-  }
-
-  .package-card--juana {
-    border-color: #8ee7ef;
   }
 
   .package-content {
@@ -97,11 +100,6 @@ const displayFeatureLabel = (label: string) => label.replace(/\s*\([^)]*\)/g, ""
     padding-bottom: clamp(14px, 5cqw, 18px);
   }
 
-  /*
-   * El bloque superior usa el ancho del card como referencia, no su altura.
-   * Así el divisor queda siempre en una posición visual coherente aunque
-   * cambie el alto del card.
-   */
   .package-main {
     position: relative;
     min-height: clamp(190px, 84cqw, 282px);
@@ -113,20 +111,12 @@ const displayFeatureLabel = (label: string) => label.replace(/\s*\([^)]*\)/g, ""
     left: 6.35%;
     margin: 0;
 
-    color: var(--color-nwd-blue, #1355cc);
+    color: var(--pkg-accent);
     font-size: 3.15cqw;
     font-weight: 800;
     line-height: 1;
     letter-spacing: 0.27em;
     white-space: nowrap;
-  }
-
-  .package-card--featured .package-number {
-    color: #f3ac00;
-  }
-
-  .package-card--juana .package-number {
-    color: #08aebd;
   }
 
   .package-heading {
@@ -159,13 +149,9 @@ const displayFeatureLabel = (label: string) => label.replace(/\s*\([^)]*\)/g, ""
     font-size: 10.75cqw;
   }
 
-  /*
-   * El apellido vuelve a tener el peso visual de la referencia:
-   * grande, legible y claramente parte del título del paquete.
-   */
   .package-name {
     margin: 1.05cqw 0 0 0.45cqw;
-    color: #08aebd;
+    color: var(--pkg-accent);
     font-family: "Georado", var(--font-grotesk);
     font-weight: 400;
     line-height: 0.78;
@@ -174,16 +160,15 @@ const displayFeatureLabel = (label: string) => label.replace(/\s*\([^)]*\)/g, ""
     transform-origin: left center;
   }
 
+  .package-card--juana .package-name {
+    font-size: 18cqw;
+  }
+
   .package-card--bartolina .package-name {
     font-size: 18cqw;
   }
 
   .package-card--adela .package-name {
-    color: #f3ac00;
-    font-size: 18cqw;
-  }
-
-  .package-card--juana .package-name {
     font-size: 18cqw;
   }
 
@@ -218,7 +203,7 @@ const displayFeatureLabel = (label: string) => label.replace(/\s*\([^)]*\)/g, ""
     padding: 2.35cqw 4.5cqw 2.45cqw;
     border-radius: 3cqw;
 
-    background: #e5f1ff;
+    background: var(--pkg-price-bg);
     color: #0b3fa0;
     font-size: 8.65cqw;
     font-weight: 800;
@@ -232,30 +217,11 @@ const displayFeatureLabel = (label: string) => label.replace(/\s*\([^)]*\)/g, ""
     letter-spacing: -0.03em;
   }
 
-  .package-card--featured .price {
-    background: #fff0bd;
-    color: #0b3fa0;
-  }
-
-  .package-card--juana .price {
-    background: #cef7fb;
-    color: #0b3fa0;
-  }
-
-  /* Divisor igual al de la referencia: largo, fino y visible. */
   .benefits-divider {
     display: block;
     height: 1px;
     margin: 0 6.25%;
-    background: rgba(70, 156, 235, 0.48);
-  }
-
-  .package-card--featured .benefits-divider {
-    background: rgba(226, 172, 36, 0.58);
-  }
-
-  .package-card--juana .benefits-divider {
-    background: rgba(43, 196, 210, 0.52);
+    background: var(--pkg-divider);
   }
 
   .benefits {
@@ -289,16 +255,8 @@ const displayFeatureLabel = (label: string) => label.replace(/\s*\([^)]*\)/g, ""
     height: 2.1cqw;
     flex: 0 0 2.1cqw;
     border-radius: 50%;
-    background: #7db9f4;
+    background: var(--pkg-bullet);
     content: "";
-  }
-
-  .package-card--featured .benefit::before {
-    background: #f2c746;
-  }
-
-  .package-card--juana .benefit::before {
-    background: #6edce6;
   }
 
   .benefit-label {
@@ -318,6 +276,7 @@ const displayFeatureLabel = (label: string) => label.replace(/\s*\([^)]*\)/g, ""
     position: absolute;
     z-index: 0;
     pointer-events: none;
+    background: var(--pkg-blob);
   }
 
   .character-area :global(.character-image) {
@@ -343,13 +302,6 @@ const displayFeatureLabel = (label: string) => label.replace(/\s*\([^)]*\)/g, ""
   .package-card--bartolina .character-blob {
     inset: 7% -11% -2% 0;
     border-radius: 58% 0 0 58%;
-    background: radial-gradient(
-      ellipse at 44% 48%,
-      rgba(78, 199, 239, 0.47) 0%,
-      rgba(139, 221, 247, 0.31) 54%,
-      rgba(192, 239, 253, 0.15) 75%,
-      transparent 76%
-    );
   }
 
   .package-card--bartolina .character-area :global(.character-image) {
@@ -371,13 +323,6 @@ const displayFeatureLabel = (label: string) => label.replace(/\s*\([^)]*\)/g, ""
   .package-card--adela .character-blob {
     inset: 7% -11% -2% 0;
     border-radius: 58% 0 0 58%;
-    background: radial-gradient(
-      ellipse at 44% 48%,
-      rgba(246, 190, 58, 0.2) 0%,
-      rgba(246, 190, 58, 0.09) 54%,
-      rgba(246, 190, 58, 0.09) 75%,
-      transparent 76%
-    );
   }
 
   .package-card--adela .character-area :global(.character-image) {
@@ -399,13 +344,6 @@ const displayFeatureLabel = (label: string) => label.replace(/\s*\([^)]*\)/g, ""
   .package-card--juana .character-blob {
     inset: 7% -11% -2% 0;
     border-radius: 58% 0 0 58%;
-    background: radial-gradient(
-      ellipse at 44% 48%,
-      rgba(78, 199, 239, 0.47) 0%,
-      rgba(139, 221, 247, 0.31) 54%,
-      rgba(192, 239, 253, 0.15) 75%,
-      transparent 76%
-    );
   }
 
   .package-card--juana .character-area :global(.character-image) {
@@ -423,7 +361,7 @@ const displayFeatureLabel = (label: string) => label.replace(/\s*\([^)]*\)/g, ""
     width: 4.6cqw;
     height: 1cqw;
     border-radius: 999px;
-    background: #155ed7;
+    background: var(--pkg-accent);
     transform: rotate(-42deg);
     pointer-events: none;
   }
@@ -437,14 +375,6 @@ const displayFeatureLabel = (label: string) => label.replace(/\s*\([^)]*\)/g, ""
     border-radius: inherit;
     background: inherit;
     content: "";
-  }
-
-  .package-card--featured .illustration-accent {
-    background: #e7b832;
-  }
-
-  .package-card--juana .illustration-accent {
-    background: #41bfc5;
   }
 
   @media (max-width: 639px) {
