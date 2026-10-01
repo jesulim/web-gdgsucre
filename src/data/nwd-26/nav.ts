@@ -29,6 +29,7 @@ export const NWD26_HOME_ANCHOR = "#inicio"
 export const NWD26_SECTIONS: NavSection[] = [
   { href: NWD26_HOME_ANCHOR, label: "Inicio" },
   { href: "#sobre-el-evento", label: "Sobre el Evento" },
+  { href: "#paquetes", label: "Paquetes" },
   { href: "#eventos-pasados", label: "Eventos pasados" },
   { href: "#organizers", label: "Organizadoras" },
 ]
