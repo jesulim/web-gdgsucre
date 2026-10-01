@@ -163,9 +163,9 @@ export async function confirmRegistration(supabase: SupabaseClient, registration
   }
 
   // Skip token generation if exists
-  // if (registration.token) {
-  //   return { success: true, token: registration.token }
-  // }
+  if (registration.token) {
+    return { success: true, token: registration.token }
+  }
 
   const token = customAlphabetNanoid(6)
 
