@@ -1,74 +1,468 @@
 ---
 import { Image } from "astro:assets"
 import type { EventPackage } from "@/data/nwd-26/packages"
-import { PackageFeatureIcon } from "./PackageFeatureIcon"
 
 interface Props {
   packageData: EventPackage
 }
 
 const { packageData } = Astro.props
+const displayFeatureLabel = (label: string) => label.replace(/\s*\([^)]*\)/g, "").trim()
 ---
 
-<article class:list={["package-card", `package-card--${packageData.accent}`, packageData.featured && "package-card--featured", packageData.id === "juana" && "package-card--juana"]}>
-  <div class="package-card__ribbon" aria-hidden="true"></div>
-  <span class="package-card__square package-card__square--one" aria-hidden="true"></span>
-  <span class="package-card__square package-card__square--two" aria-hidden="true"></span>
+<article
+  class:list={[
+    "package-card",
+    `package-card--${packageData.id}`,
+    packageData.featured && "package-card--featured",
+  ]}
+>
+  <span class="illustration-accent" aria-hidden="true"></span>
 
-  <div class="package-card__body">
-    <p class="package-card__label">PAQUETE #{packageData.packageNumber}</p>
-    <div class="package-card__identity">
-      <div class="package-card__name">
+  <div class="character-area" aria-hidden="true">
+    <span class="character-blob"></span>
+    <Image
+      src={packageData.image}
+      alt={packageData.imageAlt}
+      widths={[320, 420, 560]}
+      sizes="(max-width: 639px) 230px, (max-width: 899px) 260px, 220px"
+      loading="lazy"
+      decoding="async"
+      class="character-image"
+    />
+  </div>
+
+  <div class="package-content">
+    <div class="package-main">
+      <p class="package-number">PAQUETE #{packageData.packageNumber}</p>
+
+      <div class="package-heading">
         <h3>{packageData.firstName}</h3>
-        <p>{packageData.lastName}</p>
+        <p class="package-name">{packageData.lastName}</p>
       </div>
-      <div class="package-card__portrait-wrap" aria-hidden="true">
-        <Image src={packageData.image} alt={packageData.imageAlt} widths={[280, 400, 560]} sizes="(max-width: 767px) 210px, (max-width: 1279px) 260px, 230px" loading="lazy" decoding="async" class="package-card__portrait" />
-      </div>
+
+      <p class="package-description">{packageData.description}</p>
+
+      <p class="price">
+        <span>Bs.</span>
+        {packageData.price}
+      </p>
     </div>
 
-    <p class="package-card__description">{packageData.description}</p>
-    <span class="package-card__rule" aria-hidden="true"></span>
-    <p class="package-card__price"><span>Bs.</span>{packageData.price}</p>
+    <span class="benefits-divider" aria-hidden="true"></span>
 
-    <ul class="package-card__features">
-      {packageData.features.map(feature => <li><span class="package-card__icon"><PackageFeatureIcon type={feature.type} /></span><span>{feature.label}</span></li>)}
+    <ul class="benefits">
+      {
+        packageData.features.map((item) => (
+          <li class="benefit">
+            <span class="benefit-label">{displayFeatureLabel(item.label)}</span>
+          </li>
+        ))
+      }
     </ul>
   </div>
 </article>
 
 <style>
-  .package-card { position: relative; display: flex; min-width: 0; min-height: 600px; overflow: hidden; border: 1px solid rgba(19, 85, 204, .1); border-radius: 22px; background: #fff; box-shadow: 0 12px 30px rgba(11,46,107,.075); }
-  .package-card--featured { border-color: #f6be3a; background: linear-gradient(135deg,#fffdf7 0%,#fff 60%); box-shadow: 0 18px 38px rgba(135,95,18,.16); }
-  .package-card__ribbon { position: absolute; inset: 0 0 auto; height: 8px; background-image: repeating-linear-gradient(45deg,rgba(255,255,255,.85) 0 5px,transparent 5px 11px), repeating-linear-gradient(-45deg,rgba(255,255,255,.85) 0 5px,transparent 5px 11px), repeating-linear-gradient(90deg,#1355cc 0 22px,#10a7bc 22px 44px,#f6be3a 44px 56px,#0b3fa0 56px 78px); }
-  .package-card__square { position: absolute; display: block; width: 14px; height: 14px; }
-  .package-card__square--one { top: 35px; right: 30px; background: #f6be3a; }
-  .package-card__square--two { top: 93px; right: 60px; width: 10px; height: 10px; background: #10a7bc; }
-  .package-card--featured .package-card__square--two { background: #1355cc; }
-  .package-card__body { position: relative; z-index: 1; display: flex; width: 100%; flex-direction: column; padding: 30px 26px 28px; }
-  .package-card__label { margin: 0; color: #1355cc; font-size: 11px; font-weight: 700; letter-spacing: .24em; }
-  .package-card__identity { position: relative; min-height: 212px; margin-top: 14px; }
-  .package-card__name { position: relative; z-index: 1; max-width: 68%; }
-  h3 { margin: 0; color: #0b2e6b; font-size: clamp(34px,3.1vw,44px); font-weight: 700; line-height: .88; letter-spacing: -.055em; }
-  .package-card__name p { margin: 5px 0 0; color: #10a7bc; font-family: Georgia, serif; font-size: clamp(38px,3.5vw,50px); font-style: italic; font-weight: 700; line-height: .82; letter-spacing: -.065em; }
-  .package-card__portrait-wrap { position: absolute; right: -21px; bottom: 0; display: grid; width: 190px; height: 190px; place-items: end center; overflow: hidden; border-radius: 50%; background: rgba(19,85,204,.08); }
-  .package-card--yellow .package-card__portrait-wrap { background: rgba(246,190,58,.16); }
-  .package-card--turquoise .package-card__portrait-wrap { background: rgba(16,167,188,.11); }
-  .package-card__portrait { display: block; width: 215px; max-width: none; height: 218px; object-fit: contain; object-position: bottom; pointer-events: none; user-select: none; }
-  .package-card__description { max-width: 285px; margin: 14px 0 0; color: #4b6593; font-size: 15px; line-height: 1.5; text-wrap: pretty; }
-  .package-card__rule { display: block; width: 56px; height: 6px; margin-top: 17px; border-radius: 4px; background: #f6be3a; }
-  .package-card__price { display: inline-flex; width: fit-content; align-items: baseline; gap: 7px; margin: 20px 0 0; padding: 9px 18px 10px; border-radius: 12px; background: #1355cc; box-shadow: 0 8px 18px rgba(19,85,204,.16); color: white; font-size: 41px; font-weight: 700; line-height: 1; letter-spacing: -.055em; }
-  .package-card__price span { font-size: 18px; letter-spacing: -.02em; }
-  .package-card--yellow .package-card__price { background: #f6be3a; color: #0b2e6b; box-shadow: 0 8px 18px rgba(183,133,30,.15); }
-  .package-card--turquoise .package-card__price { background: #10a7bc; }
-  .package-card__features { display: grid; gap: 11px; margin: 24px 0 0; padding: 0; list-style: none; }
-  .package-card__features li { display: flex; align-items: flex-start; gap: 11px; color: #0b2e6b; font-size: 15px; font-weight: 600; line-height: 1.35; }
-  .package-card__icon { display: grid; width: 28px; height: 28px; flex: 0 0 auto; place-items: center; border-radius: 8px; background: rgba(19,85,204,.07); }
-  .package-card--juana .package-card__identity { min-height: 255px; }
-  .package-card--juana .package-card__portrait-wrap { width: 215px; height: 215px; }
-  .package-card--juana .package-card__portrait { width: 246px; height: 251px; }
-  .package-card--juana .package-card__features { margin-top: auto; padding-top: 28px; }
-  @media (min-width: 1280px) { .package-card--featured { transform: translateY(-10px); } }
-  @media (max-width: 767px) { .package-card { min-height: 0; } .package-card__body { padding: 28px 22px 24px; } .package-card__portrait-wrap { width: 174px; height: 174px; } .package-card__portrait { width: 198px; height: 202px; } .package-card--juana .package-card__identity { min-height: 225px; } .package-card--juana .package-card__portrait-wrap { width: 188px; height: 188px; } .package-card--juana .package-card__portrait { width: 214px; height: 219px; } }
-  @media (prefers-reduced-motion: reduce) { .package-card { transform: none; } }
+  .package-card {
+    position: relative;
+    min-width: 0;
+    min-height: clamp(250px, 100cqw, 300px);
+    overflow: hidden;
+    isolation: isolate;
+    container-type: inline-size;
+
+    border: 1px solid #add8ff;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 8px 24px rgba(31, 80, 130, 0.035);
+  }
+
+  .package-card--featured {
+    border-color: #f6be3a;
+    background: #fffdf7;
+    box-shadow: 0 8px 24px rgba(187, 139, 21, 0.045);
+  }
+
+  .package-card--juana {
+    border-color: #8ee7ef;
+  }
+
+  .package-content {
+    position: relative;
+    box-sizing: border-box;
+    z-index: 4;
+    width: 100%;
+    min-height: clamp(250px, 100cqw, 300px);
+    padding-bottom: clamp(14px, 5cqw, 18px);
+  }
+
+  /*
+   * El bloque superior usa el ancho del card como referencia, no su altura.
+   * Así el divisor queda siempre en una posición visual coherente aunque
+   * cambie el alto del card.
+   */
+  .package-main {
+    position: relative;
+    min-height: clamp(190px, 84cqw, 282px);
+  }
+
+  .package-number {
+    position: absolute;
+    top: 7.5cqw;
+    left: 6.35%;
+    margin: 0;
+
+    color: var(--color-nwd-blue, #1355cc);
+    font-size: 3.15cqw;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.27em;
+    white-space: nowrap;
+  }
+
+  .package-card--featured .package-number {
+    color: #f3ac00;
+  }
+
+  .package-card--juana .package-number {
+    color: #08aebd;
+  }
+
+  .package-heading {
+    position: absolute;
+    z-index: 5;
+    top: 16.8cqw;
+    left: 6.2%;
+    width: 68%;
+  }
+
+  .package-heading h3 {
+    margin: 0;
+    color: var(--color-nwd-blue, #1355cc);
+    font-size: 10.55cqw;
+    font-weight: 800;
+    line-height: 0.88;
+    letter-spacing: -0.055em;
+    white-space: nowrap;
+  }
+
+  .package-card--bartolina .package-heading h3 {
+    font-size: 10.75cqw;
+  }
+
+  .package-card--adela .package-heading h3 {
+    font-size: 11.55cqw;
+  }
+
+  .package-card--juana .package-heading h3 {
+    font-size: 10.75cqw;
+  }
+
+  /*
+   * El apellido vuelve a tener el peso visual de la referencia:
+   * grande, legible y claramente parte del título del paquete.
+   */
+  .package-name {
+    margin: 1.05cqw 0 0 0.45cqw;
+    color: #08aebd;
+    font-family: "Georado", var(--font-grotesk);
+    font-weight: 400;
+    line-height: 0.78;
+    white-space: nowrap;
+    transform: rotate(-2deg) scaleX(1.035);
+    transform-origin: left center;
+  }
+
+  .package-card--bartolina .package-name {
+    font-size: 18cqw;
+  }
+
+  .package-card--adela .package-name {
+    color: #f3ac00;
+    font-size: 18cqw;
+  }
+
+  .package-card--juana .package-name {
+    font-size: 18cqw;
+  }
+
+  .package-description {
+    position: absolute;
+    z-index: 5;
+    top: 46.2cqw;
+    left: 6.4%;
+    width: 44%;
+    margin: 0;
+
+    color: #526c9b;
+    font-size: 3.68cqw;
+    font-weight: 500;
+    line-height: 1.28;
+    text-wrap: pretty;
+  }
+
+  .price {
+    position: absolute;
+    z-index: 6;
+    top: 61.5cqw;
+    left: 6.25%;
+
+    display: inline-flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 1.15cqw;
+
+    min-width: 39.5%;
+    margin: 0;
+    padding: 2.35cqw 4.5cqw 2.45cqw;
+    border-radius: 3cqw;
+
+    background: #e5f1ff;
+    color: #0b3fa0;
+    font-size: 8.65cqw;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.045em;
+    white-space: nowrap;
+  }
+
+  .price span {
+    font-size: 0.72em;
+    letter-spacing: -0.03em;
+  }
+
+  .package-card--featured .price {
+    background: #fff0bd;
+    color: #0b3fa0;
+  }
+
+  .package-card--juana .price {
+    background: #cef7fb;
+    color: #0b3fa0;
+  }
+
+  /* Divisor igual al de la referencia: largo, fino y visible. */
+  .benefits-divider {
+    display: block;
+    height: 1px;
+    margin: 0 6.25%;
+    background: rgba(70, 156, 235, 0.48);
+  }
+
+  .package-card--featured .benefits-divider {
+    background: rgba(226, 172, 36, 0.58);
+  }
+
+  .package-card--juana .benefits-divider {
+    background: rgba(43, 196, 210, 0.52);
+  }
+
+  .benefits {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(3, auto);
+    grid-auto-flow: column;
+    align-content: start;
+    column-gap: 4.4cqw;
+    row-gap: 3.7cqw;
+
+    margin: 7.2cqw 6.25% 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .benefit {
+    display: flex;
+    align-items: center;
+    gap: 2.35cqw;
+    min-height: 6.2cqw;
+
+    color: #123d83;
+    font-size: 4.15cqw;
+    font-weight: 450;
+    line-height: 1.15;
+  }
+
+  .benefit::before {
+    width: 2.1cqw;
+    height: 2.1cqw;
+    flex: 0 0 2.1cqw;
+    border-radius: 50%;
+    background: #7db9f4;
+    content: "";
+  }
+
+  .package-card--featured .benefit::before {
+    background: #f2c746;
+  }
+
+  .package-card--juana .benefit::before {
+    background: #6edce6;
+  }
+
+  .benefit-label {
+    min-width: 0;
+    text-wrap: pretty;
+  }
+
+  .character-area {
+    position: absolute;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+    border-radius: 0;
+  }
+
+  .character-blob {
+    position: absolute;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .character-area :global(.character-image) {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    max-width: none;
+    object-fit: contain;
+    object-position: right bottom;
+    filter: drop-shadow(0 1.2cqw 1.7cqw rgba(28, 72, 125, 0.035));
+    user-select: none;
+  }
+
+  /* Bartolina */
+  .package-card--bartolina .character-area {
+    top: 5cqw;
+    right: -2.4%;
+    width: 63.5%;
+    height: calc(clamp(190px, 84cqw, 282px) - 5cqw);
+    clip-path: ellipse(91% 72% at 79% 29%);
+  }
+
+  .package-card--bartolina .character-blob {
+    inset: 7% -11% -2% 0;
+    border-radius: 58% 0 0 58%;
+    background: radial-gradient(
+      ellipse at 44% 48%,
+      rgba(78, 199, 239, 0.47) 0%,
+      rgba(139, 221, 247, 0.31) 54%,
+      rgba(192, 239, 253, 0.15) 75%,
+      transparent 76%
+    );
+  }
+
+  .package-card--bartolina .character-area :global(.character-image) {
+    right: -1.5%;
+    bottom: -0.2%;
+    width: auto;
+    height: 101%;
+  }
+
+  /* Adela */
+  .package-card--adela .character-area {
+    top: 5cqw;
+    right: -2%;
+    width: 63.5%;
+    height: calc(clamp(190px, 84cqw, 282px) - 5cqw);
+    clip-path: ellipse(90% 71% at 79% 29%);
+  }
+
+  .package-card--adela .character-blob {
+    inset: 7% -11% -2% 0;
+    border-radius: 58% 0 0 58%;
+    background: radial-gradient(
+      ellipse at 44% 48%,
+      rgba(246, 190, 58, 0.2) 0%,
+      rgba(246, 190, 58, 0.09) 54%,
+      rgba(246, 190, 58, 0.09) 75%,
+      transparent 76%
+    );
+  }
+
+  .package-card--adela .character-area :global(.character-image) {
+    right: -0.8%;
+    bottom: -0.4%;
+    width: auto;
+    height: 101%;
+  }
+
+  /* Juana */
+  .package-card--juana .character-area {
+    top: 5cqw;
+    right: -3%;
+    width: 68%;
+    height: calc(clamp(190px, 84cqw, 282px) - 5cqw);
+    clip-path: ellipse(92% 72% at 80% 28%);
+  }
+
+  .package-card--juana .character-blob {
+    inset: 7% -11% -2% 0;
+    border-radius: 58% 0 0 58%;
+    background: radial-gradient(
+      ellipse at 44% 48%,
+      rgba(78, 199, 239, 0.47) 0%,
+      rgba(139, 221, 247, 0.31) 54%,
+      rgba(192, 239, 253, 0.15) 75%,
+      transparent 76%
+    );
+  }
+
+  .package-card--juana .character-area :global(.character-image) {
+    right: -0.5%;
+    bottom: -0.2%;
+    width: auto;
+    height: 100.5%;
+  }
+
+  .illustration-accent {
+    position: absolute;
+    z-index: 3;
+    top: 11.5cqw;
+    right: 7.4%;
+    width: 4.6cqw;
+    height: 1cqw;
+    border-radius: 999px;
+    background: #155ed7;
+    transform: rotate(-42deg);
+    pointer-events: none;
+  }
+
+  .illustration-accent::after {
+    position: absolute;
+    top: 2.15cqw;
+    left: 1.55cqw;
+    width: 4.6cqw;
+    height: 1cqw;
+    border-radius: inherit;
+    background: inherit;
+    content: "";
+  }
+
+  .package-card--featured .illustration-accent {
+    background: #e7b832;
+  }
+
+  .package-card--juana .illustration-accent {
+    background: #41bfc5;
+  }
+
+  @media (max-width: 639px) {
+    .package-card {
+      min-height: clamp(390px, 124cqw, 470px);
+    }
+
+    .package-content {
+      min-height: clamp(390px, 124cqw, 470px);
+    }
+
+    .package-main {
+      min-height: 82cqw;
+    }
+
+    .benefits {
+      margin-top: 6.5cqw;
+      row-gap: 3.3cqw;
+    }
+  }
 </style>

@@ -3,35 +3,108 @@ import { packages } from "@/data/nwd-26/packages"
 import PackageCard from "./PackageCard.astro"
 ---
 
-<section id="paquetes" class="packages" aria-labelledby="packages-title">
-  <div class="packages__pixels packages__pixels--left" aria-hidden="true"></div>
-  <div class="packages__pixels packages__pixels--right" aria-hidden="true"></div>
-  <div class="packages__inner">
-    <header class="packages__header">
-      <p>Elige cómo participar</p>
+<section
+  id="paquetes"
+  class="packages-section relative z-[1] px-4 sm:px-6 lg:px-14 pb-20 md:pb-24 lg:pb-28"
+  aria-labelledby="packages-title"
+>
+  <div class="relative z-[1] max-w-[1040px] mx-auto">
+    <header class="max-w-[720px] mb-7 md:mb-8">
+      <p class="packages-section__eyebrow">Elige cómo participar</p>
       <h2 id="packages-title">Paquetes</h2>
-      <span class="packages__rule" aria-hidden="true"></span>
-      <span class="packages__intro">Conoce lo que incluye cada paquete.</span>
+      <p class="packages-section__subtitle">Conoce lo que incluye cada paquete.</p>
     </header>
-    <div class="packages__grid">
-      {packages.map(packageData => <PackageCard packageData={packageData} />)}
+
+    <div class="packages-grid">
+      {packages.map(pkg => <PackageCard packageData={pkg} />)}
     </div>
+
+    <p class="limited-edition">Edición limitada</p>
   </div>
 </section>
 
 <style>
-  .packages { position: relative; z-index: 1; overflow: hidden; padding: 48px 16px 80px; }
-  .packages__inner { position: relative; z-index: 1; max-width: 1040px; margin: 0 auto; }
-  .packages__header { max-width: 720px; margin-bottom: 62px; }
-  .packages__header p { margin: 0 0 10px; color: #10a7bc; font-size: 12px; font-weight: 700; letter-spacing: .34em; text-transform: uppercase; }
-  h2 { margin: 0; color: #1355cc; font-size: clamp(32px,4vw,48px); font-weight: 700; line-height: .98; letter-spacing: -.045em; }
-  .packages__rule { display: block; width: 72px; height: 6px; margin: 22px 0; border-radius: 4px; background: #f6be3a; }
-  .packages__intro { color: #4b6593; font-size: clamp(14px,1.35vw,17px); line-height: 1.55; }
-  .packages__grid { display: grid; grid-template-columns: repeat(1,minmax(0,1fr)); gap: 24px; max-width: 1280px; margin: 0 auto; }
-  .packages__pixels { position: absolute; width: 48px; height: 48px; opacity: .12; }
-  .packages__pixels--left { top: 126px; left: 0; background: #1355cc; }
-  .packages__pixels--right { top: 206px; right: 0; background: #10a7bc; }
-  @media (min-width: 768px) { .packages { padding: 64px 24px 96px; } .packages__grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 28px; } }
-  @media (min-width: 1280px) { .packages { padding: 72px 56px 104px; } .packages__grid { grid-template-columns: repeat(3,minmax(0,1fr)); } }
-  @media (max-width: 767px) { .packages__header { margin-bottom: 42px; } .packages__header p { font-size: 10px; letter-spacing: .28em; } .packages__rule { margin: 18px 0; } }
+  .packages-section {
+    background: transparent;
+  }
+
+  .packages-section__eyebrow {
+    margin: 0 0 10px;
+    color: var(--color-nwd-teal, #10a7bc);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    margin: 0;
+    color: var(--color-nwd-blue, #1355cc);
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 700;
+    line-height: 0.98;
+    letter-spacing: -0.045em;
+    text-wrap: balance;
+  }
+
+  .packages-section__subtitle {
+    max-width: 700px;
+    margin: 18px 0 0;
+    color: #4b6593;
+    font-size: clamp(14px, 1.35vw, 17px);
+    line-height: 1.55;
+    text-wrap: pretty;
+  }
+
+  .packages-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(8px, 2vw, 28px);
+    align-items: stretch;
+  }
+
+  .limited-edition {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 28px 0 0;
+    color: #6c7f9e;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.12em;
+    text-align: center;
+  }
+
+  .limited-edition::before,
+  .limited-edition::after {
+    width: clamp(38px, 7vw, 78px);
+    height: 1px;
+    background: rgba(19, 85, 204, 0.2);
+    content: "";
+  }
+
+  @media (max-width: 639px) {
+    .packages-section {
+      padding-inline: 14px;
+    }
+
+    .packages-section__eyebrow {
+      margin-bottom: 8px;
+      font-size: 10px;
+      letter-spacing: 0.28em;
+    }
+
+    .packages-section__subtitle {
+      margin-top: 14px;
+      line-height: 1.5;
+    }
+
+    .packages-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+  }
 </style>

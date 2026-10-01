@@ -10,6 +10,15 @@
   font-weight: 300 700;
 }
 
+/* Georado is supplied as a licensed local font in design environments. */
+@font-face {
+  font-family: "Georado";
+  src: local("Georado");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   /* Paleta compartida de la landing y la credencial NWD. */
   --color-nwd-blue: #1355cc;
