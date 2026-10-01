@@ -22,6 +22,8 @@ export interface EventConfig {
   organizerTagline: string
   /** Enlace a la comunidad de WhatsApp */
   whatsappLink: string
+  /** Página web de la comunidad, para el botón del correo de confirmación de pago */
+  websiteUrl: string
   /** Los cuatro puntos de color del pie, en orden */
   brandColors: [string, string, string, string]
   /** Fecha del evento, ya formateada */
@@ -39,6 +41,7 @@ export const DEFAULT_CONFIG: EventConfig = {
   organizerShortName: "GDG Sucre",
   organizerTagline: "Google Developer Group",
   whatsappLink: "https://chat.whatsapp.com/EHtkjWuuhPh8cPDY8U9A7O",
+  websiteUrl: "https://gdgsucre.com",
   brandColors: ["#4285f4", "#ea4335", "#fbbc05", "#34a853"],
   eventDate: "Por confirmar",
   eventTime: "Por confirmar",
@@ -53,6 +56,7 @@ export const EVENT_CONFIG: Record<string, Partial<EventConfig>> = {
     organizerShortName: "WTM Sucre",
     organizerTagline: "Women Techmakers",
     whatsappLink: "https://chat.whatsapp.com/J7jqHD4MUZy8LmJNBX68HC",
+    websiteUrl: "https://wtmsucre.com",
     brandColors: ["#1355CC", "#10A7BC", "#F6BE3A", "#0B3FA0"],
     eventDate: "Sábado 10 de octubre",
     eventTime: "14:00 Hrs.",
