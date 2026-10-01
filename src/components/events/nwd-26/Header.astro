@@ -1,18 +1,38 @@
 ---
 import wtmLogo from "@/assets/events/md-26/wtm-logo.png"
 import Avatar from "@/components/Avatar.astro"
-
-interface Section {
-  href: string
-  label: string
-}
+import { type NavSection, NWD26_HOME_ANCHOR, NWD26_SECTIONS } from "@/data/nwd-26/nav"
 
 interface Props {
-  sections?: Section[]
+  /**
+   * Secciones del menú. Para agregar o reordenar una sección, edita
+   * `src/data/nwd-26/nav.ts` — no hace falta tocar este archivo.
+   */
+  sections?: NavSection[]
+  /**
+   * Ruta de la landing del evento. Vacío (default) cuando el header ya está en
+   * la landing y las anclas pueden ser del mismo documento. Cuando el header se
+   * usa en otra página (registro, credencial), pasa la ruta de la landing para
+   * que los links lleven allí en vez de apuntar a anclas inexistentes.
+   */
+  landingHref?: string
 }
 
-const { sections = [{ href: "#inicio", label: "Inicio" }] } = Astro.props
+const { sections = NWD26_SECTIONS, landingHref = "" } = Astro.props
+
+/** Convierte un ancla local en ruta absoluta cuando el header está fuera de la landing. */
+const resolveHref = (href: string) =>
+  landingHref && href.startsWith("#") ? `${landingHref}${href}` : href
+
+/** Los href se resuelven una sola vez y ambos menús consumen la misma lista. */
+const navItems = sections.map(section => ({ ...section, href: resolveHref(section.href) }))
+
 const signInHref = `/api/auth/signin?next=${encodeURIComponent(Astro.url.pathname)}`
+
+const linkBase =
+  "text-[#345189] font-google font-medium hover:text-nwd-teal focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-nwd-yellow transition-colors no-underline"
+const linkDesktop = `text-[13px] lg:text-sm ${linkBase}`
+const linkMobile = `text-base ${linkBase} py-2 border-b border-[#E1E9F6] last:border-none`
 ---
 
 <header
@@ -23,7 +43,7 @@ const signInHref = `/api/auth/signin?next=${encodeURIComponent(Astro.url.pathnam
     class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-14 py-3.5 flex items-center justify-between gap-3 sm:gap-5"
   >
     <!-- Logo -->
-    <a href="#inicio" class="flex items-center gap-3 no-underline text-nwd-ink">
+    <a href={resolveHref(NWD26_HOME_ANCHOR)} class="flex items-center gap-3 no-underline text-nwd-ink">
       <img src={wtmLogo.src} alt="WTM Sucre" class="h-9 lg:h-10 w-auto block" />
       <div class="leading-[1.1] hidden min-[400px]:block">
         <div class="font-google font-semibold text-[13px] sm:text-sm whitespace-nowrap">Women Techmakers</div>
@@ -36,19 +56,12 @@ const signInHref = `/api/auth/signin?next=${encodeURIComponent(Astro.url.pathnam
     <!-- Desktop Navigation -->
     <nav class="hidden md:flex items-center gap-5 lg:gap-7 ml-auto">
       {
-        sections.map((section) => (
-          <a
-            href={section.href}
-            class="text-[13px] lg:text-sm text-[#345189] font-google font-medium hover:text-nwd-teal transition-colors no-underline"
-          >
-            {section.label}
+        navItems.map((item) => (
+          <a href={item.href} class={linkDesktop}>
+            {item.label}
           </a>
         ))
       }
-      <a
-        href="#eventos-pasados"
-        class="text-[13px] lg:text-sm text-[#345189] font-google font-medium hover:text-nwd-teal focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-nwd-yellow transition-colors no-underline"
-      >Eventos pasados</a>
     </nav>
 
     <div class="ml-auto md:ml-0 shrink-0">
@@ -63,8 +76,11 @@ const signInHref = `/api/auth/signin?next=${encodeURIComponent(Astro.url.pathnam
     <!-- Mobile Hamburger Button -->
     <button
       id="menu-toggle"
-      class="md:hidden flex flex-col justify-between w-6 h-3.5 text-nwd-ink focus:outline-none z-50 cursor-pointer"
+      type="button"
       aria-label="Abrir menú"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      class="md:hidden flex flex-col justify-between w-6 h-3.5 text-nwd-ink focus:outline-none z-50 cursor-pointer"
     >
       <span
         class="w-full h-0.5 bg-current transition-all duration-300 origin-center line-1"
@@ -83,19 +99,12 @@ const signInHref = `/api/auth/signin?next=${encodeURIComponent(Astro.url.pathnam
     class="absolute top-full left-0 w-full bg-nwd-paper border-b border-[#E1E9F6] transition-all duration-300 ease-in-out opacity-0 translate-y-2.5 pointer-events-none md:hidden flex flex-col py-6 px-6 gap-4 shadow-xl"
   >
     {
-      sections.map((section) => (
-        <a
-          href={section.href}
-          class="text-base text-[#345189] font-google font-medium hover:text-nwd-teal transition-colors no-underline py-2 border-b border-[#E1E9F6] last:border-none"
-        >
-          {section.label}
+      navItems.map((item) => (
+        <a href={item.href} class={linkMobile}>
+          {item.label}
         </a>
       ))
     }
-    <a
-      href="#eventos-pasados"
-      class="text-base text-[#345189] font-google font-medium hover:text-nwd-teal focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-nwd-yellow transition-colors no-underline py-2"
-    >Eventos pasados</a>
   </div>
 </header>
 
@@ -103,43 +112,37 @@ const signInHref = `/api/auth/signin?next=${encodeURIComponent(Astro.url.pathnam
   const menuToggle = document.getElementById("menu-toggle");
   const mobileMenu = document.getElementById("mobile-menu");
 
-  if (menuToggle && mobileMenu) {
-    // Toggle menu
-    menuToggle.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const isOpen = mobileMenu.classList.contains("open");
+if (menuToggle && mobileMenu) {
+  /** Único lugar que abre o cierra el menú; el resto solo lo invoca. */
+  const setMenu = (open: boolean) => {
+    mobileMenu.classList.toggle("open", open);
+    menuToggle.classList.toggle("open", open);
+    menuToggle.setAttribute("aria-expanded", String(open));
+    menuToggle.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+  };
 
-      if (isOpen) {
-        mobileMenu.classList.remove("open");
-        menuToggle.classList.remove("open");
-      } else {
-        mobileMenu.classList.add("open");
-        menuToggle.classList.add("open");
-      }
-    });
+  menuToggle.addEventListener("click", (e) => {
+    e.stopPropagation();
+    setMenu(!mobileMenu.classList.contains("open"));
+  });
 
-    // Close menu when clicking outside
-    document.addEventListener("click", (event) => {
-      const target = event.target as Node;
-      if (
-        mobileMenu.classList.contains("open") &&
-        !mobileMenu.contains(target) &&
-        !menuToggle.contains(target)
-      ) {
-        mobileMenu.classList.remove("open");
-        menuToggle.classList.remove("open");
-      }
-    });
+  // Cerrar al hacer click fuera del menú
+  document.addEventListener("click", (event) => {
+    const target = event.target as Node;
+    if (
+      mobileMenu.classList.contains("open") &&
+      !mobileMenu.contains(target) &&
+      !menuToggle.contains(target)
+    ) {
+      setMenu(false);
+    }
+  });
 
-    // Close menu when clicking a link
-    const links = mobileMenu.querySelectorAll("a");
-    links.forEach((link) => {
-      link.addEventListener("click", () => {
-        mobileMenu.classList.remove("open");
-        menuToggle.classList.remove("open");
-      });
-    });
-  }
+  // Cerrar al navegar a otra sección
+  mobileMenu.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => setMenu(false));
+  });
+}
 </script>
 
 <style>

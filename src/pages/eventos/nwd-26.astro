@@ -7,6 +7,7 @@ import Hero from "@/components/events/nwd-26/Hero.astro"
 import Organizers from "@/components/events/nwd-26/Organizers.astro"
 import PastEvents from "@/components/events/nwd-26/PastEvents.astro"
 import PixelBlocks from "@/components/events/nwd-26/PixelBlocks.astro"
+import { NWD26_SECTIONS } from "@/data/nwd-26/nav"
 import BaseLayout from "@/layout/BaseLayout.astro"
 ---
 
@@ -16,13 +17,7 @@ import BaseLayout from "@/layout/BaseLayout.astro"
   ogImage="/events/nwd-26/og-nwd.png"
   theme="light"
 >
-  <Header
-    sections={[
-      { href: "#inicio", label: "Inicio" },
-      { href: "#sobre-el-evento", label: "Sobre el Evento" },
-      { href: "#organizers", label: "Organizadoras" },
-    ]}
-  />
+  <Header sections={NWD26_SECTIONS} />
   <main class="relative flex-1 bg-[#FAFCFF]">
     <PixelBlocks />
     <div class="relative z-1 -mt-[100vh]">

@@ -6,6 +6,7 @@ import CredentialCardIWD26 from "@/components/events/iwd-26/CredentialCard"
 import CredentialCardNWD26 from "@/components/events/nwd-26/CredentialCard"
 // import IoExtendedHeader from "@/components/events/io-extended-26/Header.astro"
 import NwdHeader from "@/components/events/nwd-26/Header.astro"
+import { NWD26_LANDING_HREF } from "@/data/nwd-26/nav"
 
 import BaseLayout from "@/layout/BaseLayout.astro"
 
@@ -38,7 +39,7 @@ const cardProps = {
 ---
 
 <BaseLayout theme={eventSlug === "nwd-26" ? "light" : "dark"}>
-  <NwdHeader />
+  <NwdHeader landingHref={NWD26_LANDING_HREF} />
   <main class={eventSlug === "nwd-26" ? "bg-nwd-paper flex flex-1 py-8 sm:py-12" : "bg-io-bg flex min-h-screen pt-[64px] md:pt-[96px] text-white"}>
     <div class={eventSlug === "nwd-26" ? "mx-auto flex w-full justify-center self-start px-4" : "mx-auto px-4"}>
       {eventSlug === "nwd-26" && <CredentialCardNWD26 client:load {...cardProps} />}
