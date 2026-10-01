@@ -4,6 +4,7 @@ import Contador from "@/components/events/nwd-26/Contador.astro"
 import Footer from "@/components/events/nwd-26/Footer.astro"
 import Header from "@/components/events/nwd-26/Header.astro"
 import Hero from "@/components/events/nwd-26/Hero.astro"
+import Organizers from "@/components/events/nwd-26/Organizers.astro"
 import PastEvents from "@/components/events/nwd-26/PastEvents.astro"
 import PixelBlocks from "@/components/events/nwd-26/PixelBlocks.astro"
 import BaseLayout from "@/layout/BaseLayout.astro"
@@ -18,16 +19,18 @@ import BaseLayout from "@/layout/BaseLayout.astro"
   <Header
     sections={[
       { href: "#inicio", label: "Inicio" },
-      { href: "#sobre-el-evento", label: "Sobre el evento" },
+      { href: "#sobre-el-evento", label: "Sobre el Evento" },
+      { href: "#organizers", label: "Organizadoras" },
     ]}
   />
   <main class="relative flex-1 bg-[#FAFCFF]">
     <PixelBlocks />
-    <div class="relative z-[1] -mt-[100vh]">
+    <div class="relative z-1 -mt-[100vh]">
       <Hero />
       <Contador />
       <About />
       <PastEvents />
+      <Organizers />
     </div>
   </main>
   <Footer />
