@@ -1,0 +1,103 @@
+---
+import CTALink from "@/components/CTALink.astro"
+import { packages } from "@/data/nwd-26/packages"
+import PackageCard from "./PackageCard.astro"
+---
+
+<section
+  id="paquetes"
+  class="packages-section relative z-[1] px-4 sm:px-6 lg:px-14 pb-20 md:pb-24 lg:pb-28"
+  aria-labelledby="packages-title"
+>
+  <div class="relative z-[1] max-w-[1040px] mx-auto">
+    <header class="max-w-[720px] mb-7 md:mb-8">
+      <p class="packages-section__eyebrow">Elige cómo participar</p>
+      <h2 id="packages-title">Paquetes</h2>
+      <p class="packages-section__subtitle">Conoce lo que incluye cada paquete.</p>
+    </header>
+
+    <div class="packages-grid">
+      {packages.map(pkg => <PackageCard packageData={pkg} />)}
+    </div>
+
+    <div class="mt-5 flex justify-center md:mt-6">
+      <div
+        class="inline-flex items-center justify-center w-full sm:w-auto px-[34px] py-4 sm:py-[18px] rounded-full bg-[#1A73E8] hover:bg-nwd-blue-dark text-white font-google font-semibold tracking-[0.14em] uppercase transition-colors [&_a]:no-underline [&_a]:text-white"
+        style="font-size: clamp(14px, 1.8vw, 17px); box-shadow: 0 14px 30px rgba(26,115,232,0.32);"
+      >
+        <CTALink 
+          server:defer
+          eventSlug="nwd-26"
+          registerLabel="Elige tu paquete"
+          class="block w-full h-full text-center"
+        >
+          <span slot="fallback">Elige tu paquete</span>
+        </CTALink>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .packages-section {
+    background: transparent;
+  }
+
+  .packages-section__eyebrow {
+    margin: 0 0 10px;
+    color: var(--color-nwd-teal, #10a7bc);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    margin: 0;
+    color: var(--color-nwd-blue, #1355cc);
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 700;
+    line-height: 0.98;
+    letter-spacing: -0.045em;
+    text-wrap: balance;
+  }
+
+  .packages-section__subtitle {
+    max-width: 700px;
+    margin: 18px 0 0;
+    color: #4b6593;
+    font-size: clamp(14px, 1.35vw, 17px);
+    line-height: 1.55;
+    text-wrap: pretty;
+  }
+
+  .packages-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(8px, 2vw, 28px);
+    align-items: stretch;
+  }
+
+  @media (max-width: 639px) {
+    .packages-section {
+      padding-inline: 14px;
+    }
+
+    .packages-section__eyebrow {
+      margin-bottom: 8px;
+      font-size: 10px;
+      letter-spacing: 0.28em;
+    }
+
+    .packages-section__subtitle {
+      margin-top: 14px;
+      line-height: 1.5;
+    }
+
+    .packages-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+  }
+</style>

@@ -10,6 +10,15 @@
   font-weight: 300 700;
 }
 
+/* Se entrega junto al sitio para que no dependa de fuentes instaladas localmente. */
+@font-face {
+  font-family: "Georado";
+  src: url("../assets/fonts/Georado.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   /* Paleta compartida de la landing y la credencial NWD. */
   --color-nwd-blue: #1355cc;
