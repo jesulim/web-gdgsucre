@@ -1,6 +1,7 @@
 ---
 // import IoExtendedHeader from "@/components/events/io-extended-26/Header.astro"
 import NwdHeader from "@/components/events/nwd-26/Header.astro"
+import { NWD26_LANDING_HREF } from "@/data/nwd-26/nav"
 import BaseLayout from "@/layout/BaseLayout.astro"
 
 import { getEventData } from "@/lib/eventData"
@@ -22,7 +23,7 @@ if (event.registration_open === true) return Astro.redirect(`/registro/${eventSl
 ---
 
 <BaseLayout theme="light">
-  <NwdHeader />
+  <NwdHeader landingHref={NWD26_LANDING_HREF} />
   <main class="bg-nwd-paper flex flex-1 py-8 sm:py-12 text-nwd-ink">
     <div class="mx-auto w-full max-w-lg px-4">
       <h1 class="text-xl mb-4">¡Hola, {user?.user_metadata?.full_name?.split(" ")[0]}!</h1>
