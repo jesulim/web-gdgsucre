@@ -17,28 +17,31 @@ const accentStyle = event.communities?.color
 
 const isNext = index === 0
 const isLocationUrl = /^https?:\/\//.test(event.location)
-const { day, month, weekday, start, end } = formatEventDate(
-  event.start_datetime,
-  event.end_datetime
-)
+const { startDay, startMonth, startWeekday, endDay, endMonth, endWeekday, start, end } =
+  formatEventDate(event.start_datetime, event.end_datetime)
 
 const community = event.communities?.short_name ?? event.communities?.name
 const position = String(index + 1).padStart(2, "0")
 ---
 
-<article class:list={["font-monospace border border-white", isNext && "bg-red-500/20"]}>
+<article class:list={["font-monospace border border-white", isNext && "bg-red-500/15"]}>
   <div class="md:hidden p-2 sm:p-4 flex gap-3 sm:gap-4">
-    <div>
-      <div
-        style={accentStyle}
-        class:list={[
-          "size-10 sm:size-14 shrink-0 flex flex-col items-center justify-center text-black",
-          accentClass,
-        ]}
-      >
-        <span class="text-xl sm:text-2xl leading-none font-bold">{day}</span>
-        <span class="text-xs leading-none font-bold uppercase">{month}</span>
-      </div>
+    <div
+      style={accentStyle}
+      class:list={[
+        "w-10 h-fit py-1 sm:w-14 sm:py-2 shrink-0 flex flex-col items-center justify-center text-black",
+        accentClass,
+      ]}
+    >
+      <span class="text-xl sm:text-2xl leading-none font-bold">{startDay}</span>
+      <span class="text-xs leading-none font-bold uppercase">{startMonth}</span>
+      {
+        startDay !== endDay && (
+            <hr class="w-8 sm:w-10 m-2 border border-black" />
+            <span class="text-xl sm:text-2xl leading-none font-bold">{endDay}</span>
+            <span class="text-xs leading-none font-bold uppercase">{endMonth}</span>
+        )
+      }
     </div>
 
     <div class="w-full flex flex-col gap-1">
@@ -51,7 +54,7 @@ const position = String(index + 1).padStart(2, "0")
         </span>
       </div>
 
-      <p class="text-muted-foreground truncate text-sm">
+      <p class="text-muted-foreground text-sm">
         {event.format == "in-person" ? "Presencial" : "Virtual"} · {community}
       </p>
       <p class="col-start-2 flex items-start gap-1 text-sm text-white/70">
@@ -105,11 +108,18 @@ const position = String(index + 1).padStart(2, "0")
   </div>
 
   <div class="hidden md:flex">
-    <div class="w-fit flex items-center gap-3 p-4 shrink-0">
-      <span style={accentStyle} class:list={["size-4 shrink-0", accentClass]}></span>
+    <div class="w-fit flex items-center gap-3 px-4 shrink-0">
+      <div style={accentStyle} class:list={["size-4 shrink-0", accentClass]}/>
       <div>
-        <p class="font-bold shrink-0 w-fit">{day} {month.toUpperCase()}</p>
-        <p class="text-muted-foreground text-sm">{weekday}</p>
+        <p class="font-bold shrink-0 w-fit">{startDay} {startMonth?.toUpperCase()}
+          <span class="ml-2 text-muted-foreground text-sm">{startWeekday}</span>
+        </p>
+
+        {startDay !== endDay && (
+          <p class="font-bold shrink-0 w-fit">{endDay} {endMonth?.toUpperCase()}
+          <span class="ml-2 text-muted-foreground text-sm">{endWeekday}</span>
+          </p>
+        )}
       </div>
     </div>
 

@@ -9,6 +9,7 @@ interface Community {
 export interface UpcomingCalendarEvent {
   id: number
   name: string
+  short_name: string
   start_datetime: string
   end_datetime: string
   format: string | null
@@ -41,9 +42,12 @@ export function formatEventDate(start_datetime: string, end_datetime: string) {
   const endDate = new Date(end_datetime)
 
   return {
-    day: dayFormatter.format(startDate),
-    month: withoutTrailingDot(monthFormatter.format(startDate)).slice(0, 3),
-    weekday: withoutTrailingDot(weekdayFormatter.format(startDate)),
+    startDay: dayFormatter.format(startDate),
+    startMonth: withoutTrailingDot(monthFormatter.format(startDate)).slice(0, 3),
+    startWeekday: withoutTrailingDot(weekdayFormatter.format(startDate)),
+    endDay: dayFormatter.format(endDate),
+    endMonth: withoutTrailingDot(monthFormatter.format(endDate)).slice(0, 3),
+    endWeekday: withoutTrailingDot(weekdayFormatter.format(endDate)),
     start: timeFormatter.format(startDate),
     end: timeFormatter.format(endDate),
   }
