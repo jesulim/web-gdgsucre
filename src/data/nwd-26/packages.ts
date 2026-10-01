@@ -70,7 +70,7 @@ export const packages: EventPackage[] = [
       { label: "Refrigerio", type: "snack" },
       { label: "Credencial", type: "credential" },
       { label: "Vaso (edición limitada)", type: "cup" },
-      { label: "Velitas", type: "candle" },
+      { label: "Velita", type: "candle" },
       { label: "Scrunchie", type: "scrunchie" },
       { label: "Stickers", type: "stickers" },
     ],
