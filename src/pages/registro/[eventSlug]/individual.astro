@@ -34,10 +34,10 @@ if (registration?.status === "confirmed") {
 const formFields = await getFormFieldsByEvent(supabase, event?.id)
 ---
 
-<BaseLayout theme="dark">
+<BaseLayout theme="light">
   <NwdHeader />
-  <main class="bg-io-bg flex min-h-screen pt-[64px] md:pt-[96px] text-io-text">
-    <div class="mx-auto px-4 pb-16">
+  <main class="bg-nwd-paper flex flex-1 py-8 sm:py-12 text-nwd-ink">
+    <div class="mx-auto w-full max-w-lg px-4 pb-16">
       <h1 class="text-xl mb-4 font-medium">Regístrate al {event.name}</h1>
       {
         eventSlug == "bwai-26" && (
@@ -46,31 +46,8 @@ const formFields = await getFormFieldsByEvent(supabase, event?.id)
           </p>
         )
       }
-      <div class="io-register-form">
-        <RegisterForm formFields={formFields} profile={profile} event={event} client:load />
-      </div>
+      <RegisterForm formFields={formFields} profile={profile} event={event} client:load />
     </div>
   </main>
 </BaseLayout>
 
-<style is:global>
-  .io-register-form label {
-    color: var(--color-io-text);
-  }
-
-  .io-register-form input {
-    color: var(--color-io-text);
-  }
-
-  .io-register-form input::placeholder {
-    color: var(--color-io-text-muted);
-  }
-
-  .io-register-form [data-slot="select-trigger"] {
-    color: var(--color-io-text);
-  }
-
-  .io-register-form [data-slot="select-trigger"] span {
-    color: var(--color-io-text-muted);
-  }
-</style>

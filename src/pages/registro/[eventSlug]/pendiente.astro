@@ -22,11 +22,11 @@ const registration = await getEventRegistration(supabase, profile?.id, eventSlug
 if (registration?.status !== "pending") return Astro.redirect("/")
 ---
 
-<BaseLayout theme="dark">
+<BaseLayout theme="light">
   <NwdHeader />
   <ConfettiEffect client:load />
-  <main class="bg-io-bg flex min-h-screen pt-16 md:pt-24 text-io-text">
-    <div class="mx-auto px-4">
+  <main class="bg-nwd-paper flex flex-1 py-8 sm:py-12 text-nwd-ink">
+    <div class="mx-auto w-full max-w-lg px-4">
       <h1 class="text-xl mb-4">¡Hola, {profile?.first_name}!</h1>
       <p>
         Estamos procesando tu registro, Revisa tu correo donde te informaremos cuando haya sido
@@ -35,7 +35,7 @@ if (registration?.status !== "pending") return Astro.redirect("/")
         Mientras esperas, te invitamos a nuestra
         <a
           href={whatsappLink}
-          class="text-green-500 font-medium underline">Comunidad en WhatsApp</a
+          class="text-nwd-teal font-medium underline">Comunidad en WhatsApp</a
         >
       </p>
     </div>

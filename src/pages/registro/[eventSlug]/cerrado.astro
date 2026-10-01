@@ -21,10 +21,10 @@ if (!event) return new Response(null, { status: 404 })
 if (event.registration_open === true) return Astro.redirect(`/registro/${eventSlug}`)
 ---
 
-<BaseLayout theme="dark">
+<BaseLayout theme="light">
   <NwdHeader />
-  <main class="bg-io-bg min-h-screen pt-[64px] md:pt-[96px] text-io-text">
-    <div class="mx-auto px-4">
+  <main class="bg-nwd-paper flex flex-1 py-8 sm:py-12 text-nwd-ink">
+    <div class="mx-auto w-full max-w-lg px-4">
       <h1 class="text-xl mb-4">¡Hola, {user?.user_metadata?.full_name?.split(" ")[0]}!</h1>
       <p>
         Lo sentimos, el registro para el <b>{event.name}</b> ha finalizado. Te esperamos en una próxima
@@ -33,7 +33,7 @@ if (event.registration_open === true) return Astro.redirect(`/registro/${eventSl
         Para no perderte nuestros futuros eventos, síguenos en redes y únete a nuestra:
         <a
           href={whatsappLink}
-          class="text-green-500 font-medium underline">Comunidad en WhatsApp</a
+          class="text-nwd-teal font-medium underline">Comunidad en WhatsApp</a
         >
       </p>
     </div>
