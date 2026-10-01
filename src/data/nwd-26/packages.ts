@@ -82,7 +82,7 @@ export const packages: EventPackage[] = [
     firstName: "JUANA",
     lastName: "Azurduy",
     description: "Lo esencial para tu experiencia.",
-    price: 20,
+    price: 16,
     image: juanaImage,
     imageAlt: "Ilustración de Juana Azurduy",
     accent: "turquoise",
