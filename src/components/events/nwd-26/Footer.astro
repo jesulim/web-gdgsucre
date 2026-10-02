@@ -1,23 +1,20 @@
 ---
 import wtmLogo from "@/assets/events/wtm-home/wtm-logo-white.png"
-import CTALink from "@/components/CTALink.astro"
 import SocialIcons from "@/components/SocialIcons.astro"
-import { NWD26_HOME_ANCHOR, NWD26_SECTIONS } from "@/data/nwd-26/nav"
-
-const linkClass = "text-[#C6DBF7] hover:text-nwd-teal transition-colors no-underline"
+import { NWD26_HOME_ANCHOR } from "@/data/nwd-26/nav"
 ---
 
 <footer
   class="bg-[#08245A] text-[#C6DBF7] px-4 sm:px-6 lg:px-14 pt-9 md:pt-12 lg:pt-[58px] pb-7"
 >
   <div
-    class="max-w-[1180px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[30px]"
+    class="max-w-[1180px] mx-auto flex flex-col items-center text-center gap-[30px] md:flex-row md:items-start md:justify-between md:text-left"
   >
     <!-- Brand -->
     <div>
       <a
         href={NWD26_HOME_ANCHOR}
-        class="flex items-center gap-3 mb-3.5 no-underline text-white"
+        class="flex items-center justify-center md:justify-start gap-3 mb-3.5 no-underline text-white"
       >
         <img src={wtmLogo.src} alt="WTM Sucre" class="h-9 w-auto block" />
         <div class="leading-[1.15]">
@@ -29,31 +26,10 @@ const linkClass = "text-[#C6DBF7] hover:text-nwd-teal transition-colors no-under
           </div>
         </div>
       </a>
-      <p class="font-google text-[13px] leading-[1.6] max-w-[280px] m-0">
+      <p class="font-google text-[13px] leading-[1.6] max-w-[280px] m-0 mx-auto md:mx-0">
         Comunidad que impulsa la visibilidad y el crecimiento de las mujeres en
         tecnología en Bolivia.
       </p>
-    </div>
-
-    <!-- Evento -->
-    <div>
-      <h4
-        class="font-google text-xs tracking-[0.24em] uppercase text-[#7FA7DC] mb-3 m-0"
-      >
-        Evento
-      </h4>
-      <div class="flex flex-col gap-2 font-google text-[13.5px]">
-        {
-          NWD26_SECTIONS.map((section) => (
-            <a href={section.href} class={linkClass}>
-              {section.label}
-            </a>
-          ))
-        }
-        <CTALink server:defer eventSlug="nwd-26" registerLabel="Regístrate" class={linkClass}>
-          <span slot="fallback">Regístrate</span>
-        </CTALink>
-      </div>
     </div>
 
     <!-- Dónde -->
@@ -78,7 +54,7 @@ const linkClass = "text-[#C6DBF7] hover:text-nwd-teal transition-colors no-under
         Contacto
       </h4>
       <SocialIcons
-        class="[&_a]:text-[#C6DBF7] [&_a:hover]:text-nwd-teal [&_svg]:w-5 [&_svg]:h-5"
+        class="justify-center md:justify-start [&_a]:text-[#C6DBF7] [&_a:hover]:text-nwd-teal [&_svg]:w-5 [&_svg]:h-5"
       />
     </div>
   </div>
