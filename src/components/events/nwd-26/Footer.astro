@@ -1,11 +1,10 @@
 ---
 import wtmLogo from "@/assets/events/wtm-home/wtm-logo-white.png"
+import CTALink from "@/components/CTALink.astro"
 import SocialIcons from "@/components/SocialIcons.astro"
+import { NWD26_HOME_ANCHOR, NWD26_SECTIONS } from "@/data/nwd-26/nav"
 
-const links = [
-  { href: "#inicio", label: "Evento" },
-  { href: "/registro/nwd-26", label: "Registrarme" },
-]
+const linkClass = "text-[#C6DBF7] hover:text-nwd-teal transition-colors no-underline"
 ---
 
 <footer
@@ -17,7 +16,7 @@ const links = [
     <!-- Brand -->
     <div>
       <a
-        href="#inicio"
+        href={NWD26_HOME_ANCHOR}
         class="flex items-center gap-3 mb-3.5 no-underline text-white"
       >
         <img src={wtmLogo.src} alt="WTM Sucre" class="h-9 w-auto block" />
@@ -45,15 +44,15 @@ const links = [
       </h4>
       <div class="flex flex-col gap-2 font-google text-[13.5px]">
         {
-          links.map((link) => (
-            <a
-              href={link.href}
-              class="text-[#C6DBF7] hover:text-nwd-teal transition-colors no-underline"
-            >
-              {link.label}
+          NWD26_SECTIONS.map((section) => (
+            <a href={section.href} class={linkClass}>
+              {section.label}
             </a>
           ))
         }
+        <CTALink server:defer eventSlug="nwd-26" registerLabel="Regístrate" class={linkClass}>
+          <span slot="fallback">Regístrate</span>
+        </CTALink>
       </div>
     </div>
 
