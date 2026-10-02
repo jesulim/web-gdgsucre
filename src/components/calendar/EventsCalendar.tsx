@@ -21,11 +21,17 @@ const sameDay = (a: Date, b: Date) =>
 const sameMonth = (a: Date, b: Date) =>
   a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth()
 
-const today = () => {
-  const d = new Date()
+const startOfDay = (date: Date) => {
+  const d = new Date(date)
   d.setHours(0, 0, 0, 0)
   return d
 }
+
+const DAY_MS = 24 * 60 * 60 * 1000
+
+const dayKey = (date: Date) => `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
+
+const today = () => startOfDay(new Date())
 
 function buildGrid(date: Date): Date[] {
   const first = new Date(date.getFullYear(), date.getMonth(), 1)
@@ -101,21 +107,41 @@ function transformEvent(raw: CalendarEventPayload): CalendarEvent {
   }
 }
 
+interface CalendarDayEvent extends CalendarEvent {
+  day: Date
+  label: string
+}
+
+function expandByDay(events: CalendarEvent[]): CalendarDayEvent[] {
+  return events.flatMap(event => {
+    const first = startOfDay(event.start)
+    const last = startOfDay(event.end)
+    const days = Math.max(1, Math.round((last.getTime() - first.getTime()) / DAY_MS) + 1)
+
+    return Array.from({ length: days }, (_, index) => {
+      const day = new Date(first)
+      day.setDate(first.getDate() + index)
+      return { ...event, day, label: days > 1 ? `${event.name} (día ${index + 1})` : event.name }
+    })
+  })
+}
+
 const queryClient = new QueryClient()
 
 function useCalendarEvents(start: string, end: string) {
-  return useQuery<CalendarEvent[]>({
+  return useQuery<CalendarDayEvent[]>({
     queryKey: ["calendar-events", start, end],
     queryFn: async () => {
       const res = await fetch(`/api/calendar-events?start=${start}&end=${end}`)
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
-      return ((await res.json()) as CalendarEventPayload[]).map(transformEvent)
+      const payload = (await res.json()) as CalendarEventPayload[]
+      return expandByDay(payload.map(transformEvent))
     },
   })
 }
 
-function DayDetailPanel({ date, events }: { date: Date; events: CalendarEvent[] }) {
-  const dayEvents = events.filter(e => sameDay(e.start, date))
+function DayDetailPanel({ date, events }: { date: Date; events: CalendarDayEvent[] }) {
+  const dayEvents = events.filter(e => sameDay(e.day, date))
 
   return (
     <div className="border border-white bg-white p-4 md:p-6 text-black order-2 md:order-0">
@@ -142,7 +168,7 @@ function DayDetailPanel({ date, events }: { date: Date; events: CalendarEvent[] 
                 className={clsx("w-2 min-h-full mb-1", communityColorClass(event.community_id))}
               />
               <div className="flex flex-col gap-1">
-                <h3 className="text-lg leading-tight font-bold">{event.name}</h3>
+                <h3 className="text-lg leading-tight font-bold">{event.label}</h3>
                 <p className="mt-1 text-sm text-gray-600">
                   {event.format === "in-person" ? "Presencial" : "Virtual"} · {timeStr(event.start)}{" "}
                   - {timeStr(event.end)}
@@ -187,7 +213,7 @@ interface DayCellProps {
   currentDate: Date
   selectedDate: Date
   setSelectedDate: (date: Date) => void
-  dayEvents: CalendarEvent[]
+  dayEvents: CalendarDayEvent[]
 }
 
 function DayCell({
@@ -227,7 +253,7 @@ function DayCell({
                 communityColorClass(event.community_id)
               )}
             >
-              <span className="hidden sm:inline mx-0.5">{event.name}</span>
+              <span className="hidden sm:inline mx-0.5">{event.label}</span>
             </span>
           ))}
         </div>
@@ -237,7 +263,7 @@ function DayCell({
 }
 
 interface CalendarProps {
-  events: CalendarEvent[]
+  events: CalendarDayEvent[]
   isLoading: boolean
   currentDate: Date
   setCurrentDate: (date: Date) => void
@@ -258,9 +284,9 @@ function Calendar({
   const todayDate = useMemo(() => today(), [])
 
   const eventsByDay = useMemo(() => {
-    const map = new Map<string, CalendarEvent[]>()
+    const map = new Map<string, CalendarDayEvent[]>()
     for (const event of events) {
-      const key = `${event.start.getFullYear()}-${event.start.getMonth()}-${event.start.getDate()}`
+      const key = dayKey(event.day)
       const list = map.get(key)
       if (list) list.push(event)
       else map.set(key, [event])
@@ -268,10 +294,13 @@ function Calendar({
     return map
   }, [events])
 
-  const monthEvents = useMemo(
-    () => events.filter(e => sameMonth(e.start, currentDate)),
-    [events, currentDate]
-  )
+  const monthEvents = useMemo(() => {
+    const unique = new Map<number, CalendarDayEvent>()
+    for (const event of events) {
+      if (sameMonth(event.start, currentDate)) unique.set(event.id, event)
+    }
+    return [...unique.values()]
+  }, [events, currentDate])
 
   const communities = useMemo(() => {
     const seen = new Map<number, { label: string; color: string | null }>()
@@ -326,8 +355,7 @@ function Calendar({
         ))}
 
         {grid.map(day => {
-          const dayKey = `${day.getFullYear()}-${day.getMonth()}-${day.getDate()}`
-          const dayEvents = eventsByDay.get(dayKey) ?? []
+          const dayEvents = eventsByDay.get(dayKey(day)) ?? []
 
           return (
             <DayCell
