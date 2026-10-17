@@ -1,0 +1,38 @@
+---
+import CalendarLogo from "./icons/Calendar.astro"
+import IOExtendedLogo from "./icons/IOExtended.astro"
+import LocationMarker from "./icons/LocationMarker.astro"
+import { Timer } from "./Timer"
+
+const targetDate = new Date("2024-07-13T08:30:00-04:00")
+const initialTime = targetDate.getTime() - Date.now()
+---
+
+<section id="hero" class="pt-28 md:pt-36 pb-12 px-4 flex flex-col items-center">
+  <div class="flex place-content-center">
+    <IOExtendedLogo />
+  </div>
+  <h1 class="text-center font-bold text-2xl md:text-4xl lg:text-5xl mt-4 mb-6 text-neutral-900 dark:text-white">
+    Sucre 2024
+  </h1>
+
+  <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 my-4 text-neutral-800 dark:text-neutral-200 text-base md:text-lg">
+    <div class="flex items-center gap-3 p-3 px-5 rounded-2xl bg-white dark:bg-neutral-800/80 border-2 border-black dark:border-neutral-700 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]">
+      <div class="text-blue-500"><CalendarLogo /></div>
+      <div class="text-left">
+        <span class="block font-semibold">Sábado 13 de julio 2024</span>
+        <span class="block text-xs sm:text-sm text-neutral-600 dark:text-neutral-400">08:30 hrs.</span>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3 p-3 px-5 rounded-2xl bg-white dark:bg-neutral-800/80 border-2 border-black dark:border-neutral-700 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]">
+      <div class="text-red-500"><LocationMarker /></div>
+      <div class="text-left">
+        <span class="block font-semibold">CAINCO Chuquisaca</span>
+        <span class="block text-xs sm:text-sm text-neutral-600 dark:text-neutral-400">Calle España #64</span>
+      </div>
+    </div>
+  </div>
+
+  <Timer initialTime={initialTime} targetDate={targetDate} client:load />
+</section>

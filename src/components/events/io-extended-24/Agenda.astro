@@ -1,0 +1,33 @@
+---
+import scheduleData from "@/data/io-extended-24/schedule.json"
+import ScheduleCard from "./ScheduleCard.astro"
+import SectionTitle from "./SectionTitle.astro"
+---
+
+<section id="agenda" class="bg-neutral-100 dark:bg-neutral-900/60 py-8 my-8 scroll-mt-24 border-y border-neutral-200 dark:border-neutral-800">
+  <SectionTitle title="Agenda" />
+  <div
+    class="max-w-screen-xl mx-auto flex flex-col md:flex-row overflow-x-auto px-4 md:px-8 mt-6 md:justify-center gap-8 md:gap-12"
+  >
+    <div class="flex-1 min-w-[280px]">
+      <h3 class="font-bold text-xl sm:text-2xl text-neutral-900 dark:text-white border-b-2 border-neutral-300 dark:border-neutral-700 pb-2 mb-4">
+        Mañana
+      </h3>
+      <div class="divide-y divide-neutral-200 dark:divide-neutral-800">
+        {scheduleData.day.map(talk => <ScheduleCard {...talk} type="talk" />)}
+      </div>
+    </div>
+
+    <!-- Divisor vertical en pantallas grandes -->
+    <div class="hidden md:block w-px bg-neutral-300 dark:bg-neutral-700 self-stretch mt-8"></div>
+
+    <div class="flex-1 min-w-[280px]">
+      <h3 class="font-bold text-xl sm:text-2xl text-neutral-900 dark:text-white border-b-2 border-neutral-300 dark:border-neutral-700 pb-2 mb-4">
+        Tarde
+      </h3>
+      <div class="divide-y divide-neutral-200 dark:divide-neutral-800">
+        {scheduleData.afternoon.map(workshop => <ScheduleCard {...workshop} type="workshop" />)}
+      </div>
+    </div>
+  </div>
+</section>

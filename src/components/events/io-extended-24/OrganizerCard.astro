@@ -1,0 +1,59 @@
+---
+import { Image } from "astro:assets"
+import type { ImageMetadata } from "astro"
+
+interface Props {
+  id: string
+  name: string
+  image?: ImageMetadata
+}
+
+const { id, name, image } = Astro.props
+---
+
+<div class="w-full max-w-[160px] sm:max-w-xs transition-transform duration-200 hover:-translate-y-1">
+  <div class="relative aspect-[4/6]" id={`organizer-${id}`}>
+    <!-- Capa trasera rotada -->
+    <div
+      class="absolute top-1 sm:top-2 -right-2 sm:-right-4 w-full h-full bg-linear-to-t from-green-500 via-blue-500 to-blue-600 rounded-2xl sm:rounded-3xl shadow-sm transform rotate-2 sm:rotate-4 border-2 border-black dark:border-white"
+    >
+    </div>
+
+    <!-- Capa media rotada -->
+    <div
+      class="absolute top-0.5 sm:top-1 -right-1 sm:-right-2 w-full h-full bg-linear-to-t from-green-400 via-green-500 to-blue-500 rounded-2xl sm:rounded-3xl shadow-sm transform rotate-1 sm:rotate-2 border-2 border-black dark:border-white"
+    >
+    </div>
+
+    <!-- Tarjeta frontal -->
+    <div
+      class="absolute inset-0 bg-white dark:bg-neutral-900 rounded-2xl sm:rounded-3xl shadow-md overflow-hidden border-2 border-black dark:border-white"
+    >
+      <div class="p-3 sm:p-5 lg:p-6 flex flex-col items-center justify-center h-full">
+        <div class="p-2 sm:p-4 w-full flex justify-center">
+          {image ? (
+            <Image
+              src={image}
+              alt={name}
+              width={260}
+              height={260}
+              class="w-24 h-24 sm:w-36 sm:h-36 aspect-square object-cover rounded-full border-2 border-black dark:border-white"
+              loading="lazy"
+              decoding="async"
+            />
+          ) : (
+            <div class="w-24 h-24 sm:w-36 sm:h-36 rounded-full border-2 border-black dark:border-white bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center text-xs text-neutral-500">
+              Sin foto
+            </div>
+          )}
+        </div>
+        <h3 class="text-xs sm:text-base lg:text-lg font-bold text-center mt-1 text-neutral-900 dark:text-white line-clamp-2">
+          {name}
+        </h3>
+        <p class="text-xs sm:text-sm font-medium text-center text-neutral-500 dark:text-neutral-400">
+          Organizer
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+---
+interface Props {
+  time: string
+  title: string
+  speaker?: string
+  type?: "talk" | "workshop"
+}
+
+const { time, title, speaker } = Astro.props
+const textColor = !speaker ? "text-blue-500 font-semibold" : "text-neutral-900 dark:text-white"
+---
+
+<div class="py-3 w-full max-w-lg space-y-1">
+  <p class="font-semibold text-xs sm:text-sm text-blue-500">
+    {time}
+  </p>
+  <p class={`font-medium text-sm sm:text-base lg:text-lg leading-snug ${textColor}`}>
+    {title}
+  </p>
+  {speaker && (
+    <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 font-normal">
+      {speaker}
+    </p>
+  )}
+</div>

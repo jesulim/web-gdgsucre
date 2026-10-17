@@ -1,0 +1,74 @@
+---
+import { Image } from "astro:assets"
+import tenMinds from "@/assets/sponsors/10minds.webp"
+import cba from "@/assets/sponsors/cba.webp"
+import droBots from "@/assets/sponsors/dro-bots.webp"
+import educationUsa from "@/assets/sponsors/education_usa.webp"
+import facultadEconomia from "@/assets/sponsors/facultad-economia.webp"
+import salvietti from "@/assets/sponsors/salvietti.webp"
+import unosquare from "@/assets/sponsors/unosquare.webp"
+import SectionTitle from "./SectionTitle.astro"
+
+const sponsors = [
+  {
+    name: "10minds",
+    logo: tenMinds,
+    url: "https://10minds.org/",
+  },
+  {
+    name: "CBA",
+    logo: cba,
+    url: "https://www.facebook.com/CBAFanPage/",
+  },
+  {
+    name: "Dro-bots",
+    logo: droBots,
+    url: "https://www.facebook.com/profile.php?id=100083024454287",
+  },
+  {
+    name: "Education USA",
+    logo: educationUsa,
+    url: "https://www.facebook.com/EducationUSABolivia",
+  },
+  {
+    name: "Facultad de Ciencias Económicas",
+    logo: facultadEconomia,
+    url: "https://www.usfx.bo/",
+  },
+  {
+    name: "Salvietti",
+    logo: salvietti,
+    url: "https://www.facebook.com/salvietti.oficial",
+  },
+  {
+    name: "Unosquare",
+    logo: unosquare,
+    url: "https://www.unosquare.com/",
+  },
+]
+---
+
+<section id="sponsors" class="scroll-mt-24 my-12">
+  <SectionTitle title="Sponsors" />
+  <div class="max-w-screen-md p-4 mx-auto grid grid-cols-2 sm:grid-cols-3 gap-6 sm:gap-8 items-center justify-center my-6">
+    {
+      sponsors.map(sponsor => (
+        <a
+          href={sponsor.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex justify-center items-center p-4 bg-white dark:bg-neutral-800 rounded-2xl border-2 border-black dark:border-neutral-700 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all duration-200"
+        >
+          <Image
+            src={sponsor.logo}
+            alt={sponsor.name}
+            width={200}
+            height={80}
+            class="max-h-14 w-auto object-contain"
+            loading="lazy"
+          />
+        </a>
+      ))
+    }
+  </div>
+</section>
