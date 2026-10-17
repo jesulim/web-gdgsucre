@@ -6,7 +6,6 @@ import Header from "@/components/events/io-extended-24/Header.astro"
 import Hero from "@/components/events/io-extended-24/Hero.astro"
 import OrganizerProfiles from "@/components/events/io-extended-24/OrganizerProfiles.astro"
 import Speakers from "@/components/events/io-extended-24/Speakers.astro"
-import Sponsors from "@/components/events/io-extended-24/Sponsors.astro"
 import BaseLayout from "@/layout/BaseLayout.astro"
 ---
 
@@ -15,12 +14,13 @@ import BaseLayout from "@/layout/BaseLayout.astro"
   description="Revive las novedades del Google I/O Extended Sucre 2024. Charlas sobre IA, Gemini, Android, Cloud, Web y workshops con expertos."
 >
   <Header />
-  <main class="flex-1 min-h-screen bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 transition-colors duration-200">
+  <main
+    class="flex-1 min-h-screen bg-white dark:bg-black text-neutral-900 dark:text-neutral-100 bg-[linear-gradient(to_right,#eeeeee_1px,transparent_1px),linear-gradient(to_bottom,#eeeeee_1px,transparent_1px)] bg-[size:4rem_4rem] dark:bg-[linear-gradient(to_right,#262626_1px,transparent_1px),linear-gradient(to_bottom,#262626_1px,transparent_1px)] transition-colors duration-200"
+  >
     <Hero />
     <About />
     <Speakers />
     <Agenda />
-    <Sponsors />
     <OrganizerProfiles />
   </main>
   <Footer />

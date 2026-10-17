@@ -1,37 +1,56 @@
 ---
-import { ModeToggle } from "@/components/ModeToggle"
 import IOExtended from "./icons/IOExtended.astro"
 import IOExtendedShort from "./icons/IOExtended-short.astro"
+import { ThemeToggle } from "./ThemeToggle"
 
 const navLinks = [
-  { name: "Sobre el evento", href: "#about" },
-  { name: "Speakers", href: "#speakers" },
-  { name: "Agenda", href: "#agenda" },
-  { name: "Sponsors", href: "#sponsors" },
-  { name: "Organizadores", href: "#organizadores" },
+  { name: "Speakers", href: "#speakers", hoverClass: "hover:text-blue-500" },
+  { name: "Agenda", href: "#agenda", hoverClass: "hover:text-orange-500" },
+  { name: "Equipo", href: "#organizadores", hoverClass: "hover:text-purple-500" },
+  { name: "Eventos Pasados", href: "/eventos", hoverClass: "hover:text-red-500" },
 ]
 ---
 
 <nav
-  class="fixed w-full z-30 top-0 left-0 border-b-2 border-black bg-neutral-100/90 dark:bg-neutral-900/90 backdrop-blur-md dark:text-white dark:border-white transition-colors duration-200"
+  class="fixed w-full z-30 top-0 left-0 border-b-2 border-black bg-[#EEEEEE] dark:bg-[#1f2123] dark:text-white dark:border-white transition-colors duration-200"
 >
-  <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+  <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-4 sm:px-6 py-5 sm:py-6">
     <a href="#hero" aria-label="Volver al inicio" class="flex items-center">
       <div class="block md:hidden">
         <IOExtendedShort />
       </div>
       <div class="hidden md:block">
-        <IOExtended />
+        <IOExtended class="w-48 sm:w-56 lg:w-64 h-auto text-black dark:text-white" />
       </div>
     </a>
 
-    <div class="flex items-center gap-2 md:order-2">
-      <ModeToggle client:load />
+    <!-- Menú Desktop + Toggle con ícono original a la derecha -->
+    <div class="hidden md:flex items-center gap-6 lg:gap-8">
+      <ul class="flex items-center space-x-6 lg:space-x-8 text-sm lg:text-base font-medium text-black dark:text-white">
+        {navLinks.map(link => (
+          <li>
+            <a
+              href={link.href}
+              class={`transition-colors duration-150 ${link.hoverClass}`}
+            >
+              {link.name}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <div class="flex items-center">
+        <ThemeToggle client:load />
+      </div>
+    </div>
+
+    <!-- Menú Mobile: Toggle y Botón hamburguesa -->
+    <div class="flex items-center gap-2 md:hidden">
+      <ThemeToggle client:load />
 
       <button
         id="navbar-toggle-btn"
         type="button"
-        class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-neutral-600 rounded-lg md:hidden hover:bg-neutral-200 focus:outline-none focus:ring-2 focus:ring-neutral-400 dark:text-neutral-300 dark:hover:bg-neutral-800"
+        class="inline-flex items-center p-2 w-10 h-10 justify-center text-black dark:text-white rounded-lg hover:bg-neutral-300/60 dark:hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-neutral-400"
         aria-controls="navbar-menu"
         aria-expanded="false"
       >
@@ -54,31 +73,24 @@ const navLinks = [
       </button>
     </div>
 
+    <!-- Dropdown Mobile -->
     <div
-      class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
+      class="items-center justify-between hidden w-full md:hidden"
       id="navbar-menu"
     >
       <ul
-        class="font-medium flex flex-col md:flex-row md:space-x-8 p-4 mt-4 md:p-0 md:mt-0 border-2 border-black md:border-0 rounded-2xl bg-white dark:bg-neutral-900 md:bg-transparent shadow-sm md:shadow-none"
+        class="font-medium flex flex-col p-4 mt-3 border-2 border-black dark:border-white rounded-2xl bg-white dark:bg-[#1f2123] shadow-md space-y-2"
       >
         {navLinks.map(link => (
           <li>
             <a
               href={link.href}
-              class="block py-2 px-3 text-neutral-800 dark:text-neutral-200 hover:text-blue-500 dark:hover:text-blue-400 transition-colors font-medium"
+              class={`block py-2 px-3 text-neutral-800 dark:text-neutral-200 transition-colors font-medium rounded-lg ${link.hoverClass}`}
             >
               {link.name}
             </a>
           </li>
         ))}
-        <li>
-          <a
-            href="/eventos"
-            class="block py-2 px-3 text-neutral-800 dark:text-neutral-200 hover:text-blue-500 dark:hover:text-blue-400 transition-colors font-medium"
-          >
-            Otros Eventos
-          </a>
-        </li>
       </ul>
     </div>
   </div>
@@ -95,7 +107,6 @@ const navLinks = [
       menu.classList.toggle("hidden")
     })
 
-    // Close menu when clicking any nav link
     const links = menu.querySelectorAll("a")
     for (const link of links) {
       link.addEventListener("click", () => {
