@@ -73,7 +73,7 @@ export async function deleteCommunity(supabase: SupabaseClient, id: number) {
   return data.length > 0
 }
 
-export async function accepCommunityOnFirstEvent(supabase: SupabaseClient, event_id: number) {
+export async function acceptCommunityOnFirstEvent(supabase: SupabaseClient, event_id: number) {
   const { data: event, error } = await supabase
     .from("calendar_events")
     .select("communities(id, accepted)")

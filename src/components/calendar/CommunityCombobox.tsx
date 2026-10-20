@@ -37,9 +37,10 @@ export function CommunityCombobox({
 
   const items = useMemo(() => {
     // Keep the selected community visible for new communities.
-    if (!value || communities.some(community => community.id === value.id)) return communities
+    if (!value || !search || communities.some(community => community.id === value.id))
+      return communities
     return [...communities, value]
-  }, [communities, value])
+  }, [communities, value, search])
 
   function handleCreateCommunity(values: NewCommunityFormValues) {
     onCreateCommunity(values)
@@ -73,28 +74,15 @@ export function CommunityCombobox({
           showClear={!!value}
           className="border-white rounded-none"
         />
-        <ComboboxContent className="font-monospace rounded-none">
+        <ComboboxContent className="font-monospace rounded-none border border-white">
           {isFetching ? (
             <div className="text-muted-foreground flex items-center gap-2 px-2 py-3 text-sm">
               <Loader2Icon className="size-4 animate-spin" /> Buscando...
             </div>
           ) : communities.length === 0 ? (
-            <div className="p-2 border border-white">
-              <p className="text-muted-foreground p-2 text-sm">Sin resultados</p>
-              <Button
-                type="button"
-                variant="secondary"
-                size="sm"
-                disabled={disabled}
-                onClick={() => setNewOpen(true)}
-                className="shrink-0 rounded-none border bg-white text-black hover:bg-white"
-                aria-label="Agregar nueva comunidad"
-              >
-                <PlusIcon className="size-4" /> Nueva comunidad
-              </Button>
-            </div>
+            <p className="text-muted-foreground p-2 text-sm">Sin resultados</p>
           ) : (
-            <ComboboxList className="border border-white">
+            <ComboboxList>
               {community => (
                 <ComboboxItem key={community.id} value={community}>
                   {community.name}
@@ -102,6 +90,18 @@ export function CommunityCombobox({
               )}
             </ComboboxList>
           )}
+
+          <Button
+            type="button"
+            variant="secondary"
+            size="sm"
+            disabled={disabled}
+            onClick={() => setNewOpen(true)}
+            className="w-full rounded-none border bg-white text-black hover:bg-white"
+            aria-label="Agregar nueva comunidad"
+          >
+            <PlusIcon className="size-4" /> Nueva comunidad
+          </Button>
         </ComboboxContent>
       </Combobox>
       <NewCommunityDialog

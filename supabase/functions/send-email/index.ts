@@ -151,6 +151,32 @@ const EMAIL_TYPES: Record<EmailType, TemplateConfig> = {
 
 const eta = new Eta({ autoEscape: true })
 
+const MAX_ENCODED_WORD_BYTES = 45
+
+function toEncodedWord(bytes: number[]) {
+  return `=?UTF-8?B?${btoa(String.fromCharCode(...bytes))}?=`
+}
+
+function encodeSubject(subject: string) {
+  if (!/[^\x20-\x7e]/.test(subject)) return subject
+
+  const encoder = new TextEncoder()
+  const words: string[] = []
+  let chunk: number[] = []
+
+  for (const char of subject) {
+    const bytes = encoder.encode(char)
+    if (chunk.length + bytes.length > MAX_ENCODED_WORD_BYTES) {
+      words.push(toEncodedWord(chunk))
+      chunk = []
+    }
+    chunk.push(...bytes)
+  }
+  words.push(toEncodedWord(chunk))
+
+  return words.join("\r\n ")
+}
+
 function getCorsHeaders(origin: string | null) {
   const allowedOrigin = origin && ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0]
   return {
@@ -202,6 +228,9 @@ serve(async req => {
         port: emailPort,
         tls: emailPort === 465,
         auth: { username: emailUser, password: emailPassword },
+      },
+      client: {
+        preprocessors: [mail => ({ ...mail, subject: encodeSubject(subject) })],
       },
     })
 
