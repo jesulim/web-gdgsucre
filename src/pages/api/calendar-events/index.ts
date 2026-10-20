@@ -1,3 +1,4 @@
+import type { SupabaseClient } from "@supabase/supabase-js"
 import type { APIRoute } from "astro"
 import {
   createCalendarEvent,
@@ -9,6 +10,22 @@ import {
 
 import { accepCommunityOnFirstEvent } from "@/lib/services/communityService"
 import { createUserClient } from "@/lib/supabase"
+
+const sendCalendarEventEmail = async (
+  supabase: SupabaseClient,
+  type: "event-received" | "event-accepted",
+  eventId: number
+) => {
+  const { error } = await supabase.functions.invoke("send-email", {
+    body: { type, data: { eventId } },
+  })
+
+  if (error) {
+    const details =
+      error.context instanceof Response ? await error.context.text().catch(() => "") : ""
+    console.error(`error sending ${type} email: ${error.message} ${details}`)
+  }
+}
 
 export const GET: APIRoute = async ({ url, cookies }) => {
   try {
@@ -91,12 +108,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       })
     }
 
-    supabase.functions.invoke("send-email", {
-      body: {
-        type: "event-received",
-        data: { eventId: id },
-      },
-    })
+    await sendCalendarEventEmail(supabase, "event-received", id)
 
     return new Response(JSON.stringify({ message: "Evento creado exitosamente" }), {
       headers: { "Content-Type": "application/json" },
@@ -153,12 +165,7 @@ export const PUT: APIRoute = async ({ request, cookies }) => {
     if (accepted === true) {
       await accepCommunityOnFirstEvent(supabase, id)
 
-      supabase.functions.invoke("send-email", {
-        body: {
-          type: "event-accepted",
-          data: { eventId: id },
-        },
-      })
+      await sendCalendarEventEmail(supabase, "event-accepted", id)
     }
 
     return new Response(JSON.stringify(result), {
