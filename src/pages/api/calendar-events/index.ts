@@ -8,7 +8,7 @@ import {
   updateCalendarEvent,
 } from "@/lib/services/calendarEventService"
 
-import { accepCommunityOnFirstEvent } from "@/lib/services/communityService"
+import { acceptCommunityOnFirstEvent } from "@/lib/services/communityService"
 import { createUserClient } from "@/lib/supabase"
 
 const sendCalendarEventEmail = async (
@@ -17,6 +17,7 @@ const sendCalendarEventEmail = async (
   eventId: number
 ) => {
   const { error } = await supabase.functions.invoke("send-email", {
+    headers: { Prefer: "return=minimal" },
     body: { type, data: { eventId } },
   })
 
@@ -108,7 +109,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       })
     }
 
-    await sendCalendarEventEmail(supabase, "event-received", id)
+    // Skip await to reduce response time
+    sendCalendarEventEmail(supabase, "event-received", id)
 
     return new Response(JSON.stringify({ message: "Evento creado exitosamente" }), {
       headers: { "Content-Type": "application/json" },
@@ -163,9 +165,10 @@ export const PUT: APIRoute = async ({ request, cookies }) => {
     }
 
     if (accepted === true) {
-      await accepCommunityOnFirstEvent(supabase, id)
+      await acceptCommunityOnFirstEvent(supabase, id)
 
-      await sendCalendarEventEmail(supabase, "event-accepted", id)
+      // Skip await to reduce response time
+      sendCalendarEventEmail(supabase, "event-accepted", id)
     }
 
     return new Response(JSON.stringify(result), {
