@@ -10,26 +10,24 @@ const organizerImages = import.meta.glob<{ default: ImageMetadata }>(
 )
 ---
 
-<section id="organizadores" class="scroll-mt-24 my-12">
-  <SectionTitle title="Organizadores" />
-  <div class="max-w-screen-lg mx-auto px-4 py-8">
-    <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-10 lg:gap-14">
-      {
-        organizersData
-          .sort((a, b) => (b.type ?? 0) - (a.type ?? 0))
-          .map((organizer, index) => {
-            const imageModule = organizerImages[`/src/assets/organizers/${organizer.photoFileName}`]
-            return (
-              <div class="flex justify-center">
-                <OrganizerCard
-                  id={index.toString()}
-                  name={organizer.name}
-                  image={imageModule?.default}
-                />
-              </div>
-            )
-          })
-      }
-    </div>
+<SectionTitle id="organizadores" title="Organizadores" />
+<div class="max-w-screen-lg mx-auto px-2 sm:px-4 py-4 sm:py-8">
+  <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8 lg:gap-16">
+    {
+      organizersData
+        .sort((a, b) => (b.type ?? 0) - (a.type ?? 0))
+        .map((organizer, index) => {
+          const imageModule = organizerImages[`/src/assets/organizers/${organizer.photoFileName}`]
+          return (
+            <div class="flex justify-center">
+              <OrganizerCard
+                id={index.toString()}
+                name={organizer.name}
+                image={imageModule?.default}
+              />
+            </div>
+          )
+        })
+    }
   </div>
-</section>
+</div>

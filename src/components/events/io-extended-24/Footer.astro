@@ -5,42 +5,31 @@ import GDGSucreLogo from "./icons/GDGSucreLogo.astro"
 import SocialIcons from "./SocialIcons.astro"
 ---
 
-<footer class="relative pt-6 md:pt-12 bg-neutral-100 dark:bg-black border-t-2 border-black dark:border-white transition-colors duration-200">
+<footer class="relative pt-4 md:pt-8 bg-[#EEEEEE] dark:bg-[#202124] transition-colors duration-200">
   <div class="w-full overflow-hidden leading-none">
     <Bicycle class="w-full h-auto object-cover dark:hidden" />
     <BicycleDark class="w-full h-auto object-cover hidden dark:block" />
   </div>
 
-  <div class="bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800">
-    <div class="mx-auto max-w-screen-xl px-4 py-8 sm:py-12">
-      <div class="flex flex-col lg:flex-row items-center justify-between gap-6 text-sm sm:text-base font-medium">
-        <div class="flex items-center">
-          <GDGSucreLogo />
-        </div>
+  <div class="dark:bg-[#202124] text-[#202124] dark:text-white">
+    <div class="mx-auto max-w-screen-2xl p-4 pt-8 pb-16 lg:py-12">
+      <div class="flex space-y-4 flex-col lg:flex-row lg:space-y-0 font-medium items-center">
+        <GDGSucreLogo />
 
-        <div class="flex flex-wrap items-center justify-center gap-6">
-          <a
-            href="/eventos"
-            class="text-neutral-700 dark:text-neutral-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
-          >
-            Eventos Pasados
-          </a>
+        <a href="/eventos" class="lg:mx-8 hover:text-[#4285F4] transition-colors">
+          Eventos Pasados
+        </a>
 
-          <a
-            href="https://developers.google.com/community-guidelines"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-neutral-700 dark:text-neutral-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
-          >
-            Lineamientos de la comunidad
-          </a>
-        </div>
+        <a
+          href="https://developers.google.com/community-guidelines"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hover:text-[#4285F4] lg:mr-auto transition-colors"
+        >
+          Lineamientos de la comunidad
+        </a>
 
         <SocialIcons />
-      </div>
-
-      <div class="mt-8 pt-6 border-t border-neutral-200 dark:border-neutral-800 text-center text-xs text-neutral-500">
-        © 2024 Google Developer Group Sucre. Todos los derechos reservados.
       </div>
     </div>
   </div>

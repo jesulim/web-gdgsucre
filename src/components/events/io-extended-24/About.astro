@@ -4,39 +4,37 @@ import aboutLogo from "@/assets/events/io-extended-24/io24-learning-cta.webp"
 import aboutLogoDark from "@/assets/events/io-extended-24/io24-learning-cta-dark.webp"
 ---
 
-<section id="about" class="max-w-screen-lg mx-auto my-8 px-4 scroll-mt-24">
+<section id="about" class="max-w-screen-lg mx-auto my-8 md:h-64">
   <div
-    class="flex flex-col md:flex-row items-center justify-between p-6 sm:p-8 rounded-2xl bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] gap-6"
+    class="flex flex-row lg:py-8 items-center justify-between mx-4 px-6 py-4 rounded-xl bg-[#EEEEEE] dark:bg-[#202124] text-[#202124] dark:text-white border-2 border-[#202124] dark:border-white"
   >
-    <div class="space-y-4 max-w-lg">
-      <h2 class="text-xl sm:text-2xl font-bold leading-snug">
+    <div class="space-y-4 md:max-w-lg md:text-lg">
+      <h1 class="font-bold md:text-xl">
         ¡Acompáñanos a descubrir las novedades del Google I/O 2024 en la hermosa capital de Bolivia!
-      </h2>
-      <p class="text-neutral-600 dark:text-neutral-300 text-base sm:text-lg">
-        En este evento, exploramos las últimas tecnologías de Google junto a expertos
+      </h1>
+      <p class="md:text-left">
+        En este evento, exploraremos las últimas tecnologías de Google junto a expertos
         internacionales y nacionales.
       </p>
-      <p class="font-bold text-neutral-900 dark:text-white text-base sm:text-lg">
-        ¡Un gran hito tecnológico en Sucre!
-      </p>
+      <p class="font-bold md:text-left">¡No te pierdas este gran evento!</p>
     </div>
 
-    <div class="w-56 sm:w-72 shrink-0">
+    <div class="hidden md:block md:ml-6 w-72">
       <Image
-        src={aboutLogo}
-        alt="Google I/O Extended 2024 Learning"
         width={300}
         height={300}
-        class="block dark:hidden object-contain mx-auto"
-        loading="lazy"
+        class="block dark:hidden"
+        src={aboutLogo}
+        alt="Google I/O Extended 2024"
+        loading="eager"
       />
       <Image
-        src={aboutLogoDark}
-        alt="Google I/O Extended 2024 Learning"
         width={300}
         height={300}
-        class="hidden dark:block object-contain mx-auto"
-        loading="lazy"
+        class="hidden dark:block"
+        src={aboutLogoDark}
+        alt="Google I/O Extended 2024 dark"
+        loading="eager"
       />
     </div>
   </div>

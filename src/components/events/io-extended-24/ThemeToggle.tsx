@@ -37,17 +37,16 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={toggleTheme}
-      className="p-1.5 text-black dark:text-white hover:opacity-75 transition-opacity rounded-lg focus:outline-none"
-      title="Cambiar tema"
+      className="px-2 text-[#202124] dark:text-white hover:opacity-75 transition-opacity focus:outline-none flex items-center justify-center"
+      title="toogle theme"
       aria-label={isDark ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
     >
       <svg
-        width="30"
-        height="30"
+        width="32"
+        height="32"
         viewBox="0 0 32 32"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="w-7 h-7"
         aria-hidden="true"
       >
         <path

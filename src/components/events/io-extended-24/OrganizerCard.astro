@@ -11,46 +11,42 @@ interface Props {
 const { id, name, image } = Astro.props
 ---
 
-<div class="w-full max-w-[160px] sm:max-w-xs transition-transform duration-200 hover:-translate-y-1">
+<div class="w-full max-w-[150px] sm:max-w-xs">
   <div class="relative aspect-[4/6]" id={`organizer-${id}`}>
-    <!-- Capa trasera rotada -->
     <div
-      class="absolute top-1 sm:top-2 -right-2 sm:-right-4 w-full h-full bg-linear-to-t from-green-500 via-blue-500 to-blue-600 rounded-2xl sm:rounded-3xl shadow-sm transform rotate-2 sm:rotate-4 border-2 border-black dark:border-white"
+      class="absolute top-1 sm:top-2 -right-2 sm:-right-4 w-full h-full bg-gradient-to-t from-[#34A853] via-[#4285F4] via-50% to-[#4285F4] rounded-2xl sm:rounded-3xl shadow-sm transform rotate-2 sm:rotate-4 border-2 border-[#202124] dark:border-white"
+    >
+    </div>
+    <div
+      class="absolute top-0.5 sm:top-1 -right-1 sm:-right-2 w-full h-full bg-gradient-to-t from-[#34A853] via-[#34A853] via-75% to-[#4285F4] rounded-2xl sm:rounded-3xl shadow-sm transform rotate-1 sm:rotate-2 border-2 border-[#202124] dark:border-white"
     >
     </div>
 
-    <!-- Capa media rotada -->
     <div
-      class="absolute top-0.5 sm:top-1 -right-1 sm:-right-2 w-full h-full bg-linear-to-t from-green-400 via-green-500 to-blue-500 rounded-2xl sm:rounded-3xl shadow-sm transform rotate-1 sm:rotate-2 border-2 border-black dark:border-white"
+      class="absolute inset-0 bg-white dark:bg-[#202124] rounded-2xl sm:rounded-3xl shadow-md overflow-hidden border-2 border-[#202124] dark:border-white"
     >
-    </div>
-
-    <!-- Tarjeta frontal -->
-    <div
-      class="absolute inset-0 bg-white dark:bg-neutral-900 rounded-2xl sm:rounded-3xl shadow-md overflow-hidden border-2 border-black dark:border-white"
-    >
-      <div class="p-3 sm:p-5 lg:p-6 flex flex-col items-center justify-center h-full">
-        <div class="p-2 sm:p-4 w-full flex justify-center">
+      <div class="p-2 sm:p-4 lg:p-6 flex flex-col items-center justify-center h-full">
+        <div class="p-4 md:p-8 w-full flex justify-center">
           {image ? (
             <Image
+              class="aspect-square object-cover rounded-full border-2 border-[#202124] dark:border-white w-full"
+              width={300}
+              height={300}
               src={image}
               alt={name}
-              width={260}
-              height={260}
-              class="w-24 h-24 sm:w-36 sm:h-36 aspect-square object-cover rounded-full border-2 border-black dark:border-white"
               loading="lazy"
               decoding="async"
             />
           ) : (
-            <div class="w-24 h-24 sm:w-36 sm:h-36 rounded-full border-2 border-black dark:border-white bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center text-xs text-neutral-500">
+            <div class="aspect-square rounded-full border-2 border-[#202124] dark:border-white bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center text-xs text-neutral-500 w-full">
               Sin foto
             </div>
           )}
         </div>
-        <h3 class="text-xs sm:text-base lg:text-lg font-bold text-center mt-1 text-neutral-900 dark:text-white line-clamp-2">
+        <h2 class="text-sm sm:text-lg lg:text-xl font-bold text-center mb-1 text-[#202124] dark:text-[#e2e8f0]">
           {name}
-        </h3>
-        <p class="text-xs sm:text-sm font-medium text-center text-neutral-500 dark:text-neutral-400">
+        </h2>
+        <p class="text-sm sm:text-lg lg:text-xl font-light text-center mb-1 text-[#202124] dark:text-[#e2e8f0]">
           Organizer
         </p>
       </div>

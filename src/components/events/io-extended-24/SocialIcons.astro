@@ -5,67 +5,25 @@ import Instagram from "@/assets/icons/social/Instagram.svg"
 import Linkedin from "@/assets/icons/social/Linkedin.svg"
 import Tiktok from "@/assets/icons/social/Tiktok.svg"
 import Twitter from "@/assets/icons/social/Twitter.svg"
-
-interface Props {
-  class?: string
-}
-
-const { class: className = "" } = Astro.props
 ---
 
-<div class={`flex items-center gap-5 sm:gap-6 ${className}`}>
-  <a
-    href="https://www.facebook.com/gdgsucre"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="Facebook de GDG Sucre"
-    class="text-neutral-600 hover:text-blue-600 dark:text-neutral-400 dark:hover:text-blue-400 transition-colors"
-  >
-    <Facebook class="w-5 h-5" />
+<div class="pt-4 lg:py-0 flex items-center space-x-8">
+  <a href="https://www.facebook.com/gdgsucre" target="_blank" rel="noopener noreferrer" aria-label="Facebook page">
+    <Facebook class="w-6 h-6 hover:opacity-75 transition-opacity" />
   </a>
-  <a
-    href="https://www.instagram.com/gdgsucre/"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="Instagram de GDG Sucre"
-    class="text-neutral-600 hover:text-pink-600 dark:text-neutral-400 dark:hover:text-pink-400 transition-colors"
-  >
-    <Instagram class="w-5 h-5" />
+  <a href="https://www.instagram.com/gdgsucre/" target="_blank" rel="noopener noreferrer" aria-label="Instagram page">
+    <Instagram class="w-6 h-6 hover:opacity-75 transition-opacity" />
   </a>
-  <a
-    href="https://www.tiktok.com/@gdgsucre"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="TikTok de GDG Sucre"
-    class="text-neutral-600 hover:text-black dark:text-neutral-400 dark:hover:text-white transition-colors"
-  >
-    <Tiktok class="w-5 h-5" />
+  <a href="https://www.tiktok.com/@gdgsucre" target="_blank" rel="noopener noreferrer" aria-label="Tiktok page">
+    <Tiktok class="w-6 h-6 hover:opacity-75 transition-opacity" />
   </a>
-  <a
-    href="https://www.linkedin.com/company/gdgsucre"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="LinkedIn de GDG Sucre"
-    class="text-neutral-600 hover:text-blue-700 dark:text-neutral-400 dark:hover:text-blue-400 transition-colors"
-  >
-    <Linkedin class="w-5 h-5" />
+  <a href="https://www.linkedin.com/company/gdgsucre" target="_blank" rel="noopener noreferrer" aria-label="Linkedin page">
+    <Linkedin class="w-6 h-6 hover:opacity-75 transition-opacity" />
   </a>
-  <a
-    href="https://discord.com/invite/vcmjfcA7"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="Discord de GDG Sucre"
-    class="text-neutral-600 hover:text-indigo-600 dark:text-neutral-400 dark:hover:text-indigo-400 transition-colors"
-  >
-    <Discord class="w-5 h-5" />
+  <a href="https://discord.com/invite/vcmjfcA7" target="_blank" rel="noopener noreferrer" aria-label="Discord invite">
+    <Discord class="w-6 h-6 hover:opacity-75 transition-opacity" />
   </a>
-  <a
-    href="https://twitter.com/gdg_sucre"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="X de GDG Sucre"
-    class="text-neutral-600 hover:text-blue-400 dark:text-neutral-400 dark:hover:text-blue-400 transition-colors"
-  >
-    <Twitter class="w-5 h-5" />
+  <a href="https://twitter.com/gdg_sucre" target="_blank" rel="noopener noreferrer" aria-label="Twitter profile">
+    <Twitter class="w-6 h-6 hover:opacity-75 transition-opacity" />
   </a>
 </div>

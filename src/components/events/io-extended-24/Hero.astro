@@ -4,56 +4,46 @@ import IOExtendedLogo from "./icons/IOExtended.astro"
 import LocationMarker from "./icons/LocationMarker.astro"
 ---
 
-<section id="hero" class="pt-32 sm:pt-40 md:pt-44 pb-14 px-4 flex flex-col items-center">
-  <!-- Logotipo principal en gran formato -->
-  <div class="flex justify-center w-full">
-    <IOExtendedLogo class="w-72 sm:w-[480px] md:w-[620px] lg:w-[720px] h-auto text-black dark:text-white" />
+<section id="hero" class="mt-20 mb-12 mx-4 font-google">
+  <div class="flex place-content-center pt-8 lg:mt-40">
+    <IOExtendedLogo width="800" class="w-full max-w-[800px] text-[#202124] dark:text-white" />
   </div>
-
-  <!-- Título Sucre 2024 con tamaño ampliado -->
-  <h1 class="text-center font-medium text-3xl sm:text-5xl md:text-6xl mt-4 mb-8 text-neutral-900 dark:text-white tracking-tight">
+  <h2 class="text-center font-google font-medium text-2xl md:text-4xl lg:text-5xl mb-8 md:mb-12">
     Sucre 2024
-  </h1>
+  </h2>
 
-  <!-- Botón Regístrate estético con gradiente original -->
-  <div class="flex justify-center my-2">
+  <div class="flex flex-col place-content-center">
     <span
-      class="inline-block py-2.5 px-8 sm:py-3.5 sm:px-12 rounded-full text-xl sm:text-2xl md:text-3xl text-center text-white font-medium bg-gradient-to-r from-[#EA4335] via-[#F46831] via-75% to-[#FFCB32] shadow-sm select-none cursor-default"
+      class="min-w-fit py-2 px-6 lg:py-4 lg:px-8 mx-auto rounded-full text-xl md:text-3xl text-center text-white bg-gradient-to-r from-[#EA4335] via-[#F46831] via-75% to-[#FBBC04] hover:via-[#9F6CD4] hover:via-50% hover:to-[#4285F4] transition-all cursor-default select-none"
     >
       Regístrate
     </span>
   </div>
 
-  <!-- Fecha y Ubicación en dos columnas limpias sin tarjeta contenedora -->
-  <div class="mt-8 mb-6 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12 md:gap-16 text-neutral-900 dark:text-white">
-    <div class="flex items-start gap-3">
-      <div class="mt-1 text-black dark:text-white">
-        <CalendarLogo class="w-6 h-6" />
+  <div class="pt-4 lg:pt-6 flex items-center justify-center flex-col text-center">
+    <div
+      class="my-4 text-xl md:text-2xl font-medium text-[#202124] leading-8 md:leading-10 flex flex-col md:flex-row justify-between items-start md:items-center dark:text-white"
+    >
+      <div class="p-2 sm:p-2 md:p-6 lg:p-8 text-left flex items-start">
+        <div class="mr-2 mt-2"><CalendarLogo /></div>
+        <div>
+          <span class="block">Sábado 13 de julio</span>
+          <span class="block">08:30 hrs.</span>
+        </div>
       </div>
-      <div class="text-left leading-snug">
-        <span class="block text-lg sm:text-xl font-medium">Sábado 13 de julio</span>
-        <span class="block text-sm sm:text-base text-neutral-600 dark:text-neutral-400">08:30 hrs.</span>
+
+      <div class="p-2 sm:p-2 md:p-6 lg:p-8 text-left flex items-start">
+        <div class="mr-2 mt-2"><LocationMarker /></div>
+        <div>
+          <span class="block">CAINCO Chuquisaca</span>
+          <span class="block">Calle España #64</span>
+        </div>
       </div>
     </div>
 
-    <div class="flex items-start gap-3">
-      <div class="mt-1 text-black dark:text-white">
-        <LocationMarker class="w-6 h-6" />
-      </div>
-      <div class="text-left leading-snug">
-        <span class="block text-lg sm:text-xl font-medium">CAINCO Chuquisaca</span>
-        <span class="block text-sm sm:text-base text-neutral-600 dark:text-neutral-400">Calle España #64</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Leyenda de Evento Concluido en azul Google -->
-  <div class="mt-6 text-center space-y-1">
-    <div class="text-blue-500 font-bold text-2xl sm:text-3xl md:text-4xl">
+    <!-- Leyenda de Evento Concluido con estilo idéntico al mensaje original -->
+    <div class="mt-8 font-bold text-4xl text-[#4285F4] animate-bounce">
       ¡Evento Concluido!
     </div>
-    <p class="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400">
-      Google I/O Extended Sucre 2024
-    </p>
   </div>
 </section>
