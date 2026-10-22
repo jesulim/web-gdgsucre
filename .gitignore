@@ -37,3 +37,6 @@ opencode.json
 
 # claude
 .claude
+
+# Agent Teams Lite
+.atl/

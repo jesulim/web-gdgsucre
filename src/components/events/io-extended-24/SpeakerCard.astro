@@ -1,0 +1,44 @@
+---
+import { Image } from "astro:assets"
+import type { ImageMetadata } from "astro"
+import BoliviaFlag from "@/assets/events/io-extended-24/bolivia-flag.svg"
+
+interface Props {
+  id: number
+  name: string
+  location: string
+  image?: ImageMetadata
+}
+
+const { id, name, location, image } = Astro.props
+---
+
+<div
+  class="p-4 border-2 border-[#202124] bg-white rounded-3xl flex flex-col space-y-4 h-full dark:border-white dark:bg-[#202124] transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.02] hover:shadow-xl dark:hover:shadow-neutral-800/80 cursor-pointer"
+>
+  {image ? (
+    <Image
+      src={image}
+      alt={name}
+      width={138}
+      height={151}
+      class="mx-auto w-48 object-contain"
+      loading="lazy"
+      decoding="async"
+    />
+  ) : (
+    <div class="mx-auto w-48 h-40 bg-neutral-100 dark:bg-neutral-800 rounded-2xl flex items-center justify-center text-neutral-400">
+      Sin foto
+    </div>
+  )}
+
+  <div class="mx-auto text-center mt-auto">
+    <span class="block text-[#202124] font-semibold text-base sm:text-lg md:text-2xl dark:text-white">
+      {name}
+    </span>
+    <div class="flex flex-row items-center justify-center pt-1">
+      <BoliviaFlag class="pr-2 w-7 lg:w-8 h-auto object-contain inline-block" />
+      <span class="text-[#202124] text-sm md:text-xl dark:text-white">{location}</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,106 @@
+[
+  {
+    "img": "/speakers/Angel Flores.webp",
+    "name": "Angel Flores",
+    "location": "Cochabamba, Bolivia",
+    "flag": "/Bolivia Flag 2.svg",
+    "imgSlug": "angel-flores",
+    "fileName": "angel-flores.webp"
+  },
+  {
+    "img": "/speakers/Ariel Colque.webp",
+    "name": "Ariel Colque",
+    "location": "La Paz, Bolivia",
+    "flag": "/Bolivia Flag 2.svg",
+    "imgSlug": "ariel-colque",
+    "fileName": "ariel-colque.webp"
+  },
+  {
+    "img": "/speakers/Ariel Ortuño.webp",
+    "name": "Ariel Ortuño",
+    "location": "Santa Cruz, Bolivia",
+    "flag": "/Bolivia Flag 2.svg",
+    "imgSlug": "ariel-ortuno",
+    "fileName": "ariel-ortuno.webp"
+  },
+  {
+    "img": "/speakers/Fernando Silva.webp",
+    "name": "Fernando Silva",
+    "location": "La Paz, Bolivia",
+    "flag": "/Bolivia Flag 2.svg",
+    "imgSlug": "fernando-silva",
+    "fileName": "fernando-silva.webp"
+  },
+  {
+    "img": "/speakers/Gabriela Torrico.webp",
+    "name": "Gabriela Torrico",
+    "location": "Cochabamba, Bolivia",
+    "flag": "/Bolivia Flag 2.svg",
+    "imgSlug": "gabriela-torrico",
+    "fileName": "gabriela-torrico.webp"
+  },
+  {
+    "img": "/speakers/Gustavo Pacchi.webp",
+    "name": "Gustavo Pacchi",
+    "location": "Cochabamba, Bolivia",
+    "flag": "/Bolivia Flag 2.svg",
+    "imgSlug": "gustavo-pacchi",
+    "fileName": "gustavo-pacchi.webp"
+  },
+  {
+    "img": "/speakers/Lesly Zerna.webp",
+    "name": "Lesly Zerna",
+    "location": "Sucre, Bolivia",
+    "flag": "/Bolivia Flag 2.svg",
+    "imgSlug": "lesly-zerna",
+    "fileName": "lesly-zerna.webp"
+  },
+  {
+    "img": "/speakers/Melvy Ancieta.webp",
+    "name": "Melvy Ancieta",
+    "location": "Cochabamba, Bolivia",
+    "flag": "/Bolivia Flag 2.svg",
+    "imgSlug": "melvy-ancieta",
+    "fileName": "melvy-ancieta.webp"
+  },
+  {
+    "img": "/speakers/Paolo Pinto.webp",
+    "name": "Paolo Pinto",
+    "location": "El Alto, Bolivia",
+    "flag": "/Bolivia Flag 2.svg",
+    "imgSlug": "paolo-pinto",
+    "fileName": "paolo-pinto.webp"
+  },
+  {
+    "img": "/speakers/Pedro Anze.webp",
+    "name": "Pedro Anze",
+    "location": "Tarija, Bolivia",
+    "flag": "/Bolivia Flag 2.svg",
+    "imgSlug": "pedro-anze",
+    "fileName": "pedro-anze.webp"
+  },
+  {
+    "img": "/speakers/Rodrigo Torrico.webp",
+    "name": "Rodrigo Torrico",
+    "location": "Cochabamba, Bolivia",
+    "flag": "/Bolivia Flag 2.svg",
+    "imgSlug": "rodrigo-torrico",
+    "fileName": "rodrigo-torrico.webp"
+  },
+  {
+    "img": "/speakers/Ronald Chipana.webp",
+    "name": "Ronald Chipana",
+    "location": "Cochabamba, Bolivia",
+    "flag": "/Bolivia Flag 2.svg",
+    "imgSlug": "ronald-chipana",
+    "fileName": "ronald-chipana.webp"
+  },
+  {
+    "img": "/speakers/Sergio Fernandez.webp",
+    "name": "Sergio Fernandez",
+    "location": "La Paz, Bolivia",
+    "flag": "/Bolivia Flag 2.svg",
+    "imgSlug": "sergio-fernandez",
+    "fileName": "sergio-fernandez.webp"
+  }
+]

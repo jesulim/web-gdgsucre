@@ -1,0 +1,35 @@
+---
+import type { ImageMetadata } from "astro"
+import organizersData from "@/data/io-extended-24/organizers.json"
+import OrganizerCard from "./OrganizerCard.astro"
+import SectionTitle from "./SectionTitle.astro"
+
+const organizerImages = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/organizers/*.webp",
+  { eager: true }
+)
+---
+
+<section id="organizadores" class="my-16 md:my-24 scroll-mt-20">
+  <SectionTitle title="Organizadores" />
+  <div class="max-w-screen-lg mx-auto px-2 sm:px-4 mt-6">
+    <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8 lg:gap-16">
+      {
+        organizersData
+          .sort((a, b) => (b.type ?? 0) - (a.type ?? 0))
+          .map((organizer, index) => {
+            const imageModule = organizerImages[`/src/assets/organizers/${organizer.photoFileName}`]
+            return (
+              <div class="flex justify-center">
+                <OrganizerCard
+                  id={index.toString()}
+                  name={organizer.name}
+                  image={imageModule?.default}
+                />
+              </div>
+            )
+          })
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,49 @@
+---
+import CalendarLogo from "./icons/Calendar.astro"
+import IOExtendedLogo from "./icons/IOExtended.astro"
+import LocationMarker from "./icons/LocationMarker.astro"
+---
+
+<section id="hero" class="mt-24 md:mt-32 mb-16 md:mb-24 mx-4 font-google">
+  <div class="flex place-content-center pt-8 lg:mt-40">
+    <IOExtendedLogo width="800" class="w-full max-w-[800px] text-[#202124] dark:text-white" />
+  </div>
+  <h2 class="text-center font-google font-medium text-2xl md:text-4xl lg:text-5xl mb-8 md:mb-12">
+    Sucre 2024
+  </h2>
+
+  <div class="flex flex-col place-content-center">
+    <span
+      class="min-w-fit py-2 px-6 lg:py-4 lg:px-8 mx-auto rounded-full text-xl md:text-3xl text-center text-white bg-gradient-to-r from-[#EA4335] via-[#F46831] via-75% to-[#FBBC04] hover:via-[#9F6CD4] hover:via-50% hover:to-[#4285F4] transition-all cursor-default select-none"
+    >
+      Regístrate
+    </span>
+  </div>
+
+  <div class="pt-4 lg:pt-6 flex items-center justify-center flex-col text-center">
+    <div
+      class="my-4 text-xl md:text-2xl font-medium text-[#202124] leading-8 md:leading-10 flex flex-col md:flex-row justify-between items-start md:items-center dark:text-white"
+    >
+      <div class="p-2 sm:p-2 md:p-6 lg:p-8 text-left flex items-start">
+        <div class="mr-2 mt-2"><CalendarLogo /></div>
+        <div>
+          <span class="block">Sábado 13 de julio</span>
+          <span class="block">08:30 hrs.</span>
+        </div>
+      </div>
+
+      <div class="p-2 sm:p-2 md:p-6 lg:p-8 text-left flex items-start">
+        <div class="mr-2 mt-2"><LocationMarker /></div>
+        <div>
+          <span class="block">CAINCO Chuquisaca</span>
+          <span class="block">Calle España #64</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Leyenda de Evento Concluido con estilo idéntico al mensaje original -->
+    <div class="mt-8 font-bold text-4xl text-[#4285F4] animate-bounce">
+      ¡Evento Concluido!
+    </div>
+  </div>
+</section>

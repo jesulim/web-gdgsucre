@@ -1,0 +1,82 @@
+{
+  "day": [
+    {
+      "time": "8:30 - 9 AM",
+      "title": "ACREDITACIÓN + SORTEO"
+    },
+    {
+      "time": "9 - 9:30 AM",
+      "title": "Integrando Gemini AI a Google Workspace",
+      "speaker": "Melvy Ancieta"
+    },
+    {
+      "time": "9:30 - 10:15 AM ",
+      "title": "MediaPipe: De Principiante a Intermedio",
+      "speaker": "Ángel Flores & Pedro Anze"
+    },
+    {
+      "time": "10 - 10:45 AM",
+      "title": "El flujo de trabajo del desarrollador asistido por IA con IDX",
+      "speaker": "Rodrigo Torrico"
+    },
+    {
+      "time": "10:45 - 11 AM",
+      "title": "REFRIGERIO"
+    },
+    {
+      "time": "11 - 11:45 AM",
+      "title": "Firebase boost for 2024",
+      "speaker": "Ariel Ortuño Solis"
+    },
+    {
+      "time": "11:45 AM - 12:15 PM",
+      "title": "Designing products with Gemini and Material Design 3",
+      "speaker": "Gustavo Pacchi"
+    },
+    {
+      "time": "12:15 - 12:45 PM",
+      "title": "TensorFlow en Acción: Clasificación de Videos con Redes Convolucionales en 3D",
+      "speaker": "Sergio Rodrigo Fernández"
+    }
+  ],
+  "afternoon": [
+    {
+      "time": "12:45 - 1:45 PM",
+      "title": "ALMUERZO"
+    },
+    {
+      "time": "1:45 - 2:30 PM",
+      "title": "Self-Supervised Learning: Desbloqueando el Poder de los Datos No Etiquetados",
+      "speaker": "Fernando Silva"
+    },
+    {
+      "time": "2:30 - 3 PM",
+      "title": "No code apps with AppSheet and Google Cloud AI",
+      "speaker": "Gabriela Nathaly Torrico"
+    },
+    {
+      "time": "3 - 3:30 PM",
+      "title": "La arquitectura microfrontend corre por las venas de tu app Flutter",
+      "speaker": "Paolo Pinto"
+    },
+    {
+      "time": "3:30 - 3:45 PM",
+      "title": "REFRIGERIO"
+    },
+    {
+      "time": "3:45 - 4:30 PM",
+      "title": "Lo nuevo de Firebase para la creación de Aplicaciones",
+      "speaker": "Ronald Chipana Wariste"
+    },
+    {
+      "time": "4:30 - 5:15 PM",
+      "title": "Cuántas veces Sundar dijo AI en el Google IO 2024",
+      "speaker": "Lesly Zerna"
+    },
+    {
+      "time": "5:15 - 5:45 PM",
+      "title": "Gemini: Tu aliado para un UX excepcional",
+      "speaker": "Ariel Colque Herrera"
+    }
+  ]
+}

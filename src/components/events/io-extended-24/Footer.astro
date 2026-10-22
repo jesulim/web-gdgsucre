@@ -1,0 +1,36 @@
+---
+import Bicycle from "@/assets/events/io-extended-24/io24-bicycle.svg"
+import BicycleDark from "@/assets/events/io-extended-24/io24-bicycle-dark.svg"
+import GDGSucreLogo from "./icons/GDGSucreLogo.astro"
+import SocialIcons from "./SocialIcons.astro"
+---
+
+<footer class="relative pt-4 md:pt-8 bg-[#EEEEEE] dark:bg-[#202124] transition-colors duration-200">
+  <div class="w-full overflow-hidden leading-none">
+    <Bicycle class="w-full h-auto object-cover dark:hidden" />
+    <BicycleDark class="w-full h-auto object-cover hidden dark:block" />
+  </div>
+
+  <div class="dark:bg-[#202124] text-[#202124] dark:text-white">
+    <div class="mx-auto max-w-screen-2xl p-4 pt-8 pb-16 lg:py-12">
+      <div class="flex space-y-4 flex-col lg:flex-row lg:space-y-0 font-medium items-center">
+        <GDGSucreLogo />
+
+        <a href="/eventos" class="lg:mx-8 hover:text-[#4285F4] transition-colors">
+          Eventos Pasados
+        </a>
+
+        <a
+          href="https://developers.google.com/community-guidelines"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hover:text-[#4285F4] lg:mr-auto transition-colors"
+        >
+          Lineamientos de la comunidad
+        </a>
+
+        <SocialIcons />
+      </div>
+    </div>
+  </div>
+</footer>
