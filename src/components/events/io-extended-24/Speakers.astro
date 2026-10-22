@@ -9,19 +9,21 @@ const speakerImages = import.meta.glob<{ default: ImageMetadata }>("/src/assets/
 })
 ---
 
-<SectionTitle id="speakers" title="Speakers" />
-<div class="max-w-screen-lg mx-auto grid grid-cols-2 md:grid-cols-3 gap-8 px-4 my-8">
-  {
-    speakersData.map((speaker, index) => {
-      const imageModule = speakerImages[`/src/assets/speakers/${speaker.fileName}`]
-      return (
-        <SpeakerCard
-          id={index}
-          name={speaker.name}
-          location={speaker.location}
-          image={imageModule?.default}
-        />
-      )
-    })
-  }
-</div>
+<section id="speakers" class="my-16 md:my-24 scroll-mt-20">
+  <SectionTitle title="Speakers" />
+  <div class="max-w-screen-lg mx-auto grid grid-cols-2 md:grid-cols-3 gap-8 px-4 mt-6">
+    {
+      speakersData.map((speaker, index) => {
+        const imageModule = speakerImages[`/src/assets/speakers/${speaker.fileName}`]
+        return (
+          <SpeakerCard
+            id={index}
+            name={speaker.name}
+            location={speaker.location}
+            image={imageModule?.default}
+          />
+        )
+      })
+    }
+  </div>
+</section>

@@ -4,34 +4,25 @@ import ScheduleCard from "./ScheduleCard.astro"
 import SectionTitle from "./SectionTitle.astro"
 ---
 
-<div class="bg-[#EEEEEE] dark:bg-[#202124] transition-colors duration-200">
-  <SectionTitle id="agenda" title="Agenda" />
-  <div
-    class="schedule flex flex-row overflow-scroll snap-x snap-mandatory text-[#202124] dark:text-white md:justify-center md:overflow-hidden"
-  >
-    <div class="snap-start pl-4 py-2">
-      <h3 class="font-semibold text-2xl">Mañana</h3>
-      {scheduleData.day.map(talk => <ScheduleCard {...talk} type="talk" />)}
-    </div>
-    <!-- vertical divisor -->
-    <div class="border-l-2 border-gray-600 mt-12 mx-3 md:mx-4"></div>
+<section id="agenda" class="my-16 md:my-24 py-12 md:py-16 bg-[#EEEEEE] dark:bg-[#202124] transition-colors duration-200 scroll-mt-20">
+  <SectionTitle title="Agenda" />
+  <div class="max-w-screen-lg mx-auto px-4 mt-6">
+    <div
+      class="flex flex-col md:flex-row md:justify-center gap-8 md:gap-4 lg:gap-8 text-[#202124] dark:text-white"
+    >
+      <div class="w-full md:w-1/2 lg:w-[31rem]">
+        <h3 class="font-semibold text-2xl mb-2">Mañana</h3>
+        {scheduleData.day.map(talk => <ScheduleCard {...talk} type="talk" />)}
+      </div>
 
-    <div class="snap-start pr-4 py-2">
-      <h3 class="font-semibold text-2xl">Tarde</h3>
-      {scheduleData.afternoon.map(workshop => <ScheduleCard {...workshop} type="workshop" />)}
+      <!-- Divisor vertical en desktop / horizontal sutil en mobile -->
+      <div class="hidden md:block border-l-2 border-gray-400 dark:border-gray-600 mt-12 mx-2 lg:mx-4 self-stretch"></div>
+      <div class="block md:hidden border-t-2 border-gray-300 dark:border-gray-700 my-2"></div>
+
+      <div class="w-full md:w-1/2 lg:w-[31rem]">
+        <h3 class="font-semibold text-2xl mb-2">Tarde</h3>
+        {scheduleData.afternoon.map(workshop => <ScheduleCard {...workshop} type="workshop" />)}
+      </div>
     </div>
   </div>
-</div>
-
-<style>
-  /* Hide scrollbar for Chrome, Safari and Opera */
-  .schedule::-webkit-scrollbar {
-    display: none;
-  }
-
-  /* Hide scrollbar for IE, Edge and Firefox */
-  .schedule {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-  }
-</style>
+</section>

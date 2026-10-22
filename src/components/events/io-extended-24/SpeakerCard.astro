@@ -14,7 +14,7 @@ const { id, name, location, image } = Astro.props
 ---
 
 <div
-  class="p-4 border-2 border-[#202124] bg-white rounded-3xl flex flex-col space-y-4 h-full dark:border-white dark:bg-[#202124]"
+  class="p-4 border-2 border-[#202124] bg-white rounded-3xl flex flex-col space-y-4 h-full dark:border-white dark:bg-[#202124] transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.02] hover:shadow-xl dark:hover:shadow-neutral-800/80 cursor-pointer"
 >
   {image ? (
     <Image
