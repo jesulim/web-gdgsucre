@@ -1,0 +1,361 @@
+[
+  {
+    "id": "g3MkySQBJExBPi0hApdk",
+    "schedule": "08:00",
+    "title": "ACREDITACI\u00d3N",
+    "photoUrl": "",
+    "name": "",
+    "aboutMe": "",
+    "description": "",
+    "SocialNetwork": [],
+    "type": "Actividad",
+    "technologyType": ""
+  },
+  {
+    "id": "iLuf1O8EEgZsZC2gGrfN",
+    "schedule": "09:15",
+    "title": "Integraci\u00f3n de Google Workspace con Inteligencia Artificial ",
+    "photoUrl": "/events/io-extended-23/speakers/karol-catacora.webp",
+    "name": "Karol Catacora",
+    "aboutMe": "Master en Project Manager en Universidad de Barcelona, Certificada Scrum SMPC. Lead GDG WTM LA PAZ",
+    "description": "Google ha puesto en marcha una serie de opciones de IA generativa para facilitar el proceso de escritura en Gmail y Documentos. Por lo que se podr\u00e1 escribir sobre el tema que se quiere desarrollar e instant\u00e1neamente se crear\u00e1 un borrador relacionado, que podr\u00e1 ser reescrito para hacerlo m\u00e1s corto, m\u00e1s largo o modificarlo seg\u00fan el tono, lo mismo pasa tanto con Gmail y otras funciones con Hojas de C\u00e1lculo ",
+    "SocialNetwork": [
+      {
+        "type": "INSTAGRAM",
+        "link": "https://instagram.com/karocatacora?igshid=MjEwN2IyYWYwYw=="
+      },
+      {
+        "type": "LINKEDIN",
+        "link": "https://www.linkedin.com/in/karol-haydee-catacora-patana-206686207"
+      }
+    ],
+    "type": "Conferencia",
+    "technologyType": "Cloud"
+  },
+  {
+    "id": "qHI5fPlIJSFgtbWeEotk",
+    "schedule": "10:00",
+    "title": "Code Push en Flutter",
+    "photoUrl": "/events/io-extended-23/speakers/diego-velasquez.webp",
+    "name": "Diego Vel\u00e1squez L\u00f3pez",
+    "aboutMe": "Me conocen como diegoveloper.\nSoy Ingeniero de Software.\nTengo el reconocimiento de Google Developer Expert en Dart/Flutter por parte de Google.\nCreador de Contenido en Youtube.",
+    "description": "\u00bfCansado de esperar d\u00edas para la aprobaci\u00f3n de tus apps en Google Play y Appstore?\nCon esta herramienta ahora lo puedes hacer solo en segundos.",
+    "SocialNetwork": [
+      {
+        "type": "GITHUB",
+        "link": "https://github.com/diegoveloper/"
+      },
+      {
+        "link": "https://www.linkedin.com/in/diegoveloper/",
+        "type": "LINKEDIN"
+      },
+      {
+        "type": "TWITTER",
+        "link": "https://twitter.com/diegoveloper"
+      },
+      {
+        "type": "BLOG",
+        "link": "https://diegoveloper.com/"
+      }
+    ],
+    "type": "Conferencia",
+    "technologyType": "Mobile"
+  },
+  {
+    "id": "3ZUBzhmSoZ3kGhrf6Twp",
+    "schedule": "10:45",
+    "title": "REFRIGERIO",
+    "photoUrl": "",
+    "name": "",
+    "aboutMe": "",
+    "description": "",
+    "SocialNetwork": [],
+    "type": "Actividad",
+    "technologyType": ""
+  },
+  {
+    "id": "ZOays4kZA8BstW35u8ON",
+    "schedule": "11:00",
+    "title": "Aprovechando el poder de Google Bard con Python",
+    "photoUrl": "/events/io-extended-23/speakers/silvana-gutierrez.webp",
+    "name": "Silvana Gutierrez Monta\u00f1o",
+    "aboutMe": "Ingeniera de sistemas con +10 a\u00f1os de experiencia en desarrollo de software, conocimiento avanzado en tecnolog\u00edas backend, base de datos, cloud, desarrollo de chatbots, gesti\u00f3n de proyectos y metodolog\u00edas \u00e1giles.\nTiene experiencia trabajando como fullstack developer, lider de equipo y como docente catedr\u00e1tica.\nActualmente trabaja en Zenta Group como Expert Backend Developer( Chile),\nEs co founder de la consultora tecnol\u00f3gica AuroraSoft (La Paz Bolivia) \nEs mentor lead de GDG La Paz\nEmbajadora del programa Google Women Techmakers.\nConferencista, entusiasta de la tecnolog\u00eda, el aprendizaje constante y la inclusi\u00f3n de la mujer en el sector tecnol\u00f3gico.",
+    "description": "En este taller aprender\u00e1s a integrar Bard (un modelo de lenguaje grande (LLM) dise\u00f1ado para comprender y generar texto similar al producido por humanos) a una aplicaci\u00f3n hecha en python, usando la librer\u00eda Bard-API, veremos como ejemplos la creaci\u00f3n de resumen de textos, respuesta a preguntas, traducci\u00f3n de idiomas, recuperaci\u00f3n de informaci\u00f3n entre otros. Veremos tambi\u00e9n como Bard puede ayudarnos en el an\u00e1lisis, procesamiento y visualizaci\u00f3n de datos,  por \u00faltimo una breve comparaci\u00f3n con GPT-4\n\nRequisitos:\n- Deben tener instalado python y pip.\n- Contar con conexi\u00f3n a Internet ",
+    "SocialNetwork": [
+      {
+        "link": "https://github.com/silvana87",
+        "type": "GITHUB"
+      },
+      {
+        "type": "INSTAGRAM",
+        "link": "https://www.instagram.com/silvanacarolinagm/"
+      },
+      {
+        "type": "LINKEDIN",
+        "link": "https://www.linkedin.com/in/silvanagutierrezm/"
+      },
+      {
+        "type": "TWITTER",
+        "link": "https://twitter.com/Sil_Guty"
+      }
+    ],
+    "type": "Taller",
+    "technologyType": "IA"
+  },
+  {
+    "id": "kwSEpizAJfK0gRMO6MGo",
+    "schedule": "11:00",
+    "title": "Firebase, Lo bueno y lo nuevo",
+    "photoUrl": "/events/io-extended-23/speakers/ariel-solis.webp",
+    "name": "Ariel Ortu\u00f1o Solis",
+    "aboutMe": "Ingeniero de Sistemas, dedicado al desarrollo de software por m\u00e1s de 20 a\u00f1os, parte activa de la comunidad de desarrollo de software, pertenezco al GDG Santa Cruz como fundador, organizador y speaker impulsando el uso de plataformas para agilizar el desarrollo como Firebase y AWS, mentor de Startup Weekend para el tema tecnolog\u00eda y negocios en varias versiones, como base de mi experiencia laboral, la resoluci\u00f3n de problemas siempre a marcado mi crecimiento profesional",
+    "description": "Taller sobre varias herramientas de de Firebase donde se aprender\u00e1 y mostrara como crear un chat y manejo de im\u00e1genes con Firebase ML\n\nRequisitos\nInternet, Visual Studio Code o Similar, Android Studio",
+    "SocialNetwork": [
+      {
+        "link": "https://github.com/arielgos",
+        "type": "GITHUB"
+      },
+      {
+        "type": "LINKEDIN",
+        "link": "https://www.linkedin.com/in/arielgos"
+      }
+    ],
+    "type": "Taller",
+    "technologyType": "Cloud"
+  },
+  {
+    "id": "m3IYGZTaVIoGb9LXaDfW",
+    "schedule": "11:15",
+    "title": "Angular Micro-frontends",
+    "photoUrl": "/events/io-extended-23/speakers/mauricio-arce.webp",
+    "name": "Mauricio Arce Torrez",
+    "aboutMe": "Soy desarrollador web. Actualmente trabajo a tiempo completo como technical lead para un proyecto del exterior y hago landings y proyectos peque\u00f1os en mis ratos libres. Soy co-organizador de la comunidad Angular Bolivia, adem\u00e1s de ser parte de las comunidades GDG Cochabamba y GP4Tech.",
+    "description": "En la charla hablaremos de qu\u00e9 son los Micro-frontends, por qu\u00e9 agregarlos a nuestro proceso de desarrollo, casos de uso, las diferentes utilidades que tienen y opciones para poder implementarlos, haciendo especial foco en Module Federation. Adem\u00e1s, veremos un peque\u00f1o demo de c\u00f3mo crear MFEs en Angular y c\u00f3mo comunicarlos.",
+    "SocialNetwork": [
+      {
+        "type": "GITHUB",
+        "link": "https://github.com/combimauri"
+      },
+      {
+        "type": "INSTAGRAM",
+        "link": "https://instagram.com/combimauri"
+      },
+      {
+        "type": "LINKEDIN",
+        "link": "https://www.linkedin.com/in/combimauri/"
+      },
+      {
+        "type": "TWITTER",
+        "link": "https://twitter.com/combimauri"
+      },
+      {
+        "type": "BLOG",
+        "link": "https://combimauri.com/"
+      }
+    ],
+    "type": "Conferencia",
+    "technologyType": "Web"
+  },
+  {
+    "id": "9en2sxz7mrNou1qeeNHy",
+    "schedule": "12:00",
+    "title": "ALMUERZO",
+    "photoUrl": "",
+    "name": "",
+    "aboutMe": "",
+    "description": "",
+    "SocialNetwork": [],
+    "type": "Actividad",
+    "technologyType": ""
+  },
+  {
+    "id": "0COlUjwy4f5NJDY4wJug",
+    "schedule": "14:45",
+    "title": "Web Assembly en 2023",
+    "photoUrl": "/events/io-extended-23/speakers/sergio-ochoa.webp",
+    "name": "Sergio Antonio Ochoa Martinez",
+    "aboutMe": "Desarrollador Freelancer, desarrollador en OpenKM, Cofundador de GDG Sucre, Cacitador en IQuattro, desarrollador full stack, encargado de la comunidad de OpenKM, experiencia laboral como Freelancer con el desarrollo de aplicaciones para empresas p\u00fablicas y privadas, nacionales y extranjeras, interesado en el aprendizaje y ense\u00f1anza de nuevas tecnolog\u00edas.",
+    "description": "WebAssembly (Wasm) es un formato binario de bajo nivel y alto rendimiento para la Web, que se puede compilar a partir de lenguajes como C++, Swift, Dart, Kotlin, Go. En esta charla, mostraremos nuevos desarrollos sobre la compatibilidad de los lenguajes, usabilidad y mejora del rendimiento. \u00a1Tambi\u00e9n te mostraremos c\u00f3mo comenzar r\u00e1pidamente por tu cuenta! ",
+    "SocialNetwork": [
+      {
+        "link": "https://github.com/gnujavasergio",
+        "type": "GITHUB"
+      },
+      {
+        "type": "LINKEDIN",
+        "link": "https://www.linkedin.com/in/sergio-antonio-ochoa-martinez-7aaa6149/"
+      },
+      {
+        "type": "TWITTER",
+        "link": "https://twitter.com/gnujavasergio"
+      }
+    ],
+    "type": "Conferencia",
+    "technologyType": "Web"
+  },
+  {
+    "id": "hlNzETyqF5UmNAKXx3Nu",
+    "schedule": "15:45",
+    "title": "From Static to Dynamic",
+    "photoUrl": "/events/io-extended-23/speakers/ivan-sangueza.webp",
+    "name": "Ivan Sangueza Alarcon",
+    "aboutMe": "Desarrollador apasionado por todo lo relacionado con la web. Creador de contenido y amante de la m\u00fasica y la creatividad.",
+    "description": "Te presentare una nueva API revolucionaria que ampl\u00eda las capacidades de CSS y las animaciones web, permiti\u00e9ndote crear transiciones fluidas y cautivadoras entre diferentes estados de una p\u00e1gina.\n\nRequisitos:\n- Conocimientos b\u00e1sicos de desarrollo web (HTML, CSS, animaciones web). \n- Experiencia previa en la creaci\u00f3n de sitios web o aplicaciones web. Dispositivo de desarrollo (laptop) con un entorno de desarrollo web configurado.\n- Navegadores web actualizados. Comprensi\u00f3n b\u00e1sica de JavaScript (recomendado).",
+    "SocialNetwork": [
+      {
+        "link": "https://github.com/ivansanguezax",
+        "type": "GITHUB"
+      },
+      {
+        "link": "https://www.instagram.com/ivansanguezax/",
+        "type": "INSTAGRAM"
+      },
+      {
+        "link": "https://www.linkedin.com/in/ivansanguezax/",
+        "type": "LINKEDIN"
+      },
+      {
+        "type": "BLOG",
+        "link": "http://ivansanguezax.com/"
+      }
+    ],
+    "type": "Taller",
+    "technologyType": "Web"
+  },
+  {
+    "id": "3wBDRx8abbZNP3chSJ8o",
+    "schedule": "15:30",
+    "title": "\u00bfQu\u00e9 es Bard y que tiene que ver Google Assistant con \u00e9l?",
+    "photoUrl": "/events/io-extended-23/speakers/carlos-huaman.webp",
+    "name": "Carlo Huam\u00e1n",
+    "aboutMe": "Ingeniero de Sistemas | Arquitecto Mobile @ BCP | Assistant #GDE | \ud83d\udeb4\ud83e\udd6d\ud83c\udf6b\ud83c\udf4a",
+    "description": "En esta charla hablaremos un poco m\u00e1s de la Inteligencia Artificial de Google \"Bard\", sus novedades de ella en el IO 2023 y c\u00f3mo el motor de Google Assistant es/fue parte de su construcci\u00f3n",
+    "SocialNetwork": [
+      {
+        "link": "https://github.com/tohure",
+        "type": "GITHUB"
+      },
+      {
+        "link": "https://www.linkedin.com/in/tohure/",
+        "type": "LINKEDIN"
+      },
+      {
+        "link": "https://twitter.com/tohure_",
+        "type": "TWITTER"
+      },
+      {
+        "type": "BLOG",
+        "link": "https://g.dev/tohure"
+      }
+    ],
+    "type": "Conferencia",
+    "technologyType": "IA"
+  },
+  {
+    "id": "j5GpmFHrVwb2Z2sdCMIs",
+    "schedule": "16:15",
+    "title": "Kotlin in the Multiplatform of madness",
+    "photoUrl": "/events/io-extended-23/speakers/yury-camacho.webp",
+    "name": "Yury Camacho",
+    "aboutMe": "Yury Camacho es Ingeniero de Sistemas , orador internacional y Google Developer Expert en Android y Kotlin, Desarrollador experimentado de aplicaciones m\u00f3viles con  mas de 11 a\u00f1os en esta industria.\nTrabajo en Globant, JP Morgan Bank, OLX y  actualmente es Staff Software Engineer y l\u00edder t\u00e9cnico del equipo de pagos y fraude en Rappi ",
+    "description": "Hoy tenemos varios universos tecnol\u00f3gicos \nWeb,\nMobile,\nDesktop,\nCloud, \ndispositivos electr\u00f3nicos\ny para cada no de estos universos tenemos diferentes frameworks, librer\u00edas y utilitarios para crear aplicaciones, pero constantemente se hace la b\u00fasqueda de poder crear una solo app que pueda correr en todos estos universos.\nHoy Kotlin (KMM = Compose)  llega a traspasar todos estos universos para cumplir ese sue\u00f1o de poder llevar nuestras apps a todos estos universos.  y en esta charla hablaremos de como lograr inciar y llevar a cabo este sue\u00f1o de usar Kotlin Multiplatform Mobile con Compose y poder correr nuestra app en estos universos. te invito a  entrar en esta aventura multiversal!  ",
+    "SocialNetwork": [
+      {
+        "type": "GITHUB",
+        "link": "https://github.com/camachoyury"
+      },
+      {
+        "type": "INSTAGRAM",
+        "link": "https://www.instagram.com/camachoyury/"
+      },
+      {
+        "link": "https://www.linkedin.com/in/camachoyury/",
+        "type": "LINKEDIN"
+      },
+      {
+        "type": "TWITTER",
+        "link": "https://twitter.com/camachoyury"
+      }
+    ],
+    "type": "Conferencia",
+    "technologyType": "Mobile"
+  },
+  {
+    "id": "sVJHw1iWN5nvVvz8NZqi",
+    "schedule": "17:00",
+    "title": "REFRIGERIO",
+    "photoUrl": "",
+    "name": "",
+    "aboutMe": "",
+    "description": "",
+    "SocialNetwork": [],
+    "type": "Actividad",
+    "technologyType": ""
+  },
+  {
+    "id": "SybeyTrRqPWWI0oJApUf",
+    "schedule": "17:30",
+    "title": "C\u00f3mo construir productos de Machine Learning desde Keras y Vertex AI aprovechando al m\u00e1ximo las ventajas de Generative AI",
+    "photoUrl": "/events/io-extended-23/speakers/nathaly-alarcon.webp",
+    "name": "Nathaly Alarc\u00f3n Torrico",
+    "aboutMe": "Google Developer Expert en Machine Learning\nData Science Engineer Team Lead en Mojix\nDocente de Postgrado en la UPB\nWomen in Data Science La Paz Ambassador",
+    "description": "Vamos a definir los alcances de Generative AI y tendremos ejemplos pr\u00e1cticos de c\u00f3mo aplicar y generar productos utilizando herramientas como Keras, Vertex AI Generative Studio y Model Garden",
+    "SocialNetwork": [
+      {
+        "link": "https://github.com/nathalyAlarconT",
+        "type": "GITHUB"
+      },
+      {
+        "type": "INSTAGRAM",
+        "link": "https://www.instagram.com/nathalyalarcont/"
+      },
+      {
+        "type": "LINKEDIN",
+        "link": "https://www.linkedin.com/in/nathalyalarcon/"
+      },
+      {
+        "type": "TWITTER",
+        "link": "https://twitter.com/NathalyAlarconT"
+      },
+      {
+        "link": "https://medium.com/@NathalyAlarconT",
+        "type": "BLOG"
+      }
+    ],
+    "type": "Conferencia",
+    "technologyType": "IA"
+  },
+  {
+    "id": "rE7dyKiaZpY4TfojUFlL",
+    "schedule": "18:15",
+    "title": "Deep dive into Flutter deep linking",
+    "photoUrl": "/events/io-extended-23/speakers/david-rios.webp",
+    "name": "David Samuel Rios Nu\u00f1ez",
+    "aboutMe": "Organizador GDG La Paz, Flutter Devs Bolivia, Senior Mobile Developer en SwiftMedical (Canada), actualmente trabajo con Flutter 5 a\u00f1os pero tambi\u00e9n me gustan las tecnolog\u00edas como Kotlin y Swift.",
+    "description": "Inspirada en la charla que se dio en el Google IO 2023, en esta charla veremos qu\u00e9 es deep linking en Flutter, c\u00f3mo funciona, c\u00f3mo integrar diferentes dominios, y c\u00f3mo abrir nuestras aplicaciones desde links externos, botones, y otros. Veremos las novedades de este feature que salieron en este 2023 y cuales son los pasos seguir para dominar este concepto.",
+    "SocialNetwork": [
+      {
+        "type": "GITHUB",
+        "link": "https://github.com/driosn"
+      },
+      {
+        "type": "LINKEDIN",
+        "link": "https://www.linkedin.com/in/david-rios-dev/"
+      }
+    ],
+    "type": "Conferencia",
+    "technologyType": "Mobile"
+  },
+  {
+    "id": "rlfKYOr3Ijt37S8SPBgm",
+    "schedule": "19:00",
+    "title": "CIERRE DEL EVENTO",
+    "photoUrl": "",
+    "name": "",
+    "aboutMe": "",
+    "description": "",
+    "SocialNetwork": [],
+    "type": "Actividad",
+    "technologyType": ""
+  }
+]

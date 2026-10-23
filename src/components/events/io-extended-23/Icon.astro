@@ -1,0 +1,9 @@
+---
+export interface Props {
+  icon: string
+}
+
+const { icon } = Astro.props as Props
+---
+
+<img src={`/events/io-extended-23/${icon}.svg`} alt="" />
