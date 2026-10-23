@@ -1,0 +1,38 @@
+---
+import { Image } from "astro:assets"
+import people from "@/assets/events/devfest-23/drawings/people.png"
+---
+
+<Image
+  src={people}
+  alt="people"
+  class="people mt-2 mr-2 sm:ml-8 lg:ml-20"
+/>
+
+<style>
+  .people {
+    animation: dibujo2 4s infinite;
+    filter: grayscale(100%);
+    opacity: 0.7;
+    position: absolute;
+    top: 65%;
+    right: 20%;
+    z-index: 2;
+  }
+
+  @keyframes dibujo2 {
+    0%, 15% { transform: translate(0, 0) rotate(0deg); }
+    16%, 30% { transform: translate(2px, 1px) rotate(8deg); }
+    31%, 45% { transform: translate(-2px, -1px) rotate(-6deg); }
+    46%, 60% { transform: translate(-1px, 2px) rotate(4deg); }
+    61%, 75% { transform: translate(1px, -2px) rotate(-8deg); }
+    76%, 90% { transform: translate(3px, -1px) rotate(6deg); }
+    91%, 100% { transform: translate(-3px, 1px) rotate(-6deg); }
+  }
+
+  @media only screen and (max-width: 600px) {
+    .people {
+      display: none;
+    }
+  }
+</style>

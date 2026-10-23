@@ -1,0 +1,103 @@
+---
+import FooterGraph from "@/assets/events/devfest-23/FooterGraph.svg?url"
+import GdgLogo from "./logos/GdgLogo.astro"
+import WtmLogo from "./logos/WtLogo.astro"
+import SocialIcons from "./SocialIcons.astro"
+---
+
+<footer>
+  <div class="mx-auto w-full max-w-screen-lg p-4 py-6 lg:py-8">
+    <div class="relative">
+      <hr class="border-t sm:mx-auto border-white lg:my-4 mb-8" />
+
+      <div class="flex mb-6 md:mb-8 gap-2">
+        <a
+          href="https://gdg.community.dev/gdg-sucre/"
+          class="flex items-center"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <GdgLogo />
+        </a>
+        <a
+          href="https://developers.google.com/womentechmakers/ambassadors?hl=es-419"
+          class="flex items-center"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <WtmLogo />
+        </a>
+      </div>
+
+      <div class="max-w-lg grid grid-cols-2 gap-8 sm:gap-4 sm:grid-cols-2">
+        <div>
+          <ul class="text-gray-400 font-medium">
+            <li class="mb-4">
+              <a
+                href="https://gdg.community.dev/gdg-sucre/"
+                class="underline hover:text-white"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Comunidad GDG Sucre
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://developers.google.com/womentechmakers/ambassadors?hl=es-419"
+                class="underline hover:text-white"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Women Techmakers Sucre
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <ul class="text-gray-400 font-medium">
+            <li class="mb-4">
+              <a
+                href="https://github.com/gdgsucre"
+                class="underline hover:text-white"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Github
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://discord.gg/rwcakVfyrx"
+                class="underline hover:text-white"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Discord
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <ul class="text-gray-400 font-medium">
+            <li class="mb-4">
+              <a
+                href="/eventos"
+                class="underline hover:text-white"
+              >
+                Eventos Pasados
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-12 mb-0 sm:flex sm:items-center sm:justify-between">
+        <SocialIcons />
+      </div>
+      <div class="invisible sm:visible absolute top-0 right-0 w-1/3 pointer-events-none">
+        <img src={FooterGraph} alt="Footer Graph" />
+      </div>
+    </div>
+  </div>
+</footer>

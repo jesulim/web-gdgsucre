@@ -1,0 +1,23 @@
+---
+interface Props {
+  time: string
+  title: string
+  speaker?: string
+  type: "talk" | "workshop"
+}
+
+const { time, title, speaker, type } = Astro.props
+const timeTextColor =
+  type === "talk" ? "text-[#3D8BFF] text-df23-blue" : "text-[#FFBB01] text-df23-yellow"
+const titleTextColor = speaker ? "text-white" : timeTextColor
+---
+
+<li class="p-2 w-full max-w-sm md:w-96 lg:w-[30rem] mx-auto md:mx-0 list-none">
+  <p class={`text-sm font-semibold font-quantico lg:text-md ${timeTextColor}`}>
+    {time}
+  </p>
+  <p class={`font-medium leading-5 lg:text-lg lg:leading-6 ${titleTextColor}`}>
+    {title}
+  </p>
+  {speaker && <p class="text-gray-300 lg:text-md">{speaker}</p>}
+</li>

@@ -1,0 +1,73 @@
+---
+import { Image } from "astro:assets"
+import droBots from "@/assets/sponsors/dro-bots.webp"
+import facultadEconomia from "@/assets/sponsors/facultad-economia.webp"
+import itGroup from "@/assets/sponsors/it-group.webp"
+import itera from "@/assets/sponsors/itera.webp"
+import jetbrains from "@/assets/sponsors/jetbrains.webp"
+import magisterioRural from "@/assets/sponsors/magisterio-rural.webp"
+import xyz from "@/assets/sponsors/xyz.webp"
+import SectionTitle from "./SectionTitle.astro"
+
+const sponsors = [
+  {
+    name: "itera soluciones digitales",
+    logo: itera,
+    url: "https://www.facebook.com/profile.php?id=100063753325772",
+  },
+  {
+    name: "Dro-bots accesorios para robótica y electrónica",
+    logo: droBots,
+    url: "https://www.facebook.com/profile.php?id=100083024454287",
+  },
+  {
+    name: "Facultad de Ciencias Económicas y Empresariales",
+    logo: facultadEconomia,
+    url: "https://economicas.usfx.bo/",
+  },
+  {
+    name: "XYZ Sistema Profesional de Sonido y Luces",
+    logo: xyz,
+    url: "https://www.facebook.com/profile.php?id=100057052885906&mibextid=ZbWKwL",
+  },
+  {
+    name: "ITGroup Systems",
+    logo: itGroup,
+    url: "https://www.facebook.com/ITGroupSystems/",
+  },
+  {
+    name: "Cooperativa de Ahorro y Crédito Abierta Magisterio Rural de Chuquisaca R.L.",
+    logo: magisterioRural,
+    url: "https://www.facebook.com/CMRChuq/",
+  },
+  {
+    name: "JetBrains",
+    logo: jetbrains,
+    url: "https://www.facebook.com/JetBrains",
+  },
+]
+---
+
+<section>
+  <SectionTitle id="sponsors" title="Sponsors" />
+  <div class="max-w-screen-md px-2 mx-auto grid grid-cols-2 gap-4 md:grid-cols-3">
+    {
+      sponsors.map((sponsor) => (
+        <div class="flex justify-center items-center p-4">
+          <a
+            href={sponsor.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="transition-transform duration-200 hover:scale-105"
+          >
+            <Image
+              src={sponsor.logo}
+              alt={sponsor.name}
+              class="max-h-24 w-auto object-contain"
+            />
+          </a>
+        </div>
+      ))
+    }
+  </div>
+</section>

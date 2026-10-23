@@ -1,0 +1,50 @@
+---
+import Facebook from "@/assets/events/devfest-23/social/Facebook.svg?url"
+import Instagram from "@/assets/events/devfest-23/social/Instagram.svg?url"
+import Linkedin from "@/assets/events/devfest-23/social/Linkedin.svg?url"
+import Tiktok from "@/assets/events/devfest-23/social/Tiktok.svg?url"
+import Twitter from "@/assets/events/devfest-23/social/Twitter.svg?url"
+
+const socialIcons = [
+  {
+    icon: Facebook,
+    link: "https://www.facebook.com/gdgsucre",
+    alt: "Facebook",
+  },
+  {
+    icon: Instagram,
+    link: "https://www.instagram.com/gdgsucre",
+    alt: "Instagram",
+  },
+  {
+    icon: Twitter,
+    link: "https://twitter.com/gdg_sucre",
+    alt: "Twitter",
+  },
+  {
+    icon: Tiktok,
+    link: "https://www.tiktok.com/@gdgsucre?lang=en",
+    alt: "Tiktok",
+  },
+  {
+    icon: Linkedin,
+    link: "https://www.linkedin.com/company/gdgsucre",
+    alt: "Linkedin",
+  },
+]
+---
+
+<div class="flex items-center space-x-10 sm:justify-center">
+  {
+    socialIcons.map(({ icon, link, alt }) => (
+      <a
+        class="fill-gray-900 hover:opacity-100 opacity-80 transition-opacity"
+        href={link}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <img src={icon} alt={alt} class="w-6 h-6" />
+      </a>
+    ))
+  }
+</div>

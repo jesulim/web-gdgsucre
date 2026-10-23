@@ -1,0 +1,36 @@
+---
+import type { ImageMetadata } from "astro"
+import organizersData from "@/data/devfest-23/organizers.json"
+import { OrganizerCard } from "./OrganizerCard"
+import SectionTitle from "./SectionTitle.astro"
+
+const organizerImages = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/organizers/*.webp",
+  { eager: true }
+)
+---
+
+<section>
+  <SectionTitle id="organizadores" title="Organizadores" />
+  <div class="max-w-screen-md mx-auto grid grid-cols-2 md:grid-cols-3 gap-8 px-4">
+    {
+      organizersData
+        .slice()
+        .sort((a, b) => (b.type ?? 0) - (a.type ?? 0))
+        .map((organizer, i) => {
+          const imageModule =
+            organizerImages[`/src/assets/organizers/${organizer.photoFileName}`]
+          const photoUrl = imageModule?.default?.src ?? ""
+          return (
+            <OrganizerCard
+              id={organizer.id ?? i.toString()}
+              name={organizer.name}
+              photoUrl={photoUrl}
+              socialNetworks={organizer.socialNetworks}
+              client:visible
+            />
+          )
+        })
+    }
+  </div>
+</section>
