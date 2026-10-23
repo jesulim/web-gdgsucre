@@ -42,7 +42,7 @@ import GdgLogo from "./logos/GdgLogo.astro"
         <li>
           <a
             href="#"
-            class="block hover:dark:dark:text-blue-500 py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-white"
+            class="block hover:dark:dark:text-blue-500 py-2 pl-3 pr-4 text-white rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-white"
             aria-current="page">Inicio</a
           >
         </li>
@@ -56,14 +56,14 @@ import GdgLogo from "./logos/GdgLogo.astro"
         <li>
           <a
             href="#speakers"
-            class="block hover:dark:text-yellow-500 py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-white"
+            class="block hover:dark:text-yellow-500 py-2 pl-3 pr-4 text-white rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-white"
             >Speakers</a
           >
         </li>
         <li>
           <a
             href="#agenda"
-            class="block hover:dark:text-blue-500 py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-white"
+            class="block hover:dark:text-blue-500 py-2 pl-3 pr-4 text-white rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-white"
             >Agenda</a
           >
         </li>
@@ -71,7 +71,7 @@ import GdgLogo from "./logos/GdgLogo.astro"
         <li>
           <a
             href="#sponsors"
-            class="block hover:dark:text-green-500 py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-white"
+            class="block hover:dark:text-green-500 py-2 pl-3 pr-4 text-whiterounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-white"
             >Sponsors</a
           >
         </li>
@@ -79,7 +79,7 @@ import GdgLogo from "./logos/GdgLogo.astro"
         <li>
           <a
             href="#organizadores"
-            class="block hover:dark:text-yellow-500 py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-white"
+            class="block hover:dark:text-yellow-500 py-2 pl-3 pr-4 text-white rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-white"
             >Equipo</a
           >
         </li>
@@ -96,11 +96,49 @@ import GdgLogo from "./logos/GdgLogo.astro"
     const target = targetId ? document.getElementById(targetId) : null
 
     if (target) {
+      const setOpen = (open: boolean) => {
+        toggle.setAttribute("aria-expanded", String(open))
+        target.classList.toggle("hidden", !open)
+      }
+
       toggle.addEventListener("click", () => {
         const expanded = toggle.getAttribute("aria-expanded") === "true"
+        setOpen(!expanded)
+      })
 
-        toggle.setAttribute("aria-expanded", String(!expanded))
-        target.classList.toggle("hidden")
+      target.addEventListener("click", (event) => {
+        if (event.target instanceof Element && event.target.closest("a")) {
+          setOpen(false)
+        }
+      })
+
+      document.addEventListener("click", (event) => {
+        if (toggle.getAttribute("aria-expanded") !== "true") {
+          return
+        }
+
+        if (!(event.target instanceof Node)) {
+          return
+        }
+
+        if (toggle.contains(event.target) || target.contains(event.target)) {
+          return
+        }
+
+        setOpen(false)
+      })
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") {
+          setOpen(false)
+          toggle.focus()
+        }
+      })
+
+      window.addEventListener("resize", () => {
+        if (window.matchMedia("(min-width: 768px)").matches) {
+          setOpen(false)
+        }
       })
     }
   }
