@@ -1,0 +1,99 @@
+---
+import Github from "@/assets/icons/social/Github.svg?url"
+import Instagram from "@/assets/icons/social/Instagram.svg?url"
+import Linkedin from "@/assets/icons/social/Linkedin.svg?url"
+import Twitter from "@/assets/icons/social/Twitter.svg?url"
+import Web from "@/assets/icons/social/Web.svg?url"
+import type { ScheduleEntry, SocialLink } from "./types"
+
+type Props = ScheduleEntry
+
+const techTypeStyles: Record<Exclude<Props["technologyType"], "">, string> = {
+  Cloud: "bg-red-500",
+  Web: "bg-blue-500",
+  IA: "bg-yellow-500 px-4",
+  Mobile: "bg-green-500",
+}
+
+const socialIcons: Record<SocialLink["type"], string> = {
+  GITHUB: Github,
+  LINKEDIN: Linkedin,
+  TWITTER: Twitter,
+  INSTAGRAM: Instagram,
+  BLOG: Web,
+}
+
+const {
+  schedule,
+  title,
+  photoUrl,
+  name,
+  aboutMe,
+  description,
+  SocialNetwork,
+  type,
+  technologyType,
+} = Astro.props
+---
+
+<details class="group cursor-pointer py-2 px-4 sm:p-8">
+  <summary class="list-none">
+    <div class="flex items-start space-x-4">
+      <div class="flex flex-col items-center space-y-3">
+        <h3 class="text-xl font-semibold sm:text-2xl">{schedule}</h3>
+        <img class="h-12 w-12 rounded-full border border-black" src={photoUrl} alt={name} />
+      </div>
+
+      <div class="flex-1 text-lg md:text-xl">
+        <div class="flex">
+          <p class="mr-auto line-clamp-3 text-xl font-bold text-yellow sm:text-2xl">{title}</p>
+          <svg
+            class="mt-2 ml-2 h-3 w-3 shrink-0 rotate-180 transition-transform group-open:rotate-0"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 10 6"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 5 5 1 1 5"
+            />
+          </svg>
+        </div>
+        <p class="text-base font-medium opacity-80 sm:text-lg">{name}</p>
+        <p class="line-clamp-3 text-base group-open:line-clamp-none sm:text-lg">{description}</p>
+      </div>
+    </div>
+
+    <div class="mt-4 flex items-center space-x-1 text-sm text-black md:text-lg">
+      <span class="ml-auto rounded-lg border-2 border-black bg-white px-2">{type}</span>
+      <span class:list={["rounded-full border-2 border-black px-2", technologyType && techTypeStyles[technologyType]]}>
+        {technologyType}
+      </span>
+    </div>
+  </summary>
+
+  <div class="ml-16 mt-4">
+    <h5 class="mt-4 font-bold">Sobre mí:</h5>
+    <p class="text-base whitespace-pre-line font-normal">{aboutMe}</p>
+
+    <div class="-mx-2 mt-1 flex items-center space-x-2">
+      {
+        SocialNetwork.map(({ type: socialType, link }) => (
+          <a
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="p-2"
+            aria-label={socialType}
+          >
+            <img class="h-6 w-6" src={socialIcons[socialType] || Web} alt={socialType} />
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</details>

@@ -1,0 +1,57 @@
+[
+  {
+    "id": "1",
+    "img": "/events/io-extended-23/speakers2/ariel-solis.webp",
+    "name": "Ariel Ortuño"
+  },
+  {
+    "id": "2",
+    "img": "/events/io-extended-23/speakers2/carlo-huaman.webp",
+    "name": "Carlo Huamán"
+  },
+  {
+    "id": "3",
+    "img": "/events/io-extended-23/speakers2/david-rios.webp",
+    "name": "David Rios"
+  },
+  {
+    "id": "4",
+    "img": "/events/io-extended-23/speakers2/silvana-gutierrez.webp",
+    "name": "Silvana Gutierrez"
+  },
+  {
+    "id": "5",
+    "img": "/events/io-extended-23/speakers2/diego-velasquez.webp",
+    "name": "Diego Velásquez"
+  },
+  {
+    "id": "6",
+    "img": "/events/io-extended-23/speakers2/ivan-sangueza.webp",
+    "name": "Iván Sangueza"
+  },
+  {
+    "id": "7",
+    "img": "/events/io-extended-23/speakers2/mauricio-arce.webp",
+    "name": "Mauricio Arce"
+  },
+  {
+    "id": "8",
+    "img": "/events/io-extended-23/speakers2/yury-camacho.webp",
+    "name": "Yury Camacho"
+  },
+  {
+    "id": "9",
+    "img": "/events/io-extended-23/speakers2/karol-catacora.webp",
+    "name": "Karol Catacora"
+  },
+  {
+    "id": "10",
+    "img": "/events/io-extended-23/speakers2/sergio-ochoa.webp",
+    "name": "Sergio Ochoa"
+  },
+  {
+    "id": "11",
+    "img": "/events/io-extended-23/speakers2/nathaly-alarcon.webp",
+    "name": "Nathaly Alarcón"
+  }
+]

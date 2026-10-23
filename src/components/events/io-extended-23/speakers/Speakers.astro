@@ -1,0 +1,15 @@
+---
+import "atropos/atropos.css"
+import speakers from "@/data/io-extended-23/speakers.json"
+import SectionTitle from "../SectionTitle.astro"
+import { Speaker } from "./Speaker"
+---
+
+<SectionTitle id='speakers' title='Speakers' />
+<div class='max-w-3xl mx-auto columns-2 md:columns-3 gap-8 px-4'>
+  {
+    speakers.map(({ id, img, name }) => (
+      <Speaker id={id} img={img} name={name} client:visible />
+    ))
+  }
+</div>

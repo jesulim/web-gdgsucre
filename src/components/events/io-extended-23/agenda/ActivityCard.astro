@@ -1,0 +1,13 @@
+---
+interface Props {
+  schedule: string
+  title: string
+}
+
+const { schedule, title } = Astro.props
+---
+
+<div class="flex h-12 items-center space-x-4 px-4 text-xl text-white sm:p-8 sm:text-2xl">
+  <h3 class="font-bold">{schedule}</h3>
+  <p class="font-semibold text-green-500">{title}</p>
+</div>

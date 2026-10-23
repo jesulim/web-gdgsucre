@@ -1,0 +1,27 @@
+---
+import SectionTitle from "../SectionTitle.astro"
+import ActivityCard from "./ActivityCard.astro"
+import SpeakerCard from "./SpeakerCard.astro"
+import scheduleData from "./schedule.json"
+import type { ScheduleEntry } from "./types"
+
+const entries = scheduleData as ScheduleEntry[]
+---
+
+<SectionTitle id="agenda" title="Agenda" />
+
+<div class="px-2">
+  <ul role="list" class="mx-auto flow-root w-full max-w-screen-lg space-y-1">
+    {
+      entries.map((data) => (
+        <li class="divide-y rounded-lg border border-gray-700 bg-white/20 text-white shadow divide-gray-700">
+          {data.type === "Actividad" ? (
+            <ActivityCard schedule={data.schedule} title={data.title} />
+          ) : (
+            <SpeakerCard {...data} />
+          )}
+        </li>
+      ))
+    }
+  </ul>
+</div>

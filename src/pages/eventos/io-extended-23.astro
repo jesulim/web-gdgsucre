@@ -1,0 +1,34 @@
+---
+import About from "@/components/events/io-extended-23/About.astro"
+import Agenda from "@/components/events/io-extended-23/agenda/Agenda.astro"
+import Footer from "@/components/events/io-extended-23/Footer.astro"
+import Header from "@/components/events/io-extended-23/Header.astro"
+import Hero from "@/components/events/io-extended-23/Hero.astro"
+import Organizers from "@/components/events/io-extended-23/organizers/Organizers.astro"
+import Paquetes from "@/components/events/io-extended-23/paquetes/Paquetes.astro"
+import Sponsors from "@/components/events/io-extended-23/Sponsors.astro"
+import Speakers from "@/components/events/io-extended-23/speakers/Speakers.astro"
+import BaseLayout from "@/layout/BaseLayout.astro"
+---
+
+<BaseLayout
+  theme="dark"
+  title="Google I/O Extended Sucre 2023"
+  ogImage="/events/io-extended-23/og.webp"
+>
+  <div class="min-h-screen">
+    <Header />
+
+    <main>
+      <Hero />
+      <About />
+      <Paquetes />
+      <Speakers />
+      <Agenda />
+      <Sponsors />
+      <Organizers />
+    </main>
+
+    <Footer />
+  </div>
+</BaseLayout>

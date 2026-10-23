@@ -1,0 +1,47 @@
+---
+import Bici from "./logos/Bici.astro"
+import GoogleioLogo from "./logos/GoogleioLogo.astro"
+---
+
+<hero>
+  <section class='mt-32 mx-4'>
+    <div class='mx-auto max-w-screen-md text-center lg:py-16'>
+      <GoogleioLogo />
+      <h1
+        class='mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl lg:text-9xl text-white'
+      >
+        2023
+      </h1>
+      <p
+        class='mb-8 text-lg font-normal text-gray-400 lg:text-xl sm:px-16 lg:px-48'
+      >
+        ¡Comparte junto a nosotros esta<br />asombrosa experiencia!
+      </p>
+      <div class='flex flex-col space-y-4 max-w-sm mx-auto'>
+        <a
+          href='https://gdg.community.dev/events/details/google-gdg-sucre-presents-google-io-extended-sucre-1/'
+          class='inline-flex justify-center items-center py-3 px-5 text-lg font-medium text-center rounded-full border bg-blue-500 focus:ring-4 text-white border-gray-700 hover:bg-gray-700 focus:ring-gray-800'
+          target='_blank'
+        >
+          Regístrate
+        </a>
+        <a
+          href='https://play.google.com/store/apps/details?id=dev.armandohackcode.app_events'
+          class='inline-flex justify-center items-center py-3 px-4 text-md font-medium text-center rounded-full border border-green-500 focus:ring-4 text-green-500 hover:bg-green-500 hover:text-black focus:ring-blue-500 fill-green-500 hover:fill-black'
+          target='_blank'
+        >
+          <svg
+            class='w-5 h-5 mr-2'
+            viewBox='-1 0 24 24'
+            xmlns='http://www.w3.org/2000/svg'
+            ><path
+              d='m3.751.61 13.124 7.546-2.813 2.813zm-2.719-.61 12.047 12-12.046 12c-.613-.271-1.033-.874-1.033-1.575 0-.023 0-.046.001-.068v.003-20.719c-.001-.019-.001-.042-.001-.065 0-.701.42-1.304 1.022-1.571l.011-.004zm19.922 10.594c.414.307.679.795.679 1.344 0 .022 0 .043-.001.065v-.003c.004.043.007.094.007.145 0 .516-.25.974-.636 1.258l-.004.003-2.813 1.593-3.046-2.999 3.047-3.047zm-17.203 12.796 10.312-10.359 2.813 2.813z'
+            ></path>
+          </svg>
+          Descarga la app oficial del evento
+        </a>
+      </div>
+    </div>
+  </section>
+  <Bici />
+</hero>
