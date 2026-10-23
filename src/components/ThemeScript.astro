@@ -1,7 +1,10 @@
 <script is:inline>
   const getThemePreference = () => {
-    if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
-      return localStorage.getItem("theme");
+    try {
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme === "dark" || savedTheme === "light") return savedTheme;
+    } catch {
+      // Use the system preference when browser storage is unavailable.
     }
     return window.matchMedia("(prefers-color-scheme: dark)").matches
       ? "dark"
@@ -10,15 +13,19 @@
   const isDark = getThemePreference() === "dark";
 
   document.documentElement.classList[isDark ? "add" : "remove"]("dark");
+  document.documentElement.style.colorScheme = isDark ? "dark" : "light";
 
-  if (typeof localStorage !== "undefined") {
     const observer = new MutationObserver(() => {
       const isDark = document.documentElement.classList.contains("dark");
-      localStorage.setItem("theme", isDark ? "dark" : "light");
+      document.documentElement.style.colorScheme = isDark ? "dark" : "light";
+      try {
+        localStorage.setItem("theme", isDark ? "dark" : "light");
+      } catch {
+        // Theme switching still works without persistence.
+      }
     });
     observer.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["class"],
     });
-  }
 </script>

@@ -7,6 +7,14 @@ const STYLE_ID = "astro-theme-toggle-temporary-styles"
 const STYLE_CONTENT =
   "::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }"
 
+interface ThemeTransition {
+  ready: Promise<void>
+  finished: Promise<void>
+  skipTransition: () => void
+}
+
+let activeTransition: ThemeTransition | undefined
+
 function removeTemporaryStyles() {
   const style = document.getElementById(STYLE_ID)
   style?.remove()
@@ -22,48 +30,46 @@ function injectTemporaryStyles() {
 
 async function startCircleAnimation(callback: () => void, x: number, y: number) {
   const doc = document as unknown as {
-    startViewTransition?: (updateCallback?: () => unknown) => {
-      ready?: Promise<void>
-      finished?: Promise<void>
-    }
+    startViewTransition?: (updateCallback: () => void) => ThemeTransition
   }
 
-  if (typeof doc.startViewTransition !== "function") {
+  if (
+    typeof doc.startViewTransition !== "function" ||
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  ) {
     callback()
     return
   }
 
+  activeTransition?.skipTransition()
   injectTemporaryStyles()
 
   const transition = doc.startViewTransition(() => {
     callback()
   })
 
-  await transition?.ready
-  void transition?.finished?.then(removeTemporaryStyles)
-
-  const gradientOffset = 0.7
-  const maskSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8"><defs><radialGradient id="toggle-theme-gradient"><stop offset="${gradientOffset}"/><stop offset="1" stop-opacity="0"/></radialGradient></defs><circle cx="4" cy="4" r="4" fill="url(#toggle-theme-gradient)"/></svg>`
-  const maskUrl = `data:image/svg+xml;base64,${window.btoa(maskSvg)}`
-
-  const w = window.innerWidth
-  const h = window.innerHeight
-
-  const maxRadius = Math.ceil(Math.hypot(Math.max(x, w - x), Math.max(y, h - y)) / gradientOffset)
-
-  document.documentElement.animate(
-    {
-      maskImage: [`url('${maskUrl}')`, `url('${maskUrl}')`],
-      maskRepeat: ["no-repeat", "no-repeat"],
-      maskPosition: [`${x}px ${y}px`, `${x - maxRadius}px ${y - maxRadius}px`],
-      maskSize: ["0", `${2 * maxRadius}px`],
-    },
-    {
-      duration: 500,
-      easing: "ease-in",
-      pseudoElement: "::view-transition-new(root)",
+  activeTransition = transition
+  try {
+    await transition.ready
+    const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y))
+    document.documentElement.animate(
+      { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+      {
+        duration: 300,
+        easing: "cubic-bezier(0.2, 0, 0.2, 1)",
+        pseudoElement: "::view-transition-new(root)",
+      }
+    )
+  } catch {
+    // A superseded or unsupported animation must not prevent the theme update.
+    transition.skipTransition()
+  } finally {
+    await transition.finished.catch(() => {})
+    if (activeTransition === transition) {
+      activeTransition = undefined
+      removeTemporaryStyles()
     }
-  )
+  }
 }
 
 export function ModeToggle() {
@@ -76,13 +82,13 @@ export function ModeToggle() {
   }, [])
 
   const toggleTheme = (event: React.MouseEvent) => {
-    startCircleAnimation(
+    const bounds = event.currentTarget.getBoundingClientRect()
+    void startCircleAnimation(
       () => {
-        setIsDark(prevDark => !prevDark)
-        document.documentElement.classList.toggle("dark")
+        setIsDark(document.documentElement.classList.toggle("dark"))
       },
-      event.clientX,
-      event.clientY
+      event.detail === 0 ? bounds.left + bounds.width / 2 : event.clientX,
+      event.detail === 0 ? bounds.top + bounds.height / 2 : event.clientY
     )
   }
 
