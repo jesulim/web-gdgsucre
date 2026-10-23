@@ -2,6 +2,7 @@
 import ArrowOutward from "@/assets/icons/arrow_outward.svg"
 import UserSignIn from "@/assets/icons/social/user-round-plus.svg"
 import GDGSucre from "@/assets/logos/GDGSucreLogo.svg"
+import { ModeToggle } from "@/components/ModeToggle"
 
 import LoggedInMenu from "./LoggedInMenu.astro"
 
@@ -70,6 +71,8 @@ const accessToken = Astro.cookies.has("sb-access-token")
     </ul>
   </nav>
 
+  <div class="flex items-center gap-3 pl-4">
+  <ModeToggle client:load />
   <button id="menu-toggle" class="rounded sm:hidden" aria-label="Abrir menú">
     <svg class="size-6 stroke-black dark:stroke-white" fill="none" viewBox="0 0 24 24">
       <path
@@ -79,6 +82,7 @@ const accessToken = Astro.cookies.has("sb-access-token")
         d="M4 6h16M4 12h16M4 18h16"></path>
     </svg>
   </button>
+  </div>
 </header>
 
 <div id="menu-overlay" class="fixed h-0 inset-0 z-40 bg-black/30 transition-all"></div>

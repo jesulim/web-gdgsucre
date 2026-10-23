@@ -8,7 +8,7 @@ import Info from "@/components/landing/Info.astro"
 import BaseLayout from "@/layout/BaseLayout.astro"
 ---
 
-<BaseLayout theme="light" title="GDG Sucre" description="GDG Sucre">
+<BaseLayout enableThemePreference title="GDG Sucre" description="GDG Sucre">
   <Header />
   <main class="flex-1 overflow-x-hidden mt-16">
     <Hero />
@@ -17,3 +17,10 @@ import BaseLayout from "@/layout/BaseLayout.astro"
   </main>
   <Footer />
 </BaseLayout>
+
+<style is:global>
+  :where(a, button, [role="button"]):focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
+</style>

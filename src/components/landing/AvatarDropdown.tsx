@@ -27,13 +27,17 @@ export default function AvatarMenu({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className="mt-3 flex items-center px-2 gap-2 rounded-sm hover:bg-off-white transition-colors">
+        <button
+          type="button"
+          aria-label="Menú de usuario"
+          className="mt-3 flex items-center px-2 gap-2 rounded-sm hover:bg-off-white dark:hover:bg-accent transition-colors"
+        >
           <Avatar className="size-10">
             <AvatarImage src={avatarUrl} alt={userName} />
             <AvatarFallback>{userInitials}</AvatarFallback>
           </Avatar>
           <ChevronDown className="size-5 stroke-black dark:stroke-white" />
-        </div>
+        </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="center">
         <DropdownMenuLabel>

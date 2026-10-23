@@ -1,9 +1,11 @@
 ---
 import { Font } from "astro:assets"
+import ThemeScript from "@/components/ThemeScript.astro"
 import "../styles/global.css"
 
 const {
   theme,
+  enableThemePreference = false,
   title = "Google Developer Group Sucre",
   description = "Google Developer Group Sucre",
   ogTitle = title,
@@ -21,7 +23,7 @@ const {
     <Font cssVariable="--font-google" preload />
     <Font cssVariable="--font-monospace" preload />
 
-    <!-- <ThemeScript /> -->
+    {enableThemePreference && <ThemeScript />}
 
     <title>{title}</title>
     <meta name="description" content={description} />

@@ -55,7 +55,7 @@ const items = [
             data-image={item.image.src}
             data-link={item.href}
             class={`sidebar-btn text-left p-4 transition-colors border-yellow-500
-              ${index === 0 ? "border-t-2 bg-yellow-pastel text-black" : "hover:bg-yellow-pastel/40"}`}
+              ${index === 0 ? "border-t-2 bg-yellow-pastel text-black" : "hover:bg-yellow-pastel hover:text-black"}`}
           >
             <p class="text-lg font-medium">{item.label}</p>
             <p class="opacity-90">{item.description}</p>
@@ -85,10 +85,10 @@ const items = [
 
           buttons.forEach(btn => {
             btn.classList.remove("bg-yellow-pastel", "border-t-2", "text-black")
-            btn.classList.add("hover:bg-yellow-pastel/40")
+            btn.classList.add("hover:bg-yellow-pastel", "hover:text-black")
           })
 
-          button.classList.remove("hover:bg-yellow-pastel/40")
+          button.classList.remove("hover:bg-yellow-pastel", "hover:text-black")
           button.classList.add("bg-yellow-pastel", "border-t-2", "text-black")
         })
       })
