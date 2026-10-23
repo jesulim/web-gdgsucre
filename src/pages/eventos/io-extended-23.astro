@@ -11,7 +11,11 @@ import Speakers from "@/components/events/io-extended-23/speakers/Speakers.astro
 import BaseLayout from "@/layout/BaseLayout.astro"
 ---
 
-<BaseLayout theme="dark" title="Google I/O Extended Sucre 2023">
+<BaseLayout
+  theme="dark"
+  title="Google I/O Extended Sucre 2023"
+  ogImage="/events/io-extended-23/og.webp"
+>
   <div class="min-h-screen">
     <Header />
 
@@ -28,35 +32,3 @@ import BaseLayout from "@/layout/BaseLayout.astro"
     <Footer />
   </div>
 </BaseLayout>
-
-
-<noscript>
-  <style>
-    #splash-bg-fallback {
-      display: block;
-    }
-  </style>
-</noscript>
-
-<style>
-  :global(html) {
-    scroll-behavior: smooth;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    :global(html) {
-      scroll-behavior: auto;
-    }
-
-    picture {
-      @apply animate-none;
-    }
-
-    :global(#starfield) {
-      @apply hidden;
-    }
-
-    #splash-bg-fallback {
-      @apply block;
-    }
-  }
-</style>
