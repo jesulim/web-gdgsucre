@@ -26,6 +26,7 @@ import PackageSection from "@/components/events/io-extended-26/PackageSection.as
 import Schedule from "@/components/events/io-extended-26/Schedule.astro"
 import SpeakersSection from "@/components/events/io-extended-26/SpeakersSection.astro"
 import TopicPill from "@/components/events/io-extended-26/TopicPill.astro"
+import ConsoleBanner from "@/components/landing/ConsoleBanner.astro"
 import BaseLayout from "@/layout/BaseLayout.astro"
 import { getProfile } from "@/lib/services/profileService"
 import { getEventRegistration } from "@/lib/services/registrationService"
@@ -469,6 +470,7 @@ const topics: TopicPillData[] = [
       </footer>
     </main>
   </div>
+  <ConsoleBanner />
 </BaseLayout>
 
 <style>
