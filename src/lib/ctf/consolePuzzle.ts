@@ -44,7 +44,8 @@ export function getStoredEasterEggBadge(): EasterEggBadge | null {
     const raw = localStorage.getItem(BADGE_STORAGE_KEY);
     if (!raw) return null;
     return JSON.parse(raw) as EasterEggBadge;
-  } catch {
+  } catch (err) {
+    console.debug("[GDG-PUZZLE] Error reading stored badge:", err);
     return null;
   }
 }
@@ -58,7 +59,9 @@ export function saveEasterEggBadge(flag: string): EasterEggBadge {
   if (typeof window !== "undefined") {
     try {
       localStorage.setItem(BADGE_STORAGE_KEY, JSON.stringify(badge));
-    } catch {}
+    } catch (err) {
+      console.debug("[GDG-PUZZLE] Error saving badge to localStorage:", err);
+    }
     window.dispatchEvent(
       new CustomEvent("gdg:badge-unlocked", { detail: badge }),
     );
@@ -181,14 +184,18 @@ export function initConsolePuzzle(): void {
         if (response.ok) {
           synced = true;
         }
-      } catch {}
+      } catch (err) {
+        console.debug("[GDG-PUZZLE] Backend badge sync request failed:", err);
+      }
 
       try {
         toast.success("🦖 ¡Insignia Desbloqueada: Dino Hacker!", {
           description: "Has reparado los datos del dino del GDG Sucre.",
           duration: 6000,
         });
-      } catch {}
+      } catch (err) {
+        console.debug("[GDG-PUZZLE] Toast notification failed:", err);
+      }
 
       console.log(
         `%c
