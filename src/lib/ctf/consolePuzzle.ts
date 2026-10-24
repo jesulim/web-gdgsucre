@@ -1,5 +1,4 @@
 import { printConsoleBanner } from "@/lib/ascii";
-import { toast } from "sonner";
 import {
   CANONICAL_DINO_KEY,
   analyzeSubmission,
@@ -10,6 +9,9 @@ import type { ClaimResult, EasterEggBadge, GDGConsoleInterface } from "./types";
 
 export const BADGE_STORAGE_KEY = "gdg_devtools_badge_unlocked";
 
+export const DEFAULT_DINO_BADGE_IMAGE_URL =
+  "https://dvqxvqtooobcnjvongbp.supabase.co/storage/v1/object/public/assets/badges/dino-hacker.svg";
+
 export const EASTER_EGG_BADGE_INFO: Omit<
   EasterEggBadge,
   "unlockedAt" | "flag"
@@ -17,7 +19,7 @@ export const EASTER_EGG_BADGE_INFO: Omit<
   id: "dino-hacker",
   name: "Dino Hacker",
   description: "Reparaste los datos del dino en las DevTools del GDG Sucre.",
-  image_url: "/badges/dino-hacker.svg",
+  image_url: DEFAULT_DINO_BADGE_IMAGE_URL,
 };
 
 const STYLES = {
@@ -36,10 +38,13 @@ const STYLES = {
   code: "color: #00ff88; background: #1a1a2e; font-family: monospace; font-size: 12px; padding: 2px 6px; border-radius: 3px;",
   subtle: "color: #9aa0a6; font-size: 12px; line-height: 1.6;",
   highlight: "color: #ffffff; font-weight: bold;",
+  link: "color: #349cff; text-decoration: underline; font-weight: bold; font-family: monospace; font-size: 12px;",
 };
 
 export function getStoredEasterEggBadge(): EasterEggBadge | null {
-  if (typeof window === "undefined") return null;
+  if (typeof window === "undefined" || typeof localStorage === "undefined") {
+    return null;
+  }
   try {
     const raw = localStorage.getItem(BADGE_STORAGE_KEY);
     if (!raw) return null;
@@ -57,14 +62,18 @@ export function saveEasterEggBadge(flag: string): EasterEggBadge {
     flag,
   };
   if (typeof window !== "undefined") {
-    try {
-      localStorage.setItem(BADGE_STORAGE_KEY, JSON.stringify(badge));
-    } catch (err) {
-      console.debug("[GDG-PUZZLE] Error saving badge to localStorage:", err);
+    if (typeof localStorage !== "undefined") {
+      try {
+        localStorage.setItem(BADGE_STORAGE_KEY, JSON.stringify(badge));
+      } catch (err) {
+        console.debug("[GDG-PUZZLE] Error saving badge to localStorage:", err);
+      }
     }
-    window.dispatchEvent(
-      new CustomEvent("gdg:badge-unlocked", { detail: badge }),
-    );
+    if (typeof window.dispatchEvent === "function") {
+      window.dispatchEvent(
+        new CustomEvent("gdg:badge-unlocked", { detail: badge }),
+      );
+    }
   }
   return badge;
 }
@@ -180,19 +189,22 @@ export function initConsolePuzzle(): void {
         });
         if (response.ok) {
           synced = true;
+          try {
+            const data = await response.json();
+            if (data?.badge?.image_url) {
+              badge.image_url = data.badge.image_url;
+              saveEasterEggBadge(sanitizedKey);
+            }
+          } catch {}
         }
       } catch (err) {
         console.debug("[GDG-PUZZLE] Backend badge sync request failed:", err);
       }
 
-      try {
-        toast.success("🦖 ¡Insignia Desbloqueada: Dino Hacker!", {
-          description: "Has reparado los datos del dino del GDG Sucre.",
-          duration: 6000,
-        });
-      } catch (err) {
-        console.debug("[GDG-PUZZLE] Toast notification failed:", err);
-      }
+      const profileUrl =
+        typeof window !== "undefined"
+          ? `${window.location.origin}/perfil`
+          : "/perfil";
 
       console.log(
         `%c
@@ -208,8 +220,10 @@ export function initConsolePuzzle(): void {
 
       console.log(
         `%c¡Felicitaciones! Has completado el DevTools Challenge del GDG Sucre.\n` +
-          `${synced ? "Sincronizado exitosamente con tu perfil de la comunidad." : "Guardado en este navegador (Inicia sesión para sincronizarlo con tu cuenta)."}\n` +
-          `Visita tu perfil para ver tu nueva insignia.`,
+          `${synced ? "Sincronizado exitosamente con tu perfil de la comunidad." : "Guardado en este navegador (Inicia sesión para sincronizarlo con tu cuenta)."}\n\n` +
+          `👉 Mira tu nueva insignia en tu perfil:\n%c${profileUrl}%c`,
+        STYLES.subtle,
+        STYLES.link,
         STYLES.subtle,
       );
 
@@ -229,12 +243,19 @@ export function initConsolePuzzle(): void {
       );
       if (badge) {
         const dateStr = new Date(badge.unlockedAt).toLocaleString();
+        const profileUrl =
+          typeof window !== "undefined"
+            ? `${window.location.origin}/perfil`
+            : "/perfil";
         console.log(
           `%c🏆 Estado: DESBLOQUEADA\n` +
             `Insignia: ${badge.name}\n` +
             `Fecha de obtención: ${dateStr}\n` +
             `Clave registrada: ${badge.flag}\n\n` +
+            `👉 Ver insignia en tu perfil:\n%c${profileUrl}%c\n\n` +
             `¡Puedes volver a ejecutar gdg.start() cuando quieras para practicar!`,
+          "color: #34a853; font-weight: 500; font-family: monospace;",
+          STYLES.link,
           "color: #34a853; font-weight: 500; font-family: monospace;",
         );
       } else {
@@ -250,6 +271,5 @@ export function initConsolePuzzle(): void {
     },
   };
 
-  // Attach to window.gdg
   window.gdg = gdgNamespace;
 }

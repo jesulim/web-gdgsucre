@@ -33,6 +33,24 @@ export async function getUserAndBadgeIds(
   };
 }
 
+export const DINO_HACKER_BADGE_NAME = "Dino Hacker";
+export const DINO_HACKER_STORAGE_PATH = "badges/dino-hacker.svg";
+
+export function getBadgeImageUrl(
+  supabase: SupabaseClient,
+  imageUrl: string | null | undefined,
+): string {
+  if (!imageUrl) return "";
+  if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) {
+    return imageUrl;
+  }
+  const cleanPath = imageUrl.startsWith("/") ? imageUrl.slice(1) : imageUrl;
+  const path = cleanPath.startsWith("badges/")
+    ? cleanPath
+    : `badges/${cleanPath}`;
+  return supabase.storage.from("assets").getPublicUrl(path).data.publicUrl;
+}
+
 export async function getBadges(supabase: SupabaseClient, userId: string) {
   const { data, error } = await supabase
     .from("user_badges")
@@ -40,18 +58,28 @@ export async function getBadges(supabase: SupabaseClient, userId: string) {
     .eq("user_id", userId)
     .order("issued_at", { ascending: false });
 
-  if (error) return null;
-  return data.map((badge) => ({
-    ...badge.badges,
-  }));
+  if (error || !data) return null;
+  return data
+    .map((badge) => {
+      const b = badge.badges as unknown as {
+        name: string;
+        image_url: string;
+      } | null;
+      if (!b) return null;
+      return {
+        ...b,
+        image_url: getBadgeImageUrl(supabase, b.image_url),
+      };
+    })
+    .filter((b): b is { name: string; image_url: string } => b !== null);
 }
 
 export async function claimEasterEggBadge(
   supabase: SupabaseClient,
   userId: string,
 ) {
-  const badgeName = "Dino Hacker";
-  const defaultImageUrl = "/badges/dino-hacker.svg";
+  const badgeName = DINO_HACKER_BADGE_NAME;
+  const defaultImageUrl = getBadgeImageUrl(supabase, DINO_HACKER_STORAGE_PATH);
 
   let { data: badge } = await supabase
     .from("badges")
@@ -69,6 +97,15 @@ export async function claimEasterEggBadge(
     if (newBadge) {
       badge = newBadge;
     }
+  } else if (
+    badge.image_url === "/badges/dino-hacker.svg" ||
+    !badge.image_url?.startsWith("http")
+  ) {
+    await supabase
+      .from("badges")
+      .update({ image_url: defaultImageUrl })
+      .eq("id", badge.id);
+    badge.image_url = defaultImageUrl;
   }
 
   if (badge) {

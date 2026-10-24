@@ -52,6 +52,6 @@ describe("Badge Claim API endpoint (/api/badges/claim)", () => {
     const json = await response.json()
     expect(json.success).toBe(true)
     expect(json.badge.name).toBe("Dino Hacker")
-    expect(json.badge.image_url).toBe("/badges/dino-hacker.svg")
+    expect(json.badge.image_url).toContain("/storage/v1/object/public/assets/badges/dino-hacker.svg")
   })
 })

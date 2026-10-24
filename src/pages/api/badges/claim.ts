@@ -19,9 +19,13 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     const supabase = createSupabaseServerClient({ request, cookies })
     const profile = await getProfile(supabase)
 
+    const { data: storageData } = supabase.storage
+      .from("assets")
+      .getPublicUrl("badges/dino-hacker.svg")
+
     let serverBadge = {
       name: "Dino Hacker",
-      image_url: "/badges/dino-hacker.svg",
+      image_url: storageData.publicUrl,
     }
 
     if (profile?.id) {

@@ -112,4 +112,40 @@ describe("DevTools Challenge Dino Pipeline", () => {
       console.log = originalLog
     }
   })
+
+  it("prints a direct hyperlink to the profile page when unlocking the badge", async () => {
+    const logs: string[] = []
+    const originalLog = console.log
+    console.log = (...args: unknown[]) => {
+      logs.push(args.map(String).join(" "))
+    }
+
+    try {
+      const globalAny = globalThis as unknown as {
+        window?: Record<string, unknown>
+        fetch?: typeof fetch
+      }
+      const mockWin: Record<string, unknown> = {
+        location: { origin: "https://gdgsucre.com" },
+        dispatchEvent: () => true,
+      }
+      globalAny.window = mockWin
+      globalAny.fetch = async () =>
+        new Response(JSON.stringify({ ok: true }), { status: 200 })
+
+      initConsolePuzzle()
+
+      const gdg = mockWin.gdg as {
+        unlock: (key: string) => Promise<{ success: boolean }>
+      }
+      const result = await gdg.unlock(CANONICAL_DINO_KEY)
+
+      expect(result.success).toBe(true)
+      const fullLog = logs.join("\n")
+      expect(fullLog).toContain("https://gdgsucre.com/perfil")
+      expect(fullLog).toContain("ROAAAR")
+    } finally {
+      console.log = originalLog
+    }
+  })
 })

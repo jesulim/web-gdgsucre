@@ -1,7 +1,6 @@
 ---
 import { Font } from "astro:assets"
 import ThemeScript from "@/components/ThemeScript.astro"
-import { Toaster } from "@/components/ui/sonner"
 import "../styles/global.css"
 
 const {
@@ -46,6 +45,5 @@ const {
 
   <body class="min-h-screen flex flex-col font-google bg-white dark:bg-[#232323] dark:text-white">
     <slot />
-    <Toaster client:load richColors />
   </body>
 </html>
