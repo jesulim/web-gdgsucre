@@ -44,13 +44,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     }
 
     const supabase = await createUserClient(cookies)
-    const result = await updateRegistrationActivity(
-      supabase,
-      registrationId,
-      activityId,
-      activityName,
-      value
-    )
+    const result = await updateRegistrationActivity(supabase, registrationId, activityId, value)
 
     return new Response(JSON.stringify({ success: true, data: result }), {
       headers: { "Content-Type": "application/json" },
