@@ -5,7 +5,11 @@ import {
   generateDinoPackets,
   validateFlag,
 } from "./obfuscation"
-import { initConsolePuzzle } from "./consolePuzzle"
+import {
+  initConsolePuzzle,
+  getProfileUrl,
+  getStorageBadgeUrl,
+} from "./consolePuzzle"
 
 describe("DevTools Challenge Dino Pipeline", () => {
   it("should generate 20 packets with both valid and corrupted items", () => {
@@ -110,6 +114,7 @@ describe("DevTools Challenge Dino Pipeline", () => {
       expect(fullHintOutput).toContain("PISTA")
     } finally {
       console.log = originalLog
+      delete (globalThis as Record<string, unknown>).window
     }
   })
 
@@ -146,6 +151,19 @@ describe("DevTools Challenge Dino Pipeline", () => {
       expect(fullLog).toContain("ROAAAR")
     } finally {
       console.log = originalLog
+      delete (globalThis as Record<string, unknown>).window
     }
+  })
+
+  it("resolves profile and storage asset URLs dynamically", () => {
+    delete (globalThis as Record<string, unknown>).window
+    expect(getProfileUrl()).toBe("/perfil")
+    const storageUrl = getStorageBadgeUrl("badges/dino-hacker.svg")
+    expect(storageUrl).toContain("/storage/v1/object/public/assets/badges/dino-hacker.svg")
+
+    const globalAny = globalThis as unknown as { window?: Record<string, unknown> }
+    globalAny.window = { location: { origin: "https://my-custom-domain.com" } }
+    expect(getProfileUrl()).toBe("https://my-custom-domain.com/perfil")
+    delete globalAny.window
   })
 })

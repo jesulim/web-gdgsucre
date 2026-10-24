@@ -51,7 +51,19 @@ export function getBadgeImageUrl(
   return supabase.storage.from("assets").getPublicUrl(path).data.publicUrl;
 }
 
-export async function getBadges(supabase: SupabaseClient, userId: string) {
+export interface BadgeItem {
+  name: string;
+  image_url: string;
+}
+
+interface UserBadgeQueryResult {
+  badges: BadgeItem | BadgeItem[] | null;
+}
+
+export async function getBadges(
+  supabase: SupabaseClient,
+  userId: string,
+): Promise<BadgeItem[] | null> {
   const { data, error } = await supabase
     .from("user_badges")
     .select("badges(name, image_url)")
@@ -59,19 +71,16 @@ export async function getBadges(supabase: SupabaseClient, userId: string) {
     .order("issued_at", { ascending: false });
 
   if (error || !data) return null;
-  return data
-    .map((badge) => {
-      const b = badge.badges as unknown as {
-        name: string;
-        image_url: string;
-      } | null;
-      if (!b) return null;
+  return (data as unknown as UserBadgeQueryResult[])
+    .map((item) => {
+      const badge = Array.isArray(item.badges) ? item.badges[0] : item.badges;
+      if (!badge) return null;
       return {
-        ...b,
-        image_url: getBadgeImageUrl(supabase, b.image_url),
+        name: badge.name,
+        image_url: getBadgeImageUrl(supabase, badge.image_url),
       };
     })
-    .filter((b): b is { name: string; image_url: string } => b !== null);
+    .filter((b): b is BadgeItem => b !== null);
 }
 
 export async function claimEasterEggBadge(

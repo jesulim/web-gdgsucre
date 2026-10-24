@@ -9,8 +9,26 @@ import type { ClaimResult, EasterEggBadge, GDGConsoleInterface } from "./types";
 
 export const BADGE_STORAGE_KEY = "gdg_devtools_badge_unlocked";
 
-export const DEFAULT_DINO_BADGE_IMAGE_URL =
-  "https://dvqxvqtooobcnjvongbp.supabase.co/storage/v1/object/public/assets/badges/dino-hacker.svg";
+export function getStorageBadgeUrl(
+  path: string = "badges/dino-hacker.svg",
+): string {
+  const supabaseUrl =
+    (typeof import.meta !== "undefined" && import.meta.env?.SUPABASE_URL) ||
+    "";
+  if (!supabaseUrl) return "";
+  const cleanPath = path.startsWith("/") ? path.slice(1) : path;
+  return `${supabaseUrl.replace(/\/$/, "")}/storage/v1/object/public/assets/${cleanPath}`;
+}
+
+export function getProfileUrl(): string {
+  return typeof window !== "undefined"
+    ? `${window.location.origin}/perfil`
+    : "/perfil";
+}
+
+export const DEFAULT_DINO_BADGE_IMAGE_URL = getStorageBadgeUrl(
+  "badges/dino-hacker.svg",
+);
 
 export const EASTER_EGG_BADGE_INFO: Omit<
   EasterEggBadge,
@@ -201,10 +219,7 @@ export function initConsolePuzzle(): void {
         console.debug("[GDG-PUZZLE] Backend badge sync request failed:", err);
       }
 
-      const profileUrl =
-        typeof window !== "undefined"
-          ? `${window.location.origin}/perfil`
-          : "/perfil";
+      const profileUrl = getProfileUrl();
 
       console.log(
         `%c
@@ -243,10 +258,7 @@ export function initConsolePuzzle(): void {
       );
       if (badge) {
         const dateStr = new Date(badge.unlockedAt).toLocaleString();
-        const profileUrl =
-          typeof window !== "undefined"
-            ? `${window.location.origin}/perfil`
-            : "/perfil";
+        const profileUrl = getProfileUrl();
         console.log(
           `%c🏆 Estado: DESBLOQUEADA\n` +
             `Insignia: ${badge.name}\n` +
