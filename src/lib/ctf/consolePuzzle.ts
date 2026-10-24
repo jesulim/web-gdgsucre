@@ -110,17 +110,14 @@ export function initConsolePuzzle(): void {
 
       console.log(
         `%c🦖 MISIÓN: La señal del dino del GDG Sucre fue fragmentada en memoria.\n` +
-          `Hemos encontrado un lote de paquetes desordenados y con datos corruptos.\n\n` +
-          `👉 Ejecuta %cconsole.table(gdg.packets)%c para explorar los paquetes.\n` +
-          `👉 Descarta los paquetes corruptos (%ccorrupted === true%c), ordénalos por %cseq%c y une sus caracteres.\n` +
+          `Hemos detectado un lote de paquetes desordenados con interferencia y datos corruptos.\n\n` +
+          `👉 Ejecuta %cconsole.table(gdg.packets)%c para explorar los fragmentos.\n` +
+          `👉 Descarta el ruido corrupto, ordena las piezas por su secuencia y ensambla la clave.\n` +
           `👉 Cuando tengas la clave, valídala con %cgdg.unlock("CLAVE")%c.\n` +
-          `👉 Si necesitas ayuda con el código, escribe %cgdg.hint()%c.`,
+          `👉 Si necesitas una pista, escribe %cgdg.hint()%c.`,
         STYLES.subtle,
         STYLES.code,
         STYLES.subtle,
-        STYLES.code,
-        STYLES.subtle,
-        STYLES.code,
         STYLES.subtle,
         STYLES.code,
         STYLES.subtle,
@@ -131,25 +128,25 @@ export function initConsolePuzzle(): void {
 
     hint: () => {
       console.log(
-        "%c[PISTA // JAVASCRIPT ARRAY PIPELINE]%c",
+        "%c[PISTA // TRANSMISIÓN FÓSIL]%c",
         STYLES.yellowHeader,
         "color: #fbbc05; font-weight: bold; margin-left: 6px;",
       );
       console.log(
-        `%cPuedes encadenar 4 métodos estándar de Array para resolverlo en un solo one-liner:\n\n` +
-          `1. %c.filter(p => !p.corrupted)%c  -> Conserva solo los paquetes no corruptos\n` +
-          `2. %c.sort((a, b) => a.seq - b.seq)%c -> Ordena los paquetes cronológicamente según 'seq'\n` +
-          `3. %c.map(p => p.char)%c           -> Extrae el carácter de cada paquete\n` +
-          `4. %c.join("")%c                   -> Une los caracteres en una sola cadena de texto\n\n` +
-          `💡 Ejemplo:\n` +
-          `%cconst key = gdg.packets.filter(p => !p.corrupted).sort((a, b) => a.seq - b.seq).map(p => p.char).join("")\n` +
-          `gdg.unlock(key)%c`,
+        `%cEl mensaje está ahí, pero no te lo daremos tan fácil:\n\n` +
+          `%cDescarta el ruido%c: Hay paquetes que no pertenecen a la señal original.\n` +
+          `%cRastrea la secuencia%c: Cada fragmento legítimo contiene una pista sobre su posición cronológica.\n` +
+          `%cReconstrucción%c: Conecta las letras en el orden exacto para revelar el código.\n\n` +
+          `💡 %cTip dev%c: Los métodos de %cArray%c en JavaScript se pueden encadenar en una sola línea.\n` +
+          `Explora los datos con %cconsole.table(gdg.packets)%c y pon a prueba tu lógica.`,
         STYLES.subtle,
-        STYLES.code,
+        STYLES.highlight,
         STYLES.subtle,
-        STYLES.code,
+        STYLES.highlight,
         STYLES.subtle,
-        STYLES.code,
+        STYLES.highlight,
+        STYLES.subtle,
+        STYLES.highlight,
         STYLES.subtle,
         STYLES.code,
         STYLES.subtle,

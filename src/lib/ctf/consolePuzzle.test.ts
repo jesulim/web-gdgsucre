@@ -5,6 +5,7 @@ import {
   generateDinoPackets,
   validateFlag,
 } from "./obfuscation"
+import { initConsolePuzzle } from "./consolePuzzle"
 
 describe("DevTools Challenge Dino Pipeline", () => {
   it("should generate 20 packets with both valid and corrupted items", () => {
@@ -81,5 +82,34 @@ describe("DevTools Challenge Dino Pipeline", () => {
     const stored = JSON.parse(mockLocalStorage.getItem("gdg_devtools_badge_unlocked")!)
     expect(stored.name).toBe("Dino Hacker")
     expect(stored.flag).toBe(CANONICAL_DINO_KEY)
+  })
+
+  it("keeps gdg.hint ambiguous without giving away the direct code solution", () => {
+    const logs: string[] = []
+    const originalLog = console.log
+    console.log = (...args: unknown[]) => {
+      logs.push(args.map(String).join(" "))
+    }
+
+    try {
+      const globalAny = globalThis as unknown as { window?: Record<string, unknown> }
+      const mockWin: Record<string, unknown> = {}
+      globalAny.window = mockWin
+
+      initConsolePuzzle()
+
+      const gdg = mockWin.gdg as { hint: () => void }
+      expect(typeof gdg?.hint).toBe("function")
+
+      gdg.hint()
+
+      const fullHintOutput = logs.join("\n")
+      expect(fullHintOutput).not.toContain("p => !p.corrupted")
+      expect(fullHintOutput).not.toContain("a.seq - b.seq")
+      expect(fullHintOutput).not.toContain("GDG_DINO_HACKER")
+      expect(fullHintOutput).toContain("PISTA")
+    } finally {
+      console.log = originalLog
+    }
   })
 })
