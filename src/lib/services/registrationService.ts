@@ -62,6 +62,8 @@ export async function getEventRegistration(
     .eq("events.slug", eventSlug)
     .maybeSingle()
 
+  if (!data) return null
+
   const { data: organizer } = await supabase
     .from("organizers")
     .select("events!inner(slug)")
