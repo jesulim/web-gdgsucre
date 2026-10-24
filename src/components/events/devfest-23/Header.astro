@@ -1,0 +1,120 @@
+---
+import GdgLogoBw from "./logos/GdgLogo_bw.astro"
+---
+
+<nav class="bg-black fixed w-full z-30 top-0 left-0 border-b border-gray-600">
+  <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+    <a href="#">
+      <GdgLogoBw />
+    </a>
+    <div class="flex md:order-2 lg:hidden">
+      <button
+        data-collapse-toggle="navbar-sticky"
+        type="button"
+        class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden focus:outline-none focus:ring-2 hover:bg-gray-700 focus:ring-gray-600"
+        aria-controls="navbar-sticky"
+        aria-expanded="false"
+      >
+        <span class="sr-only">Open main menu</span>
+        <svg
+          class="w-5 h-5"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 17 14"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M1 1h15M1 7h15M1 13h15"></path>
+        </svg>
+      </button>
+    </div>
+    <div
+      class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
+      id="navbar-sticky"
+    >
+      <ul
+        class="flex flex-col p-4 md:p-0 mt-4 font-medium border rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 bg-black md:bg-black border-gray-700"
+      >
+        <li>
+          <a
+            href="#"
+            class="block py-2 pl-3 pr-4 text-white hover:text-blue-500 hover:text-df23-blue md:p-0 transition-colors"
+            aria-current="page"
+          >
+            Inicio
+          </a>
+        </li>
+        <li>
+          <a
+            href="#speakers"
+            class="block py-2 pl-3 pr-4 text-white hover:text-[#FFBB01] md:p-0 transition-colors"
+          >
+            Speakers
+          </a>
+        </li>
+        <li>
+          <a
+            href="#agenda"
+            class="block py-2 pl-3 pr-4 text-white hover:text-blue-500 hover:text-df23-blue md:p-0 transition-colors"
+          >
+            Agenda
+          </a>
+        </li>
+
+        <li>
+          <a
+            href="#organizadores"
+            class="block py-2 pl-3 pr-4 text-white hover:text-[#FFBB01] md:p-0 transition-colors"
+          >
+            Equipo
+          </a>
+        </li>
+
+        <li>
+          <a
+            href="#sponsors"
+            class="block py-2 pl-3 pr-4 text-white hover:text-green-500 hover:text-df23-green md:p-0 transition-colors"
+          >
+            Sponsors
+          </a>
+        </li>
+
+        <li>
+          <a
+            href="/eventos"
+            class="block py-2 pl-3 pr-4 text-white hover:text-[#FF5145] hover:text-df23-red md:p-0 transition-colors"
+          >
+            Eventos Pasados
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  const toggleBtn = document.querySelector("[data-collapse-toggle]")
+  const navMenu = document.getElementById("navbar-sticky")
+
+  if (toggleBtn && navMenu) {
+    toggleBtn.addEventListener("click", () => {
+      const expanded = toggleBtn.getAttribute("aria-expanded") === "true"
+      toggleBtn.setAttribute("aria-expanded", String(!expanded))
+      navMenu.classList.toggle("hidden")
+    })
+
+    const navLinks = navMenu.querySelectorAll("a")
+    navLinks.forEach(link => {
+      link.addEventListener("click", () => {
+        if (window.innerWidth < 768) {
+          navMenu.classList.add("hidden")
+          toggleBtn.setAttribute("aria-expanded", "false")
+        }
+      })
+    })
+  }
+</script>

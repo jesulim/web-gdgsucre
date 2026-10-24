@@ -1,0 +1,103 @@
+---
+import About from "@/components/events/devfest-23/About.astro"
+import Agenda from "@/components/events/devfest-23/Agenda.astro"
+import Footer from "@/components/events/devfest-23/Footer.astro"
+import Header from "@/components/events/devfest-23/Header.astro"
+import Hero from "@/components/events/devfest-23/hero/Hero.astro"
+import Organizadores from "@/components/events/devfest-23/Organizadores.astro"
+import Speakers from "@/components/events/devfest-23/Speakers.astro"
+import Sponsors from "@/components/events/devfest-23/Sponsors.astro"
+import BaseLayout from "@/layout/BaseLayout.astro"
+---
+
+<BaseLayout
+  theme="dark"
+  title="DevFest Sucre 2023 | GDG Sucre"
+  description="DevFest Sucre 2023 es una conferencia tecnológica global orientada a la comunidad de desarrolladores de Sucre."
+>
+  <div class="devfest-23-root text-[#FEFEFE] min-h-screen flex flex-col">
+    <Header />
+    <main class="flex-1">
+      <Hero />
+      <About />
+      <Speakers />
+      <Agenda />
+      <Organizadores />
+      <Sponsors />
+    </main>
+    <Footer />
+  </div>
+</BaseLayout>
+
+<style is:global>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Quantico:ital,wght@0,400;0,700;1,400;1,700&family=Russo+One&display=swap');
+
+  html:has(.devfest-23-root),
+  body:has(.devfest-23-root) {
+    background-color: #000000 !important;
+  }
+
+  .devfest-23-root {
+    --color-black: #000000;
+    --df23-dark-gray: #1F2123;
+    --df23-red: #FF5145;
+    --df23-green: #38A852;
+    --df23-blue: #3D8BFF;
+    --df23-yellow: #FFBB01;
+    --df23-white: #FEFEFE;
+    font-family: 'Prompt', ui-sans-serif, system-ui, sans-serif;
+  }
+
+  .devfest-23-root .font-google,
+  .devfest-23-root .font-prompt {
+    font-family: 'Prompt', sans-serif !important;
+  }
+
+  .devfest-23-root .font-quantico {
+    font-family: 'Quantico', sans-serif !important;
+  }
+
+  .devfest-23-root .font-russo {
+    font-family: 'Russo One', sans-serif !important;
+  }
+
+  .devfest-23-root .font-emoji {
+    font-family: 'Noto Color Emoji', 'Prompt', sans-serif !important;
+  }
+
+  .devfest-23-root .text-df23-blue { color: #3D8BFF; }
+  .devfest-23-root .text-df23-yellow { color: #FFBB01; }
+  .devfest-23-root .text-df23-green { color: #38A852; }
+  .devfest-23-root .text-df23-red { color: #FF5145; }
+  .devfest-23-root .text-df23-dark-gray { color: #1F2123; }
+
+  .devfest-23-root .bg-df23-blue { background-color: #3D8BFF; }
+  .devfest-23-root .bg-df23-yellow { background-color: #FFBB01; }
+  .devfest-23-root .bg-df23-green { background-color: #38A852; }
+  .devfest-23-root .bg-df23-red { background-color: #FF5145; }
+  .devfest-23-root .bg-df23-dark-gray { background-color: #1F2123; }
+
+  .devfest-23-root .border-df23-blue { border-color: #3D8BFF; }
+  .devfest-23-root .border-df23-yellow { border-color: #FFBB01; }
+  .devfest-23-root .border-df23-green { border-color: #38A852; }
+  .devfest-23-root .border-df23-red { border-color: #FF5145; }
+
+  .devfest-23-root .fill-df23-green { fill: #38A852; }
+  .devfest-23-root .stroke-df23-blue { stroke: #3D8BFF; }
+
+  html:has(.devfest-23-root) {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html:has(.devfest-23-root) {
+      scroll-behavior: auto !important;
+    }
+    .devfest-23-root * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+</style>

@@ -1,0 +1,29 @@
+---
+import divisorSm from "@/assets/events/devfest-23/df-divisor.webp"
+import divisorLg from "@/assets/events/devfest-23/df-divisor-lg.webp"
+
+interface Props {
+  rotated?: boolean
+}
+
+const { rotated = false } = Astro.props
+---
+
+<div class={rotated ? "transform rotate-180" : ""}>
+  <div
+    class="bg-cover h-40 md:h-44 lg:h-48 df-divisor-bg"
+    style={`--bg-sm: url('${divisorSm.src}'); --bg-lg: url('${divisorLg.src}');`}
+  >
+  </div>
+</div>
+
+<style>
+  .df-divisor-bg {
+    background-image: var(--bg-sm);
+  }
+  @media (min-width: 640px) {
+    .df-divisor-bg {
+      background-image: var(--bg-lg);
+    }
+  }
+</style>

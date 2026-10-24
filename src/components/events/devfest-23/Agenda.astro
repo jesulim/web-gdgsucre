@@ -1,0 +1,32 @@
+---
+import scheduleData from "@/data/devfest-23/schedule.json"
+import ScheduleCard from "./ScheduleCard.astro"
+import SectionTitle from "./SectionTitle.astro"
+---
+
+<section>
+  <SectionTitle id="agenda" title="Agenda" />
+  <div class="max-w-screen-lg mx-auto px-4">
+    <div
+      class="flex flex-col md:flex-row items-center md:items-start md:justify-center gap-8 md:gap-0 text-white"
+    >
+      <div class="w-full md:w-auto px-2">
+        <h4 class="font-bold text-3xl font-prompt text-center md:text-left mb-4">Charlas</h4>
+        {scheduleData.talks.map((talk) => <ScheduleCard {...talk} type="talk" />)}
+      </div>
+
+      <!-- Divisor: vertical on desktop, horizontal on mobile -->
+      <div class="hidden md:block border-l-2 border-gray-600 self-stretch mt-12 mb-4 mx-4"></div>
+      <div class="w-full border-t-2 border-gray-600 md:hidden my-2 max-w-sm"></div>
+
+      <div class="w-full md:w-auto px-2">
+        <h4 class="font-bold text-3xl font-prompt text-center md:text-left mb-4">Talleres</h4>
+        {
+          scheduleData.workshops.map((workshop) => (
+            <ScheduleCard {...workshop} type="workshop" />
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

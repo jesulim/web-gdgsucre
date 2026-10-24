@@ -1,0 +1,132 @@
+---
+import DevfestLogo from "../logos/DevfestLogo.astro"
+import { Timer } from "../Timer"
+import AnimatedArrow from "./AnimatedArrow.astro"
+import AnimatedCup from "./AnimatedCup.astro"
+import AnimatedKite from "./AnimatedKite.astro"
+import AnimatedPeople from "./AnimatedPeople.astro"
+import AnimatedPhone from "./AnimatedPhone.astro"
+import AnimatedPlanet from "./AnimatedPlanet.astro"
+---
+
+<header>
+  <section class="mt-32 mx-4">
+    <div class="mx-auto max-w-3xl lg:py-16">
+      <div class="grid place-content-center">
+        <DevfestLogo />
+
+        <div class="flex">
+          <AnimatedArrow />
+          <AnimatedCup />
+          <AnimatedPeople />
+          <AnimatedPhone />
+          <AnimatedPlanet />
+          <AnimatedKite />
+
+          <span
+            class="ml-auto mr-4 text-2xl font-thin tracking-tight leading-none -mt-2 sm:-mt-4 lg:text-4xl lg:-mt-8 text-white text-right"
+          >
+            Sucre 2023
+          </span>
+        </div>
+      </div>
+
+      <div class="flex flex-col mx-auto">
+        <span
+          role="button"
+          tabindex="0"
+          aria-disabled="true"
+          class="inline-flex justify-center items-center py-2 px-6 mx-auto text-2xl font-medium text-center border bg-blue-500 text-white border-gray-700 hover:bg-[#FFBB01] hover:text-black transition-colors cursor-default select-none"
+        >
+          Regístrate
+        </span>
+      </div>
+    </div>
+
+    <div
+      class="pt-10 lg:pt-0 flex items-center justify-center flex-col text-center gap-y-4 sm:gap-y-8 text-white"
+    >
+      <Timer targetDate={new Date("2023-12-09T09:00:00-04:00")} client:load />
+    </div>
+
+    <div class="flex flex-col space-y-4 py-8">
+      <p class="text-white mx-auto">Descarga la app oficial del evento</p>
+      <div class="flex mx-auto space-x-2 z-10 text-md font-medium">
+        <a
+          href="https://play.google.com/store/apps/details?id=dev.armandohackcode.app_events"
+          class="inline-flex justify-center items-center py-2 px-2 text-center border border-df23-green text-df23-green focus:ring-blue-500 fill-df23-green transition-colors"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <svg class="w-4 h-4 mr-2" viewBox="-1 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="m3.751.61 13.124 7.546-2.813 2.813zm-2.719-.61 12.047 12-12.046 12c-.613-.271-1.033-.874-1.033-1.575 0-.023 0-.046.001-.068v.003-20.719c-.001-.019-.001-.042-.001-.065 0-.701.42-1.304 1.022-1.571l.011-.004zm19.922 10.594c.414.307.679.795.679 1.344 0 .022 0 .043-.001.065v-.003c.004.043.007.094.007.145 0 .516-.25.974-.636 1.258l-.004.003-2.813 1.593-3.046-2.999 3.047-3.047zm-17.203 12.796 10.312-10.359 2.813 2.813z"
+            ></path>
+          </svg>
+          Play Store
+        </a>
+
+        <a
+          href="https://apps.apple.com/us/app/gdg-sucre/id6458881182"
+          class="inline-flex justify-center items-center py-2 px-2 text-center border border-df23-blue text-df23-blue focus:ring-df23-yellow stroke-blue-500 stroke-df23-blue transition-colors"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <svg
+            class="w-5 h-5 mr-2"
+            viewBox="0 0 24 24"
+            id="app-store"
+            data-name="Flat Line"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <line
+              id="primary"
+              x1="21"
+              y1="17"
+              x2="18"
+              y2="17"
+              style="fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"
+            ></line>
+            <line
+              id="primary-2"
+              data-name="primary"
+              x1="20"
+              y1="21"
+              x2="14.29"
+              y2="10.72"
+              style="fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"
+            ></line>
+            <line
+              id="primary-3"
+              data-name="primary"
+              x1="12"
+              y1="6.6"
+              x2="10"
+              y2="3"
+              style="fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"
+            ></line>
+            <line
+              id="primary-4"
+              data-name="primary"
+              x1="14"
+              y1="3"
+              x2="4"
+              y2="21"
+              style="fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"
+            ></line>
+            <line
+              id="primary-5"
+              data-name="primary"
+              x1="13"
+              y1="17"
+              x2="3"
+              y2="17"
+              style="fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"
+            ></line>
+          </svg>
+          App Store
+        </a>
+      </div>
+    </div>
+  </section>
+</header>

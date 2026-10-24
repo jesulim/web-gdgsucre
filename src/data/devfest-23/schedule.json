@@ -1,0 +1,106 @@
+{
+  "talks": [
+    {
+      "time": "8 - 9 AM",
+      "title": "ACREDITACIÓN"
+    },
+    {
+      "time": "9 - 9:15 AM",
+      "title": "Bienvenida + inaguración"
+    },
+    {
+      "time": "9:15 - 10 AM ",
+      "title": "Transfer Learning con KerasCV: Simplificando la clasificación de imágenes",
+      "speaker": "Pablo Noya"
+    },
+    {
+      "time": "10 - 10:45 AM",
+      "title": "Mi primera app de IA con Flutter",
+      "speaker": "Paolo Joaquín Pinto"
+    },
+    {
+      "time": "10:45 - 11 AM",
+      "title": "REFRIGERIO"
+    },
+    {
+      "time": "11 - 11:45 AM",
+      "title": "Crónicas con Flutter",
+      "speaker": "Jean Carlos Roldán"
+    },
+    {
+      "time": "11:45 AM - 12:30 PM",
+      "title": "Diseñando aplicaciones para millones de usuarios",
+      "speaker": "Carlos Collazos"
+    },
+    {
+      "time": "12:30 - 2 PM",
+      "title": "ALMUERZO"
+    },
+    {
+      "time": "3 - 3:45 PM",
+      "title": "Introduction to Google Cloud Platform",
+      "speaker": "David Ríos"
+    },
+    {
+      "time": "3:45 - 4:30 PM",
+      "title": "Data management en Google Cloud: cómo aprovechar el poder del machine learning",
+      "speaker": "Nicolás Lecaros Marchant"
+    },
+    {
+      "time": "4:30 - 4:45 PM",
+      "title": "REFRIGERIO"
+    },
+    {
+      "time": "5 - 5:45 PM",
+      "title": "Dando Vida a SVG con Flutter: Un Viaje de Interacción",
+      "speaker": "Antonio Andrés Giler"
+    },
+    {
+      "time": "5:45 - 6:30 PM",
+      "title": "Cómo App Check ayuda a proteger su aplicación",
+      "speaker": "Brian Dennis Vega"
+    }
+  ],
+  "workshops": [
+    {
+      "time": "8 - 9 AM",
+      "title": "ACREDITACIÓN"
+    },
+    {
+      "time": "9 - 9:15 AM",
+      "title": "Bienvenida + inaguración"
+    },
+    {
+      "time": "10 - 10:45 AM",
+      "title": "Introducción a bases de datos no relacioneles con Firebase",
+      "speaker": "Brian Castillo"
+    },
+    {
+      "time": "10:45 - 11 AM",
+      "title": "REFRIGERIO"
+    },
+    {
+      "time": "11:30 - 12:30 AM",
+      "title": "Introducción al Natural Language Processing (NLP) con TensorFlow",
+      "speaker": "Alejandro Núnez Arroyo"
+    },
+    {
+      "time": "12:30 - 2 PM",
+      "title": "ALMUERZO"
+    },
+    {
+      "time": "3 - 4 PM",
+      "title": "Mi primera aplicacion con Flutter",
+      "speaker": "Hansy Schmitt"
+    },
+    {
+      "time": "4:30 - 4:45 PM",
+      "title": "REFRIGERIO"
+    },
+    {
+      "time": "5 - 6 PM",
+      "title": "Juguemos piedra, papel o tijera con visión artificial",
+      "speaker": "Sergio Fernández Testa"
+    }
+  ]
+}
