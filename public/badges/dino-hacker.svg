@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#022c22"/>
+    </linearGradient>
+    <linearGradient id="borderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4285F4"/>
+      <stop offset="33%" stop-color="#EA4335"/>
+      <stop offset="66%" stop-color="#FBBC05"/>
+      <stop offset="100%" stop-color="#34A853"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Outer Ring -->
+  <circle cx="120" cy="120" r="110" fill="url(#bgGrad)" stroke="url(#borderGrad)" stroke-width="5" filter="url(#glow)"/>
+  <circle cx="120" cy="120" r="98" fill="none" stroke="#10b981" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.6"/>
+
+  <!-- Terminal Window Graphic -->
+  <rect x="52" y="58" width="136" height="102" rx="10" fill="#030712" stroke="#34d399" stroke-width="2.5"/>
+  
+  <!-- Window Header -->
+  <path d="M 52 74 L 188 74" stroke="#1f2937" stroke-width="2"/>
+  <circle cx="66" cy="66" r="3.5" fill="#ef4444"/>
+  <circle cx="78" cy="66" r="3.5" fill="#eab308"/>
+  <circle cx="90" cy="66" r="3.5" fill="#22c55e"/>
+
+  <!-- Code Prompt & Prompt Symbol -->
+  <path d="M 68 96 L 82 108 L 68 120" fill="none" stroke="#10b981" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="92" y1="120" x2="114" y2="120" stroke="#38bdf8" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- GDG Branded Mini Dots -->
+  <circle cx="140" cy="98" r="4" fill="#4285F4"/>
+  <circle cx="154" cy="98" r="4" fill="#EA4335"/>
+  <circle cx="168" cy="98" r="4" fill="#FBBC05"/>
+  <circle cx="140" cy="114" r="4" fill="#34A853"/>
+
+  <!-- Badge Ribbon / Bottom Text -->
+  <rect x="36" y="174" width="168" height="30" rx="15" fill="#047857" stroke="#6ee7b7" stroke-width="1.5"/>
+  <text x="120" y="194" text-anchor="middle" fill="#ffffff" font-family="monospace, ui-monospace, sans-serif" font-size="12" font-weight="bold" letter-spacing="1.5">DINO HACKER</text>
+</svg>

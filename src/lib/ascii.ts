@@ -84,12 +84,16 @@ export function printConsoleBanner(
     console.log(message);
   } else {
     console.log(
-      "%cGoogle %cDeveloper %cGroup %cSucre\n%cPssst, la consola sólo es el comienzo...\nPrueba presionando `",
+      "%cGoogle %cDeveloper %cGroup %cSucre\n" +
+        "%c🦖 ¿Dev curioso?\n" +
+        "Prueba ejecutando: %cgdg.start()%c",
       "font-size: 14px; font-weight: bold; color: #349cff; padding: 6px 0 2px 0;",
       "font-size: 14px; font-weight: bold; color: #ff3520; padding: 6px 0 2px 0;",
       "font-size: 14px; font-weight: bold; color: #ffed00; padding: 6px 0 2px 0;",
       "font-size: 14px; font-weight: bold; color: #00c256; padding: 6px 0 2px 0;",
-      "font-size: 12px; color: #9aa0a6; line-height: 1.5;",
+      "font-size: 12px; color: #9aa0a6; line-height: 1.6;",
+      "color: #00ff88; background: #1a1a2e; font-family: monospace; font-size: 12px; padding: 2px 6px; border-radius: 3px;",
+      "color: #9aa0a6; font-size: 12px; line-height: 1.6;",
     );
   }
 }

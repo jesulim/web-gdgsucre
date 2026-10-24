@@ -69,5 +69,21 @@ const badges = await getBadges(supabase, profile.id)
     </div>
   </main>
 
+  <script>
+    try {
+      const raw = localStorage.getItem("gdg_devtools_badge_unlocked")
+      if (raw) {
+        const badge = JSON.parse(raw)
+        if (badge?.flag) {
+          fetch("/api/badges/claim", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ flag: badge.flag }),
+          })
+        }
+      }
+    } catch {}
+  </script>
+
   <Footer />
 </BaseLayout>
