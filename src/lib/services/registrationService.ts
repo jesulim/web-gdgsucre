@@ -96,7 +96,6 @@ export async function submitRegistration(
     {
       user_id: user.id,
       event_id: event_id,
-      role: "Participante",
       responses: fields,
     },
   ])
