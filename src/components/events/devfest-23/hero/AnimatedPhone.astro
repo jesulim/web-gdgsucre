@@ -1,13 +1,9 @@
 ---
 import { Image } from "astro:assets"
-import phone from "@/assets/events/devfest-23/drawings/phone.png"
+import phone from "@/assets/events/devfest-23/drawings/phone.webp"
 ---
 
-<Image
-  src={phone}
-  alt="phone"
-  class="phone mt-2 mr-2 sm:ml-8 lg:ml-20"
-/>
+<Image src={phone} alt="phone" class="phone mt-2 mr-2 sm:ml-8 lg:ml-20" />
 
 <style>
   .phone {
@@ -21,13 +17,34 @@ import phone from "@/assets/events/devfest-23/drawings/phone.png"
   }
 
   @keyframes dibujo3 {
-    0%, 15% { transform: translate(0, 0) rotate(0deg); }
-    16%, 30% { transform: translate(2px, -1px) rotate(-8deg); }
-    31%, 45% { transform: translate(-1px, 3px) rotate(9deg); }
-    46%, 60% { transform: translate(-2px, -2px) rotate(-7deg); }
-    61%, 75% { transform: translate(3px, 1px) rotate(6deg); }
-    76%, 90% { transform: translate(-3px, -1px) rotate(-5deg); }
-    91%, 100% { transform: translate(1px, 2px) rotate(4deg); }
+    0%,
+    15% {
+      transform: translate(0, 0) rotate(0deg);
+    }
+    16%,
+    30% {
+      transform: translate(2px, -1px) rotate(-8deg);
+    }
+    31%,
+    45% {
+      transform: translate(-1px, 3px) rotate(9deg);
+    }
+    46%,
+    60% {
+      transform: translate(-2px, -2px) rotate(-7deg);
+    }
+    61%,
+    75% {
+      transform: translate(3px, 1px) rotate(6deg);
+    }
+    76%,
+    90% {
+      transform: translate(-3px, -1px) rotate(-5deg);
+    }
+    91%,
+    100% {
+      transform: translate(1px, 2px) rotate(4deg);
+    }
   }
 
   @media only screen and (max-width: 600px) {

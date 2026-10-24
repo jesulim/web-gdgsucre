@@ -3,7 +3,6 @@
     "id": "9si8cFbXxYBLFqh8mubg",
     "type": 4,
     "name": "Armando Lopez",
-    "photoUrl": "organizers/armando_lopez.jpg",
     "socialNetworks": [
       {
         "type": "linkedin",
@@ -24,7 +23,6 @@
     "id": "9ChU5IOWay4VyYrO9vUR",
     "type": 4,
     "name": "Andrea Cornejo",
-    "photoUrl": "organizers/andrea_cornejo.jpg",
     "socialNetworks": [
       {
         "type": "linkedin",
@@ -45,7 +43,6 @@
     "id": "tWY7kGrli8yPMyuNueNF",
     "type": 3,
     "name": "Franklin Castillo",
-    "photoUrl": "organizers/franklin_castillo.jpg",
     "socialNetworks": [
       {
         "type": "linkedin",
@@ -62,7 +59,6 @@
     "id": "qTprRHLN5Rk07sORYLCl",
     "type": 3,
     "name": "Sebastian Gonzales",
-    "photoUrl": "organizers/sebastian_gonzales.jpeg",
     "socialNetworks": [
       {
         "type": "linkedin",
@@ -87,7 +83,6 @@
     "id": "iN1Y3VsDP7SeZE1abTjb",
     "type": 3,
     "name": "Alejandro Núñez",
-    "photoUrl": "organizers/alejandro_núñez.jpg",
     "socialNetworks": [
       {
         "type": "linkedin",
@@ -112,7 +107,6 @@
     "id": "dwoZVhAIKpZE5GQo5TAr",
     "type": 3,
     "name": "Stefany Reynaga",
-    "photoUrl": "organizers/stefany_reynaga.jpeg",
     "socialNetworks": [
       {
         "type": "linkedin",
@@ -129,7 +123,6 @@
     "id": "d9bf1WFCGnUtHfHNBJN4",
     "type": 3,
     "name": "Heidy Paco",
-    "photoUrl": "organizers/heidy_paco.png",
     "socialNetworks": [
       {
         "type": "twitter",
@@ -142,7 +135,6 @@
     "id": "asq9qd31zRUe0Tr1uvzd",
     "type": 3,
     "name": "Pablo Noya",
-    "photoUrl": "organizers/pablo_noya.png",
     "socialNetworks": [
       {
         "type": "linkedin",
@@ -151,10 +143,6 @@
       {
         "type": "github",
         "url": "https://www.github.com/pablonoya/"
-      },
-      {
-        "type": "facebook",
-        "url": "https://www.facebook.com/PabloNoya18/"
       }
     ],
     "photoFileName": "pablo_noya.webp"
@@ -163,7 +151,6 @@
     "id": "lR9GeExEdkhdMiVzleXH",
     "type": 3,
     "name": "Grover Taboada",
-    "photoUrl": "organizers/grover-taboada.jpg",
     "socialNetworks": [
       {
         "type": "instagram",
@@ -176,7 +163,6 @@
     "id": "xEdkhdMlR9GeEiVzleXH",
     "type": 3,
     "name": "Valentina Salinas",
-    "photoUrl": "organizers/valentina_salinas.jpeg",
     "socialNetworks": [
       {
         "type": "github",
@@ -197,7 +183,6 @@
     "id": "OaQceN08HTK3UvHbuaRQ",
     "type": 3,
     "name": "Ivan Martinez",
-    "photoUrl": "organizers/ivan_martinez.png",
     "socialNetworks": [
       {
         "type": "linkedin",
@@ -214,7 +199,6 @@
     "id": "CjCVtSbRyF7di904xuZd",
     "type": 1,
     "name": "Aylin Oropeza",
-    "photoUrl": "organizers/aylin_oropeza.jpg",
     "socialNetworks": [
       {
         "type": "linkedin",
@@ -235,7 +219,6 @@
     "id": "p22zwdPny65pNFCAiSI5",
     "type": 2,
     "name": "Camilo Núñez",
-    "photoUrl": "organizers/camilo_núñez.png",
     "socialNetworks": [
       {
         "type": "facebook",
@@ -252,7 +235,6 @@
     "id": "Ukm6gHaBX4Su83Rrr0R8",
     "type": 1,
     "name": "Andrea Chumacero",
-    "photoUrl": "organizers/andrea_chumacero.jpeg",
     "socialNetworks": [
       {
         "type": "facebook",
@@ -269,7 +251,6 @@
     "id": "sRVH1mE8IgB7C0CSIchg",
     "type": 1,
     "name": "Madizon Gonzales",
-    "photoUrl": "organizers/mádizon_gonzales.jpg",
     "socialNetworks": [
       {
         "type": "linkedin",
@@ -290,7 +271,6 @@
     "id": "u4NlN0Gfgh0TKnqEJlBg",
     "type": 1,
     "name": "Andrés Torres",
-    "photoUrl": "organizers/alejandro_torres.jpg",
     "socialNetworks": [
       {
         "type": "github",
@@ -307,7 +287,6 @@
     "id": "niFlRc7PZbZfuCFoalPK",
     "type": 1,
     "name": "Ruben Camargo",
-    "photoUrl": "organizers/ruben_camargo.jpg",
     "socialNetworks": [
       {
         "type": "facebook",
@@ -328,7 +307,6 @@
     "id": "VyylB4QPvxc1frJeeeTp",
     "type": 1,
     "name": "Noelia Gonzales",
-    "photoUrl": "organizers/noemi_gonzales.jpeg",
     "socialNetworks": [
       {
         "type": "github",
@@ -349,7 +327,6 @@
     "id": "F4ixjr3aV2Vwy2qerOcr",
     "type": 1,
     "name": "Davinia Salguero",
-    "photoUrl": "organizers/davinia_salguero.jpg",
     "socialNetworks": [
       {
         "type": "github",
@@ -370,7 +347,6 @@
     "id": "qlRtu0GpHYqpUiNNrEE7",
     "type": 1,
     "name": "Pablo Lopez",
-    "photoUrl": "organizers/pablo_lopez.jpeg",
     "socialNetworks": [
       {
         "type": "instagram",
@@ -383,7 +359,6 @@
     "id": "Nj4veEWiY5bTZFpfLk7m",
     "type": 1,
     "name": "Daniel Gonzales",
-    "photoUrl": "organizers/daniel_gonzales.jpg",
     "socialNetworks": [
       {
         "type": "linkedin",
@@ -412,7 +387,6 @@
     "id": "LIJ0eIuOnTSX1lefxi1I",
     "type": 1,
     "name": "Jhamil Crespo",
-    "photoUrl": "organizers/jhamil_crespo.jpg",
     "socialNetworks": [
       {
         "type": "instagram",
@@ -425,7 +399,6 @@
     "id": "909a0Q1yTFTQFEYIaL6G",
     "type": 2,
     "name": "Oscar Delgadillo",
-    "photoUrl": "organizers/oscar_delgadillo.png",
     "socialNetworks": [
       {
         "type": "linkedin",
@@ -446,7 +419,6 @@
     "id": "TQFEYIaL6G909a0Q1yTF",
     "type": 2,
     "name": "Oscar Taboada",
-    "photoUrl": "organizers/oscar-taboada.jpg",
     "socialNetworks": [
       {
         "type": "instagram",

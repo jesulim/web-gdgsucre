@@ -60,7 +60,7 @@ export const Timer: React.FC<TimerProps> = ({ targetDate }) => {
 
   if (continueTime) {
     return (
-      <div className="mb-2 font-bold text-2xl text-[#38A852] text-df23-green animate-bounce">
+      <div className="mb-2 font-bold text-2xl text-df23-yellow animate-bounce">
         ¡Evento Concluido!
       </div>
     )
@@ -85,22 +85,18 @@ export const Timer: React.FC<TimerProps> = ({ targetDate }) => {
               <div
                 className={`text-white font-bold font-quantico text-5xl lg:text-7xl relative ${
                   !isLast
-                    ? 'after:ml-2 after:font-bold after:text-[#FFBB01] after:content-[""] after:absolute lg:after:ml-5'
+                    ? 'after:ml-2 after:font-bold after:text-df23-yellow after:content-[""] after:absolute lg:after:ml-5'
                     : ""
                 }`}
               >
                 {value}
               </div>
-              {label && (
-                <span className="text-[#FFBB01] text-df23-yellow text-sm lg:text-base">
-                  {label}
-                </span>
-              )}
+              {label && <span className="text-df23-yellow text-sm lg:text-base">{label}</span>}
             </div>
           )
         })}
       </section>
-      <h2 className="text-2xl lg:text-3xl text-[#3D8BFF] text-df23-blue">Sábado 09 de diciembre</h2>
+      <h2 className="text-2xl lg:text-3xl text-blue-500 text-df23-blue">Sábado 09 de diciembre</h2>
     </>
   )
 }

@@ -8,7 +8,7 @@ interface Props {
 
 const { time, title, speaker, type } = Astro.props
 const timeTextColor =
-  type === "talk" ? "text-[#3D8BFF] text-df23-blue" : "text-[#FFBB01] text-df23-yellow"
+  type === "talk" ? "text-blue-500 text-df23-blue" : "text-df23-yellow text-df23-yellow"
 const titleTextColor = speaker ? "text-white" : timeTextColor
 ---
 

@@ -1,13 +1,9 @@
 ---
 import { Image } from "astro:assets"
-import cup from "@/assets/events/devfest-23/drawings/cup.png"
+import cup from "@/assets/events/devfest-23/drawings/cup.webp"
 ---
 
-<Image
-  src={cup}
-  alt="cup"
-  class="cup mt-2 mr-2 sm:ml-8 lg:ml-20"
-/>
+<Image src={cup} alt="cup" class="cup mt-2 mr-2 sm:ml-8 lg:ml-20" />
 
 <style>
   .cup {
@@ -21,11 +17,26 @@ import cup from "@/assets/events/devfest-23/drawings/cup.png"
   }
 
   @keyframes dibujo {
-    0%, 20% { transform: translate(0, 0) rotate(0deg); }
-    21%, 40% { transform: translate(3px, 1px) rotate(10deg); }
-    41%, 60% { transform: translate(-3px, -1px) rotate(-7deg); }
-    61%, 80% { transform: translate(-1px, 3px) rotate(5deg); }
-    81%, 100% { transform: translate(1px, -3px) rotate(-10deg); }
+    0%,
+    20% {
+      transform: translate(0, 0) rotate(0deg);
+    }
+    21%,
+    40% {
+      transform: translate(3px, 1px) rotate(10deg);
+    }
+    41%,
+    60% {
+      transform: translate(-3px, -1px) rotate(-7deg);
+    }
+    61%,
+    80% {
+      transform: translate(-1px, 3px) rotate(5deg);
+    }
+    81%,
+    100% {
+      transform: translate(1px, -3px) rotate(-10deg);
+    }
   }
 
   @media only screen and (max-width: 600px) {
