@@ -40,7 +40,6 @@ export async function getUpcomingCalendarEvents(supabase: SupabaseClient) {
   const NEXT_EVENTS_LIMIT = 4
 
   const startOfToday = new Date(Date.now() - 4 * 60 * 60 * 1000)
-  startOfToday.setUTCHours(0, 0, 0, 0)
 
   const { data: calendarEvents, error } = await supabase
     .from("calendar_events")
