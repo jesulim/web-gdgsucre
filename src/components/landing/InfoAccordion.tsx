@@ -50,7 +50,7 @@ export default function InfoAccordion() {
 
       <Accordion
         type="single"
-        className="border-l-2 border-off-white"
+        className="sm:border-l-2 border-off-white"
         defaultValue="what"
         onValueChange={setSection}
       >
