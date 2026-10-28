@@ -5,76 +5,17 @@ import Hero from "@/components/events/devfest-26/Hero.astro"
 import BaseLayout from "@/layout/BaseLayout.astro"
 ---
 
-<BaseLayout theme="dark" title="Google I/O Extended Sucre" description="Landing de Google I/O Extended Sucre">
+<BaseLayout
+  theme="dark"
+  title="DevFest Sucre 2026"
+  description="Desarrolla y construye en la era de los agentes - DevFest Sucre 2026"
+  ogImage = "/events/devfest-26/og.webp",
+>
   <Header/>
 
-  <Hero/>
+  <main class="flex-1">
+    <Hero/>
+  </main>
+
+  <!-- Footer here -->
 </BaseLayout>
-
-<style>
-  /* Siluetas orgánicas fijas: se rasterizan UNA vez con el blur y luego solo se
-     transforman, evitando re-aplicar el filtro en cada frame (era el costo gordo). */
-  .lava-blob-1 {
-    border-radius: 42% 58% 60% 40% / 45% 55% 45% 55%;
-  }
-
-  .lava-blob-2 {
-    border-radius: 50% 50% 30% 70% / 50% 30% 70% 50%;
-  }
-
-  .lava-blob-3 {
-    border-radius: 60% 40% 50% 50% / 40% 60% 50% 50%;
-  }
-
-  @keyframes lavaBlob1 {
-    0%,
-    100% {
-      transform: translate3d(0px, 0px, 0px) scale(1) rotate(0deg);
-      opacity: 0.85;
-    }
-    33% {
-      transform: translate3d(75px, -65px, 0px) scale(1.3) rotate(140deg);
-      opacity: 1;
-    }
-    66% {
-      transform: translate3d(-55px, 45px, 0px) scale(0.85) rotate(280deg);
-      opacity: 0.8;
-    }
-  }
-
-  @keyframes lavaBlob2 {
-    0%,
-    100% {
-      transform: translate3d(0px, 0px, 0px) scale(1.05) rotate(0deg);
-      opacity: 0.75;
-    }
-    50% {
-      transform: translate3d(-80px, -60px, 0px) scale(1.35) rotate(-180deg);
-      opacity: 1;
-    }
-  }
-
-  @keyframes lavaBlob3 {
-    0%,
-    100% {
-      transform: translate3d(0px, 0px, 0px) scale(0.9);
-      opacity: 0.8;
-    }
-    50% {
-      transform: translate3d(65px, 70px, 0px) scale(1.25);
-      opacity: 1;
-    }
-  }
-
-  .animate-lava-blob-1 {
-    animation: lavaBlob1 7s ease-in-out infinite;
-  }
-
-  .animate-lava-blob-2 {
-    animation: lavaBlob2 9s ease-in-out infinite;
-  }
-
-  .animate-lava-blob-3 {
-    animation: lavaBlob3 8s ease-in-out infinite;
-  }
-</style>
