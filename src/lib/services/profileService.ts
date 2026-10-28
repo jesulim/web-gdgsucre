@@ -68,7 +68,9 @@ export async function getProfile(supabase: SupabaseClient) {
       last_name: "",
       avatar_url: user?.user_metadata?.avatar_url,
       email: user?.user_metadata?.email,
+      display_name: "",
       is_admin: false,
+      share_data: false,
     }
   }
 

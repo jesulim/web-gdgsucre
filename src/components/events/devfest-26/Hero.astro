@@ -1,0 +1,61 @@
+---
+import DevFest26Logo from "@/assets/events/devfest-26/logo.svg"
+import CalendarIcon from "@/assets/logos/calendar-month.svg"
+// import LocationIcon from "@/assets/logos/distance.svg"
+---
+<section class="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[#000] text-white px-4">
+  <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
+    <div class="absolute -top-30 -left-40 w-96 h-96 bg-blue-500/50 rounded-full blur-[120px] animate-pulse"></div>
+
+    <div class="absolute top-0 -right-20 w-72 h-72 bg-red-500/40 rounded-full blur-[100px] animate-blob animation-delay-2000"></div>
+
+    <div class="absolute top-1/2 -left-20 w-80 h-80 bg-yellow-500/40 rounded-full blur-[130px] animate-blob animation-delay-4000"></div>
+
+    <div class="absolute -bottom-20 -right-20 w-72 h-72 bg-green-500/45 rounded-full blur-[120px] animate-pulse"></div>
+  </div>
+
+
+  <div class="relative max-w-4xl mx-auto ">
+      <DevFest26Logo class="mx-auto w-5/6 max-w-lg"/>
+    <p class="text-2xl md:text-4xl font-medium leading-normal my-6 text-center">
+      Desarrolla y construye en la era de los agentes
+    </p>
+
+    <!-- Replace with CTAButton when registrations are open -->
+    <div class="font-medium rounded-full px-4 py-2 bg-white/20 w-fit mx-auto border-2 border-white/40 md:p-4 md:px-8">
+      Regístro próximamente
+    </div>
+
+    <div class="flex flex-col md:flex-row gap-4 my-8 md:gap-8 md:w-fit md:mx-auto md:text-lg">
+      <div class="flex gap-2 items-center">
+        <CalendarIcon class="size-6 fill-white"/>
+        Sábado 28 de noviembre 08:00 a. m.
+      </div>
+      <!-- Uncomment when confirmed
+      <div class="flex gap-2 items-center">
+        <LocationIcon class="size-6 fill-white"/>
+        Facultad de Tecnología
+      </div> -->
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes blob {
+    0%, 100% { transform: translate(0px, 0px) scale(1); }
+    33% { transform: translate(20px, -50px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+  }
+
+  .animate-blob {
+    animation: blob 10s infinite cubic-bezier(0.37, 0, 0.63, 1);
+  }
+
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+</style>

@@ -1,0 +1,106 @@
+---
+
+import GDGSucre from "@/assets/logos/GDGSucreLogo.svg"
+import Avatar from "@/components/Avatar.astro"
+
+const navLinks = [{ name: "DevFest 2026", href: "#" }]
+
+const accessToken = Astro.cookies.get("sb-access-token")?.value
+---
+
+<header
+  id="header"
+  class="fixed z-50 px-4 w-full h-16 flex items-center justify-between"
+>
+  <a
+    id="logo"
+    href="/#"
+    class="pr-4 h-full flex items-center gap-4 text-xl"
+  >
+    <GDGSucre class="h-full" />
+    <span class="hidden lg:block"> Google Developer Group Sucre </span>
+    <span class="lg:hidden"> GDG Sucre </span>
+  </a>
+
+  <nav
+    id="mobile-menu"
+    class="hidden absolute top-full left-0 w-full sm:h-full sm:static sm:flex sm:items-center sm:w-fit sm:ml-auto"
+  >
+    <ul
+      class="flex flex-col py-4 gap-4 sm:p-0 sm:pl-auto sm:flex-row sm:h-full sm:items-center font-light"
+    >
+      {
+        navLinks.map(link => (
+          <li class="pl-4">
+            <a href={link.href} class="flex items-center gap-4 hover:underline">
+              {link.name}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  <div class="ml-auto">
+
+  {
+accessToken ?
+  <Avatar /> : <a
+href="/api/auth/signin"
+  class="bg-white/20 rounded-full px-4 py-2">
+    Inicia sesión
+  </a>}
+  </div>
+
+  <div class="flex items-center gap-3 pl-4">
+    <button id="menu-toggle" class="rounded sm:hidden" aria-label="Abrir menú">
+      <svg class="size-6 stroke-black dark:stroke-white" fill="none" viewBox="0 0 24 24">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M4 6h16M4 12h16M4 18h16"></path>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<div id="menu-overlay" class="fixed h-0 inset-0 z-40 bg-black/30 transition-all"></div>
+
+<script>
+  const header = document.getElementById("header")
+  const logo = document.getElementById("logo")
+  const menuToggle = document.getElementById("menu-toggle")
+  const mobileMenu = document.getElementById("mobile-menu")
+  const menuOverlay = document.getElementById("menu-overlay")
+
+  function toggleMenu() {
+    mobileMenu?.classList.toggle("hidden")
+
+    menuToggle?.setAttribute(
+      "aria-label",
+      mobileMenu?.classList.contains("hidden") ? "Abrir menú" : "Cerrar menú",
+    )
+
+    menuOverlay?.classList.toggle("backdrop-blur-sm")
+    menuOverlay?.classList.toggle("h-auto")
+  }
+
+  logo?.addEventListener("click", () => {
+    if (mobileMenu?.classList.contains("hidden")) return
+    toggleMenu()
+  })
+  menuToggle?.addEventListener("click", () => toggleMenu())
+  menuOverlay?.addEventListener("click", () => toggleMenu())
+
+  function updateHeader() {
+    if (window.scrollY > 0) {
+      header?.classList.add("floating")
+    } else {
+      header?.classList.remove("floating")
+    }
+  }
+
+  window.addEventListener("scroll", updateHeader, { passive: true })
+  updateHeader()
+</script>

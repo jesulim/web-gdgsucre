@@ -4,8 +4,16 @@ import { Button } from "@/components/ui/button"
 
 // Animation constants
 const STYLE_ID = "astro-theme-toggle-temporary-styles"
-const STYLE_CONTENT =
-  "::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }"
+const STYLE_CONTENT = `
+  ::view-transition-old(root), ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+  /* Capture the final theme colors instead of in-flight CSS transitions. */
+  html, html *, html *::before, html *::after {
+    transition: none !important;
+  }
+`
 
 interface ThemeTransition {
   ready: Promise<void>
@@ -94,7 +102,7 @@ export function ModeToggle() {
 
   return (
     <Button
-      variant="outline"
+      variant="ghost"
       size="icon"
       onClick={toggleTheme}
       aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
