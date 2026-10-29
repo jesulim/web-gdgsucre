@@ -1,0 +1,34 @@
+[
+  {
+    "question": "¿Qué es el DevFest?",
+    "answer": "Es uno de los eventos más importantes del año organizado por la comunidad GDG Sucre. Es una conferencia presencial que reúne a la comunidad tecnológica para compartir conocimientos, experiencias y las últimas tendencias en tecnología."
+  },
+  {
+    "question": "¿Dónde y cuándo se realizará el evento?",
+    "answer": "El evento se realizará de manera presencial en la ciudad de Sucre, Bolivia. En el Edificio Central USFX el 16 de noviembre del 2024"
+  },
+  {
+    "question": "¿El evento es gratuito?",
+    "answer": "¡Sí! El evento es completamente gratuito. Sin embargo, el aforo es limitado, por lo que es necesario registrarse previamente a través de nuestro formulario de inscripción para asegurar tu cupo."
+  },
+  {
+    "question": "¿Necesito tener conocimientos previos para asistir?",
+    "answer": "¡Para nada! el DevFest está diseñado para todos los niveles. Ya seas estudiante, profesional o simplemente alguien interesado en la tecnología, tendremos charlas y actividades que te resultarán valiosas. Lo importante es tener entusiasmo por aprender."
+  },
+  {
+    "question": "¿Qué tipo de contenido se presentará?",
+    "answer": "Tendremos un programa diverso con charlas sobre desarrollo web, aplicaciones móviles, inteligencia artificial, realidad virtual y las últimas tendencias tecnológicas. Cada sesión será presentada por expertos en su área, con ejemplos prácticos y casos reales. Además, ¡habrá sorpresas y actividades especiales durante el evento!"
+  },
+  {
+    "question": "¿Habrá networking y oportunidades de conexión?",
+    "answer": "¡Absolutamente! DevFest es el lugar perfecto para conocer a otros profesionales, estudiantes y entusiastas de la tecnología. Tendremos espacios dedicados para networking, compartir experiencias y conectar con la comunidad tech de Sucre."
+  },
+  {
+    "question": "¿Cómo puedo unirme a la comunidad GDG Sucre?",
+    "answer": "Sólo necesitas participar de nuestras actividades. Síguenos en nuestras redes sociales para saber cuándo tendremos nuevas actividades, los enlaces están al final de esta página. Nuestra comunidad siempre está abierta a nuevos miembros que quieran aprender y compartir conocimientos sobre tecnología."
+  },
+  {
+    "question": "¿Qué debo llevar al evento?",
+    "answer": "Te recomendamos traer un cuaderno o dispositivo para tomar notas, y muchas ganas de aprender. Si tienes una laptop y deseas traerla, ¡también será bienvenida! Lo más importante es tu entusiasmo por la tecnología."
+  }
+]

@@ -1,0 +1,12 @@
+.card {
+  -webkit-transition: 0.5s ease-out;
+  transition: 0.5s ease-out;
+  overflow: visible;
+}
+
+.card-details {
+  height: 100%;
+  gap: 0.5em;
+  display: grid;
+  place-content: center;
+}

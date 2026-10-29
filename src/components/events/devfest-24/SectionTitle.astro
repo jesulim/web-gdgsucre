@@ -1,0 +1,12 @@
+---
+interface Props {
+  id?: string
+  title: string
+}
+
+const { id, title } = Astro.props
+---
+
+<h2 id={id} class="mx-auto scroll-mt-24 px-4 py-4 text-center text-3xl font-bold">
+  {title}
+</h2>

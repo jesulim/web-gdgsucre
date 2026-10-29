@@ -1,0 +1,29 @@
+---
+import { type ProfileData, RegisterCTA, type RegistrationData } from "../register/RegisterCTA"
+import Logo from "./Logo.astro"
+
+interface Props {
+  isAuthenticated: boolean
+  autoOpen?: boolean
+  registrationData?: RegistrationData | null
+  profileData?: ProfileData | null
+}
+
+const { isAuthenticated, autoOpen, registrationData, profileData } = Astro.props
+---
+
+<section class="mb-4 flex flex-col items-center px-4 pt-28 lg:pt-40">
+  <Logo class="h-20 sm:h-32 text-black dark:text-white" />
+
+  <RegisterCTA
+    isAuthenticated={isAuthenticated}
+    autoOpen={autoOpen}
+    registrationData={registrationData}
+    profileData={profileData}
+    client:load
+  />
+
+  <div class="mt-8 font-bold text-4xl text-[#FBBC04] animate-bounce text-center">
+    ¡Evento finalizado!
+  </div>
+</section>
