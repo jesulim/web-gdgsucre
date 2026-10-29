@@ -17,7 +17,7 @@ import SectionTitle from "../SectionTitle.astro"
             frequentQuestions.slice(0, Math.ceil(frequentQuestions.length / 2)).map((faq) => (
               <div class="cut-corners-r bg-black p-0.5 dark:bg-white">
                 <div class="cut-corners-r h-full bg-[#FBBC04] pb-2 pr-2">
-                  <div class="faq-card flex h-full items-center border-b-2 border-r-2 border-black bg-white px-4 py-4 text-black dark:border-white dark:bg-[#202124] dark:text-white">
+                  <div class="flex h-full items-center border-b-2 border-r-2 border-black bg-white px-4 py-4 text-black">
                     <div class="faq-item w-full">
                       <button type="button" class="faq-question">
                         <span>{faq.question}</span>
@@ -43,7 +43,7 @@ import SectionTitle from "../SectionTitle.astro"
             frequentQuestions.slice(Math.ceil(frequentQuestions.length / 2)).map((faq) => (
               <div class="cut-corners-r bg-black p-0.5 dark:bg-white">
                 <div class="cut-corners-r h-full bg-[#FBBC04] pb-2 pr-2">
-                  <div class="faq-card flex h-full items-center border-b-2 border-r-2 border-black bg-white px-4 py-4 text-black dark:border-white dark:bg-[#202124] dark:text-white">
+                  <div class="flex h-full items-center border-b-2 border-r-2 border-black bg-white px-4 py-4 text-black">
                     <div class="faq-item w-full">
                       <button type="button" class="faq-question">
                         <span>{faq.question}</span>
@@ -65,28 +65,6 @@ import SectionTitle from "../SectionTitle.astro"
 </div>
 
 <style>
-  .faq-card {
-    background-color: #ffffff;
-    color: #000000;
-    border-color: #000000;
-  }
-
-  :global(.dark) .faq-card {
-    background-color: #202124 !important;
-    color: #ffffff !important;
-    border-color: #ffffff !important;
-  }
-
-  :global(.dark) .faq-card .faq-question,
-  :global(.dark) .faq-card .faq-answer p {
-    color: #ffffff !important;
-  }
-
-  :global(.dark) .faq-card .icon::before,
-  :global(.dark) .faq-card .icon::after {
-    background: #ffffff !important;
-  }
-
   .questions {
     margin: 0.5rem 0;
   }

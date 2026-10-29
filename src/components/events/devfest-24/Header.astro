@@ -17,13 +17,13 @@ import { ThemeToggle } from "./ThemeToggle"
       </div>
     </a>
 
-    <div class="flex items-center gap-4 md:order-2 md:hidden">
+    <div class="flex items-center md:order-2 md:hidden">
       <ThemeToggle client:media="(max-width: 767px)" />
 
       <button
         data-collapse-toggle="navbar-sticky"
         type="button"
-        class="inline-flex h-10 w-10 items-center justify-center rounded-lg p-2 text-sm text-black hover:bg-black/10 focus:outline-none focus:ring-2 focus:ring-black dark:text-white dark:hover:bg-white/10 dark:focus:ring-white"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-lg p-2 text-sm text-black hover:bg-black/5 focus:outline-none focus:ring-2 focus:ring-black/20 dark:text-white dark:hover:bg-white/10 dark:focus:ring-white/20"
         aria-controls="navbar-sticky"
         aria-expanded="false"
       >
@@ -51,7 +51,7 @@ import { ThemeToggle } from "./ThemeToggle"
       id="navbar-sticky"
     >
       <ul
-        class="mt-4 flex flex-col rounded-xl border-2 border-black bg-white p-4 font-medium text-black dark:border-white dark:bg-[#202124] dark:text-white md:mt-0 md:flex-row md:space-x-8 md:border-0 md:bg-transparent md:p-0"
+        class="mt-4 flex flex-col rounded-xl border-2 border-black bg-white p-4 font-medium dark:border-white dark:bg-[#202124] md:mt-0 md:flex-row md:space-x-8 md:border-0 md:bg-transparent md:p-0"
       >
         <li>
           <a href="#speakers" class="block py-2 hover:text-[#4285F4]">Speakers</a>

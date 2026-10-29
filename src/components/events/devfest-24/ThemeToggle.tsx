@@ -6,16 +6,6 @@ export const ThemeToggle = () => {
   useEffect(() => {
     const isDark = document.documentElement.classList.contains("dark")
     setTheme(isDark ? "dark" : "light")
-
-    const observer = new MutationObserver(() => {
-      const isDarkNow = document.documentElement.classList.contains("dark")
-      setTheme(isDarkNow ? "dark" : "light")
-    })
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    })
-    return () => observer.disconnect()
   }, [])
 
   const handleToggle = () => {
