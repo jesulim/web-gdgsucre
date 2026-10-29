@@ -1,5 +1,5 @@
 ---
-
+import Dino from "@/assets/events/devfest-26/dino2.svg"
 import GDGSucre from "@/assets/logos/GDGSucreLogo.svg"
 import Avatar from "@/components/Avatar.astro"
 
@@ -8,53 +8,71 @@ const navLinks = [{ name: "DevFest 2026", href: "#" }]
 const accessToken = Astro.cookies.get("sb-access-token")?.value
 ---
 
-<header
-  id="header"
-  class="fixed z-50 px-4 w-full h-16 flex items-center justify-between"
->
-  <a
-    id="logo"
-    href="/#"
-    class="pr-4 h-full flex items-center gap-4 text-xl"
-  >
+<header id="header" class="fixed z-50 px-4 w-full h-16 flex items-center justify-between">
+  <a id="logo" href="/#" class="pr-4 h-full flex items-center gap-4 text-xl mr-auto">
     <GDGSucre class="h-full" />
-    <span class="hidden lg:block"> Google Developer Group Sucre </span>
-    <span class="lg:hidden"> GDG Sucre </span>
+
+    <div class="hidden flex-col sm:flex">
+      <span class="text-base leading-tight">Google Developer Group</span>
+      <span class="text-sm">Sucre</span>
+    </div>
+    <span class="text-sm font-medium sm:hidden">GDG Sucre</span>
+
+    <Dino class="ml-1 hidden h-13 opacity-90 lg:block" />
   </a>
 
   <nav
     id="mobile-menu"
-    class="hidden absolute top-full left-0 w-full sm:h-full sm:static sm:flex sm:items-center sm:w-fit sm:ml-auto"
+    class="hidden absolute w-full top-full left-0 md:static md:flex md:items-center md:w-fit"
   >
     <ul
-      class="flex flex-col py-4 gap-4 sm:p-0 sm:pl-auto sm:flex-row sm:h-full sm:items-center font-light"
+      class="flex flex-col m-2 p-4 gap-4 font-light border border-white/40 rounded-xl md:border-0 md:p-0 md:flex-row md:h-full md:items-center"
     >
       {
         navLinks.map(link => (
-          <li class="pl-4">
-            <a href={link.href} class="flex items-center gap-4 hover:underline">
+          <li>
+            <a
+              href={link.href}
+              class="flex items-center gap-4 hover:underline font-medium hover:text-blue-500 transition-colors duration-200"
+            >
               {link.name}
             </a>
           </li>
         ))
       }
+      <a
+        href="/eventos/"
+        class="w-fit border-2 border-white/20 hover:border-white/40 hover:bg-white/10 font-medium text-sm lg:text-base px-4 py-2 rounded-full transition-colors duration-200"
+      >
+        Eventos Pasados
+      </a>
     </ul>
   </nav>
 
-  <div class="ml-auto">
-
-  {
-accessToken ?
-  <Avatar /> : <a
-href="/api/auth/signin"
-  class="bg-white/20 rounded-full px-4 py-2">
-    Inicia sesión
-  </a>}
+  <div class="ml-4">
+    {
+      accessToken ? (
+        <Avatar />
+      ) : (
+        <a
+          href="/api/auth/signin"
+          class="border-2 border-white/20 bg-white/20 rounded-full px-4 py-2 hover:bg-white/30 transition-colors"
+        >
+          Inicia sesión
+        </a>
+      )
+    }
   </div>
 
   <div class="flex items-center gap-3 pl-4">
-    <button id="menu-toggle" class="rounded sm:hidden" aria-label="Abrir menú">
-      <svg class="size-6 stroke-black dark:stroke-white" fill="none" viewBox="0 0 24 24">
+    <button id="menu-toggle" type="button" class="rounded md:hidden" aria-label="Abrir menú">
+      <svg
+        role="img"
+        aria-labelledby="menu-toggle"
+        class="size-6 stroke-black dark:stroke-white"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
         <path
           stroke-linecap="round"
           stroke-linejoin="round"
@@ -65,7 +83,7 @@ href="/api/auth/signin"
   </div>
 </header>
 
-<div id="menu-overlay" class="fixed h-0 inset-0 z-40 bg-black/30 transition-all"></div>
+<div id="menu-overlay" class="fixed h-0 inset-0 z-40 bg-black/70 transition-all"></div>
 
 <script>
   const header = document.getElementById("header")
@@ -95,9 +113,9 @@ href="/api/auth/signin"
 
   function updateHeader() {
     if (window.scrollY > 0) {
-      header?.classList.add("floating")
+      header?.classList.add("backdrop-blur-sm")
     } else {
-      header?.classList.remove("floating")
+      header?.classList.remove("backdrop-blur-sm")
     }
   }
 
