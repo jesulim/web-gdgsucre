@@ -60,26 +60,26 @@ const toneClasses = {
 } as const
 
 const glowClasses = {
-  blue: "bg-[radial-gradient(circle,_rgb(66_133_244_/_0.36)_0%,_rgb(66_133_244_/_0.16)_34%,_transparent_74%)]",
-  red: "bg-[radial-gradient(circle,_rgb(234_67_53_/_0.34)_0%,_rgb(234_67_53_/_0.14)_34%,_transparent_74%)]",
+  blue: "bg-[radial-gradient(circle,_rgb(66_133_244_/_0.36)_0%,_rgb(66_133_244_/_0.16)_24%,_transparent_74%)]",
+  red: "bg-[radial-gradient(circle,_rgb(234_67_53_/_0.34)_0%,_rgb(234_67_53_/_0.14)_24%,_transparent_74%)]",
   yellow:
-    "bg-[radial-gradient(circle,_rgb(251_188_4_/_0.32)_0%,_rgb(251_188_4_/_0.14)_34%,_transparent_74%)]",
+    "bg-[radial-gradient(circle,_rgb(251_188_4_/_0.32)_0%,_rgb(251_188_4_/_0.14)_24%,_transparent_74%)]",
   green:
-    "bg-[radial-gradient(circle,_rgb(52_168_83_/_0.34)_0%,_rgb(52_168_83_/_0.14)_34%,_transparent_74%)]",
+    "bg-[radial-gradient(circle,_rgb(52_168_83_/_0.34)_0%,_rgb(52_168_83_/_0.14)_24%,_transparent_74%)]",
 } as const
 
 const TimeUnit = memo<TimeUnitProps>(({ label, value, tone }) => (
   <div className="relative flex shrink-0 flex-col items-center justify-center gap-2">
     <div
-      className={`relative flex size-14 items-center justify-center text-4xl font-semibold leading-none tracking-tight sm:size-24 sm:text-5xl md:size-28 md:text-[96px] ${toneClasses[tone]}`}
+      className={`relative flex size-14 items-center justify-center text-4xl font-semibold leading-none tracking-tight sm:size-24 sm:text-5xl md:size-28 md:text-7xl ${toneClasses[tone]}`}
     >
       <span
-        className={`pointer-events-none absolute left-1/2 top-1/2 -z-0 size-24 -translate-x-1/2 -translate-y-1/2 animate-pulse rounded-full bg-no-repeat mix-blend-screen sm:size-40 md:size-48 ${glowClasses[tone]}`}
+        className={`pointer-events-none absolute left-1/2 top-1/2 size-24 -translate-x-1/2 -translate-y-1/2 animate-pulse rounded-full bg-no-repeat mix-blend-screen sm:size-40 md:size-48 ${glowClasses[tone]}`}
         aria-hidden="true"
       />
       <AnimatedValue value={value} />
     </div>
-    <span className="text-[9px] font-medium uppercase tracking-[0.16em] text-white/60 sm:text-[14px]">
+    <span className="text-sm font-medium uppercase tracking-wider text-white/60 sm:text-base">
       {label}
     </span>
   </div>
@@ -106,9 +106,9 @@ export const Timer = ({ initialTime, targetDate }: TimerProps) => {
 
   const timeUnits: TimeUnitProps[] = [
     { label: "Días", value: days, tone: "blue" },
-    { label: "Hrs", value: hours, tone: "red" },
-    { label: "Mnts", value: minutes, tone: "yellow" },
-    { label: "Sgds", value: seconds, tone: "green" },
+    { label: "Horas", value: hours, tone: "red" },
+    { label: "Mins", value: minutes, tone: "yellow" },
+    { label: "Segs", value: seconds, tone: "green" },
   ]
 
   return (
@@ -118,33 +118,22 @@ export const Timer = ({ initialTime, targetDate }: TimerProps) => {
       aria-live="polite"
       aria-label="Cuenta regresiva para DevFest Sucre 2026"
     >
-      <p className="text-center text-[10px] font-semibold uppercase tracking-[0.35em] text-[#fbbc04] sm:text-[14px]">
-        Cuenta regresiva
-      </p>
       <h2 className="mt-3 text-center text-2xl font-bold tracking-tight text-white sm:text-3xl md:text-4xl">
         El evento comienza en
       </h2>
 
-      <div className="mx-auto mt-8 hidden w-[1100px] max-w-full items-center justify-between gap-27 md:flex md:gap-auto">
-        {timeUnits.map((unit, index) => (
-          <div key={unit.tone} className="flex items-center gap-2 sm:gap-5 md:gap-28">
-            <TimeUnit {...unit} />
-            {index < timeUnits.length - 1 && (
-              <span className="shrink-0 text-5xl font-light leading-none text-white/90 sm:text-77xl md:text-[164px]">
-                /
-              </span>
-            )}
-          </div>
-        ))}
-      </div>
-
-      <div className="mx-auto mt-8 grid w-full max-w-md grid-cols-4 gap-1 md:hidden">
-        {timeUnits.map(unit => (
-          <div key={unit.tone} className="flex min-w-0 flex-col items-center gap-2">
-            <TimeUnit {...unit} />
-          </div>
-        ))}
-        <div className="timer-spectrum col-span-4 mt-3 h-0.5 rounded-full" />
+      <div className="mx-auto max-w-md md:max-w-2xl">
+        <div className="mt-8 grid w-full grid-cols-4 md:grid-cols-7 gap-2 md:gap-20">
+          {timeUnits.map((unit, index) => (
+            <>
+              <TimeUnit {...unit} />
+              {index < timeUnits.length - 1 && (
+                <span className="hidden md:block text-white text-8xl mt-3 text-center">/</span>
+              )}
+            </>
+          ))}
+        </div>
+        <div className="timer-spectrum mt-4 h-0.5 rounded-full" />
       </div>
     </div>
   )

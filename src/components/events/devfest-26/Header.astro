@@ -3,144 +3,122 @@ import Dino from "@/assets/events/devfest-26/dino2.svg"
 import GDGSucre from "@/assets/logos/GDGSucreLogo.svg"
 import Avatar from "@/components/Avatar.astro"
 
-const isLoggedIn = Astro.cookies.has("sb-access-token") || Astro.cookies.has("sb-refresh-token")
+const navLinks = [{ name: "DevFest 2026", href: "#" }]
 
-const navLinks = [
-  { name: "Devfest 26", href: "/#hero" },
-  // { name: "Paquetes", href: "/#seccion-paquetes" },
-  // { name: "Sobre el evento", href: "/#about" },
-  // { name: "Speakers", href: "/#speakers" },
-  // { name: "Agenda", href: "/#agenda" },
-  // { name: "Sponsors", href: "/#sponsors" },
-  // { name: "Equipo", href: "/#organizadores" },
-]
-
-const registerHref = "/api/auth/signin?next=/registro/io-extended-25"
+const accessToken = Astro.cookies.get("sb-access-token")?.value
 ---
 
-<nav
-  id="site-header"
-  class="fixed inset-x-0 top-0 z-20 flex w-full flex-row items-center justify-between gap-3 bg-transparent px-4 py-3 transition-[background-color,backdrop-filter] duration-300 sm:px-8 sm:py-4 lg:px-16 lg:py-5 xl:px-24 2xl:px-50"
->
-  <!-- Logo -->
-  <a href="/#" class="flex min-w-0 items-center gap-2 text-white sm:gap-3" aria-label="GDG Sucre, volver al inicio">
-      <GDGSucre class="size-10 shrink-0 sm:size-16 lg:size-20" />
-      <div class="hidden flex-col items-start justify-center sm:flex">
-        <span class="text-base leading-tight lg:text-xl">Google Developer Group</span>
-        <span class="text-xs text-white lg:text-sm">Sucre</span>
-      </div>
-      <span class="text-sm font-medium sm:hidden">GDG Sucre</span>
-      <!-- <img src={Dino.src} alt="" aria-hidden="true" class="ml-1 hidden h-13 w-auto opacity-90 lg:block" /> -->
-    </a>
+<header id="header" class="fixed z-50 px-4 w-full h-16 flex items-center justify-between">
+  <a id="logo" href="/#" class="pr-4 h-full flex items-center gap-4 text-xl mr-auto">
+    <GDGSucre class="h-full" />
 
-  <!-- Botones / sesión -->
-  <div class="flex justify-between items-center gap-4 h-10.25">
-    <ul class="hidden items-center md:flex gap-12.25 h-8">
-      {navLinks.map(link => (
-        <li>
-          <a href={link.href} class="text-white font-medium leading-6 pb-1 border-b-2 border-transparent hover:border-blue-500 hover:text-blue-500 transition-colors duration-200">
-            {link.name}
-          </a>
-        </li>
-      ))}
-    </ul>
-    <!-- Eventos Pasados (visible en desktop y móvil) -->
-    <a href="https://gdgsucre.com/eventos/io-extended-25" class="hidden md:inline text-white border-2 border-white/20 hover:border-white/40 hover:bg-white/10 font-medium text-sm lg:text-base leading-5 lg:leading-6 px-4 lg:px-6 py-1.5 lg:py-[9px] rounded-full transition-colors duration-200">
-      Eventos Pasados
-    </a>
+    <div class="hidden flex-col sm:flex">
+      <span class="text-base leading-tight">Google Developer Group</span>
+      <span class="text-sm">Sucre</span>
+    </div>
+    <span class="text-sm font-medium sm:hidden">GDG Sucre</span>
 
-    <!-- Avatar o Login -->
-    <!-- {isLoggedIn ? (
-      <div class="relative">
-        <Avatar eventSlug="devfest-26" />
-      </div>
-    ) : (
-      <a 
-      href={registerHref} 
-      class="hidden rounded-full bg-io-accent px-5 py-1.5 text-sm font-medium leading-5 text-white transition-colors hover:bg-io-accent-hover md:inline lg:px-8 lg:py-[9px] lg:text-base lg:leading-6">
-        Registrarme
-      </a>
-      <a
-        href="{registerHref}"
-        class="md:hidden inline-flex min-h-9 items-center justify-center rounded-full border border-white/60 bg-transparent px-3.5 py-2 text-sm font-medium leading-none text-white transition duration-200 hover:-translate-y-px md:bg-io-accent md:px-3.5 md:text-io-on-accent md:hover:bg-io-accent-hover"
-      >
-        Registrarme
-      </a>
-    )} -->
+    <Dino class="ml-1 hidden h-13 opacity-90 lg:block" />
+  </a>
 
-    <!-- Hamburguesa móvil -->
-    <button
-      id="menu-toggle"
-      class="rounded p-2 text-white transition-colors md:hidden"
-      aria-label="Abrir menú"
-      aria-controls="mobile-menu"
-      aria-expanded="false"
-      type="button"
+  <nav
+    id="mobile-menu"
+    class="hidden absolute w-full top-full left-0 md:static md:flex md:items-center md:w-fit"
+  >
+    <ul
+      class="flex flex-col m-2 p-4 gap-4 font-light border border-white/40 rounded-xl md:border-0 md:p-0 md:flex-row md:h-full md:items-center"
     >
-      <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M4 6h16M4 12h16M4 18h16" />
+      {
+        navLinks.map(link => (
+          <li>
+            <a
+              href={link.href}
+              class="flex items-center gap-4 hover:underline font-medium hover:text-blue-500 transition-colors duration-200"
+            >
+              {link.name}
+            </a>
+          </li>
+        ))
+      }
+      <a
+        href="/eventos/"
+        class="w-fit border-2 border-white/20 hover:border-white/40 hover:bg-white/10 font-medium text-sm lg:text-base px-4 py-2 rounded-full transition-colors duration-200"
+      >
+        Eventos Pasados
+      </a>
+    </ul>
+  </nav>
+
+  <div class="ml-4">
+    {
+      accessToken ? (
+        <Avatar />
+      ) : (
+        <a
+          href="/api/auth/signin"
+          class="border-2 border-white/20 bg-white/20 rounded-full px-4 py-2 hover:bg-white/30 transition-colors"
+        >
+          Inicia sesión
+        </a>
+      )
+    }
+  </div>
+
+  <div class="flex items-center gap-3 pl-4">
+    <button id="menu-toggle" type="button" class="rounded md:hidden" aria-label="Abrir menú">
+      <svg
+        role="img"
+        aria-labelledby="menu-toggle"
+        class="size-6 stroke-black dark:stroke-white"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M4 6h16M4 12h16M4 18h16"></path>
       </svg>
     </button>
   </div>
+</header>
 
-  <!-- Menú hamburguesa móvil -->
-  <div id="mobile-menu" class="absolute left-0 top-full hidden w-full border rounded-2xl border-white/40 backdrop-blur-md px-6 py-4 shadow-md backdrop-blur-sm md:hidden">
-    <ul class="flex flex-col gap-4">
-      {navLinks.map(link => (
-        <li>
-          <a href={link.href} class="text-white text-lg font-medium hover:text-white transition-colors">
-            {link.name}
-          </a>
-        </li>
-      ))}
-    </ul>
-    <a href="https://devfest2024.gdgsucre.com/pastEvents/" class="mt-4 block text-white border-2 border-white/40 hover:border-white/40 hover:bg-white/10 text-center font-medium text-base leading-6 px-6 py-[9px] rounded-full transition-colors duration-200">
-      Eventos Pasados
-    </a>
-  </div>
-</nav>
+<div id="menu-overlay" class="fixed h-0 inset-0 z-40 bg-black/70 transition-all"></div>
 
-<!-- Script funcional -->
-<script type="module" is:inline>
-  const menuToggle = document.getElementById('menu-toggle');
-  const mobileMenu = document.getElementById('mobile-menu');
+<script>
+  const header = document.getElementById("header")
+  const logo = document.getElementById("logo")
+  const menuToggle = document.getElementById("menu-toggle")
+  const mobileMenu = document.getElementById("mobile-menu")
+  const menuOverlay = document.getElementById("menu-overlay")
 
-  let isMenuOpen = false;
+  function toggleMenu() {
+    mobileMenu?.classList.toggle("hidden")
 
-  const setMenuState = (open) => {
-    if (!menuToggle || !mobileMenu) return;
-    isMenuOpen = open;
-    mobileMenu.classList.toggle('hidden', !open);
-    menuToggle.setAttribute('aria-expanded', String(open));
-    menuToggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
-  };
+    menuToggle?.setAttribute(
+      "aria-label",
+      mobileMenu?.classList.contains("hidden") ? "Abrir menú" : "Cerrar menú",
+    )
 
-  menuToggle?.addEventListener('click', () => {
-    setMenuState(!isMenuOpen);
-  });
+    menuOverlay?.classList.toggle("backdrop-blur-sm")
+    menuOverlay?.classList.toggle("h-auto")
+  }
 
-  document.addEventListener('click', (e) => {
-    if (isMenuOpen && mobileMenu && !menuToggle?.contains(e.target) && !mobileMenu.contains(e.target)) {
-      setMenuState(false);
+  logo?.addEventListener("click", () => {
+    if (mobileMenu?.classList.contains("hidden")) return
+    toggleMenu()
+  })
+  menuToggle?.addEventListener("click", () => toggleMenu())
+  menuOverlay?.addEventListener("click", () => toggleMenu())
+
+  function updateHeader() {
+    if (window.scrollY > 0) {
+      header?.classList.add("backdrop-blur-sm")
+    } else {
+      header?.classList.remove("backdrop-blur-sm")
     }
-  });
+  }
 
-  mobileMenu?.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', () => setMenuState(false));
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && isMenuOpen) setMenuState(false);
-  });
-
-  const siteHeader = document.getElementById('site-header');
-  const updateHeaderOnScroll = () => {
-    siteHeader?.classList.toggle('backdrop-blur-md', window.scrollY > 0);
-    siteHeader?.classList.toggle('bg-black/10', window.scrollY > 0);
-  };
-
-  window.addEventListener('scroll', updateHeaderOnScroll, { passive: true });
-  updateHeaderOnScroll();
+  window.addEventListener("scroll", updateHeader, { passive: true })
+  updateHeader()
 </script>
-
