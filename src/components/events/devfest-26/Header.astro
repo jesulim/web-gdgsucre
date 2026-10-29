@@ -6,15 +6,16 @@ import Avatar from "@/components/Avatar.astro"
 const isLoggedIn = Astro.cookies.has("sb-access-token") || Astro.cookies.has("sb-refresh-token")
 
 const navLinks = [
-  { name: "Paquetes", href: "/eventos/io-extended-25/#seccion-paquetes" },
-  { name: "Sobre el evento", href: "/eventos/io-extended-25/#about" },
-  { name: "Speakers", href: "/eventos/io-extended-25/#speakers" },
-  { name: "Agenda", href: "/eventos/io-extended-25/#agenda" },
-  { name: "Sponsors", href: "/eventos/io-extended-25/#sponsors" },
-  { name: "Equipo", href: "/eventos/io-extended-25/#organizadores" },
+  { name: "Devfest 26", href: "/#hero" },
+  // { name: "Paquetes", href: "/#seccion-paquetes" },
+  // { name: "Sobre el evento", href: "/#about" },
+  // { name: "Speakers", href: "/#speakers" },
+  // { name: "Agenda", href: "/#agenda" },
+  // { name: "Sponsors", href: "/#sponsors" },
+  // { name: "Equipo", href: "/#organizadores" },
 ]
 
-const registerHref = "/api/auth/signin?next=/registro/devfest-26"
+const registerHref = "/api/auth/signin?next=/registro/io-extended-25"
 ---
 
 <nav
@@ -29,7 +30,7 @@ const registerHref = "/api/auth/signin?next=/registro/devfest-26"
         <span class="text-xs text-white lg:text-sm">Sucre</span>
       </div>
       <span class="text-sm font-medium sm:hidden">GDG Sucre</span>
-      <img src={Dino.src} alt="" aria-hidden="true" class="ml-1 hidden h-13 w-auto opacity-90 lg:block" />
+      <!-- <img src={Dino.src} alt="" aria-hidden="true" class="ml-1 hidden h-13 w-auto opacity-90 lg:block" /> -->
     </a>
 
   <!-- Botones / sesión -->
@@ -49,21 +50,23 @@ const registerHref = "/api/auth/signin?next=/registro/devfest-26"
     </a>
 
     <!-- Avatar o Login -->
-    {isLoggedIn ? (
+    <!-- {isLoggedIn ? (
       <div class="relative">
         <Avatar eventSlug="devfest-26" />
       </div>
     ) : (
-      <a href={registerHref} class="hidden rounded-full bg-io-accent px-5 py-1.5 text-sm font-medium leading-5 text-white transition-colors hover:bg-io-accent-hover md:inline lg:px-8 lg:py-[9px] lg:text-base lg:leading-6">
+      <a 
+      href={registerHref} 
+      class="hidden rounded-full bg-io-accent px-5 py-1.5 text-sm font-medium leading-5 text-white transition-colors hover:bg-io-accent-hover md:inline lg:px-8 lg:py-[9px] lg:text-base lg:leading-6">
         Registrarme
       </a>
       <a
-        href={registerHref}
+        href="{registerHref}"
         class="md:hidden inline-flex min-h-9 items-center justify-center rounded-full border border-white/60 bg-transparent px-3.5 py-2 text-sm font-medium leading-none text-white transition duration-200 hover:-translate-y-px md:bg-io-accent md:px-3.5 md:text-io-on-accent md:hover:bg-io-accent-hover"
       >
         Registrarme
       </a>
-    )}
+    )} -->
 
     <!-- Hamburguesa móvil -->
     <button
@@ -140,3 +143,4 @@ const registerHref = "/api/auth/signin?next=/registro/devfest-26"
   window.addEventListener('scroll', updateHeaderOnScroll, { passive: true });
   updateHeaderOnScroll();
 </script>
+
