@@ -18,7 +18,7 @@ import LocationMarker from "./icons/LocationMarker.astro"
         <div class="cut-corners-r bg-black p-0.5 dark:bg-white">
           <div class="cut-corners-r bg-[#34A853] pb-2 pr-2 h-full">
             <div
-              class="flex h-full items-center border-b-2 border-r-2 border-black bg-white px-4 py-4 dark:border-white dark:bg-[#202124] dark:text-white"
+              class="about-card flex h-full items-center border-b-2 border-r-2 border-black bg-white px-4 py-4 text-black dark:border-white dark:bg-[#202124] dark:text-white"
             >
               <div class="flex h-full items-center">
                 <LocationMarker
@@ -37,7 +37,7 @@ import LocationMarker from "./icons/LocationMarker.astro"
         <div class="cut-corners-r bg-black p-0.5 dark:bg-white">
           <div class="cut-corners-r h-full bg-[#4285F4] pb-2 pr-2">
             <div
-              class="flex h-full items-center border-b-2 border-r-2 border-black bg-white px-4 py-4 text-black dark:border-white dark:bg-[#202124] dark:text-white"
+              class="about-card flex h-full items-center border-b-2 border-r-2 border-black bg-white px-4 py-4 text-black dark:border-white dark:bg-[#202124] dark:text-white"
             >
               <div class="flex h-full items-center">
                 <Calendar class="mr-4 mt-1 hidden size-8 text-black dark:text-white md:block shrink-0" />
@@ -71,7 +71,7 @@ import LocationMarker from "./icons/LocationMarker.astro"
     <!-- About section below -->
     <div class="cut-corners-r mt-4 bg-black p-0.5 dark:bg-white">
       <div class="cut-corners-r bg-[#EA4335] pb-2 pr-2">
-        <div class="border-b-2 border-r-2 border-black bg-white px-3 py-6 text-black dark:border-white dark:bg-[#202124] dark:text-white">
+        <div class="about-card border-b-2 border-r-2 border-black bg-white px-3 py-6 text-black dark:border-white dark:bg-[#202124] dark:text-white">
           <span class="block text-center text-sm leading-snug text-black dark:text-white md:text-base">
             El DevFest Sucre es un evento tecnológico, organizado por la comunidad GDG Sucre, donde se
             comparten conocimientos sobre desarrollo de software, nuevas tecnologías y herramientas de
@@ -82,3 +82,21 @@ import LocationMarker from "./icons/LocationMarker.astro"
     </div>
   </div>
 </section>
+
+<style>
+  .about-card {
+    background-color: #ffffff;
+    color: #000000;
+    border-color: #000000;
+  }
+
+  :global(.dark) .about-card {
+    background-color: #202124 !important;
+    color: #ffffff !important;
+    border-color: #ffffff !important;
+  }
+
+  :global(.dark) .about-card * {
+    color: #ffffff !important;
+  }
+</style>
