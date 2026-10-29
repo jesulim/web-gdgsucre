@@ -49,7 +49,7 @@ export const Organizer = ({ organizers = [] }: OrganizerProps) => {
         className="mySwiper"
         style={{ height: "100%", paddingBottom: "90px" }}
       >
-        {sortedOrganizers.map(organizerProps => (
+        {sortedOrganizers.map((organizerProps, i) => (
           <SwiperSlide
             key={organizerProps.name}
             style={{

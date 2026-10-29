@@ -1,4 +1,6 @@
-const Diplodocus = props => (
+import type React from "react"
+
+const Diplodocus = (props: React.SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 80 76" {...props}>
     <title>Diplodocus</title>
     <path

@@ -169,6 +169,8 @@ import SectionTitle from "../SectionTitle.astro"
   function setupFaq() {
     const questions = document.querySelectorAll(".faq-question")
     questions.forEach((question) => {
+      if ((question as HTMLElement).dataset.faqBound) return
+      ;(question as HTMLElement).dataset.faqBound = "true"
       question.addEventListener("click", () => {
         const faqItem = question.closest(".faq-item")
         if (faqItem) {

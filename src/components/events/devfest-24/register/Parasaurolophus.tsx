@@ -1,4 +1,6 @@
-export default function Parasaurolophus(props) {
+import type React from "react"
+
+export default function Parasaurolophus(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 403 281" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
       <title>Parasaurolophus</title>

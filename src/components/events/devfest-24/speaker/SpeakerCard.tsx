@@ -24,14 +24,8 @@ export const SpeakerCard = ({
 }: SpeakerCardProps) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
-  const openModal = () => {
-    setIsModalOpen(true)
-    document.body.style.overflow = "hidden"
-  }
-  const closeModal = () => {
-    setIsModalOpen(false)
-    document.body.style.overflow = "unset"
-  }
+  const openModal = () => setIsModalOpen(true)
+  const closeModal = () => setIsModalOpen(false)
 
   return (
     <div>

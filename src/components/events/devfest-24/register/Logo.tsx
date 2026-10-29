@@ -1,4 +1,6 @@
-const Logo = props => (
+import type React from "react"
+
+const Logo = (props: React.SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 245 65" {...props}>
     <title>DevFest Sucre 2024</title>
     <path

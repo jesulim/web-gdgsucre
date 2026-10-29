@@ -57,18 +57,23 @@ export default function EventBadge({ userName, email, role, picture }: EventBadg
           </div>
 
           <div className="flex h-2/4 flex-col content-between justify-center p-4">
-            <div className="flex gap-4">
+            <div className="flex gap-4 items-center">
               <img
                 src={avatarSrc}
                 alt={userName}
-                className="h-16 w-16 rounded-full border-2 border-black object-cover"
+                className="h-16 w-16 rounded-full border-2 border-black object-cover shrink-0"
                 data-atropos-offset="8"
+                onError={e => {
+                  ;(e.currentTarget as HTMLImageElement).src = "/favicon.svg"
+                }}
               />
               <div
-                className="relative mb-8 border-2 border-black bg-white p-4 text-black shadow-[8px_8px_0px_0px_rgba(255,186,0,1)]"
+                className="relative mb-8 min-w-0 flex-1 border-2 border-black bg-white p-3 text-black shadow-[8px_8px_0px_0px_rgba(255,186,0,1)]"
                 data-atropos-offset="8"
               >
-                <h2 className="text-center text-xl font-bold capitalize text-black">{userName}</h2>
+                <h2 className="text-center text-xl font-bold capitalize text-black truncate">
+                  {userName}
+                </h2>
               </div>
             </div>
             <div className="flex h-12 items-center gap-4" data-atropos-offset="6">

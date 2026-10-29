@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import Diplodocus from "./Diplodocus"
 import EventBadge from "./EventBadge"
 
@@ -32,11 +32,39 @@ export const RegisterCTA = ({
   const [isOpen, setIsOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
+  const handleClose = useCallback(() => {
+    setIsOpen(false)
+    if (typeof window !== "undefined" && window.location.search.includes("credential=1")) {
+      const url = new URL(window.location.href)
+      url.searchParams.delete("credential")
+      window.history.replaceState({}, "", url.pathname + (url.search ? url.search : ""))
+    }
+  }, [])
+
   useEffect(() => {
     if (autoOpen && isAuthenticated) {
       setIsOpen(true)
     }
   }, [autoOpen, isAuthenticated])
+
+  useEffect(() => {
+    if (!isOpen) return
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        handleClose()
+      }
+    }
+
+    const originalOverflow = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+    window.addEventListener("keydown", handleKeyDown)
+
+    return () => {
+      document.body.style.overflow = originalOverflow
+      window.removeEventListener("keydown", handleKeyDown)
+    }
+  }, [isOpen, handleClose])
 
   const handleClick = () => {
     if (!isAuthenticated) {
@@ -48,14 +76,9 @@ export const RegisterCTA = ({
     setIsOpen(true)
   }
 
-  const handleClose = () => {
-    setIsOpen(false)
-  }
-
-  const fullName = [profileData?.first_name, profileData?.last_name]
-    .filter(Boolean)
-    .join(" ")
-    .trim()
+  const fullName =
+    (profileData as { display_name?: string | null })?.display_name ||
+    [profileData?.first_name, profileData?.last_name].filter(Boolean).join(" ").trim()
   const userName = fullName || profileData?.email || "Participante"
   const userRole = registrationData?.role || "Participante"
 
