@@ -1,61 +1,121 @@
 ---
+import Cloud from "@/assets/events/devfest-26/cloud.svg"
+import Dino from "@/assets/events/devfest-26/dino.svg"
 import DevFest26Logo from "@/assets/events/devfest-26/logo.svg"
+import Sucre from "@/assets/events/devfest-26/sucre.svg"
+import Vector from "@/assets/events/devfest-26/Vector.svg"
 import CalendarIcon from "@/assets/logos/calendar-month.svg"
-// import LocationIcon from "@/assets/logos/distance.svg"
+import LocationIcon from "@/assets/logos/distance.svg"
 ---
-<section class="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[#000] text-white px-4">
+<section class="relative flex min-h-svh flex-col items-center justify-start overflow-hidden bg-[#000] px-4 pb-8 pt-20 text-white lg:min-h-screen lg:justify-center lg:py-16">
   <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
-    <div class="absolute -top-30 -left-40 w-96 h-96 bg-blue-500/50 rounded-full blur-[120px] animate-pulse"></div>
+    <div class="absolute left-[-2rem] top-[-3rem] size-52 animate-pulse rounded-full bg-[radial-gradient(circle,_rgb(66_133_244_/_0.82)_0%,_rgb(66_133_244_/_0.44)_34%,_transparent_74%)] bg-no-repeat mix-blend-screen md:left-[7%] md:top-[10%] md:size-66"></div>
 
-    <div class="absolute top-0 -right-20 w-72 h-72 bg-red-500/40 rounded-full blur-[100px] animate-blob animation-delay-2000"></div>
+    <div class="absolute right-[-3rem] top-8 size-52 animate-pulse rounded-full bg-[radial-gradient(circle,_rgb(234_67_53_/_0.78)_0%,_rgb(234_67_53_/_0.4)_34%,_transparent_74%)] bg-no-repeat mix-blend-screen md:right-[6%] md:top-[15%] md:size-66"></div>
 
-    <div class="absolute top-1/2 -left-20 w-80 h-80 bg-yellow-500/40 rounded-full blur-[130px] animate-blob animation-delay-4000"></div>
+    <div class="absolute bottom-[28%] left-[-2rem] size-52 animate-pulse rounded-full bg-[radial-gradient(circle,_rgb(251_188_4_/_0.76)_0%,_rgb(251_188_4_/_0.38)_34%,_transparent_74%)] bg-no-repeat mix-blend-screen md:bottom-[18%] md:left-[6%] md:size-66" ></div>
 
-    <div class="absolute -bottom-20 -right-20 w-72 h-72 bg-green-500/45 rounded-full blur-[120px] animate-pulse"></div>
+    <div class="absolute bottom-[28%] right-[-2rem] size-52 animate-pulse rounded-full bg-[radial-gradient(circle,_rgb(52_168_83_/_0.78)_0%,_rgb(52_168_83_/_0.4)_34%,_transparent_74%)] bg-no-repeat mix-blend-screen md:bottom-[23%] md:right-[3%] md:size-66"></div>
   </div>
 
+  <div class="pointer-events-none absolute inset-0 z-[1] hidden lg:block" aria-hidden="true">
+    <img src={Dino.src} alt="" class="absolute left-[10%] top-[20%] w-32 h-18.75 select-none"/>
+    <img src={Cloud.src} alt="" class="absolute right-[10%] top-[24%] w-28.25 h-20.25 select-none" />
+    <img src={Sucre.src} alt="" class="absolute bottom-[25%] left-[8%] w-48.5 h-37 select-none"/>
+    <img src={Vector.src}  alt="" class="absolute bottom-[30%] right-[7%] w-25.25 h-25.25 select-none"/>
+  </div>
 
-  <div class="relative max-w-4xl mx-auto ">
-      <DevFest26Logo class="mx-auto w-5/6 max-w-lg"/>
-    <p class="text-2xl md:text-4xl font-medium leading-normal my-6 text-center">
-      Desarrolla y construye en la era de los agentes
-    </p>
-
-    <!-- Replace with CTAButton when registrations are open -->
-    <div class="font-medium rounded-full px-4 py-2 bg-white/20 w-fit mx-auto border-2 border-white/40 md:p-4 md:px-8">
-      Regístro próximamente
+  <div class="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center">
+    <div
+      class="pointer-events-none absolute left-1/2 -top-30 -z-10 hidden h-[28rem] w-[140vw] max-w-4xl -translate-x-1/2 animate-pulse rounded-full bg-[radial-gradient(ellipse,_rgb(66_133_244_/_0.72)_0%,_rgb(66_133_244_/_0.42)_36%,_transparent_82%)] bg-no-repeat mix-blend-screen md:block md:h-[38rem] md:max-w-5xl"
+      aria-hidden="true"
+    >
     </div>
 
-    <div class="flex flex-col md:flex-row gap-4 my-8 md:gap-8 md:w-fit md:mx-auto md:text-lg">
-      <div class="flex gap-2 items-center">
-        <CalendarIcon class="size-6 fill-white"/>
-        Sábado 28 de noviembre 08:00 a. m.
+    <DevFest26Logo class="mx-auto w-[min(250px,78vw)] md:w-5/6 md:max-w-lg"/>
+    <p class="my-5 w-full max-w-[280px] text-center text-[20px] font-medium leading-[1.45] md:my-6 md:max-w-none md:text-[56px] md:font-bold md:leading-[1.35]">
+      Desarrolla y construye en la época de los agentes
+    </p>
+
+    <a
+      href="#"
+      class="io-glow mx-auto flex h-10 w-40 items-center justify-center rounded-[999px] bg-white px-4 py-2 text-[14px] font-semibold text-black transition-transform duration-200 hover:scale-105 active:scale-[0.98] motion-reduce:transition-none motion-reduce:hover:scale-100 md:h-18.75 md:w-68 md:bg-transparent md:px-9 md:py-4 md:text-[16px] md:font-medium md:text-white"
+    >
+      Regístrate ahora
+    </a>
+
+    <div class="my-8 flex w-fit max-w-full flex-col gap-4 text-[12px] md:w-fit md:flex-row md:gap-8 md:text-lg">
+      <div class="flex items-center justify-start gap-2 md:justify-center">
+        <CalendarIcon aria-hidden="true" class="size-6 fill-white"/>
+        <span class="md:hidden">Sábado 28 de noviembre 8:00 a. m.</span>
+        <span class="hidden md:inline">Sábado 28 de noviembre 08:00 a. m.</span>
       </div>
-      <!-- Uncomment when confirmed
-      <div class="flex gap-2 items-center">
-        <LocationIcon class="size-6 fill-white"/>
-        Facultad de Tecnología
-      </div> -->
+      <div class="flex items-center justify-start gap-2 md:justify-center">
+        <LocationIcon aria-hidden="true" class="size-6 fill-white"/>
+        <span class="md:hidden">Facultad de Tecnología (por confirmar)</span>
+        <span class="hidden md:inline">(Lugar por confirmar)</span>
+      </div>
+    </div>
+
+    <div class="flex w-full items-end justify-between px-4 lg:hidden" aria-hidden="true">
+      <img src={Sucre.src} alt="" class="h-auto w-24" />
+      <img src={Dino.src} alt="" class="h-auto w-24" />
+      <img src={Cloud.src} alt="" class="h-auto w-20" />
     </div>
   </div>
 </section>
-
 <style>
-  @keyframes blob {
-    0%, 100% { transform: translate(0px, 0px) scale(1); }
-    33% { transform: translate(20px, -50px) scale(1.1); }
-    66% { transform: translate(-20px, 20px) scale(0.9); }
+  .io-glow {
+    position: relative;
   }
 
-  .animate-blob {
-    animation: blob 10s infinite cubic-bezier(0.37, 0, 0.63, 1);
+  .io-glow::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 2px;
+    border-radius: inherit;
+    pointer-events: none;
+    background-image: radial-gradient(
+      circle at center,
+      #4285f4 10%,
+      #ea4335 41%,
+      #f9ab00 61%,
+      #34a853 100%
+    );
+    background-size: 200% 200%;
+    animation: io-glow-move 3s ease infinite;
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box exclude,
+      linear-gradient(#000 0 0);
   }
 
-  .animation-delay-2000 {
-    animation-delay: 2s;
+  .io-glow:hover::before {
+    animation-duration: 1.5s;
   }
 
-  .animation-delay-4000 {
-    animation-delay: 4s;
+  .io-glow:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 4px;
+  }
+
+  @keyframes io-glow-move {
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .io-glow::before {
+      animation: none;
+    }
   }
 </style>
