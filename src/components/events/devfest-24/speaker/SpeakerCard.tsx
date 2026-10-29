@@ -36,7 +36,7 @@ export const SpeakerCard = ({
       />
 
       {/* Card */}
-      <div className="cut-corners-l pointer-events-auto h-full bg-black p-0.5 mix-blend-luminosity transition-all duration-300 dark:bg-white md:hover:!scale-100 md:hover:!blur-none md:group-hover:scale-[0.90] md:group-hover:blur-[1px]">
+      <div className="cut-corners-l pointer-events-auto h-full bg-black p-0.5 transition-all duration-300 dark:bg-white md:hover:!scale-100 md:hover:!blur-none md:group-hover:scale-[0.90] md:group-hover:blur-[1px]">
         <div className={`cut-corners-l h-full pb-2 pl-2 ${bgColors[id % 4]}`}>
           <div className="flex h-full flex-col items-center border-b-2 border-l-2 border-black bg-white px-2 pb-2 pt-4 text-center dark:border-white dark:bg-[#202124] dark:text-white sm:py-4 md:py-6">
             <img
