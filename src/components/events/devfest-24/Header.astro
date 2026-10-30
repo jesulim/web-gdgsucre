@@ -1,0 +1,96 @@
+---
+import Logo from "./icons/Logo.astro"
+import LogoShort from "./icons/LogoShort.astro"
+import { ThemeToggle } from "./ThemeToggle"
+---
+
+<nav
+  class="fixed left-0 top-0 z-20 w-full border-b-2 border-black bg-[#EEEEEE] dark:border-white dark:bg-[#202124] dark:text-white"
+>
+  <div class="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
+    <a href="/eventos/devfest-24#" aria-current="page" aria-label="DevFest Sucre 2024">
+      <div class="block md:hidden">
+        <LogoShort />
+      </div>
+      <div class="hidden md:block">
+        <Logo />
+      </div>
+    </a>
+
+    <div class="flex items-center md:order-2 md:hidden">
+      <ThemeToggle client:media="(max-width: 767px)" />
+
+      <button
+        data-collapse-toggle="navbar-sticky"
+        type="button"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-lg p-2 text-sm text-black hover:bg-black/5 focus:outline-none focus:ring-2 focus:ring-black/20 dark:text-white dark:hover:bg-white/10 dark:focus:ring-white/20"
+        aria-controls="navbar-sticky"
+        aria-expanded="false"
+      >
+        <span class="sr-only">Abrir menú principal</span>
+        <svg
+          class="h-5 w-5"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 17 14"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M1 1h15M1 7h15M1 13h15"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <div
+      class="hidden w-full items-center justify-between space-x-4 md:order-1 md:flex md:w-auto"
+      id="navbar-sticky"
+    >
+      <ul
+        class="mt-4 flex flex-col rounded-xl border-2 border-black bg-white p-4 font-medium dark:border-white dark:bg-[#202124] md:mt-0 md:flex-row md:space-x-8 md:border-0 md:bg-transparent md:p-0"
+      >
+        <li>
+          <a href="#speakers" class="block py-2 hover:text-[#4285F4]">Speakers</a>
+        </li>
+        <li>
+          <a href="#agenda" class="block py-2 hover:text-[#EA4335]">Agenda</a>
+        </li>
+        <li>
+          <a href="#sponsors" class="block py-2 hover:text-[#FBBC04]">Sponsors</a>
+        </li>
+        <li>
+          <a href="#organizadores" class="block py-2 hover:text-[#34A853]">Equipo</a>
+        </li>
+        <li>
+          <a href="#faq" class="block py-2 hover:text-[#EA4335]">Preguntas frecuentes</a>
+        </li>
+        <li>
+          <a href="/eventos" class="block py-2 hover:text-[#EA4335]">Eventos Pasados</a>
+        </li>
+      </ul>
+
+      <div class="hidden h-8 md:block">
+        <ThemeToggle client:media="(min-width: 768px)" />
+      </div>
+    </div>
+  </div>
+</nav>
+
+<script>
+  const toggleBtn = document.querySelector("[data-collapse-toggle]")
+  if (toggleBtn) {
+    toggleBtn.addEventListener("click", () => {
+      const targetId = toggleBtn.getAttribute("aria-controls")
+      if (!targetId) return
+      const target = document.getElementById(targetId)
+      if (!target) return
+      const expanded = toggleBtn.getAttribute("aria-expanded") === "true"
+      toggleBtn.setAttribute("aria-expanded", String(!expanded))
+      target.classList.toggle("hidden")
+    })
+  }
+</script>

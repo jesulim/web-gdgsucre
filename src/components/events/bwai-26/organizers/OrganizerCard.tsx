@@ -1,5 +1,3 @@
-const background = "/assets/figma/bg-organizer.svg"
-
 export interface Props {
   img: string
   full_name: string
@@ -8,10 +6,7 @@ export interface Props {
 
 export const OrganizerCard = ({ img, full_name, areas }: Props) => {
   return (
-    <div
-      className="card-speaker flex flex-col items-center rounded-lg overflow-hidden w-65 h-88 py-4 px-3 bg-cover bg-center bg-no-repeat mx-auto"
-      style={{ backgroundImage: `url(${background})` }}
-    >
+    <div className="card-speaker flex flex-col items-center rounded-lg overflow-hidden w-65 h-88 py-4 px-3 bg-cover bg-center bg-no-repeat mx-auto">
       <div className="w-full flex justify-center">
         <img
           src={img}

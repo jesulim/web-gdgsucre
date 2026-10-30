@@ -1,0 +1,60 @@
+---
+import type { ImageMetadata } from "astro"
+import scheduleData from "@/data/devfest-24/schedule.json"
+import ScheduleCard from "./ScheduleCard.astro"
+import SectionTitle from "./SectionTitle.astro"
+
+const speakerImages = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/events/devfest-24/speakers/*.webp",
+  { eager: true }
+)
+
+const resolveSpeakerPhoto = (photoFileName?: string) => {
+  if (!photoFileName) return undefined
+  const imgMod = speakerImages[`/src/assets/events/devfest-24/speakers/${photoFileName}`]
+  return imgMod?.default?.src ?? undefined
+}
+---
+
+<section
+  class="bg-[#F9AB00] mx-auto mb-8 mt-10 max-w-screen-2xl border-y-2 border-black dark:border-white dark:bg-[#4285F4] lg:mb-12 lg:mt-20 2xl:border-2 text-black dark:text-white"
+>
+  <SectionTitle id="agenda" title="Agenda" />
+
+  <div class="mx-auto grid max-w-screen-xl place-content-center pb-2">
+    <!-- Contenedor en dos columnas para pantallas grandes y una columna para pantallas pequeñas -->
+    <div class="flex flex-col divide-y-2 divide-black dark:divide-white px-4 lg:flex-row lg:divide-x-2 lg:divide-y-0">
+      <!-- Columna de la mañana -->
+      <div class="lg:w-1/2 lg:px-4">
+        <h3 class="pb-2 text-2xl font-semibold">Mañana</h3>
+        {
+          scheduleData.day.map((event) => (
+            <ScheduleCard
+              title={event.title}
+              speaker={event.speaker}
+              time={event.time}
+              location={event.pais || ""}
+              image={resolveSpeakerPhoto(event.photoFileName)}
+            />
+          ))
+        }
+      </div>
+
+      <!-- Columna de la tarde -->
+      <div class="lg:w-1/2 lg:px-4">
+        <h3 class="py-2 text-2xl font-semibold sm:pt-0">Tarde</h3>
+        {
+          scheduleData.afternoon.map((event) => (
+            <ScheduleCard
+              title={event.title}
+              speaker={event.speaker}
+              time={event.time}
+              location={event.pais}
+              image={resolveSpeakerPhoto(event.photoFileName)}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

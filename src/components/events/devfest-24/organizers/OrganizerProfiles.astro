@@ -1,0 +1,27 @@
+---
+import type { ImageMetadata } from "astro"
+import organizersData from "@/data/devfest-24/organizers.json"
+import SectionTitle from "../SectionTitle.astro"
+import Organizer from "./Organizer"
+
+const organizerImages = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/organizers/*.webp",
+  { eager: true }
+)
+
+const organizersWithPhotos = organizersData.map(org => {
+  const imageModule = organizerImages[`/src/assets/organizers/${org.photoFileName}`]
+  return {
+    id: org.id,
+    type: org.type,
+    name: org.name,
+    photoUrl: imageModule?.default?.src ?? "",
+    socialNetworks: org.socialNetworks,
+  }
+})
+---
+
+<section class="mx-auto py-8 md:py-12">
+  <SectionTitle id="organizadores" title="Organizadores" />
+  <Organizer organizers={organizersWithPhotos} client:idle />
+</section>

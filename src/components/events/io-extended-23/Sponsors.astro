@@ -1,13 +1,13 @@
 ---
 import { Image } from "astro:assets"
-import droBots from "@/assets/io-extended-23/sponsors/dro-bots.webp"
+import droBots from "@/assets/events/io-extended-23/sponsors/dro-bots.webp"
 
-import facultadEconomia from "@/assets/io-extended-23/sponsors/facultad-economia.webp"
-import itGroup from "@/assets/io-extended-23/sponsors/it-group.webp"
-import itera from "@/assets/io-extended-23/sponsors/itera.webp"
-import jetbrains from "@/assets/io-extended-23/sponsors/jetbrains.webp"
-import magisterioRural from "@/assets/io-extended-23/sponsors/magisterio-rural.webp"
-import xyz from "@/assets/io-extended-23/sponsors/xyz.webp"
+import facultadEconomia from "@/assets/events/io-extended-23/sponsors/facultad-economia.webp"
+import itGroup from "@/assets/events/io-extended-23/sponsors/it-group.webp"
+import itera from "@/assets/events/io-extended-23/sponsors/itera.webp"
+import jetbrains from "@/assets/events/io-extended-23/sponsors/jetbrains.webp"
+import magisterioRural from "@/assets/events/io-extended-23/sponsors/magisterio-rural.webp"
+import xyz from "@/assets/events/io-extended-23/sponsors/xyz.webp"
 import SectionTitle from "./SectionTitle.astro"
 
 const sponsors = [
@@ -49,12 +49,12 @@ const sponsors = [
 ]
 ---
 
-<SectionTitle id='sponsors' title='Sponsors' />
-<div class='max-w-screen-md px-2 mx-auto grid grid-cols-2 gap-4 md:grid-cols-3'>
+<SectionTitle id="sponsors" title="Sponsors" />
+<div class="max-w-screen-md px-2 mx-auto grid grid-cols-2 gap-4 md:grid-cols-3">
   {
     sponsors.map(sponsor => (
-      <div class='flex justify-center items-center'>
-        <a href={sponsor.url} target='_blank'>
+      <div class="flex justify-center items-center">
+        <a href={sponsor.url} target="_blank">
           <Image src={sponsor.logo} alt={sponsor.name} />
         </a>
       </div>

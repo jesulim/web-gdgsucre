@@ -26,6 +26,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 import { useCalendarEvents } from "@/hooks/admin/useCalendarEvents"
 import CalendarEventRowActions from "./CalendarEventRowActions"
@@ -108,10 +109,25 @@ export function CalendarEventsTable() {
       },
     }),
     columnHelper.accessor("created_at", {
-      header: "Fecha de solicitud",
+      header: "Fecha solicitud",
       cell: info => <DateCell value={info.getValue()} />,
     }),
-    columnHelper.accessor("name", { header: "Evento", filterFn: "includesString" }),
+    columnHelper.accessor("name", {
+      header: "Evento",
+      filterFn: "includesString",
+      cell: info => (
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span className="block max-w-50 truncate">{info.getValue()}</span>
+            </TooltipTrigger>
+            <TooltipContent className="max-w-75">
+              <p>{info.getValue()}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      ),
+    }),
     columnHelper.accessor(row => row.communities?.short_name || row.communities?.name || "-", {
       id: "community",
       header: "Comunidad",
@@ -156,18 +172,28 @@ export function CalendarEventsTable() {
       cell: info => {
         const value = info.getValue()
         if (!value) return <span className="text-gray-600">-</span>
-        if (isUrl(value))
-          return (
-            <a
-              href={value}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block max-w-48 truncate break-all text-blue-500 hover:underline"
-            >
-              {value}
-            </a>
-          )
-        return <span>{value}</span>
+
+        const element = isUrl(value) ? (
+          <a
+            href={value}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block max-w-48 truncate break-all text-blue-500 hover:underline"
+          >
+            {value}
+          </a>
+        ) : (
+          <span className="block max-w-50 truncate">{value}</span>
+        )
+
+        return (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>{element}</TooltipTrigger>
+              <TooltipContent className="max-w-75">{element}</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )
       },
     }),
     columnHelper.accessor("registration_link", {
