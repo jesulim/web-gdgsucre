@@ -1,8 +1,8 @@
 ---
 import { Image } from "astro:assets"
 
-import CalendarIcon from "@/assets/logos/calendar-month.svg"
-import LocationIcon from "@/assets/logos/distance.svg"
+import CalendarIcon from "@/assets/icons/calendar-month.svg"
+import LocationIcon from "@/assets/icons/distance.svg"
 import GoogleIoLogo from "@/assets/logos/google-io-extended-2025-logo.webp"
 
 const isLoggedIn = Astro.cookies.has("sb-refresh-token")
@@ -16,7 +16,7 @@ const redirectHref = isLoggedIn
 <div class="relative w-full h-[500px] sm:h-[700px] mt-20 lg:mt-12">
   <div
     class="absolute bg-center bg-cover bg-no-repeat h-[400px] md:h-[821px] left-0 top-[250px] md:top-[314px] w-full mask-b-from-70%"
-    style="background-image: url('/io25-home-bottom.avif')"
+    style="background-image: url('/events/io-extended-25/io25-home-bottom.avif')"
   >
   </div>
 
@@ -60,7 +60,7 @@ const redirectHref = isLoggedIn
     <div class="flex flex-col md:flex-row items-center md:items-start justify-center gap-4 md:gap-6">
       <div class="flex items-center gap-2 md:gap-3">
         <div class="w-8 h-8 md:w-12 md:h-12 shrink-0">
-          <CalendarIcon />
+          <CalendarIcon class="size-6 md:size-10 fill-black" />
         </div>
         <div
           class="flex flex-col justify-center leading-[1.2] text-[#1e1e1e] text-[16px] md:text-[24px] text-center md:whitespace-pre font-medium"
@@ -78,7 +78,7 @@ const redirectHref = isLoggedIn
 
       <div class="flex items-center gap-2 md:gap-3">
         <div class="w-8 h-8 md:w-12 md:h-12 shrink-0">
-          <LocationIcon />
+          <LocationIcon class="size-6 md:size-10 fill-black" />
         </div>
         <div
           class="flex flex-col justify-center leading-[1.2] text-[#1e1e1e] text-[16px] md:text-[24px] text-center md:whitespace-pre font-medium"

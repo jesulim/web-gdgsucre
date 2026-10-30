@@ -1,6 +1,6 @@
 ---
-import figmaCodeVector1 from "@/assets/figma/figma_code_vector1.svg"
-import figmaCodeVector2 from "@/assets/figma/figma_code_vector2.svg"
+import figmaCodeVector1 from "@/assets/events/io-extended-26/figma/figma_code_vector1.svg"
+import figmaCodeVector2 from "@/assets/events/io-extended-26/figma/figma_code_vector2.svg"
 
 interface Props {
   label: string
@@ -36,14 +36,14 @@ const v = variants[variant]
 <div
   class={`border border-solid flex items-center rounded-full shrink-0 ${v.surface} ${v.gap} ${v.padding}`}
 >
-  {iconAsset && (
-    <img alt="" class={`w-auto max-w-none shrink-0 ${v.icon}`} src={iconAsset} />
-  )}
-  {isCodeIcon && (
-    <div class={`flex gap-0.5 items-center shrink-0 ${v.icon}`}>
-      <img alt="" class={`${v.icon} ${v.code} mix-blend-screen`} src={figmaCodeVector1.src} />
-      <img alt="" class={`${v.icon} ${v.code} mix-blend-screen`} src={figmaCodeVector2.src} />
-    </div>
-  )}
+  {iconAsset && <img alt="" class={`w-auto max-w-none shrink-0 ${v.icon}`} src={iconAsset} />}
+  {
+    isCodeIcon && (
+      <div class={`flex gap-0.5 items-center shrink-0 ${v.icon}`}>
+        <img alt="" class={`${v.icon} ${v.code} mix-blend-screen`} src={figmaCodeVector1.src} />
+        <img alt="" class={`${v.icon} ${v.code} mix-blend-screen`} src={figmaCodeVector2.src} />
+      </div>
+    )
+  }
   <span class={`text-io-text font-medium ${v.label}`}>{label}</span>
 </div>

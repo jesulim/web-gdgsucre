@@ -1,5 +1,5 @@
 ---
-import figmaBlob from "@/assets/figma/figma_blob.svg"
+import figmaBlob from "@/assets/events/io-extended-26/figma/figma_blob.svg"
 import SpeakerCard, {
   type Speaker,
   type SpeakerTheme,
@@ -71,19 +71,20 @@ const speakers: { speaker: Speaker; theme: SpeakerTheme }[] = speakersData.map((
     aria-hidden="true"
     class="absolute left-1/2 top-[62%] -translate-x-1/2 -translate-y-1/2 size-[480px] md:size-[820px] rounded-full blur-3xl pointer-events-none opacity-50"
     style="background-image: radial-gradient(closest-side, rgba(66,133,244,0.35), transparent 70%);"
-  ></div>
+  >
+  </div>
 
   <div class="flex flex-col gap-[8px] md:gap-[14px] items-center shrink-0">
-    <p class="text-io-accent text-[11px] md:text-[14px] font-medium tracking-[2.5px] md:tracking-[3px]">
+    <p
+      class="text-io-accent text-[11px] md:text-[14px] font-medium tracking-[2.5px] md:tracking-[3px]"
+    >
       EXPERTOS DE LA REGIÓN
     </p>
     <h2 class="text-[32px] md:text-[56px] font-semibold text-white">Speakers</h2>
   </div>
 
   <!-- Speaker Cards -->
-  <div
-    class="flex flex-wrap justify-center gap-3.5 md:gap-5 w-full max-w-[380px] sm:max-w-none"
-  >
+  <div class="flex flex-wrap justify-center gap-3.5 md:gap-5 w-full max-w-[380px] sm:max-w-none">
     {speakers.map(({ speaker, theme }) => <SpeakerCard speaker={speaker} theme={theme} />)}
   </div>
 </section>
