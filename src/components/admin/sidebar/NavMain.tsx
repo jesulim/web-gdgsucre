@@ -68,6 +68,12 @@ const sidebarSections: SidebarSection[] = [
   },
   {
     group: "Configuración",
+    title: "Eventos",
+    view: "events",
+    icon: Ticket,
+  },
+  {
+    group: "Configuración",
     title: "Formulario de Registro",
     view: "formFields",
     icon: Form,
@@ -79,19 +85,13 @@ const sidebarSections: SidebarSection[] = [
     icon: ClipboardCheck,
   },
   {
-    group: "Plataforma",
-    title: "Eventos",
-    view: "events",
-    icon: Ticket,
-  },
-  {
-    group: "Plataforma",
+    group: "Calendario",
     title: "Eventos del Calendario",
     view: "calendarEvents",
     icon: CalendarDays,
   },
   {
-    group: "Plataforma",
+    group: "Calendario",
     title: "Comunidades",
     view: "communities",
     icon: Users,

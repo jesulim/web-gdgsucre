@@ -71,7 +71,7 @@ export async function getAllCalendarEvents(supabase: SupabaseClient) {
       location,
       accepted,
       communities(id, name, short_name, contact_email, image, color)`)
-    .order("start_datetime")
+    .order("created_at", { ascending: false })
 
   if (error) throw new Error(error.message)
 
