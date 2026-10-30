@@ -190,7 +190,7 @@ export const RegisterCTA = ({
                       </p>
                       <div className="pt-2">
                         <a
-                          href="/eventos"
+                          href="/calendario"
                           className="relative inline-block border-2 border-black bg-[#FBBC04] px-6 py-2.5 text-base font-bold text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] active:translate-x-1 active:translate-y-1 active:shadow-none"
                         >
                           Ver próximos eventos
