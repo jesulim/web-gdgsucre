@@ -6,6 +6,9 @@ import Tiktok from "@/assets/icons/social/Tiktok.svg"
 import Twitter from "@/assets/icons/social/Twitter.svg"
 import YouTube from "@/assets/icons/social/Youtube.svg"
 
+import ConsoleBanner from "@/components/landing/ConsoleBanner.astro"
+import ScrambledText from "./ScrambledText.astro"
+
 const socialLinks = [
   {
     name: "LinkedIn",
@@ -73,9 +76,15 @@ const socialLinks = [
     }
   </div>
 
-  <p class="uppercase text-center pt-4 pb-8 md:pb-4 bg-gray-100 dark:bg-black border-t-2 border-gray-200 dark:border-off-white dark:text-white">
+  <p
+    class="uppercase text-center pt-2 pb-8 md:pb-4 bg-gray-200 dark:bg-black border-t-2 border-gray-200 dark:border-off-white dark:text-white"
+  >
+    <span class="reveal-on-scroll normal-case">&lt;Abre la consola de JavaScript /&gt;</span>
+    <br />
     &copy; {new Date().getFullYear()} GDG Sucre.
   </p>
+
+  <ConsoleBanner />
 </footer>
 
 <style>
@@ -91,4 +100,20 @@ const socialLinks = [
     color: var(--brand);
   }
 
+  @keyframes reveal {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 0.2;
+    }
+  }
+  @supports (animation-timeline: view()) {
+    .reveal-on-scroll {
+      animation-name: reveal;
+      animation-fill-mode: both;
+      animation-timeline: view();
+      animation-range: entry 1% cover 10%;
+    }
+  }
 </style>

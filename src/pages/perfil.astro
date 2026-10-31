@@ -73,5 +73,38 @@ const badges = await getBadges(supabase, profile.id)
     </div>
   </main>
 
+  <script>
+    import { BADGE_STORAGE_KEY } from "@/lib/ctf/consolePuzzle";
+
+    async function syncGuestBadge() {
+      try {
+        const raw = localStorage.getItem(BADGE_STORAGE_KEY);
+        if (raw) {
+          const badge = JSON.parse(raw);
+          if (badge?.flag) {
+            const res = await fetch("/api/badges/claim", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ flag: badge.flag }),
+            });
+            if (res.ok) {
+              const data = await res.json();
+              if (
+                data.authenticated &&
+                !document.querySelector(`img[alt="${data.badge?.name}"]`)
+              ) {
+                window.location.reload();
+              }
+            }
+          }
+        }
+      } catch (err) {
+        console.debug("[GDG-PROFILE] Sync guest badge error:", err);
+      }
+    }
+
+    syncGuestBadge();
+  </script>
+
   <Footer />
 </BaseLayout>
