@@ -1,0 +1,161 @@
+[
+  {
+    "fileName": "Yury.webp",
+    "name": "Yury Camacho",
+    "location": "Cochabamba, Bolivia",
+    "flagFileName": "bolivia.svg",
+    "descriptions": [
+      "Yury Camacho es ingeniero de Sistemas(UMSS) y Google Developer Expert en Android y Kotlin.",
+      "Es un apasionado de la tecnología y el desarrollo de software, que trabaja en el desarrollo de aplicaciones móviles desde 2009.",
+      "Le gusta aprender y compartir con las comunidades de desarrolladores y empresas dando charlas, talleres y siendo mentor.",
+      "Actualmente trabaja como Staff Software Engineer en el equipo Core Mobile en la empresa en Rappi"
+    ],
+    "socialNetworks": [
+      {
+        "name": "facebook",
+        "url": "https://www.facebook.com/camachoyury"
+      },
+      {
+        "name": "instagram",
+        "url": "https://www.instagram.com/camachoyury/"
+      },
+      {
+        "name": "linkedin",
+        "url": "https://www.linkedin.com/in/camachoyury/"
+      }
+    ]
+  },
+  {
+    "fileName": "Hansy.webp",
+    "name": "Hansy Schmitt",
+    "location": "Lima, Perú",
+    "flagFileName": "peru.svg",
+    "descriptions": [
+      "Full Stack Developer, enfocado en Flutter y Python, con mas de 15 años de experiencia en el desarrollo de software."
+    ],
+    "socialNetworks": [
+      {
+        "name": "instagram",
+        "url": "https://www.instagram.com/hacksy.dev/"
+      }
+    ]
+  },
+  {
+    "fileName": "Adriana.webp",
+    "name": "Adriana Paz",
+    "location": "La Paz, Bolivia",
+    "flagFileName": "bolivia.svg",
+    "descriptions": [
+      "Mi trayectoria une música, tecnología e ingeniería, y actualmente me dedico a impulsar la educación STEAM. Como ingeniera electromecánica y violinista, tuve la oportunidad de dar talleres internacionales, como en el 10mo aniversario de Nerdearla en Buenos Aires, Argentina, fusionando el área STEAM.",
+      "Hago uso constante de IA para potenciar áreas como la accesibilidad en UX y proyectos STEAM, lo que me ha permitido dar charlas en eventos importantes para comunidades como WTM Latam y WTM Cochabamba.",
+      "Actualmente, sigo explorando la intersección de la música mediante softwares accesibles y código con Sonic Pi, donde desarrollo música programada en tiempo real. Fui mentora en la NASA Space Apps Challenge y en la creación de música para videojuegos en la WGJ Bolivia. Además, soy participante activa en hackatones de IA y Space Apps Challenge, donde he obtenido varios reconocimientos tras concluir estos eventos.",
+      "Finalmente, creo contenido sobre educación STEAM y cubro distintos eventos a los que asisto e invitan, para difundir estas áreas y promover la participación. En mis talleres y charlas, busco inspirar a asistentes que no necesariamente deben ser expertos, sino que tengan esa chispa de curiosidad para alcanzar un propósito."
+    ],
+    "socialNetworks": [
+      {
+        "name": "instagram",
+        "url": "https://www.instagram.com/adri_gominola/"
+      },
+      {
+        "name": "linkedin",
+        "url": "https://www.linkedin.com/in/adriana-eileen-paz-rivas"
+      }
+    ]
+  },
+  {
+    "fileName": "Raisa.webp",
+    "name": "Raisa Silva",
+    "location": "La Paz, Bolivia",
+    "flagFileName": "bolivia.svg",
+    "descriptions": [
+      "Soy ingeniera en sistemas computacionales y a lo largo de mi carrera he tenido la oportunidad de involucrarme profundamente en diferentes áreas de la tecnología. Durante varios años, he participado en una variedad de eventos tecnológicos como charlas, Hackatones y Game Jams, no solo como participante, sino también como organizadora y mentora. Esto me ha permitido ver de primera mano cómo la tecnología es una herramienta poderosa que cualquier persona, independientemente de su campo, puede aprovechar para resolver problemas y crear soluciones innovadoras.",
+      "Hace dos años, decidí dar un giro hacia el desarrollo de videojuegos, comenzando como diseñadora de juegos (game designer). Esta experiencia me abrió las puertas al fascinante mundo de la inteligencia artificial, y más recientemente, me he especializado en el desarrollo de aplicaciones de realidad virtual. Mi enfoque actual es cómo integrar estas tecnologías emergentes para crear experiencias inmersivas y significativas."
+    ],
+    "socialNetworks": [
+      {
+        "name": "facebook",
+        "url": "https://www.facebook.com/aleli.silva.509"
+      },
+      {
+        "name": "instagram",
+        "url": "https://www.instagram.com/www_raisa2201/"
+      },
+      {
+        "name": "linkedin",
+        "url": "https://www.linkedin.com/in/raisa-silva/"
+      }
+    ]
+  },
+  {
+    "fileName": "Brissia.webp",
+    "name": "Brissia Benavente",
+    "location": "Bolivia",
+    "flagFileName": "bolivia.svg",
+    "descriptions": [
+      "Trabajo 6 años como Growth hacker para Startups en el extranjero. Y soy mentora en empleabilidad."
+    ],
+    "socialNetworks": [
+      {
+        "name": "instagram",
+        "url": "https://www.instagram.com/brissiabenavente/"
+      },
+      {
+        "name": "linkedin",
+        "url": "https://www.linkedin.com/in/brissiabenavente/"
+      },
+      {
+        "name": "web",
+        "url": "https://brissiabenavente.com/"
+      }
+    ]
+  },
+  {
+    "fileName": "Paola.webp",
+    "name": "Paola Flores",
+    "location": "Sucre, Bolivia",
+    "flagFileName": "bolivia.svg",
+    "descriptions": [
+      "Soy Ingeniera Industrial de la Universidad San Francisco Xavier de Chuquisaca, y cuando era niña vivía en el área rural de Chuquisaca, y viendo las difíciles condiciones de vida me hice la promesa de dar lo mejor de mí y usar tecnología para cambiar esa situación. Y, con esa pasión por la tecnología, en 2022 ingresé como Product Owner en DeltaX, una startup boliviana de transporte, ahora soy Head of Product y trabajo con 3 squads de Producto y Diseño y 5 squads de Tecnología (backend, frontend, mobile y QAs), mi rol se centra en la planificación estratégica del roadmap de software, relación con clientes y usuarios para comprender problemas y convertir esos problemas en requerimientos de software, trabajo conjunto al equipo de tecnología para establecer las reglas de negocio de los desarrollos del software."
+    ],
+    "socialNetworks": [
+      {
+        "name": "linkedin",
+        "url": "https://www.linkedin.com/in/paola-carvajal-0ab95814b/"
+      }
+    ]
+  },
+  {
+    "fileName": "David.webp",
+    "name": "David Rios",
+    "location": "La Paz, Bolivia",
+    "flagFileName": "bolivia.svg",
+    "descriptions": [
+      "Software Engineer con más de 6 años de experiencia, especializado en desarrollo de aplicaciones móviles, actualmente como Mobile Senior Engineer en empresas de USA, organizador de GDG La Paz y Flutter La Paz"
+    ],
+    "socialNetworks": [
+      {
+        "name": "facebook",
+        "url": "https://www.facebook.com/davidriosdev/"
+      },
+      {
+        "name": "linkedin",
+        "url": "https://www.linkedin.com/in/david-rios-dev/"
+      }
+    ]
+  },
+  {
+    "fileName": "Josue.webp",
+    "name": "Josué Lemus",
+    "location": "Santa Cruz, Bolivia",
+    "flagFileName": "bolivia.svg",
+    "descriptions": [
+      "Mi experiencia es más orientada al desarrollo móvil, entre las tecnologías que tengo conocimiento son Flutter, swift y react native."
+    ],
+    "socialNetworks": [
+      {
+        "name": "linkedin",
+        "url": "https://www.linkedin.com/in/josu%C3%A9-lemus-miranda-565015172"
+      }
+    ]
+  }
+]

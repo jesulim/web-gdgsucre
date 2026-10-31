@@ -159,7 +159,7 @@ function DayDetailPanel({ date, events }: { date: Date; events: CalendarDayEvent
 
       <div className="flex flex-col gap-3">
         {dayEvents.length === 0 ? (
-          <p className="text-gray-600">Sin eventos para este día.</p>
+          <p className="font-google text-gray-600">Sin eventos para este día.</p>
         ) : (
           dayEvents.map(event => (
             <div key={event.id} className="flex gap-4">
@@ -168,12 +168,12 @@ function DayDetailPanel({ date, events }: { date: Date; events: CalendarDayEvent
                 className={clsx("w-2 min-h-full mb-1", communityColorClass(event.community_id))}
               />
               <div className="flex flex-col gap-1">
-                <h3 className="text-lg leading-tight font-bold">{event.label}</h3>
+                <h3 className="font-google text-lg leading-tight font-bold">{event.label}</h3>
                 <p className="mt-1 text-sm text-gray-600">
                   {event.format === "in-person" ? "Presencial" : "Virtual"} · {timeStr(event.start)}{" "}
                   - {timeStr(event.end)}
                 </p>
-                <p className="text-sm text-gray-600">
+                <p className="font-google text-sm text-gray-600">
                   {isUrl(event.location) ? (
                     <a
                       href={event.location}
@@ -371,9 +371,9 @@ function Calendar({
         })}
       </div>
 
-      <div className="flex flex-wrap gap-x-5 gap-y-2 h-5">
+      <div className="font-google flex flex-wrap gap-x-5 gap-y-2 h-5">
         {communities?.map(community => (
-          <span key={community.label} className="flex items-center gap-2 text-sm text-white">
+          <span key={community.label} className="flex items-center gap-2 text-white">
             <span
               style={communityColorStyle(community.color)}
               className={clsx("size-3 shrink-0", communityColorClass(community.id))}
@@ -411,7 +411,7 @@ function EventsCalendarInner() {
       id="calendario"
       className="mx-auto max-w-7xl flex flex-col gap-8 px-4 font-monospace text-white py-8 md:py-16"
     >
-      <span className="font-bold text-2xl md:text-4xl lg:text-5xl">
+      <span className="font-google font-bold text-2xl md:text-4xl lg:text-5xl">
         Calendario <br className="sm:hidden" />
         {capitalize(fullMonth(currentDate))} {currentDate.getFullYear()}
       </span>

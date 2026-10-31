@@ -1,0 +1,42 @@
+---
+import type { ImageMetadata } from "astro"
+import boliviaFlag from "@/assets/events/devfest-24/bolivia.svg"
+import peruFlag from "@/assets/events/devfest-24/peru.svg"
+import speakersData from "@/data/devfest-24/speakers.json"
+import SectionTitle from "../SectionTitle.astro"
+import { SpeakerCard } from "./SpeakerCard"
+
+const speakerImages = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/events/devfest-24/speakers/*.webp",
+  { eager: true }
+)
+---
+
+<section class="mx-auto my-2 max-w-screen-lg px-4 md:my-8">
+  <SectionTitle id="speakers" title="Speakers" />
+  <div
+    class="group pointer-events-none mt-2 grid grid-cols-2 gap-4 sm:mt-4 sm:grid-cols-2 md:grid-cols-3 md:gap-8"
+  >
+    {
+      speakersData.map((speaker, i) => {
+        const imgMod =
+          speakerImages[`/src/assets/events/devfest-24/speakers/${speaker.fileName}`]
+        const imgSrc = imgMod?.default?.src ?? ""
+        const flagSrc = speaker.flagFileName === "peru.svg" ? peruFlag.src : boliviaFlag.src
+
+        return (
+          <SpeakerCard
+            id={i}
+            img={imgSrc}
+            flag={flagSrc}
+            name={speaker.name}
+            location={speaker.location}
+            descriptions={speaker.descriptions}
+            socialNetworks={speaker.socialNetworks}
+            client:visible
+          />
+        )
+      })
+    }
+  </div>
+</section>

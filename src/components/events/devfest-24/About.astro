@@ -1,0 +1,84 @@
+---
+import Calendar from "./icons/Calendar.astro"
+import Diplodocus from "./icons/Diplodocus.astro"
+import LocationMarker from "./icons/LocationMarker.astro"
+---
+
+<section class="flex flex-col items-center px-4 pt-1 lg:pt-1">
+  <div class="max-w-screen-md py-4 md:py-8 w-full">
+    <!-- Top grid with location, map, and Diplodocus -->
+    <div class="flex">
+      <Diplodocus class="ml-auto mr-4 w-20 md:w-32" />
+    </div>
+
+    <div class="mx-auto grid max-w-7xl grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
+      <!-- Left side - Info boxes (mobile layout) -->
+      <div class="grid grid-cols-2 gap-4 md:grid-cols-1 md:grid-rows-2 md:gap-4">
+        <!-- Location info box -->
+        <div class="cut-corners-r bg-black p-0.5 dark:bg-white">
+          <div class="cut-corners-r bg-[#34A853] pb-2 pr-2 h-full">
+            <div
+              class="flex h-full items-center border-b-2 border-r-2 border-black bg-white px-4 py-4 text-black"
+            >
+              <div class="flex h-full items-center">
+                <LocationMarker
+                  class="mr-4 mt-1 hidden size-8 text-black md:block shrink-0"
+                />
+                <span class="block text-sm leading-snug text-black md:text-base">
+                  Edificio Central USFX
+                  <br />Calle Junín & Estudiantes
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Calendar box -->
+        <div class="cut-corners-r bg-black p-0.5 dark:bg-white">
+          <div class="cut-corners-r h-full bg-[#4285F4] pb-2 pr-2">
+            <div
+              class="flex h-full items-center border-b-2 border-r-2 border-black bg-white px-4 py-4 text-black"
+            >
+              <div class="flex h-full items-center">
+                <Calendar class="mr-4 mt-1 hidden size-8 text-black md:block shrink-0" />
+                <span class="block text-sm leading-snug text-black md:text-base">
+                  Sábado 16 de noviembre
+                  <br />08:30 hrs.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right side - Map (mobile layout) -->
+      <div class="cut-corners-r h-[160px] min-h-[160px] bg-black p-0.5 dark:bg-white md:h-full">
+        <div class="cut-corners-r h-full bg-[#FBBC04] pb-2 pr-2">
+          <div class="h-full border-b-2 border-r-2 border-black bg-[#EEEEEE] dark:border-white">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1679.956275278946!2d-65.26170413646413!3d-19.04727744581374!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x93fbcf3609d2fb5f%3A0x27f7b185248c536b!2sUniversidad%20Mayor%2C%20Real%20y%20Pontificia%20de%20San%20Francisco%20Xavier%20de%20Chuquisaca%20-%20USFX!5e0!3m2!1ses-419!2sbo!4v1730949440706!5m2!1ses-419!2sbo"
+              class="h-full w-full"
+              loading="lazy"
+              title="Ubicación del evento"
+              referrerpolicy="no-referrer-when-downgrade"
+            >
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- About section below -->
+    <div class="cut-corners-r mt-4 bg-black p-0.5 dark:bg-white">
+      <div class="cut-corners-r bg-[#EA4335] pb-2 pr-2">
+        <div class="border-b-2 border-r-2 border-black bg-white px-3 py-6 text-black">
+          <span class="block text-center text-sm leading-snug text-black md:text-base">
+            El DevFest Sucre es un evento tecnológico, organizado por la comunidad GDG Sucre, donde se
+            comparten conocimientos sobre desarrollo de software, nuevas tecnologías y herramientas de
+            Google.
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

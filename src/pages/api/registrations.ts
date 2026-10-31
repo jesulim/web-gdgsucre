@@ -1,7 +1,8 @@
 import type { APIRoute } from "astro"
 
+import { withAdmin } from "@/lib/auth"
 import { getRegistrationsByEvent, updateRegistration } from "@/lib/services/registrationService"
-import { createSupabaseServerClient, createUserClient } from "@/lib/supabase"
+import { createSupabaseServerClient } from "@/lib/supabase"
 
 export const GET: APIRoute = async ({ request, url, cookies }) => {
   const slug = url.searchParams.get("slug")
@@ -24,14 +25,12 @@ export const GET: APIRoute = async ({ request, url, cookies }) => {
   }
 }
 
-export const POST: APIRoute = async ({ request, cookies }) => {
+export const POST = withAdmin(async ({ request, auth }) => {
   const body = await request.json()
   const { registrationId, values } = body
 
-  const supabase = await createUserClient(cookies)
-
   try {
-    const res = await updateRegistration(supabase, registrationId, values)
+    const res = await updateRegistration(auth.supabase, registrationId, values)
 
     return new Response(JSON.stringify(res), {
       status: 200,
@@ -43,7 +42,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       headers: { "Content-Type": "application/json" },
     })
   }
-}
+})
 
 export const DELETE: APIRoute = async ({ cookies, request }) => {
   const body = await request.json()

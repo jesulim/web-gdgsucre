@@ -1,0 +1,145 @@
+---
+import GdgLogo from "./logos/GdgLogo.astro"
+---
+
+<nav class="bg-black fixed w-full z-20 top-0 left-0 border-b border-gray-600">
+  <div
+    class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
+  >
+    <GdgLogo />
+    <div class="flex md:order-2 lg:hidden">
+      <button
+        data-collapse-toggle="navbar-sticky"
+        type="button"
+        class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden focus:outline-none focus:ring-2 dark:text-gray-400 hover:bg-gray-700 focus:ring-gray-600"
+        aria-controls="navbar-sticky"
+        aria-expanded="false"
+      >
+        <span class="sr-only">Open main menu</span>
+        <svg
+          class="w-5 h-5"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 17 14"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M1 1h15M1 7h15M1 13h15"></path>
+        </svg>
+      </button>
+    </div>
+    <div
+      class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
+      id="navbar-sticky"
+    >
+      <ul
+        class="flex flex-col p-4 md:p-0 mt-4 font-medium border rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 bg-dark-gray md:bg-dark-gray border-gray-700"
+      >
+        <li>
+          <a
+            href="#"
+            class="block hover:dark:dark:text-blue-500 py-2 pl-3 pr-4 text-white rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-white"
+            aria-current="page">Inicio</a
+          >
+        </li>
+        <li>
+          <a
+            href="#paquetes"
+            class="bg-gradient-to-r from-red-500 to-yellow-500 text-transparent bg-clip-text hover:text-red-500 py-2 pl-3 pr-4 md:p-0"
+            >Paquetes</a
+          >
+        </li>
+        <li>
+          <a
+            href="#speakers"
+            class="block hover:dark:text-yellow-500 py-2 pl-3 pr-4 text-white rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-white"
+            >Speakers</a
+          >
+        </li>
+        <li>
+          <a
+            href="#agenda"
+            class="block hover:dark:text-blue-500 py-2 pl-3 pr-4 text-white rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-white"
+            >Agenda</a
+          >
+        </li>
+
+        <li>
+          <a
+            href="#sponsors"
+            class="block hover:dark:text-green-500 py-2 pl-3 pr-4 text-whiterounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-white"
+            >Sponsors</a
+          >
+        </li>
+
+        <li>
+          <a
+            href="#organizadores"
+            class="block hover:dark:text-yellow-500 py-2 pl-3 pr-4 text-white rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-white"
+            >Equipo</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>("[data-collapse-toggle]")
+
+  if (toggle) {
+    const targetId = toggle.getAttribute("aria-controls")
+    const target = targetId ? document.getElementById(targetId) : null
+
+    if (target) {
+      const setOpen = (open: boolean) => {
+        toggle.setAttribute("aria-expanded", String(open))
+        target.classList.toggle("hidden", !open)
+      }
+
+      toggle.addEventListener("click", () => {
+        const expanded = toggle.getAttribute("aria-expanded") === "true"
+        setOpen(!expanded)
+      })
+
+      target.addEventListener("click", (event) => {
+        if (event.target instanceof Element && event.target.closest("a")) {
+          setOpen(false)
+        }
+      })
+
+      document.addEventListener("click", (event) => {
+        if (toggle.getAttribute("aria-expanded") !== "true") {
+          return
+        }
+
+        if (!(event.target instanceof Node)) {
+          return
+        }
+
+        if (toggle.contains(event.target) || target.contains(event.target)) {
+          return
+        }
+
+        setOpen(false)
+      })
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") {
+          setOpen(false)
+          toggle.focus()
+        }
+      })
+
+      window.addEventListener("resize", () => {
+        if (window.matchMedia("(min-width: 768px)").matches) {
+          setOpen(false)
+        }
+      })
+    }
+  }
+</script>

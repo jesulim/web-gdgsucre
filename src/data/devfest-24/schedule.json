@@ -1,0 +1,82 @@
+{
+  "day": [
+    {
+      "time": "8:30 - 9:30",
+      "title": "ACREDITACIÓN"
+    },
+    {
+      "time": "9:30",
+      "title": "Introducción al patrón BLoC y Flutter BLoC",
+      "speaker": "Josué Lemus",
+      "pais": "Santa Cruz, BO",
+      "photoFileName": "Josue.webp"
+    },
+    {
+      "time": "10:15",
+      "title": "El Futuro Está Aquí: Introducción a la Realidad Virtual para Creadores Emergentes",
+      "speaker": "Raisa Silva",
+      "pais": "La Paz, BO",
+      "photoFileName": "Raisa.webp"
+    },
+    {
+      "time": "11:00",
+      "title": "REFRIGERIO"
+    },
+    {
+      "time": "11:30",
+      "title": "Gemini in Android",
+      "speaker": "Yury Camacho",
+      "pais": "Cochabamba, BO",
+      "photoFileName": "Yury.webp"
+    },
+    {
+      "time": "12:15",
+      "title": "Búsqueda Efectiva de Trabajo Remoto para Dev’s",
+      "speaker": "Brissia Benavente",
+      "pais": "Bolivia",
+      "photoFileName": "Brissia.webp"
+    }
+  ],
+  "afternoon": [
+    {
+      "time": "13:00 - 14:00",
+      "title": "ALMUERZO"
+    },
+    {
+      "time": "14:00",
+      "title": "Sonic Pi: Crea música con código",
+      "speaker": "Adriana Paz",
+      "pais": "La Paz, BO",
+      "photoFileName": "Adriana.webp"
+    },
+    {
+      "time": "14:45",
+      "title": "Flutter en el mundo real, Controlando Hardware con Flutter",
+      "speaker": "Hansy Schmitt",
+      "pais": "Lima, PE",
+      "photoFileName": "Hansy.webp"
+    },
+    {
+      "time": "15:30",
+      "title": "REFRIGERIO"
+    },
+    {
+      "time": "16:00",
+      "title": "El Doctor Flutter: Cómo inyectar dependencias y no morir en el intento",
+      "speaker": "David Rios",
+      "pais": "La Paz, BO",
+      "photoFileName": "David.webp"
+    },
+    {
+      "time": "16:45",
+      "title": "Mejorando la Eficiencia Logística con Google Maps y Rutas Inteligentes",
+      "speaker": "Paola Flores",
+      "pais": "Sucre, BO",
+      "photoFileName": "Paola.webp"
+    },
+    {
+      "time": "16:45 - 17:30",
+      "title": "CIERRE Y SORTEO"
+    }
+  ]
+}

@@ -1,10 +1,10 @@
 ---
 import type { ImageMetadata } from "astro"
-import decoExperiencia from "@/assets/decos/deco_experiencia.webp"
-import mockupLanyards from "@/assets/mockups/mockup_lanyards.webp"
-import mockupRefrigerio from "@/assets/mockups/mockup_refrigerio.webp"
-import mockupSoporte from "@/assets/mockups/mockup_soporte.webp"
-import mockupStickers from "@/assets/mockups/mockup_stickers.webp"
+import decoExperiencia from "@/assets/events/io-extended-26/decos/deco_experiencia.webp"
+import mockupLanyards from "@/assets/events/io-extended-26/packages/mockup_lanyards.webp"
+import mockupRefrigerio from "@/assets/events/io-extended-26/packages/mockup_refrigerio.webp"
+import mockupSoporte from "@/assets/events/io-extended-26/packages/mockup_soporte.webp"
+import mockupStickers from "@/assets/events/io-extended-26/packages/mockup_stickers.webp"
 
 interface MockupItem {
   title: string
@@ -31,9 +31,7 @@ const mockups: MockupItem[] = [
     >
       PAQUETE OFICIAL
     </p>
-    <h2
-      class="text-[28px] md:text-[48px] font-semibold text-white w-[320px] md:w-auto"
-    >
+    <h2 class="text-[28px] md:text-[48px] font-semibold text-white w-[320px] md:w-auto">
       Vive la experiencia completa
     </h2>
   </div>
@@ -58,9 +56,7 @@ const mockups: MockupItem[] = [
           </span>
         </div>
 
-        <p class="text-[22px] md:text-[30px] font-semibold text-white">
-          Experiencia Completa
-        </p>
+        <p class="text-[22px] md:text-[30px] font-semibold text-white">Experiencia Completa</p>
 
         <p
           class="text-io-text-secondary text-[14px] md:text-[16px] leading-[21px] md:leading-[24px] w-full max-w-[300px]"
@@ -68,24 +64,19 @@ const mockups: MockupItem[] = [
           Alimentación y todo el merch oficial del evento en un solo paquete.
         </p>
 
-        <div
-          class="flex gap-[8px] items-center justify-center lg:justify-start"
-        >
+        <div class="flex gap-[8px] items-center justify-center lg:justify-start">
           <span
             class="text-[40px] md:text-[52px] font-semibold text-transparent bg-clip-text bg-io-brand-gradient"
           >
             Bs 35
           </span>
-          <span class="text-io-text-muted text-[12px] md:text-[14px]"
-            >· pago único</span
-          >
+          <span class="text-io-text-muted text-[12px] md:text-[14px]">· pago único</span>
         </div>
 
         <p
           class="text-io-text-faint text-[11px] md:text-[12px] leading-[16px] md:leading-[18px] w-full max-w-[300px]"
         >
-          * La entrada al evento es gratuita. El paquete es opcional y solo suma
-          la experiencia.
+          * La entrada al evento es gratuita. El paquete es opcional y solo suma la experiencia.
         </p>
       </div>
 
@@ -94,7 +85,7 @@ const mockups: MockupItem[] = [
         class="grid grid-cols-2 gap-3 md:gap-4 w-full lg:w-[min(536px,50%)] lg:shrink-0 font-medium min-w-0"
       >
         {
-          mockups.map((item) => (
+          mockups.map(item => (
             <div class="flex flex-col gap-1.5 md:gap-2 items-center group">
               <div class="relative aspect-[245/165] w-full min-w-0 overflow-hidden rounded-[18px] bg-io-surface-2 border border-io-border-2 border-solid shadow-lg transition-transform duration-200 group-hover:scale-[1.02]">
                 {item.image ? (
@@ -106,9 +97,7 @@ const mockups: MockupItem[] = [
                   />
                 ) : (
                   <div class="absolute inset-0 flex flex-col items-center justify-center gap-1.5 px-2.5">
-                    <span class="text-io-text-quiet text-[9px] tracking-[2px]">
-                      {item.label}
-                    </span>
+                    <span class="text-io-text-quiet text-[9px] tracking-[2px]">{item.label}</span>
                   </div>
                 )}
               </div>
@@ -126,11 +115,7 @@ const mockups: MockupItem[] = [
       aria-hidden="true"
       class="hidden lg:block absolute -right-[40px] -bottom-[45px] z-20 w-[155px] h-[183px] pointer-events-none rotate-[-18.75deg]"
     >
-      <img
-        alt=""
-        class="size-full object-contain drop-shadow-xl"
-        src={decoExperiencia.src}
-      />
+      <img alt="" class="size-full object-contain drop-shadow-xl" src={decoExperiencia.src} />
     </div>
   </div>
 </section>

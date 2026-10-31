@@ -1,0 +1,93 @@
+---
+import About from "@/components/events/devfest-24/About.astro"
+import Agenda from "@/components/events/devfest-24/Agenda.astro"
+import Footer from "@/components/events/devfest-24/Footer.astro"
+import Header from "@/components/events/devfest-24/Header.astro"
+import Hero from "@/components/events/devfest-24/hero/Hero.astro"
+import OrganizerProfiles from "@/components/events/devfest-24/organizers/OrganizerProfiles.astro"
+import FrequentQuestions from "@/components/events/devfest-24/questions/FrequentQuestions.astro"
+import Sponsors from "@/components/events/devfest-24/Sponsors.astro"
+import Speakers from "@/components/events/devfest-24/speaker/Speakers.astro"
+import BaseLayout from "@/layout/BaseLayout.astro"
+import { getProfile } from "@/lib/services/profileService"
+import { getEventRegistration } from "@/lib/services/registrationService"
+import { createSupabaseServerClient } from "@/lib/supabase"
+
+const supabase = createSupabaseServerClient({ request: Astro.request, cookies: Astro.cookies })
+const profile = await getProfile(supabase)
+const registration = profile?.id
+  ? await getEventRegistration(supabase, profile.id, "devfest-24")
+  : null
+
+const autoOpen = Astro.url.searchParams.get("credential") === "1"
+---
+
+<BaseLayout
+  enableThemePreference
+  title="DevFest Sucre 2024 | GDG Sucre"
+  description="DevFest Sucre 2024 - La conferencia tecnológica más grande de Sucre organizada por Google Developer Group Sucre."
+  ogTitle="DevFest Sucre 2024"
+  ogDescription="DevFest Sucre 2024"
+  ogImage="/events/devfest-24/og.webp"
+>
+  <div class="devfest-24-root min-h-screen flex flex-col bg-white text-black dark:bg-[#202124] dark:text-white">
+    <Header />
+    <main class="flex-1">
+      <Hero
+        isAuthenticated={Boolean(profile)}
+        autoOpen={autoOpen}
+        registrationData={registration}
+        profileData={profile}
+      />
+      <About />
+      <Speakers />
+      <Agenda />
+      <Sponsors />
+      <OrganizerProfiles />
+      <FrequentQuestions />
+    </main>
+    <Footer />
+  </div>
+</BaseLayout>
+
+<style is:global>
+  @import url("https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Sofia+Sans:ital,wght@0,400;0,700;1,400&display=swap");
+
+  .devfest-24-root {
+    font-family: "Prompt", sans-serif;
+  }
+
+  .devfest-24-root .font-google {
+    font-family: "Prompt", sans-serif;
+  }
+
+  .devfest-24-root .font-sofia {
+    font-family: "Sofia Sans", sans-serif;
+  }
+
+  .devfest-24-root .font-emoji {
+    font-family: "Noto Color Emoji", "Prompt", sans-serif;
+  }
+
+  .cut-corners-r {
+    clip-path: polygon(
+      calc(100% - 0.6rem) 0%,
+      100% 0.6rem,
+      100% 100%,
+      0.6rem 100%,
+      0 calc(100% - 0.6rem),
+      0 0
+    );
+  }
+
+  .cut-corners-l {
+    clip-path: polygon(
+      0.6rem 0,
+      100% 0,
+      100% calc(100% - 0.6rem),
+      calc(100% - 0.6rem) 100%,
+      0 100%,
+      0 0.6rem
+    );
+  }
+</style>

@@ -1,0 +1,68 @@
+---
+interface Props {
+  title: string
+  speaker?: string
+  time: string
+  location?: string
+  image?: string
+}
+
+const { title, speaker, time, location, image } = Astro.props
+---
+
+<div class="schedule-card mb-4 flex space-x-4 border-2 border-black bg-white p-4 text-black">
+  {
+    image && (
+      <img
+        src={image}
+        alt={`Foto de ${speaker || title}`}
+        class="h-16 w-16 rounded-full border-2 border-black object-cover shrink-0"
+        width="500"
+        height="500"
+        loading="lazy"
+      />
+    )
+  }
+
+  <!-- Contenido de la tarjeta -->
+  <div class:list={["flex w-full", speaker ? "flex-col" : "justify-between"]}>
+    <h3 class="block font-semibold leading-5 sm:text-xl">{title}</h3>
+    {speaker && <span class="my-1 text-sm font-semibold sm:text-base">{speaker}</span>}
+
+    <!-- Horario y ubicación -->
+    <div class="flex items-center space-x-4 text-sm text-gray-700">
+      <!-- Hora -->
+      <div class="flex items-center space-x-1">
+        <svg
+          viewBox="0 0 96 96"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          aria-hidden="true"
+        >
+          <path
+            d="M48 8C25.956 8 8 25.956 8 48C8 70.044 25.956 88 48 88C70.044 88 88 70.044 88 48C88 25.956 70.044 8 48 8ZM48 16C65.7205 16 80 30.2795 80 48C80 65.7205 65.7205 80 48 80C30.2795 80 16 65.7205 16 48C16 30.2795 30.2795 16 48 16ZM44 24V49.6562L61.1719 66.8281L66.8281 61.1719L52 46.3438V24H44Z"
+            fill="currentColor"
+          />
+        </svg>
+        <span class="font-medium">{time}</span>
+      </div>
+
+      {location && <span>{location}</span>}
+    </div>
+  </div>
+</div>
+
+<style>
+  .schedule-card {
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .schedule-card:hover {
+    transform: translateX(-6px);
+    box-shadow: 8px 8px 0 0 rgba(0, 0, 0, 0.8);
+  }
+</style>

@@ -1,0 +1,33 @@
+---
+import type { ImageMetadata } from "astro"
+import speakerBg from "@/assets/events/devfest-23/speaker-bg.webp"
+import speakersData from "@/data/devfest-23/speakers.json"
+import SectionTitle from "./SectionTitle.astro"
+import { SpeakerCard } from "./SpeakerCard"
+
+const speakerImages = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/events/devfest-23/speakers/*.webp",
+  { eager: true }
+)
+---
+
+<section>
+  <SectionTitle id="speakers" title="Speakers" />
+  <div class="max-w-screen-md mx-auto grid grid-cols-2 md:grid-cols-3 gap-8 px-4">
+    {
+      speakersData.map((speaker, i) => {
+        const imgMod = speakerImages[`/src/assets/events/devfest-23/speakers/${speaker.fileName}`]
+        const imgSrc = imgMod?.default?.src ?? ""
+        return (
+          <SpeakerCard
+            id={speaker.id ?? i}
+            img={imgSrc}
+            name={speaker.name}
+            bgSrc={speakerBg.src}
+            client:visible
+          />
+        )
+      })
+    }
+  </div>
+</section>

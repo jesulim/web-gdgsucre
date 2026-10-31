@@ -1,0 +1,45 @@
+---
+import { Image } from "astro:assets"
+import arrow from "@/assets/events/devfest-23/drawings/arrow.webp"
+---
+
+<Image
+  src={arrow}
+  alt="arrow"
+  class="arrow mt-2 mr-2 sm:ml-8 lg:ml-20 transform rotate-[80deg] scale-y-[-1] animate-pulse"
+/>
+
+<style>
+  .arrow {
+    opacity: 0;
+    animation: reveal 0.7s forwards;
+    animation-delay: 0.5s;
+    animation-timing-function: linear;
+  }
+
+  @keyframes reveal {
+    from {
+      opacity: 0;
+      clip-path: polygon(0% 0%, 0% 0%, 0 100%, 0 100%, 0 100%, 0 100%, 0 0%, 0% 0);
+    }
+    30% {
+      opacity: 1;
+    }
+    50% {
+      clip-path: polygon(70% 0, 70% 0, 55% 45%, 55% 45%, 50% 45%, 0 100%, 0 40%, 30% 0);
+    }
+    75% {
+      clip-path: polygon(75% 0, 90% 90%, 90% 100%, 80% 75%, 50% 45%, 0 100%, 0 40%, 30% 0);
+    }
+    85% {
+      clip-path: polygon(75% 0, 70% 0%, 90% 100%, 60% 95%, 50% 45%, 0 100%, 0 40%, 30% 0);
+    }
+    90% {
+      clip-path: polygon(75% 0, 90% 90%, 90% 100%, 60% 95%, 50% 45%, 0 100%, 0 40%, 30% 0);
+    }
+    to {
+      opacity: 1;
+      clip-path: polygon(75% 0, 100% 40%, 90% 100%, 60% 90%, 50% 45%, 0 100%, 0 40%, 30% 0);
+    }
+  }
+</style>

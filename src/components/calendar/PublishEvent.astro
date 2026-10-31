@@ -16,7 +16,9 @@ const steps = [
 >
   <div class="font-monospace flex flex-col gap-6">
     <div class="flex flex-col gap-4">
-      <h2 class="text-3xl md:text-4xl lg:text-5xl leading-tight font-bold">Publica tu evento</h2>
+      <h2 class="font-google text-3xl md:text-4xl lg:text-5xl leading-tight font-bold">
+        Publica tu evento
+      </h2>
     </div>
 
     <hr class="border-t border-muted-foreground" />
@@ -26,7 +28,7 @@ const steps = [
         steps.map(step => (
           <div class="flex items-center gap-3 p-3">
             <span class="border-white shrink-0 border px-2 py-1 text-sm">{step.number}</span>
-            <p class="text-white text-sm normal-case">{step.text}</p>
+            <p class="font-google text-white text-base normal-case">{step.text}</p>
           </div>
         ))
       }
@@ -38,7 +40,7 @@ const steps = [
       >
         gratis
       </span>
-      <p class="text-muted-foreground text-sm">Publicar no tiene costo.</p>
+      <p class="font-google text-muted-foreground text-sm">Publicar no tiene costo.</p>
     </div>
   </div>
 

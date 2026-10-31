@@ -1,0 +1,182 @@
+---
+import DevFest26Logo from "@/assets/events/devfest-26/logo.svg"
+import Diagonal from "@/assets/events/devfest-26/Vector-7.svg"
+import Mayor from "@/assets/events/devfest-26/Vector-20.svg"
+import Menor from "@/assets/events/devfest-26/Vector-21.svg"
+import Vector from "@/assets/events/devfest-26/Vector-23.svg"
+import Equis from "@/assets/events/devfest-26/Vector-24.svg"
+import CalendarIcon from "@/assets/icons/calendar-month.svg"
+import LocationIcon from "@/assets/icons/distance.svg"
+import { Timer } from "@/components/events/devfest-26/Timer"
+
+const eventDate = new Date("2026-11-28T08:00:00-04:00")
+const initialTime = eventDate.getTime() - Date.now()
+---
+
+<section id="hero" class="relative h-screen overflow-hidden bg-black pb-20 text-white">
+  <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
+    <div
+      class="absolute -left-8 -top-12 size-64 animate-blob rounded-full bg-blue-500/40 blur-[45px] sm:size-40 md:left-[2%] md:top-[5%] md:size-44 lg:size-56 lg:blur-[65px]"
+    >
+    </div>
+
+    <div
+      class="absolute right-4 top-8 size-40 animate-blob rounded-full bg-red-500/30 blur-2xl animation-delay-2000 sm:size-40 md:right-[8%] md:top-[10%] md:size-40 lg:size-48 lg:blur-[55px]"
+    >
+    </div>
+
+    <div
+      class="absolute bottom-[50%] left-8 size-36 animate-blob rounded-full bg-yellow-500/40 blur-[45px] animation-delay-4000 sm:size-40 md:bottom-[40%] md:left-[6%] md:size-44 lg:size-56 lg:blur-[65px]"
+    >
+    </div>
+
+    <div
+      class="absolute bottom-[40%] right-0 size-32 animate-blob rounded-full bg-green-500/45 blur-[45px] sm:size-40 md:bottom-[40%] md:right-[1%] md:size-40 lg:size-48 lg:blur-[55px]"
+    >
+    </div>
+  </div>
+
+  <div class="pointer-events-none absolute inset-0 z-1 hidden lg:block" aria-hidden="true">
+    <Diagonal class="absolute -left-12 size-96" />
+    <div class="absolute right-16 top-32 flex gap-8 w-50">
+      <Menor />
+      <Mayor />
+    </div>
+    <Equis class="absolute bottom-[42%] left-[8%] size-50" />
+    <Vector class="absolute bottom-[30%] right-[-7%] size-96" />
+  </div>
+  <div
+    class="relative flex min-h-100 flex-col items-center justify-start overflow-hidden px-4 pt-28 md:pt-40 lg:min-h-180 lg:justify-center"
+  >
+    <div class="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center">
+      <DevFest26Logo class="mx-auto w-5/6 md:max-w-md lg:max-w-lg" />
+      <p class="text-2xl md:text-4xl font-medium leading-normal my-6 text-center">
+        Desarrolla y construye en la era de los agentes
+      </p>
+
+      <div
+        class="font-medium rounded-full px-4 py-2 bg-white/20 w-fit mx-auto border-2 border-white/40 md:p-4 md:px-8"
+      >
+        Regístro próximamente
+      </div>
+
+      <!-- <a
+        href="#"
+        class="border-glow mx-auto flex h-10 w-50 items-center justify-center rounded-[999px] bg-white px-4 py-2 text-[14px] font-semibold text-black transition-transform duration-200 hover:scale-105 active:scale-[0.98] motion-reduce:transition-none motion-reduce:hover:scale-100 md:h-18.75 md:w-68 md:bg-transparent md:px-9 md:py-4 md:text-[16px] md:font-medium md:text-white"
+      >
+        Regístro proximamente
+      </a> -->
+
+      <div class="flex flex-col md:flex-row gap-4 my-8 md:gap-8 md:w-fit md:mx-auto md:text-lg">
+        <div class="flex gap-2 items-center">
+          <CalendarIcon class="size-6 fill-white" />
+          Sábado 28 de noviembre 08:00 a. m.
+        </div>
+        <!-- Uncomment when confirmed
+      <div class="flex gap-2 items-center">
+        <LocationIcon class="size-6 fill-white"/>
+        Facultad de Tecnología
+      </div> -->
+      </div>
+    </div>
+  </div>
+  <Timer initialTime={initialTime} targetDate={eventDate} client:load />
+</section>
+
+<div class="relative bg-red-500 flex w-full justify-center"></div>
+
+<style>
+  @keyframes blob {
+    0%,
+    100% {
+      transform: translate(0px, 0px) scale(1);
+    }
+    33% {
+      transform: translate(20px, -50px) scale(1.1);
+    }
+    66% {
+      transform: translate(-20px, 20px) scale(0.9);
+    }
+  }
+
+  .animate-blob {
+    animation: blob 10s infinite cubic-bezier(0.37, 0, 0.63, 1);
+  }
+
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+  .border-glow {
+    position: relative;
+  }
+
+  .border-glow::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 2px;
+    border-radius: inherit;
+    pointer-events: none;
+    background-image: radial-gradient(
+      circle at center,
+      #4285f4 10%,
+      #ea4335 41%,
+      #f9ab00 61%,
+      #34a853 100%
+    );
+    background-size: 200% 200%;
+    animation: border-glow-move 3s ease infinite;
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box exclude,
+      linear-gradient(#000 0 0);
+  }
+
+  .border-glow:hover::before {
+    animation-duration: 1.5s;
+  }
+
+  .border-glow:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 4px;
+  }
+  @keyframes border-glow-move {
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  @keyframes io-glow-move {
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+  :global(.timer-spectrum) {
+    background-image: linear-gradient(90deg, #4285f4 0%, #ea4335 33%, #fbbc04 66%, #34a853 100%);
+    background-size: 200% 100%;
+    animation: io-glow-move 3s ease infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(.timer-spectrum),
+    .io-glow::before,
+    .animate-blob {
+      animation: none;
+    }
+  }
+</style>
