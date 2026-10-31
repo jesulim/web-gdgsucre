@@ -133,7 +133,7 @@ export const Timer = ({ initialTime, targetDate }: TimerProps) => {
             </>
           ))}
         </div>
-        <div className="timer-spectrum mt-4 h-0.5 rounded-full" />
+        <div className="timer-spectrum max-w-xs md:max-w-md mx-auto mt-8 h-0.5 md:h-1 md:mt-12 rounded-full" />
       </div>
     </div>
   )
