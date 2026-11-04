@@ -1,26 +1,49 @@
 import type { APIRoute } from "astro"
-import { uploadOrganizerByGmail } from "@/lib/services/organizersService"
+import { searchUserByEmail } from "@/lib/services/organizersService"
 import { createUserClient } from "@/lib/supabase"
 
 export const POST: APIRoute = async ({ request, cookies }) => {
   try {
     const body = await request.json()
-    const { gmail, event_slug } = body
-    const supabase = await createUserClient(cookies)
+    const email = body.email || body.gmail
 
-    if (!gmail) {
-      return new Response(JSON.stringify({ error: "gmail es requerido" }), {
+    if (!email) {
+      return new Response(JSON.stringify({ error: "El correo electrónico es requerido" }), {
         status: 400,
         headers: { "Content-Type": "application/json" },
       })
     }
 
-    const result = await uploadOrganizerByGmail(supabase, gmail, event_slug)
-    return new Response(JSON.stringify(result), {
-      headers: { "Content-Type": "application/json" },
-    })
+    const supabase = await createUserClient(cookies)
+    const result = await searchUserByEmail(supabase, email)
+
+    if (!result) {
+      return new Response(
+        JSON.stringify({
+          success: false,
+          reason: "user_not_found",
+          error: "Usuario no registrado en la plataforma. Debe registrarse primero.",
+        }),
+        {
+          status: 404,
+          headers: { "Content-Type": "application/json" },
+        }
+      )
+    }
+
+    return new Response(
+      JSON.stringify({
+        success: true,
+        source: result.source,
+        data: result.user,
+      }),
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      }
+    )
   } catch (error) {
-    return new Response(JSON.stringify({ error: `Error al agregar organizador: ${error}` }), {
+    return new Response(JSON.stringify({ error: `Error al buscar usuario: ${error}` }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     })

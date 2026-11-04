@@ -50,6 +50,7 @@ export function OrganizerFormModal({
   const [formData, setFormData] = useState<OrganizerFormData>(initialData ?? emptyForm)
   const [emailSearch, setEmailSearch] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const [isSearching, setIsSearching] = useState(false)
 
   useEffect(() => {
     if (open) {
@@ -80,18 +81,19 @@ export function OrganizerFormModal({
     setIsLoading(true)
     try {
       if (mode === "create") {
-        const res = await fetch("/api/organizers/newProfile", {
+        const res = await fetch("/api/organizers", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          // TODO: reemplazar con el endpoint de createOrganizerAndProfile cuando esté listo
           body: JSON.stringify({ ...formData, eventSlug }),
         })
         const data = await res.json()
-        if (res.status === 400 && data.result === "isOrganizer") {
-          toast.error("El usuario ya es un organizador")
+        if (res.status === 400 && data.reason === "already_organizer") {
+          toast.error("El usuario ya es un organizador de este evento")
           return
         }
-        if (!res.ok) throw new Error()
+        if (!res.ok) {
+          throw new Error(data.error || data.message || "Error al agregar organizador")
+        }
         toast.success("Organizador agregado exitosamente")
       } else {
         const res = await fetch("/api/organizers", {
@@ -112,53 +114,64 @@ export function OrganizerFormModal({
       }
       onSuccess?.()
       handleClose()
-    } catch {
-      toast.error(
-        mode === "create" ? "Error al agregar organizador" : "Error al actualizar organizador"
-      )
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : mode === "create"
+            ? "Error al agregar organizador"
+            : "Error al actualizar organizador"
+      toast.error(message)
     } finally {
       setIsLoading(false)
     }
   }
 
   const handleSearchProfile = async () => {
-    // TODO: conectar con el endpoint de búsqueda de perfiles por email cuando esté listo
-    // const profile = await fetch(`/api/profiles?email=${emailSearch}`)
-    //peticion post
-    if (!emailSearch) {
+    const trimmed = emailSearch.trim()
+    if (!trimmed) {
       toast.error("Por favor ingresa un correo para buscar")
       return
     }
+
+    setIsSearching(true)
     try {
-      const response = await fetch(`/api/organizers/byEmail`, {
+      const response = await fetch("/api/organizers/byEmail", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ gmail: emailSearch, event_slug: eventSlug }),
+        body: JSON.stringify({ email: trimmed }),
       })
 
       const result = await response.json()
 
       if (!response.ok || !result.success) {
-        const errorMessage = result.error || "Error al buscar perfil"
+        const errorMessage = result.error || "Usuario no encontrado"
         toast.error(errorMessage)
         return
       }
+
       if (!result.data) {
-        toast.error("Perfil no encontrado")
+        toast.error("Usuario no encontrado")
         return
       }
 
       setFormData({
-        first_name: result.data.first_name,
-        last_name: result.data.last_name,
-        email: result.data.email,
+        first_name: result.data.first_name || "",
+        last_name: result.data.last_name || "",
+        email: result.data.email || trimmed,
         phone_number: result.data.phone_number || "",
       })
-      toast.success("Perfil encontrado y cargado")
+
+      if (result.source === "auth") {
+        toast.info("Usuario encontrado en la plataforma. Completa sus datos si es necesario.")
+      } else {
+        toast.success("Perfil encontrado y cargado")
+      }
     } catch (error) {
-      console.error("Error buscando perfil", error)
-      toast.error("Error al buscar perfil")
-      return
+      console.error("Error buscando usuario", error)
+      toast.error("Error al buscar usuario")
+    } finally {
+      setIsSearching(false)
     }
   }
 
@@ -177,21 +190,33 @@ export function OrganizerFormModal({
 
             {mode === "create" && (
               <div className="bg-muted rounded-md p-3 space-y-2">
-                <p className="text-xs text-muted-foreground">Buscar perfil existente por correo</p>
+                <p className="text-xs text-muted-foreground">
+                  Buscar usuario registrado por correo
+                </p>
                 <div className="flex gap-2">
                   <Input
                     placeholder="correo@ejemplo.com"
                     value={emailSearch}
                     onChange={e => setEmailSearch(e.target.value)}
-                    onKeyDown={e => e.key === "Enter" && handleSearchProfile()}
+                    onKeyDown={e => {
+                      if (e.key === "Enter") {
+                        e.preventDefault()
+                        handleSearchProfile()
+                      }
+                    }}
                     className="text-sm"
                   />
-                  <Button variant="outline" size="sm" onClick={handleSearchProfile}>
-                    Buscar
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleSearchProfile}
+                    disabled={isSearching}
+                  >
+                    {isSearching ? "Buscando..." : "Buscar"}
                   </Button>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Si el perfil existe, los datos se cargarán automáticamente
+                  Busca primero en perfiles y luego en cuentas registradas
                 </p>
               </div>
             )}

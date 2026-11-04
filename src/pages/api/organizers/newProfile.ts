@@ -1,6 +1,5 @@
 import type { APIRoute } from "astro"
-
-import { addOrganizerAndProfile } from "@/lib/services/organizersService"
+import { addOrganizer } from "@/lib/services/organizersService"
 import { createUserClient } from "@/lib/supabase"
 
 export const POST: APIRoute = async ({ request, cookies }) => {
@@ -15,63 +14,56 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       })
     }
 
-    const supabase = await createUserClient(cookies)
-    //Verificamos si ya es organizador del evento
-    const { data: existingOrganizer, error: organizerError } = await supabase
-      .from("organizers")
-      .select(
-        `id,
-          profiles!inner(email),
-          events!inner(slug)`
-      )
-      .eq("profiles.email", email)
-      .eq("events.slug", eventSlug)
-      .maybeSingle()
-
-    if (organizerError) {
-      console.error("Error checking existing organizer", organizerError)
-      return new Response(JSON.stringify({ error: "Error al verificar organizador existente" }), {
-        status: 500,
+    if (!email) {
+      return new Response(JSON.stringify({ error: "email es requerido" }), {
+        status: 400,
         headers: { "Content-Type": "application/json" },
       })
     }
 
-    if (existingOrganizer) {
-      return new Response(
-        JSON.stringify({
-          success: false,
-          result: "isOrganizer",
-          message: "El usuario ya es un organizador",
-        }),
-        {
-          status: 400,
-          headers: { "Content-Type": "application/json" },
-        }
-      )
-    }
-    const result = await addOrganizerAndProfile(
-      supabase,
+    const supabase = await createUserClient(cookies)
+    const result = await addOrganizer(supabase, {
+      email,
+      eventSlug,
       first_name,
       last_name,
       phone_number,
-      email,
-      eventSlug
-    )
-    if (!result.success) {
-      const errorMessage =
-        result.reason === "event_not_found"
-          ? "El evento no fue encontrado"
-          : result.message || "No se pudo agregar el organizador y perfil"
+    })
 
-      return new Response(JSON.stringify({ error: errorMessage }), {
-        status: result.reason === "event_not_found" ? 404 : 500,
-        headers: { "Content-Type": "application/json" },
-      })
+    if (!result.success) {
+      if (result.reason === "already_organizer") {
+        return new Response(
+          JSON.stringify({
+            success: false,
+            result: "isOrganizer",
+            message: "El usuario ya es un organizador de este evento",
+          }),
+          {
+            status: 400,
+            headers: { "Content-Type": "application/json" },
+          }
+        )
+      }
+
+      const status =
+        result.reason === "event_not_found" || result.reason === "user_not_found" ? 404 : 500
+
+      return new Response(
+        JSON.stringify({
+          error: result.message || "No se pudo agregar el organizador y perfil",
+          reason: result.reason,
+        }),
+        {
+          status,
+          headers: { "Content-Type": "application/json" },
+        }
+      )
     }
 
     return new Response(
       JSON.stringify({
         message: "Organizador y perfil agregados exitosamente",
+        data: result.data,
       }),
       {
         status: 201,
