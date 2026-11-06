@@ -147,7 +147,7 @@ export function RegistrationsTable({
       )
 
       try {
-        const res = await fetch("/api/organizers", {
+        const res = await fetch("/api/organizers/fromRegistration", {
           method: role === "Organizer" ? "POST" : "DELETE",
           headers: {
             "Content-Type": "application/json",

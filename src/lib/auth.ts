@@ -4,47 +4,56 @@ import type { APIContext, APIRoute } from "astro"
 import { getProfile } from "@/lib/services/profileService"
 import { createUserClient } from "@/lib/supabase"
 
-type Profile = NonNullable<Awaited<ReturnType<typeof getProfile>>>
-
 export type AuthContext = APIContext & {
   auth: {
     supabase: SupabaseClient
-    profile: Profile
+    profile: NonNullable<Awaited<ReturnType<typeof getProfile>>>
   }
 }
 
 type AuthHandler = (context: AuthContext) => Response | Promise<Response>
 
-function json(body: unknown, status: number) {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: { "Content-Type": "application/json" },
-  })
-}
+type EventIdResolver = (
+  auth: AuthContext["auth"],
+  body: unknown
+) => Promise<number | null | undefined> | number | null | undefined
 
-async function getAuthContext(context: APIContext): Promise<AuthContext | null> {
-  const supabase = await createUserClient(context.cookies)
-  const profile = await getProfile(supabase)
-
-  if (!profile) return null
-
-  return { ...context, auth: { supabase, profile } }
-}
-
-export function withAuth(handler: AuthHandler): APIRoute {
+export function withAdmin(handler: AuthHandler): APIRoute {
   return async context => {
-    const authContext = await getAuthContext(context)
+    const supabase = await createUserClient(context.cookies)
+    const profile = await getProfile(supabase)
 
-    if (!authContext) return json({ error: "No autenticado" }, 401)
+    if (!profile) return Response.json({ error: "No autenticado" }, { status: 401 })
+    if (!profile.is_admin) return Response.json({ error: "No autorizado" }, { status: 403 })
 
-    return handler(authContext)
+    return handler({ ...context, auth: { supabase, profile } })
   }
 }
 
-export function withAdmin(handler: AuthHandler): APIRoute {
-  return withAuth(context => {
-    if (!context.auth.profile.is_admin) return json({ error: "No autorizado" }, 403)
+export function withStaffOrAdmin(resolveEventId: EventIdResolver, handler: AuthHandler): APIRoute {
+  return async context => {
+    const supabase = await createUserClient(context.cookies)
+    const profile = await getProfile(supabase)
 
-    return handler(context)
-  })
+    if (!profile) return Response.json({ error: "No autenticado" }, { status: 401 })
+
+    if (!profile.is_admin) {
+      const auth = { supabase, profile }
+      const body = await context.request.clone().json()
+      const eventId = await resolveEventId(auth, body)
+
+      if (!eventId) return Response.json({ error: "No autorizado" }, { status: 403 })
+
+      const { data: staff } = await supabase
+        .from("event_staff")
+        .select("id")
+        .eq("user_id", profile.id)
+        .eq("event_id", eventId)
+        .maybeSingle()
+
+      if (!staff) return Response.json({ error: "No autorizado" }, { status: 403 })
+    }
+
+    return handler({ ...context, auth: { supabase, profile } })
+  }
 }

@@ -69,7 +69,7 @@ const glowClasses = {
 } as const
 
 const TimeUnit = memo<TimeUnitProps>(({ label, value, tone }) => (
-  <div className="relative flex shrink-0 flex-col items-center justify-center gap-2">
+  <div key="label" className="relative flex shrink-0 flex-col items-center justify-center gap-2">
     <div
       className={`relative flex size-14 items-center justify-center text-4xl font-semibold leading-none tracking-tight sm:size-24 sm:text-5xl md:size-28 md:text-7xl ${toneClasses[tone]}`}
     >
@@ -128,7 +128,12 @@ export const Timer = ({ initialTime, targetDate }: TimerProps) => {
             <>
               <TimeUnit {...unit} />
               {index < timeUnits.length - 1 && (
-                <span className="hidden md:block text-white text-8xl mt-3 text-center">/</span>
+                <span
+                  key={unit.label}
+                  className="hidden md:block text-white text-8xl mt-3 text-center"
+                >
+                  /
+                </span>
               )}
             </>
           ))}

@@ -1,20 +1,55 @@
-import type { APIRoute } from "astro"
-import { addOrganizer, getOrganizers, removeOrganizer } from "@/lib/services/organizersService"
-import { createUserClient } from "@/lib/supabase"
+import { z } from "zod"
+import { withAdmin } from "@/lib/auth"
+import {
+  addOrganizer,
+  getOrganizersForAdmin,
+  removeOrganizerById,
+} from "@/lib/services/organizersService"
 
-export const GET: APIRoute = async ({ url, cookies }) => {
+const slugSchema = z.string().trim().min(1, "slug es requerido")
+
+// Empty strings become undefined so the service can fall back to auth metadata.
+const optionalText = z
+  .string()
+  .trim()
+  .transform(value => value || undefined)
+  .optional()
+
+const addOrganizerSchema = z.object({
+  email: z.string().trim().toLowerCase().email("El correo electrónico no es válido"),
+  eventSlug: z.string().trim().min(1, "eventSlug es requerido"),
+  first_name: optionalText,
+  last_name: optionalText,
+  phone_number: optionalText,
+})
+
+const updateOrganizerSchema = z.object({
+  id: z.coerce.number().int().positive(),
+  first_name: z.string().trim().min(1).optional(),
+  last_name: z.string().trim().min(1).optional(),
+  phone_number: z
+    .string()
+    .trim()
+    .transform(value => value || null)
+    .optional(),
+})
+
+const deleteOrganizerSchema = z.object({
+  id: z.coerce.number().int().positive(),
+})
+
+export const GET = withAdmin(async ({ url, auth }) => {
   try {
-    const slug = url.searchParams.get("slug")
+    const parsed = slugSchema.safeParse(url.searchParams.get("slug"))
 
-    if (!slug) {
+    if (!parsed.success) {
       return new Response(JSON.stringify({ error: "slug es requerido" }), {
         status: 400,
         headers: { "Content-Type": "application/json" },
       })
     }
 
-    const supabase = await createUserClient(cookies)
-    const organizers = await getOrganizers(supabase, slug)
+    const organizers = await getOrganizersForAdmin(auth.supabase, parsed.data)
 
     if (!organizers) {
       return new Response(JSON.stringify({ error: "No se pudieron obtener los organizadores" }), {
@@ -33,62 +68,74 @@ export const GET: APIRoute = async ({ url, cookies }) => {
       headers: { "Content-Type": "application/json" },
     })
   }
-}
+})
 
-export const POST: APIRoute = async ({ request, cookies }) => {
+export const POST = withAdmin(async ({ request, auth }) => {
   try {
-    const body = await request.json()
-    const { registrationId } = body
+    const parsed = addOrganizerSchema.safeParse(await request.json())
 
-    if (!registrationId) {
-      return new Response(JSON.stringify({ error: "registrationId es requerido" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      })
+    if (!parsed.success) {
+      return new Response(
+        JSON.stringify({ error: parsed.error.issues[0]?.message ?? "Datos inválidos" }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        }
+      )
     }
 
-    const supabase = await createUserClient(cookies)
-    const result = await addOrganizer(supabase, registrationId)
+    const result = await addOrganizer(auth.supabase, parsed.data)
 
     if (!result.success) {
-      const errorMessage =
-        result.reason === "registration_not_found"
-          ? "El registro no fue encontrado"
-          : result.message || "No se pudo agregar el organizador"
+      const status =
+        result.reason === "already_organizer"
+          ? 400
+          : result.reason === "user_not_found" || result.reason === "event_not_found"
+            ? 404
+            : 500
 
-      return new Response(JSON.stringify({ error: errorMessage }), {
-        status: result.reason === "registration_not_found" ? 404 : 500,
-        headers: { "Content-Type": "application/json" },
-      })
+      return new Response(
+        JSON.stringify({
+          error: result.message || "No se pudo agregar el organizador",
+          reason: result.reason,
+        }),
+        {
+          status,
+          headers: { "Content-Type": "application/json" },
+        }
+      )
     }
 
-    return new Response(JSON.stringify({ message: "Organizador agregado exitosamente" }), {
-      status: 201,
-      headers: { "Content-Type": "application/json" },
-    })
+    return new Response(
+      JSON.stringify({
+        message: "Organizador agregado exitosamente",
+        data: result.data,
+      }),
+      {
+        status: 201,
+        headers: { "Content-Type": "application/json" },
+      }
+    )
   } catch (error) {
     return new Response(JSON.stringify({ error: `Error al agregar organizador: ${error}` }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     })
   }
-}
+})
 
-export const DELETE: APIRoute = async ({ request, cookies }) => {
+export const DELETE = withAdmin(async ({ request, auth }) => {
   try {
-    const body = await request.json()
-    const { registrationId } = body
+    const parsed = deleteOrganizerSchema.safeParse(await request.json())
 
-    if (!registrationId) {
-      return new Response(JSON.stringify({ error: "registrationId es requerido" }), {
+    if (!parsed.success) {
+      return new Response(JSON.stringify({ error: "El ID del organizador es requerido" }), {
         status: 400,
         headers: { "Content-Type": "application/json" },
       })
     }
 
-    const supabase = await createUserClient(cookies)
-    const success = await removeOrganizer(supabase, registrationId)
-
+    const success = await removeOrganizerById(auth.supabase, parsed.data.id)
     if (!success) {
       return new Response(JSON.stringify({ error: "No se pudo eliminar el organizador" }), {
         status: 500,
@@ -106,24 +153,22 @@ export const DELETE: APIRoute = async ({ request, cookies }) => {
       headers: { "Content-Type": "application/json" },
     })
   }
-}
+})
 
-export const PUT: APIRoute = async ({ request, cookies }) => {
+export const PUT = withAdmin(async ({ request, auth }) => {
   try {
-    const body = await request.json()
-    const { id, first_name, last_name, phone_number } = body
+    const parsed = updateOrganizerSchema.safeParse(await request.json())
 
-    if (!id) {
+    if (!parsed.success) {
       return new Response(JSON.stringify({ error: "El ID del organizador es requerido" }), {
         status: 400,
         headers: { "Content-Type": "application/json" },
       })
     }
 
-    const supabase = await createUserClient(cookies)
-    console.log("id recibido", id)
+    const { id, first_name, last_name, phone_number } = parsed.data
 
-    const { data: organizer } = await supabase
+    const { data: organizer } = await auth.supabase
       .from("organizers")
       .select("profile_id")
       .eq("id", id)
@@ -136,14 +181,12 @@ export const PUT: APIRoute = async ({ request, cookies }) => {
       })
     }
 
-    console.log("organizador encontrado", organizer)
-
-    const { error: updateError } = await supabase
+    const { error: updateError } = await auth.supabase
       .from("profiles")
       .update({
         first_name,
         last_name,
-        phone_number,
+        phone_number: phone_number ?? null,
       })
       .eq("id", organizer.profile_id)
 
@@ -151,7 +194,6 @@ export const PUT: APIRoute = async ({ request, cookies }) => {
       console.error("Error al actualizar el organizador", updateError)
       throw updateError
     }
-    console.log("Organizador actualizado")
 
     return new Response(JSON.stringify({ message: "Organizador actualizado correctamente" }), {
       status: 200,
@@ -163,4 +205,4 @@ export const PUT: APIRoute = async ({ request, cookies }) => {
       headers: { "Content-Type": "application/json" },
     })
   }
-}
+})

@@ -8,8 +8,11 @@ interface Event {
   registration_open: boolean
 }
 
-export async function getEvents(supabase: SupabaseClient) {
-  const { data: events, error } = await supabase
+export async function getEvents(
+  supabase: SupabaseClient,
+  staffRoles: Record<string, string> | null = null
+) {
+  let query = supabase
     .from("events")
     .select(
       `id, name, slug, date, registration_open,
@@ -20,6 +23,12 @@ export async function getEvents(supabase: SupabaseClient) {
       `
     )
     .order("date", { ascending: false })
+
+  if (staffRoles) {
+    query = query.in("slug", Object.keys(staffRoles))
+  }
+
+  const { data: events, error } = await query
 
   if (error) throw new Error(error.message)
 

@@ -9,8 +9,19 @@ import {
 } from "@tanstack/react-table"
 import { Loader2Icon, PlusIcon } from "lucide-react"
 import { useState } from "react"
+import { toast } from "sonner"
 
 import { customFilterFn, SearchInput, TablePagination } from "@/components/admin/TableUtils"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import { Toaster } from "@/components/ui/sonner"
 import {
@@ -28,10 +39,11 @@ import { OrganizerFormModal } from "./OrganizerFormModal"
 
 interface OrganizerData {
   id: number
+  profile_id?: string
   first_name: string
   last_name: string
-  email: string
-  phone_number: string
+  email: string | null
+  phone_number: string | null
   avatar_url: string | null
 }
 
@@ -45,6 +57,34 @@ export function OrganizersTable({ eventSlug }: { eventSlug: string }) {
 
   const [modalOpen, setModalOpen] = useState(false)
   const [editingOrganizer, setEditingOrganizer] = useState<OrganizerData | null>(null)
+  const [deletingOrganizer, setDeletingOrganizer] = useState<OrganizerData | null>(null)
+  const [isDeleting, setIsDeleting] = useState(false)
+
+  const handleDelete = async () => {
+    if (!deletingOrganizer) return
+    setIsDeleting(true)
+    try {
+      const res = await fetch("/api/organizers", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: deletingOrganizer.id }),
+      })
+
+      if (!res.ok) {
+        const errorData = await res.json()
+        throw new Error(errorData.error || "Error al eliminar")
+      }
+
+      toast.success("Organizador eliminado exitosamente")
+      await refetch()
+      setDeletingOrganizer(null)
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Error al eliminar organizador"
+      toast.error(message)
+    } finally {
+      setIsDeleting(false)
+    }
+  }
 
   const columns = [
     columnHelper.display({
@@ -63,6 +103,7 @@ export function OrganizersTable({ eventSlug }: { eventSlug: string }) {
     columnHelper.accessor("email", {
       header: "Correo electrónico",
       filterFn: "includesString",
+      cell: info => info.getValue() ?? "-",
     }),
     columnHelper.accessor("phone_number", {
       header: "Teléfono",
@@ -73,16 +114,25 @@ export function OrganizersTable({ eventSlug }: { eventSlug: string }) {
       id: "actions",
       header: "Acciones",
       cell: ({ row }) => (
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => {
-            setEditingOrganizer(row.original)
-            setModalOpen(true)
-          }}
-        >
-          Editar
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              setEditingOrganizer(row.original)
+              setModalOpen(true)
+            }}
+          >
+            Editar
+          </Button>
+          <Button
+            variant="destructive"
+            size="sm"
+            onClick={() => setDeletingOrganizer(row.original)}
+          >
+            Eliminar
+          </Button>
+        </div>
       ),
     }),
   ]
@@ -170,6 +220,7 @@ export function OrganizersTable({ eventSlug }: { eventSlug: string }) {
       <div className="my-4 text-sm text-gray-600">
         Total: {table.getFilteredRowModel().rows.length} organizador(es)
       </div>
+
       <OrganizerFormModal
         open={modalOpen}
         onOpenChange={open => {
@@ -178,9 +229,48 @@ export function OrganizersTable({ eventSlug }: { eventSlug: string }) {
         }}
         eventSlug={eventSlug}
         mode={editingOrganizer ? "edit" : "create"}
-        initialData={editingOrganizer ?? undefined}
+        initialData={
+          editingOrganizer
+            ? {
+                id: editingOrganizer.id,
+                first_name: editingOrganizer.first_name,
+                last_name: editingOrganizer.last_name,
+                email: editingOrganizer.email ?? "",
+                phone_number: editingOrganizer.phone_number ?? "",
+              }
+            : undefined
+        }
         onSuccess={() => refetch()}
       />
+
+      <AlertDialog
+        open={!!deletingOrganizer}
+        onOpenChange={open => !open && setDeletingOrganizer(null)}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>¿Eliminar organizador?</AlertDialogTitle>
+            <AlertDialogDescription>
+              ¿Estás seguro de que deseas eliminar a {deletingOrganizer?.first_name}{" "}
+              {deletingOrganizer?.last_name} como organizador de este evento? Esta acción no se
+              puede deshacer.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isDeleting}>Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-red-600 hover:bg-red-700 text-white"
+              onClick={e => {
+                e.preventDefault()
+                handleDelete()
+              }}
+              disabled={isDeleting}
+            >
+              {isDeleting ? "Eliminando..." : "Eliminar"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }
