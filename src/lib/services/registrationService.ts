@@ -1,4 +1,5 @@
 import { FunctionsHttpError, type SupabaseClient } from "@supabase/supabase-js"
+import { getEvent } from "@/lib/services/eventService"
 import { customAlphabetNanoid } from "@/lib/utils"
 
 async function uploadFile(
@@ -23,6 +24,23 @@ async function uploadFile(
   }
 
   return filePath
+}
+
+interface RegistrationProfile {
+  id: string
+  first_name: string | null
+  last_name: string | null
+  email: string | null
+  phone_number?: string | null
+}
+
+interface RegistrationByToken {
+  id: number
+  slug: string
+  first_name: string | null
+  last_name: string | null
+  package: string | null
+  [activity: string]: unknown
 }
 
 interface Registration {
@@ -85,6 +103,14 @@ export async function submitRegistration(
     throw new Error("No se pudo obtener el usuario")
   }
 
+  const event = await getEvent(supabase, String(event_slug))
+  if (!event || String(event.id) !== String(event_id)) {
+    throw new Error("Evento no encontrado")
+  }
+  if (!event.registration_open) {
+    throw new Error("Las inscripciones para este evento están cerradas")
+  }
+
   for (const [key, value] of Object.entries(fields)) {
     if (value instanceof File) {
       const filePath = await uploadFile(supabase, String(event_slug), key, value, user.id)
@@ -95,7 +121,7 @@ export async function submitRegistration(
   const { error: insertError } = await supabase.from("registrations").insert([
     {
       user_id: user.id,
-      event_id: event_id,
+      event_id: event.id,
       responses: fields,
     },
   ])
@@ -124,6 +150,7 @@ export async function getRegistrationsByEvent(
     )
     .eq("events.slug", eventSlug)
     .order(orderBy, { ascending: false })
+    .overrideTypes<Array<{ profiles: RegistrationProfile }>>()
 
   const { data: organizers, error: organizersError } = await supabase
     .from("organizers")
@@ -245,6 +272,7 @@ export async function getRandomRegistrations(
       "id, created_at, profiles(id, first_name, last_name, email, phone_number), status, responses, events!inner(slug)"
     )
     .eq("events.slug", eventSlug)
+    .overrideTypes<Array<{ profiles: RegistrationProfile }>>()
 
   if (error) {
     throw new Error(`Error obteniendo registros: ${error.message}`)
@@ -311,6 +339,7 @@ export async function getRegistrationByToken(
     .eq("token", token)
     .eq("slug", eventSlug)
     .maybeSingle()
+    .overrideTypes<RegistrationByToken, { merge: false }>()
 
   if (!registration || error) {
     return { error: "Registro no encontrado o no pertenece a este evento." }
