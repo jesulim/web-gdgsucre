@@ -1,0 +1,69 @@
+---
+import GDGSucreLogo from "@/assets/events/devfest-26/logo.svg"
+import SocialIcons from "./SocialIcons.astro"
+---
+
+<footer class="w-full bg-io-bg-deep text-white">
+  <div class="max-w-400 mx-auto flex flex-col px-6 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+      <div class="md:col-span-2">
+        <GDGSucreLogo class="w-45" />
+        <p class="mt-4 text-sm md:text-sm leading-[1.45] text-[#85858D]">
+          DevFest Sucre es un evento independiente organizado por la comunidad GDG Sucre.
+        </p>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <!-- <nav class="flex flex-col items-start gap-4 text-sm text-[#85858D] md:col-span-2">
+          <span
+            class="mb-1 text-xs uppercase md:text-sm font-medium tracking-[2.5px] md:tracking-[3px] text-[#A7A7AF]"
+            >Evento</span
+          >
+          <a href="/#about" class="transition-colors hover:text-white">¿Qué es?</a>
+           <a href="#" class="transition-colors hover:text-white">Registrarme</a>
+          <a href="/#agenda" class="transition-colors hover:text-white"
+            >Agenda</a
+          >
+          <a href="/#speakers" class="transition-colors hover:text-white"
+            >Speakers</a
+          >
+        </nav> -->
+        <nav class="flex flex-col items-start gap-4 text-sm text-[#85858D] md:col-span-2">
+          <span
+            class="mb-1 text-xs uppercase md:text-sm font-medium tracking-[2.5px] md:tracking-[3px] text-[#A7A7AF]"
+          >
+            Comunidad
+          </span>
+          <a href="./" class="transition-colors hover:text-white">GDG Sucre</a>
+          <a href="/eventos" class="transition-colors hover:text-white">Eventos pasados</a>
+          <a
+            href="https://calendario.gdgsucre.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="transition-colors hover:text-white"
+          >
+            Calendario
+          </a>
+          <a
+            href="https://developers.google.com/community-guidelines"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="transition-colors hover:text-white"
+          >
+            Código de conducta
+          </a>
+        </nav>
+      </div>
+      <div class="flex flex-col items-start gap-4 text-sm text-[#85858D]">
+        <span
+          class="text-xs uppercase md:text-sm font-medium tracking-[2.5px] md:tracking-[3px] text-[#A7A7AF]"
+        >
+          Síguenos en:
+        </span>
+        <SocialIcons />
+      </div>
+    </div>
+    <div class="mt-10 border-t border-[#29292E] pt-4 text-center text-xs text-[#85858D]">
+      <p>© 2026 Google DevFest Sucre · GDG Sucre</p>
+    </div>
+  </div>
+</footer>
