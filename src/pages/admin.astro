@@ -18,7 +18,7 @@ if (!profile?.is_admin && Object.keys(staffRoles).length === 0) {
   return Astro.redirect("/")
 }
 
-const events = await getEvents(supabase)
+const events = await getEvents(supabase, staffRoles)
 
 const userData = {
   name: `${profile?.first_name || ""} ${profile?.last_name || ""}`.trim(),
