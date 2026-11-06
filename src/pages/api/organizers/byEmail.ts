@@ -1,21 +1,35 @@
-import type { APIRoute } from "astro"
+import { z } from "zod"
+import { withAdmin } from "@/lib/auth"
 import { searchUserByEmail } from "@/lib/services/organizersService"
-import { createUserClient } from "@/lib/supabase"
 
-export const POST: APIRoute = async ({ request, cookies }) => {
+const emailField = z.string().trim().toLowerCase().email("El correo electrónico no es válido")
+
+const searchUserSchema = z
+  .object({ email: emailField.optional(), gmail: emailField.optional() })
+  .transform(data => data.email ?? data.gmail)
+
+export const POST = withAdmin(async ({ request, auth }) => {
   try {
-    const body = await request.json()
-    const email = body.email || body.gmail
+    const parsed = searchUserSchema.safeParse(await request.json())
 
-    if (!email) {
+    if (!parsed.success) {
+      return new Response(
+        JSON.stringify({ error: parsed.error.issues[0]?.message ?? "Correo inválido" }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        }
+      )
+    }
+
+    if (!parsed.data) {
       return new Response(JSON.stringify({ error: "El correo electrónico es requerido" }), {
         status: 400,
         headers: { "Content-Type": "application/json" },
       })
     }
 
-    const supabase = await createUserClient(cookies)
-    const result = await searchUserByEmail(supabase, email)
+    const result = await searchUserByEmail(auth.supabase, parsed.data)
 
     if (!result) {
       return new Response(
@@ -48,4 +62,4 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       headers: { "Content-Type": "application/json" },
     })
   }
-}
+})
