@@ -69,7 +69,7 @@ const glowClasses = {
 } as const
 
 const TimeUnit = memo<TimeUnitProps>(({ label, value, tone }) => (
-  <div key="label" className="relative flex shrink-0 flex-col items-center justify-center gap-2">
+  <div key={value} className="relative flex shrink-0 flex-col items-center justify-center gap-2">
     <div
       className={`relative flex size-14 items-center justify-center text-4xl font-semibold leading-none tracking-tight sm:size-24 sm:text-5xl md:size-28 md:text-7xl ${toneClasses[tone]}`}
     >

@@ -13,7 +13,7 @@ const eventDate = new Date("2026-11-28T08:00:00-04:00")
 const initialTime = eventDate.getTime() - Date.now()
 ---
 
-<section id="hero" class="relative overflow-hidden bg-black pb-16 text-white">
+<section id="hero" class="relative overflow-hidden bg-df-black pb-16 text-white">
   <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
     <div
       class="absolute -left-8 -top-12 size-64 animate-blob rounded-full bg-blue-500/40 blur-[45px] sm:size-40 md:left-[2%] md:top-[5%] md:size-44 lg:size-56 lg:blur-[65px]"
@@ -21,12 +21,12 @@ const initialTime = eventDate.getTime() - Date.now()
     </div>
 
     <div
-      class="absolute right-4 top-8 size-40 animate-blob rounded-full bg-red-500/30 blur-2xl animation-delay-2000 sm:size-40 md:right-[8%] md:top-[10%] md:size-40 lg:size-48 lg:blur-[55px]"
+      class="absolute right-4 top-8 size-40 animate-blob rounded-full bg-red-500/40 blur-2xl animation-delay-2000 sm:size-40 md:right-[8%] md:top-[10%] md:size-40 lg:size-48 lg:blur-[55px]"
     >
     </div>
 
     <div
-      class="absolute bottom-[50%] left-8 size-36 animate-blob rounded-full bg-yellow-500/40 blur-[45px] animation-delay-4000 sm:size-40 md:bottom-[40%] md:left-[6%] md:size-44 lg:size-56 lg:blur-[65px]"
+      class="absolute bottom-[45%] left-4 size-40 animate-blob rounded-full bg-yellow-500/40 blur-[45px] animation-delay-4000 sm:size-40 md:bottom-[40%] md:left-[6%] md:size-44 lg:size-56 lg:blur-[65px]"
     >
     </div>
 
@@ -167,8 +167,8 @@ const initialTime = eventDate.getTime() - Date.now()
     }
   }
   :global(.timer-spectrum) {
-    background-image: linear-gradient(90deg, #4285f4 0%, #ea4335 33%, #fbbc04 66%, #34a853 100%);
-    background-size: 200% 100%;
+    background-image: linear-gradient(90deg, #4285f4b3 0%, #ea4335 33%, #fbbc04 66%, #34a853b3 100%);
+    background-size: 140% 100%;
     animation: io-glow-move 3s ease infinite;
   }
 

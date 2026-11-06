@@ -4,45 +4,37 @@ import SocialIcons from "./SocialIcons.astro"
 ---
 
 <footer class="w-full bg-io-bg-deep text-white">
-  <div class="mx-auto flex max-w-full flex-col px-6 py-12 md:px-10 md:py-16 lg:px-30">
-    <div class="grid gap-10 md:grid-cols-12 md:gap-6">
-      <div class="max-w-140 md:col-span-5">
+  <div class="max-w-400 mx-auto flex flex-col px-6 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+      <div class="md:col-span-2">
         <GDGSucreLogo class="w-45" />
-        <p class="mt-4 text-[13px] leading-[1.45] text-[#85858D]">
-          Google DevFest Sucre es un evento independiente organizado por la
-          comunidad, inspirado en Google DevFest.
+        <p class="mt-4 text-sm md:text-sm leading-[1.45] text-[#85858D]">
+          DevFest Sucre es un evento independiente organizado por la comunidad GDG Sucre.
         </p>
       </div>
-      <div class="grid grid-cols-2 gap-3 md:col-span-1 md:contents">
-        <nav
-          class="flex flex-col items-start gap-4 text-[13px] text-[#85858D] md:col-span-2"
-        >
+      <div class="grid grid-cols-2 gap-3">
+        <!-- <nav class="flex flex-col items-start gap-4 text-sm text-[#85858D] md:col-span-2">
           <span
-            class="mb-1 text-[11px] uppercase md:text-[14px] font-medium tracking-[2.5px] md:tracking-[3px] text-[#A7A7AF]"
+            class="mb-1 text-xs uppercase md:text-sm font-medium tracking-[2.5px] md:tracking-[3px] text-[#A7A7AF]"
             >Evento</span
           >
-          <a href="/#about" class="transition-colors hover:text-white"
-            >¿Qué es?</a
-          >
-          <!-- <a href="#" class="transition-colors hover:text-white">Registrarme</a>
+          <a href="/#about" class="transition-colors hover:text-white">¿Qué es?</a>
+           <a href="#" class="transition-colors hover:text-white">Registrarme</a>
           <a href="/#agenda" class="transition-colors hover:text-white"
             >Agenda</a
           >
           <a href="/#speakers" class="transition-colors hover:text-white"
             >Speakers</a
-          > -->
-        </nav>
-        <nav
-          class="flex flex-col items-start gap-4 text-[13px] text-[#85858D] md:col-span-2"
-        >
+          >
+        </nav> -->
+        <nav class="flex flex-col items-start gap-4 text-sm text-[#85858D] md:col-span-2">
           <span
-            class="mb-1 text-[11px] uppercase md:text-[14px] font-medium tracking-[2.5px] md:tracking-[3px] text-[#A7A7AF]"
-            >Comunidad</span
+            class="mb-1 text-xs uppercase md:text-sm font-medium tracking-[2.5px] md:tracking-[3px] text-[#A7A7AF]"
           >
+            Comunidad
+          </span>
           <a href="./" class="transition-colors hover:text-white">GDG Sucre</a>
-          <a href="/eventos" class="transition-colors hover:text-white"
-            >Eventos pasados</a
-          >
+          <a href="/eventos" class="transition-colors hover:text-white">Eventos pasados</a>
           <a
             href="https://calendario.gdgsucre.com/"
             target="_blank"
@@ -61,19 +53,16 @@ import SocialIcons from "./SocialIcons.astro"
           </a>
         </nav>
       </div>
-      <div
-        class="flex flex-col items-start gap-4 text-[13px] text-[#85858D] md:col-span-3"
-      >
+      <div class="flex flex-col items-start gap-4 text-sm text-[#85858D]">
         <span
-          class="text-[11px] uppercase md:text-[14px] font-medium tracking-[2.5px] md:tracking-[3px] text-[#A7A7AF]"
-          >Síguenos en</span
+          class="text-xs uppercase md:text-sm font-medium tracking-[2.5px] md:tracking-[3px] text-[#A7A7AF]"
         >
+          Síguenos en:
+        </span>
         <SocialIcons />
       </div>
     </div>
-    <div
-      class="mt-10 border-t border-[#29292E] pt-4 text-center text-[12px] text-[#85858D]"
-    >
+    <div class="mt-10 border-t border-[#29292E] pt-4 text-center text-xs text-[#85858D]">
       <p>© 2026 Google DevFest Sucre · GDG Sucre</p>
     </div>
   </div>
