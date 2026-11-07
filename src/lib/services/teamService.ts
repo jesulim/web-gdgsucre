@@ -39,6 +39,12 @@ async function assertNotInTeam(supabase: SupabaseClient, registration_id: number
   }
 }
 
+export async function getTeamEventId(supabase: SupabaseClient, teamId: number) {
+  const { data } = await supabase.from("teams").select("event_id").eq("id", teamId).maybeSingle()
+
+  return (data?.event_id as number | undefined) ?? null
+}
+
 export async function getTeamByCode(supabase: SupabaseClient, code: string, event_id: number) {
   const { data, error } = await supabase
     .from("teams")
@@ -241,6 +247,14 @@ export async function listMembers(
     )
     .eq("team_id", team_id)
     .order("leader", { ascending: false })
+    .overrideTypes<
+      Array<{
+        registrations: {
+          user_id: string
+          profiles: { first_name: string; last_name: string; email: string | null }
+        }
+      }>
+    >()
 
   if (error) throw new Error(`Error obteniendo miembros: ${error.message}`)
 
@@ -348,6 +362,7 @@ export async function getTeamsWithMembersByEvent(
     .filter(reg => !teamRegistrationIds.has(reg.id))
     .map(reg => {
       const profiles = reg.profiles as unknown as {
+        id: string
         first_name: string
         last_name: string
         email: string
@@ -361,7 +376,7 @@ export async function getTeamsWithMembersByEvent(
         avatar_url: profiles.avatar_url,
         status: reg.status,
         leader: false as const,
-        organizer: organizerIds?.includes(reg.profiles.id),
+        organizer: organizerIds?.includes(profiles.id),
       }
     })
 
@@ -396,6 +411,7 @@ export async function deleteMember(supabase: SupabaseClient, target_registration
     .eq("team_id", teamInfo.team_id)
     .eq("leader", true)
     .maybeSingle()
+    .overrideTypes<{ registrations: { user_id: string } }>()
 
   if (leaderError) throw new Error(`Error verificando liderazgo: ${leaderError.message}`)
   if (!leaderCheck || leaderCheck.registrations.user_id !== user.id) {

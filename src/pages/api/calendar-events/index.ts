@@ -1,5 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
 import type { APIRoute } from "astro"
+
+import { withAdmin } from "@/lib/auth"
 import {
   createCalendarEvent,
   deleteCalendarEvent,
@@ -37,7 +39,9 @@ export const GET: APIRoute = async ({ url, cookies }) => {
 
     const supabase = await createUserClient(cookies)
 
-    let calendarEvents: Awaited<ReturnType<typeof getCalendarEvents>>
+    let calendarEvents:
+      | Awaited<ReturnType<typeof getCalendarEvents>>
+      | Awaited<ReturnType<typeof getAllCalendarEvents>>
 
     if (startParam && endParam) {
       calendarEvents = await getCalendarEvents(supabase, startParam, endParam)
@@ -123,7 +127,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   }
 }
 
-export const PUT: APIRoute = async ({ request, cookies }) => {
+export const PUT = withAdmin(async ({ request, auth }) => {
   try {
     const body = await request.json()
     const {
@@ -145,7 +149,7 @@ export const PUT: APIRoute = async ({ request, cookies }) => {
       })
     }
 
-    const supabase = await createUserClient(cookies)
+    const supabase = auth.supabase
     const result = await updateCalendarEvent(supabase, id, {
       name,
       community_id,
@@ -181,9 +185,9 @@ export const PUT: APIRoute = async ({ request, cookies }) => {
       headers: { "Content-Type": "application/json" },
     })
   }
-}
+})
 
-export const DELETE: APIRoute = async ({ url, cookies }) => {
+export const DELETE = withAdmin(async ({ url, auth }) => {
   try {
     const id = url.searchParams.get("id")
 
@@ -194,7 +198,7 @@ export const DELETE: APIRoute = async ({ url, cookies }) => {
       })
     }
 
-    const supabase = await createUserClient(cookies)
+    const supabase = auth.supabase
     const success = await deleteCalendarEvent(supabase, Number(id))
 
     if (!success) {
@@ -216,4 +220,4 @@ export const DELETE: APIRoute = async ({ url, cookies }) => {
       status: 500,
     })
   }
-}
+})
