@@ -1,9 +1,7 @@
-import type { APIRoute } from "astro"
-
+import { eventFromSlugParam, withStaffOrAdmin } from "@/lib/auth"
 import { getRegistrationByToken } from "@/lib/services/registrationService"
-import { createUserClient } from "@/lib/supabase"
 
-export const GET: APIRoute = async ({ url, cookies }) => {
+export const GET = withStaffOrAdmin(eventFromSlugParam("eventSlug"), async ({ url, auth }) => {
   const token = url.searchParams.get("token")
   const activity = url.searchParams.get("activity")
   const eventSlug = url.searchParams.get("eventSlug")
@@ -13,8 +11,7 @@ export const GET: APIRoute = async ({ url, cookies }) => {
   }
 
   try {
-    const supabase = await createUserClient(cookies)
-    const response = await getRegistrationByToken(supabase, token, activity, eventSlug)
+    const response = await getRegistrationByToken(auth.supabase, token, activity, eventSlug)
 
     return new Response(JSON.stringify(response), {
       headers: { "Content-Type": "application/json" },
@@ -25,4 +22,4 @@ export const GET: APIRoute = async ({ url, cookies }) => {
       status: 500,
     })
   }
-}
+})

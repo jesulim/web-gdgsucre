@@ -1,5 +1,7 @@
 import type { APIRoute } from "astro"
 
+import { withAdmin } from "@/lib/auth"
+
 import {
   createActivity,
   deleteActivity,
@@ -37,7 +39,7 @@ export const GET: APIRoute = async ({ url, cookies }) => {
   }
 }
 
-export const POST: APIRoute = async ({ request, cookies }) => {
+export const POST = withAdmin(async ({ request, auth }) => {
   try {
     const body = await request.json()
     const { event_id, name, label } = body
@@ -46,7 +48,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       return jsonError("event_id, name y label son requeridos", 400)
     }
 
-    const supabase = await createUserClient(cookies)
+    const supabase = auth.supabase
     const activity = await createActivity(supabase, event_id, { name, label })
 
     return new Response(JSON.stringify(activity), {
@@ -57,9 +59,9 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     console.error(error)
     return jsonError(`Error creating activity: ${error}`, 500)
   }
-}
+})
 
-export const PUT: APIRoute = async ({ request, cookies }) => {
+export const PUT = withAdmin(async ({ request, auth }) => {
   try {
     const body = await request.json()
     const { id, name, label } = body
@@ -68,7 +70,7 @@ export const PUT: APIRoute = async ({ request, cookies }) => {
       return jsonError("id, name y label son requeridos", 400)
     }
 
-    const supabase = await createUserClient(cookies)
+    const supabase = auth.supabase
     const activity = await updateActivity(supabase, id, { name, label })
 
     return new Response(JSON.stringify(activity), {
@@ -78,9 +80,9 @@ export const PUT: APIRoute = async ({ request, cookies }) => {
   } catch (error) {
     return jsonError(`Error updating activity: ${error}`, 500)
   }
-}
+})
 
-export const DELETE: APIRoute = async ({ url, cookies }) => {
+export const DELETE = withAdmin(async ({ url, auth }) => {
   const id = Number(url.searchParams.get("id"))
 
   if (!id || Number.isNaN(id)) {
@@ -88,7 +90,7 @@ export const DELETE: APIRoute = async ({ url, cookies }) => {
   }
 
   try {
-    const supabase = await createUserClient(cookies)
+    const supabase = auth.supabase
     await deleteActivity(supabase, id)
 
     return new Response(JSON.stringify({ success: true }), {
@@ -98,4 +100,4 @@ export const DELETE: APIRoute = async ({ url, cookies }) => {
   } catch (error) {
     return jsonError(`Error deleting activity: ${error}`, 500)
   }
-}
+})

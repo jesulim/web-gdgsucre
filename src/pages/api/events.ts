@@ -1,4 +1,6 @@
 import type { APIRoute } from "astro"
+
+import { withAdmin } from "@/lib/auth"
 import { createEvent, getEvents, updateEvent } from "@/lib/services/eventService"
 import { createUserClient } from "@/lib/supabase"
 
@@ -18,7 +20,7 @@ export const GET: APIRoute = async ({ cookies }) => {
   }
 }
 
-export const POST: APIRoute = async ({ request, cookies }) => {
+export const POST = withAdmin(async ({ request, auth }) => {
   try {
     const body = await request.json()
     const { name, slug, date, registration_open } = body
@@ -30,7 +32,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       })
     }
 
-    const supabase = await createUserClient(cookies)
+    const supabase = auth.supabase
     const result = await createEvent(supabase, {
       name,
       slug,
@@ -47,9 +49,9 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       status: 500,
     })
   }
-}
+})
 
-export const PUT: APIRoute = async ({ request, cookies }) => {
+export const PUT = withAdmin(async ({ request, auth }) => {
   try {
     const body = await request.json()
     const { id, name, slug, date, registration_open } = body
@@ -61,7 +63,7 @@ export const PUT: APIRoute = async ({ request, cookies }) => {
       })
     }
 
-    const supabase = await createUserClient(cookies)
+    const supabase = auth.supabase
     const result = await updateEvent(supabase, id, {
       name,
       slug,
@@ -85,4 +87,4 @@ export const PUT: APIRoute = async ({ request, cookies }) => {
       status: 500,
     })
   }
-}
+})

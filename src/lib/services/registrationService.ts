@@ -133,6 +133,40 @@ export async function submitRegistration(
   return { success: true }
 }
 
+export async function getRegistrationEventId(supabase: SupabaseClient, registrationId: number) {
+  const { data } = await supabase
+    .from("registrations")
+    .select("event_id")
+    .eq("id", registrationId)
+    .maybeSingle()
+
+  return (data?.event_id as number | undefined) ?? null
+}
+
+export async function getRegistrationContact(supabase: SupabaseClient, registrationId: number) {
+  const { data, error } = await supabase
+    .from("registrations")
+    .select("id, events(name), profiles(email, first_name)")
+    .eq("id", registrationId)
+    .maybeSingle()
+    .overrideTypes<
+      {
+        id: number
+        events: { name: string } | null
+        profiles: { email: string | null; first_name: string | null } | null
+      },
+      { merge: false }
+    >()
+
+  if (error || !data) throw new Error("No se encontró el registro")
+
+  return {
+    email: data.profiles?.email ?? null,
+    name: data.profiles?.first_name ?? "",
+    eventName: data.events?.name ?? "",
+  }
+}
+
 export async function getRegistrationsByEvent(
   supabase: SupabaseClient,
   eventSlug: string,
@@ -211,7 +245,7 @@ export async function confirmRegistration(supabase: SupabaseClient, registration
   }
 
   console.log("Confirming registration", registrationId)
-  const { error: updateError } = await supabase
+  const { data: updated, error: updateError } = await supabase
     .from("registrations")
     .update({
       token,
@@ -219,9 +253,14 @@ export async function confirmRegistration(supabase: SupabaseClient, registration
       qr_url: qrData.publicUrl,
     })
     .eq("id", registrationId)
+    .select("id")
 
   if (updateError) {
     throw new Error(`Error actualizando el registro: ${updateError.message}`)
+  }
+
+  if (!updated?.length) {
+    throw new Error("No se pudo actualizar el registro")
   }
 
   return { success: true, token }

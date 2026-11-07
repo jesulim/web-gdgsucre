@@ -1,9 +1,7 @@
-import type { APIRoute } from "astro"
-
+import { withAdmin } from "@/lib/auth"
 import { getRandomRegistrations } from "@/lib/services/registrationService"
-import { createUserClient } from "@/lib/supabase"
 
-export const GET: APIRoute = async ({ url, cookies }) => {
+export const GET = withAdmin(async ({ url, auth }) => {
   const limitParam = url.searchParams.get("limit")
   const roleParam = url.searchParams.get("role")
   let limit: number | null = null
@@ -23,8 +21,7 @@ export const GET: APIRoute = async ({ url, cookies }) => {
   }
 
   try {
-    const supabase = await createUserClient(cookies)
-    const registrations = await getRandomRegistrations(supabase, limit, roleParam)
+    const registrations = await getRandomRegistrations(auth.supabase, limit, roleParam)
 
     return new Response(
       JSON.stringify({
@@ -50,4 +47,4 @@ export const GET: APIRoute = async ({ url, cookies }) => {
       }
     )
   }
-}
+})

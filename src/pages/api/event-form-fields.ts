@@ -1,5 +1,7 @@
 import type { APIRoute } from "astro"
 
+import { withAdmin } from "@/lib/auth"
+
 import {
   createFormField,
   deleteFormField,
@@ -88,7 +90,7 @@ export const GET: APIRoute = async ({ url, cookies }) => {
   }
 }
 
-export const POST: APIRoute = async ({ request, cookies }) => {
+export const POST = withAdmin(async ({ request, auth }) => {
   try {
     const body = await request.json()
     const input = validateFieldInput(body)
@@ -97,7 +99,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       return jsonError("event_id, name, label, type y required son requeridos", 400)
     }
 
-    const supabase = await createUserClient(cookies)
+    const supabase = auth.supabase
     const field = await createFormField(supabase, {
       event_id: input.event_id,
       order: input.order,
@@ -116,9 +118,9 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   } catch (error) {
     return jsonError(`Error creating form field: ${error}`, 500)
   }
-}
+})
 
-export const PUT: APIRoute = async ({ request, cookies }) => {
+export const PUT = withAdmin(async ({ request, auth }) => {
   try {
     const body = await request.json()
     const id = Number(body.id)
@@ -133,7 +135,7 @@ export const PUT: APIRoute = async ({ request, cookies }) => {
       return jsonError("name, label, type y required son requeridos", 400)
     }
 
-    const supabase = await createUserClient(cookies)
+    const supabase = auth.supabase
     const field = await updateFormField(supabase, id, {
       order: input.order,
       name: input.name,
@@ -151,9 +153,9 @@ export const PUT: APIRoute = async ({ request, cookies }) => {
   } catch (error) {
     return jsonError(`Error updating form field: ${error}`, 500)
   }
-}
+})
 
-export const DELETE: APIRoute = async ({ url, cookies }) => {
+export const DELETE = withAdmin(async ({ url, auth }) => {
   const id = Number(url.searchParams.get("id"))
 
   if (!id || Number.isNaN(id)) {
@@ -161,7 +163,7 @@ export const DELETE: APIRoute = async ({ url, cookies }) => {
   }
 
   try {
-    const supabase = await createUserClient(cookies)
+    const supabase = auth.supabase
     await deleteFormField(supabase, id)
 
     return new Response(JSON.stringify({ success: true }), {
@@ -171,4 +173,4 @@ export const DELETE: APIRoute = async ({ url, cookies }) => {
   } catch (error) {
     return jsonError(`Error deleting form field: ${error}`, 500)
   }
-}
+})

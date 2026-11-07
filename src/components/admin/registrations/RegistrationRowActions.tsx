@@ -60,7 +60,9 @@ const deleteRegistration = async (id: number, refetch: () => void) => {
     if (!response.ok) throw new Error("Error HTTP al eliminar el registro")
 
     const body = await response.json()
-    body.success ? toast.success("Registro eliminado exitosamente") : toast.error(body.details)
+    body.success
+      ? toast.success("Registro eliminado exitosamente")
+      : toast.error(body.details ?? body.message ?? body.error)
     refetch()
   } catch {
     toast.error("Error eliminando el registro")

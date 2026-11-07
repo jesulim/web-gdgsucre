@@ -1,98 +1,87 @@
-import type { APIRoute } from "astro"
+import { z } from "zod"
 
-import { withAdmin } from "@/lib/auth"
+import { eventFromSlugParam, withAdmin, withStaffOrAdmin } from "@/lib/auth"
 import { getRegistrationsByEvent, updateRegistration } from "@/lib/services/registrationService"
-import { createSupabaseServerClient } from "@/lib/supabase"
 
-export const GET: APIRoute = async ({ request, url, cookies }) => {
+const UpdateRegistrationSchema = z.object({
+  registrationId: z.coerce.number().int().positive(),
+  values: z.object({ status: z.enum(["pending", "confirmed"]) }).strict(),
+})
+
+const RegistrationIdSchema = z.object({
+  registrationId: z.coerce.number().int().positive(),
+})
+
+export const GET = withStaffOrAdmin(eventFromSlugParam("slug"), async ({ url, auth }) => {
   const slug = url.searchParams.get("slug")
   if (!slug) {
     return new Response("Event slug is required", { status: 400 })
   }
 
   try {
-    const supabase = createSupabaseServerClient({ request, cookies })
-    const registrations = await getRegistrationsByEvent(supabase, slug)
+    const registrations = await getRegistrationsByEvent(auth.supabase, slug)
 
-    return new Response(JSON.stringify(registrations), {
-      headers: { "Content-Type": "application/json" },
-      status: 200,
-    })
+    return Response.json(registrations)
   } catch (error) {
     return new Response(`Error fetching registrations ${error}`, {
       status: 500,
     })
   }
-}
+})
 
 export const POST = withAdmin(async ({ request, auth }) => {
-  const body = await request.json()
-  const { registrationId, values } = body
+  const parsed = UpdateRegistrationSchema.safeParse(await request.json().catch(() => null))
+
+  if (!parsed.success) {
+    return Response.json(
+      { error: "Datos inválidos", details: z.prettifyError(parsed.error) },
+      { status: 400 }
+    )
+  }
 
   try {
+    const { registrationId, values } = parsed.data
     const res = await updateRegistration(auth.supabase, registrationId, values)
 
-    return new Response(JSON.stringify(res), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    })
+    return Response.json(res)
   } catch (error) {
-    return new Response(JSON.stringify({ details: `Error al actualizar el registro: ${error}` }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    })
+    return Response.json({ details: `Error al actualizar el registro: ${error}` }, { status: 500 })
   }
 })
 
-export const DELETE: APIRoute = async ({ cookies, request }) => {
-  const body = await request.json()
-  const { registrationId } = body
+export const DELETE = withAdmin(async ({ request, auth }) => {
+  const parsed = RegistrationIdSchema.safeParse(await request.json().catch(() => null))
 
-  if (!registrationId) {
+  if (!parsed.success) {
     return new Response("Registration ID is required", { status: 400 })
   }
 
   try {
-    const supabase = createSupabaseServerClient({ request, cookies })
-    const { data: registration, error } = await supabase
-      .from("registrations")
-      .select("*")
-      .eq("id", registrationId)
-      .single()
-
-    console.log(registration, error)
-
-    const { data, error: deleteError } = await supabase
+    const { data: deleted, error: deleteError } = await auth.supabase
       .from("registrations")
       .delete()
-      .eq("id", registrationId)
-      .select()
-
-    console.log(data, deleteError)
+      .eq("id", parsed.data.registrationId)
+      .select("id")
 
     if (deleteError) {
-      return new Response(
-        JSON.stringify({ success: false, message: `Error al eliminar el registro ${error}` }),
-        {
-          status: 500,
-          headers: { "Content-Type": "application/json" },
-        }
+      return Response.json(
+        { success: false, message: `Error al eliminar el registro ${deleteError.message}` },
+        { status: 500 }
       )
     }
 
-    return new Response(JSON.stringify({ success: true, message: "Registro eliminado" }), {
-      headers: { "Content-Type": "application/json" },
-    })
+    if (!deleted?.length) {
+      return Response.json({ success: false, message: "Registro no encontrado" }, { status: 404 })
+    }
+
+    return Response.json({ success: true, message: "Registro eliminado" })
   } catch (error) {
-    return new Response(
-      JSON.stringify({
+    return Response.json(
+      {
         success: false,
         message: `Error al eliminar el registro ${error instanceof Error && error.message}`,
-      }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json" },
-      }
+      },
+      { status: 500 }
     )
   }
-}
+})
