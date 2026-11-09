@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="supported-color-schemes" content="dark" />
+    <title>Nueva sugerencia: <%= it.subject %></title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body
+    style="
+      margin: 0;
+      padding: 0;
+      background-color: #000000;
+      color: #ffffff;
+      font-family: 'Google Sans Code', ui-monospace, Menlo, Consolas, 'Courier New', monospace;
+    "
+  >
+    <div style="display: none; max-height: 0; overflow: hidden; opacity: 0">
+      Nueva sugerencia de <%= it.userName %>: <%= it.subject %>
+    </div>
+
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #000000">
+      <tr>
+        <td align="center" style="padding: 24px 12px">
+          <table
+            role="presentation"
+            width="100%"
+            cellpadding="0"
+            cellspacing="0"
+            border="0"
+            style="max-width: 600px; background-color: #232323"
+          >
+            <tr>
+              <td style="padding: 32px 24px 8px 24px">
+                <h1 style="margin: 0 0 20px 0; color: #ffffff; font-size: 26px; line-height: 1.25; font-weight: 700">
+                  Nueva Sugerencia 💡
+                </h1>
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #000000; border: 1px solid #ffffff">
+                  <tr>
+                    <td style="padding: 14px 16px; font-size: 14px; color: #ffffff">
+                      <span style="color: #ea4335; font-weight: 700">&gt;</span>
+                      enviado desde la plataforma GDG Sucre&nbsp;<span style="display: inline-block; width: 8px; height: 16px; background-color: #ea4335; vertical-align: middle"></span>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding: 24px">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border: 1px solid #ffffff; background-color: #000000">
+                  <tr>
+                    <td style="padding: 16px; border-bottom: 1px solid #ffffff">
+                      <span style="display: inline-block; width: 12px; height: 12px; background-color: #ea4335; margin-right: 8px"></span>
+                      <span style="font-size: 12px; color: #a1a1a1; text-transform: uppercase; letter-spacing: 1px">Asunto</span>
+                      <p style="margin: 8px 0 0 0; font-size: 18px; line-height: 1.3; font-weight: 700; color: #ffffff">
+                        <%= it.subject %>
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 12px 16px; border-bottom: 1px solid #a1a1a1">
+                      <p style="margin: 0; font-size: 12px; color: #a1a1a1; text-transform: uppercase">Remitente</p>
+                      <p style="margin: 4px 0 0 0; font-size: 15px; color: #ffffff">
+                        <%= it.userName %> (<a href="mailto:<%= it.userEmail %>" style="color: #4285f4; text-decoration: underline"><%= it.userEmail %></a>)
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 16px">
+                      <p style="margin: 0 0 8px 0; font-size: 12px; color: #a1a1a1; text-transform: uppercase">Mensaje</p>
+                      <div style="font-size: 14px; line-height: 1.6; color: #ffffff; white-space: pre-wrap; background-color: #121212; padding: 14px; border: 1px solid #333333">
+                        <%= it.message %>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding: 0 24px 32px 24px">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top: 1px solid #a1a1a1">
+                  <tr>
+                    <td style="padding-top: 24px" align="center">
+                      <a
+                        href="mailto:<%= it.userEmail %>?subject=Re: <%= encodeURIComponent(it.subject) %>"
+                        style="
+                          display: inline-block;
+                          background-color: #ffffff;
+                          color: #000000;
+                          font-weight: 700;
+                          padding: 12px 20px;
+                          text-decoration: none;
+                          font-size: 14px;
+                          text-transform: uppercase;
+                        "
+                      >
+                        Responder a <%= it.userName %> ↗
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

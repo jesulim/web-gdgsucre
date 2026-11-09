@@ -17,6 +17,7 @@ type EmailType =
   | "payment"
   | "event-received"
   | "event-accepted"
+  | "suggestion"
 
 interface RequestBody {
   type: EmailType
@@ -126,6 +127,19 @@ async function formatCalendarEvent(data: Record<string, unknown>) {
   }
 }
 
+async function getSuggestionData(data: Record<string, unknown>) {
+  const customSubject =
+    typeof data.subject === "string" && data.subject.trim()
+      ? `[Sugerencia] ${data.subject.trim()}`
+      : "Nueva sugerencia de la comunidad 💡"
+
+  return {
+    to: "gdgsucre@gmail.com",
+    subject: customSubject,
+    data,
+  }
+}
+
 const EMAIL_TYPES: Record<EmailType, TemplateConfig> = {
   registration: {
     file: "registrationEmail.html",
@@ -146,6 +160,10 @@ const EMAIL_TYPES: Record<EmailType, TemplateConfig> = {
   "event-accepted": {
     file: "eventAcceptedEmail.html",
     formatEmail: formatCalendarEvent,
+  },
+  suggestion: {
+    file: "suggestionEmail.html",
+    formatEmail: getSuggestionData,
   },
 }
 
