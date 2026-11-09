@@ -218,7 +218,7 @@ export default function SuggestionsForm({ user }: SuggestionsFormProps) {
         <Button
           type="submit"
           disabled={isSubmitting || !isFormValid}
-          className="w-full sm:w-auto bg-red-500 hover:bg-red-600 text-white font-monospace uppercase text-sm font-medium py-2.5 px-6 rounded-sm cursor-pointer disabled:cursor-not-allowed transition-colors"
+          className="w-full sm:w-auto bg-blue-500 hover:bg-green-500 text-black font-monospace uppercase text-sm font-medium py-2.5 px-6 rounded-sm cursor-pointer disabled:cursor-not-allowed transition-colors"
         >
           {isSubmitting ? (
             <>
