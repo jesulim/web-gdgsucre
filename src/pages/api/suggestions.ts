@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro"
 
-import { getProfile } from "@/lib/services/profileService"
+import { getProfile, getUser } from "@/lib/services/profileService"
 import { createSuggestion } from "@/lib/services/suggestionService"
 import { createUserClient } from "@/lib/supabase"
 import { suggestionSchema } from "@/lib/validators/suggestion"
@@ -26,9 +26,10 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     const parsed = suggestionSchema.safeParse(body)
 
     if (!parsed.success) {
+      const firstIssue = parsed.error.issues[0]?.message || "Datos inválidos"
       return new Response(
         JSON.stringify({
-          error: "Datos inválidos",
+          error: firstIssue,
           details: parsed.error.format(),
         }),
         {
@@ -40,14 +41,37 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
     const { subject, message } = parsed.data
 
+    // Garantizar que exista una fila en public.profiles para evitar error de FK
+    // en caso de que el usuario haya iniciado sesión con OAuth y aún no tenga perfil guardado.
+    const { data: existingProfile } = await supabase
+      .from("profiles")
+      .select("id")
+      .eq("id", profile.id)
+      .maybeSingle()
+
+    if (!existingProfile) {
+      await supabase.from("profiles").upsert(
+        {
+          id: profile.id,
+          first_name: profile.first_name || "Usuario",
+          last_name: profile.last_name || "",
+          email: profile.email ?? null,
+          avatar_url: profile.avatar_url ?? null,
+        },
+        { onConflict: "id" }
+      )
+    }
+
     await createSuggestion(supabase, profile.id, { subject, message })
 
     // Disparar email en try/catch para que un fallo en el proveedor de correos
     // no aborte ni afecte la respuesta exitosa tras guardar en la base de datos.
     try {
+      const user = await getUser(supabase)
+      const userEmail = profile.email || user?.email || ""
       const fullName =
         `${profile.first_name ?? ""} ${profile.last_name ?? ""}`.trim() ||
-        profile.email ||
+        userEmail ||
         "Usuario de GDG Sucre"
 
       const { error: emailError } = await supabase.functions.invoke("send-email", {
@@ -55,7 +79,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
           type: "suggestion",
           data: {
             userName: fullName,
-            userEmail: profile.email,
+            userEmail,
             subject,
             message,
           },

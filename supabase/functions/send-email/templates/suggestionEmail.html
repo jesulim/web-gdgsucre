@@ -68,7 +68,11 @@
                     <td style="padding: 12px 16px; border-bottom: 1px solid #a1a1a1">
                       <p style="margin: 0; font-size: 12px; color: #a1a1a1; text-transform: uppercase">Remitente</p>
                       <p style="margin: 4px 0 0 0; font-size: 15px; color: #ffffff">
-                        <%= it.userName %> (<a href="mailto:<%= it.userEmail %>" style="color: #4285f4; text-decoration: underline"><%= it.userEmail %></a>)
+                        <% if (it.userEmail) { %>
+                          <%= it.userName %> (<a href="mailto:<%= it.userEmail %>" style="color: #4285f4; text-decoration: underline"><%= it.userEmail %></a>)
+                        <% } else { %>
+                          <%= it.userName %>
+                        <% } %>
                       </p>
                     </td>
                   </tr>
@@ -84,6 +88,7 @@
               </td>
             </tr>
 
+            <% if (it.userEmail) { %>
             <tr>
               <td style="padding: 0 24px 32px 24px">
                 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top: 1px solid #a1a1a1">
@@ -109,6 +114,7 @@
                 </table>
               </td>
             </tr>
+            <% } %>
 
           </table>
         </td>

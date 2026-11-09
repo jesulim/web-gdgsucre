@@ -128,10 +128,11 @@ async function formatCalendarEvent(data: Record<string, unknown>) {
 }
 
 async function getSuggestionData(data: Record<string, unknown>) {
-  const customSubject =
-    typeof data.subject === "string" && data.subject.trim()
-      ? `[Sugerencia] ${data.subject.trim()}`
-      : "Nueva sugerencia de la comunidad 💡"
+  const sanitizedSubject =
+    typeof data.subject === "string" ? data.subject.replace(/[\r\n]+/g, " ").trim() : ""
+  const customSubject = sanitizedSubject
+    ? `[Sugerencia] ${sanitizedSubject}`
+    : "Nueva sugerencia de la comunidad 💡"
 
   return {
     to: "gdgsucre@gmail.com",

@@ -21,21 +21,26 @@ export default function SuggestionsForm({ user }: SuggestionsFormProps) {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const userName = user?.name || user?.email || "Usuario"
-  const initials = user?.name
-    ? user.name
-        .split(" ")
-        .filter(Boolean)
-        .slice(0, 2)
-        .map(part => part[0].toUpperCase())
-        .join("")
-    : (user?.email?.[0]?.toUpperCase() ?? "U")
+  const initials =
+    user?.name
+      ?.split(" ")
+      .filter(Boolean)
+      .slice(0, 2)
+      .map(part => part[0]?.toUpperCase())
+      .join("") ||
+    (user?.email?.[0]?.toUpperCase() ?? "U")
 
   const trimmedSubject = subject.trim()
   const trimmedMessage = message.trim()
-  const isFormValid = trimmedSubject.length >= 3 && trimmedMessage.length >= 10
+  const isFormValid =
+    trimmedSubject.length >= 3 &&
+    trimmedSubject.length <= 120 &&
+    trimmedMessage.length >= 10 &&
+    trimmedMessage.length <= 1000
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    if (isSubmitting) return
     setErrorMessage(null)
 
     if (trimmedSubject.length < 3) {
@@ -93,7 +98,11 @@ export default function SuggestionsForm({ user }: SuggestionsFormProps) {
 
   if (isSuccess) {
     return (
-      <div className="flex flex-col items-center justify-center p-8 text-center border-2 border-off-white bg-off-white/10 dark:bg-black/30 rounded-sm gap-4 transition-all">
+      <div
+        role="status"
+        aria-live="polite"
+        className="flex flex-col items-center justify-center p-8 text-center border-2 border-off-white bg-off-white/10 dark:bg-black/30 rounded-sm gap-4 transition-all"
+      >
         <div className="size-14 rounded-full bg-green-500/20 text-green-500 flex items-center justify-center">
           <CheckCircle2 className="size-7" />
         </div>
@@ -159,6 +168,9 @@ export default function SuggestionsForm({ user }: SuggestionsFormProps) {
         {subject.length > 0 && trimmedSubject.length < 3 && (
           <span className="text-xs text-amber-500">Mínimo 3 caracteres</span>
         )}
+        {subject.length > 120 && (
+          <span className="text-xs text-red-500">Máximo 120 caracteres</span>
+        )}
       </div>
 
       <div className="flex flex-col gap-1.5">
@@ -188,10 +200,16 @@ export default function SuggestionsForm({ user }: SuggestionsFormProps) {
         {message.length > 0 && trimmedMessage.length < 10 && (
           <span className="text-xs text-amber-500">Mínimo 10 caracteres</span>
         )}
+        {message.length > 1000 && (
+          <span className="text-xs text-red-500">Máximo 1000 caracteres</span>
+        )}
       </div>
 
       {errorMessage && (
-        <div className="p-3 text-sm text-red-500 bg-red-500/10 border border-red-500/30 rounded-sm">
+        <div
+          role="alert"
+          className="p-3 text-sm text-red-500 bg-red-500/10 border border-red-500/30 rounded-sm"
+        >
           {errorMessage}
         </div>
       )}
