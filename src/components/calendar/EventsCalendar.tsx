@@ -236,7 +236,7 @@ function DayCell({
         flex flex-col items-center border border-white
         transition-colors cursor-pointer w-full p-1
         sm:min-h-16 min-h-12
-        ${isToday ? "bg-red-500" : isSelected ? "bg-white/30" : "hover:bg-white/10"}
+        ${isToday ? "bg-red-950" : isSelected ? "bg-red-900" : "hover:bg-white/10"}
         ${!inMonth ? "text-muted-foreground" : ""}
       `}
     >
@@ -253,7 +253,7 @@ function DayCell({
                 communityColorClass(event.community_id)
               )}
             >
-              <span className="hidden sm:inline mx-0.5">{event.label}</span>
+              <span className="font-google hidden sm:inline mx-0.5">{event.label}</span>
             </span>
           ))}
         </div>
@@ -371,9 +371,9 @@ function Calendar({
         })}
       </div>
 
-      <div className="font-google flex flex-wrap gap-x-5 gap-y-2 h-5">
+      <div className="font-google flex flex-wrap gap-x-5 gap-y-2 min-h-5">
         {communities?.map(community => (
-          <span key={community.label} className="flex items-center gap-2 text-white">
+          <span key={community.label} className="flex items-baseline gap-2 text-white">
             <span
               style={communityColorStyle(community.color)}
               className={clsx("size-3 shrink-0", communityColorClass(community.id))}
