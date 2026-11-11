@@ -1,4 +1,6 @@
 import type { APIRoute } from "astro"
+
+import { withAdmin } from "@/lib/auth"
 import {
   createCommunity,
   deleteCommunity,
@@ -65,7 +67,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   }
 }
 
-export const PUT: APIRoute = async ({ request, cookies }) => {
+export const PUT = withAdmin(async ({ request, auth }) => {
   try {
     const body = await request.json()
     const { id, name, short_name, website, contact_email, image, color, accepted } = body
@@ -77,7 +79,7 @@ export const PUT: APIRoute = async ({ request, cookies }) => {
       })
     }
 
-    const supabase = await createUserClient(cookies)
+    const supabase = auth.supabase
     const result = await updateCommunity(supabase, id, {
       name,
       short_name,
@@ -107,9 +109,9 @@ export const PUT: APIRoute = async ({ request, cookies }) => {
       status: 500,
     })
   }
-}
+})
 
-export const DELETE: APIRoute = async ({ url, cookies }) => {
+export const DELETE = withAdmin(async ({ url, auth }) => {
   try {
     const id = url.searchParams.get("id")
 
@@ -120,7 +122,7 @@ export const DELETE: APIRoute = async ({ url, cookies }) => {
       })
     }
 
-    const supabase = await createUserClient(cookies)
+    const supabase = auth.supabase
     const success = await deleteCommunity(supabase, Number(id))
 
     if (!success) {
@@ -142,4 +144,4 @@ export const DELETE: APIRoute = async ({ url, cookies }) => {
       status: 500,
     })
   }
-}
+})

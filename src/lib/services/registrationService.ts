@@ -1,4 +1,5 @@
 import { FunctionsHttpError, type SupabaseClient } from "@supabase/supabase-js"
+import { getEvent } from "@/lib/services/eventService"
 import { customAlphabetNanoid } from "@/lib/utils"
 
 async function uploadFile(
@@ -23,6 +24,23 @@ async function uploadFile(
   }
 
   return filePath
+}
+
+interface RegistrationProfile {
+  id: string
+  first_name: string | null
+  last_name: string | null
+  email: string | null
+  phone_number?: string | null
+}
+
+interface RegistrationByToken {
+  id: number
+  slug: string
+  first_name: string | null
+  last_name: string | null
+  package: string | null
+  [activity: string]: unknown
 }
 
 interface Registration {
@@ -85,6 +103,14 @@ export async function submitRegistration(
     throw new Error("No se pudo obtener el usuario")
   }
 
+  const event = await getEvent(supabase, String(event_slug))
+  if (!event || String(event.id) !== String(event_id)) {
+    throw new Error("Evento no encontrado")
+  }
+  if (!event.registration_open) {
+    throw new Error("Las inscripciones para este evento están cerradas")
+  }
+
   for (const [key, value] of Object.entries(fields)) {
     if (value instanceof File) {
       const filePath = await uploadFile(supabase, String(event_slug), key, value, user.id)
@@ -95,7 +121,7 @@ export async function submitRegistration(
   const { error: insertError } = await supabase.from("registrations").insert([
     {
       user_id: user.id,
-      event_id: event_id,
+      event_id: event.id,
       responses: fields,
     },
   ])
@@ -105,6 +131,40 @@ export async function submitRegistration(
   }
 
   return { success: true }
+}
+
+export async function getRegistrationEventId(supabase: SupabaseClient, registrationId: number) {
+  const { data } = await supabase
+    .from("registrations")
+    .select("event_id")
+    .eq("id", registrationId)
+    .maybeSingle()
+
+  return (data?.event_id as number | undefined) ?? null
+}
+
+export async function getRegistrationContact(supabase: SupabaseClient, registrationId: number) {
+  const { data, error } = await supabase
+    .from("registrations")
+    .select("id, events(name), profiles(email, first_name)")
+    .eq("id", registrationId)
+    .maybeSingle()
+    .overrideTypes<
+      {
+        id: number
+        events: { name: string } | null
+        profiles: { email: string | null; first_name: string | null } | null
+      },
+      { merge: false }
+    >()
+
+  if (error || !data) throw new Error("No se encontró el registro")
+
+  return {
+    email: data.profiles?.email ?? null,
+    name: data.profiles?.first_name ?? "",
+    eventName: data.events?.name ?? "",
+  }
 }
 
 export async function getRegistrationsByEvent(
@@ -124,6 +184,7 @@ export async function getRegistrationsByEvent(
     )
     .eq("events.slug", eventSlug)
     .order(orderBy, { ascending: false })
+    .overrideTypes<Array<{ profiles: RegistrationProfile }>>()
 
   const { data: organizers, error: organizersError } = await supabase
     .from("organizers")
@@ -184,7 +245,7 @@ export async function confirmRegistration(supabase: SupabaseClient, registration
   }
 
   console.log("Confirming registration", registrationId)
-  const { error: updateError } = await supabase
+  const { data: updated, error: updateError } = await supabase
     .from("registrations")
     .update({
       token,
@@ -192,9 +253,14 @@ export async function confirmRegistration(supabase: SupabaseClient, registration
       qr_url: qrData.publicUrl,
     })
     .eq("id", registrationId)
+    .select("id")
 
   if (updateError) {
     throw new Error(`Error actualizando el registro: ${updateError.message}`)
+  }
+
+  if (!updated?.length) {
+    throw new Error("No se pudo actualizar el registro")
   }
 
   return { success: true, token }
@@ -245,6 +311,7 @@ export async function getRandomRegistrations(
       "id, created_at, profiles(id, first_name, last_name, email, phone_number), status, responses, events!inner(slug)"
     )
     .eq("events.slug", eventSlug)
+    .overrideTypes<Array<{ profiles: RegistrationProfile }>>()
 
   if (error) {
     throw new Error(`Error obteniendo registros: ${error.message}`)
@@ -311,6 +378,7 @@ export async function getRegistrationByToken(
     .eq("token", token)
     .eq("slug", eventSlug)
     .maybeSingle()
+    .overrideTypes<RegistrationByToken, { merge: false }>()
 
   if (!registration || error) {
     return { error: "Registro no encontrado o no pertenece a este evento." }

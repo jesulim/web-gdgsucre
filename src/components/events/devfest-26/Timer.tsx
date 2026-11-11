@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "motion/react"
-import { memo, useEffect, useRef } from "react"
+import { Fragment, memo, useEffect, useRef } from "react"
 import { useTimer } from "@/hooks/useTimer"
 
 const zeroPad = (value: number): string => `${Math.max(0, value)}`.padStart(2, "0")
@@ -69,7 +69,7 @@ const glowClasses = {
 } as const
 
 const TimeUnit = memo<TimeUnitProps>(({ label, value, tone }) => (
-  <div key={value} className="relative flex shrink-0 flex-col items-center justify-center gap-2">
+  <div className="relative flex shrink-0 flex-col items-center justify-center gap-2">
     <div
       className={`relative flex size-14 items-center justify-center text-4xl font-semibold leading-none tracking-tight sm:size-24 sm:text-5xl md:size-28 md:text-7xl ${toneClasses[tone]}`}
     >
@@ -125,17 +125,12 @@ export const Timer = ({ initialTime, targetDate }: TimerProps) => {
       <div className="mx-auto max-w-md md:max-w-2xl">
         <div className="mt-8 grid w-full grid-cols-4 md:grid-cols-7 gap-2 md:gap-20">
           {timeUnits.map((unit, index) => (
-            <>
+            <Fragment key={unit.label}>
               <TimeUnit {...unit} />
               {index < timeUnits.length - 1 && (
-                <span
-                  key={unit.label}
-                  className="hidden md:block text-white text-8xl mt-3 text-center"
-                >
-                  /
-                </span>
+                <span className="hidden md:block text-white text-8xl mt-3 text-center">/</span>
               )}
-            </>
+            </Fragment>
           ))}
         </div>
         <div className="timer-spectrum max-w-xs md:max-w-md mx-auto mt-8 h-0.5 md:h-1 md:mt-12 rounded-full" />

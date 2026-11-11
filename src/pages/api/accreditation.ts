@@ -1,12 +1,15 @@
-import type { APIRoute } from "astro"
-
+import {
+  eventFromRegistrationId,
+  eventFromSlugParam,
+  registrationIdFromBody,
+  withStaffOrAdmin,
+} from "@/lib/auth"
 import {
   getRegistrationsWithActivities,
   updateRegistrationActivity,
 } from "@/lib/services/accreditationService"
-import { createUserClient } from "@/lib/supabase"
 
-export const GET: APIRoute = async ({ url, cookies }) => {
+export const GET = withStaffOrAdmin(eventFromSlugParam("slug"), async ({ url, auth }) => {
   const slug = url.searchParams.get("slug")
   const role = url.searchParams.get("role") || "Todos"
   const packageName = url.searchParams.get("package")
@@ -16,8 +19,12 @@ export const GET: APIRoute = async ({ url, cookies }) => {
   }
 
   try {
-    const supabase = await createUserClient(cookies)
-    const registrations = await getRegistrationsWithActivities(supabase, slug, role, packageName)
+    const registrations = await getRegistrationsWithActivities(
+      auth.supabase,
+      slug,
+      role,
+      packageName
+    )
 
     return new Response(JSON.stringify(registrations), {
       headers: { "Content-Type": "application/json" },
@@ -29,36 +36,43 @@ export const GET: APIRoute = async ({ url, cookies }) => {
       status: 500,
     })
   }
-}
+})
 
-export const POST: APIRoute = async ({ request, cookies }) => {
-  try {
-    const body = await request.json()
-    const { registrationId, activityId, activityName, value } = body
+export const POST = withStaffOrAdmin(
+  eventFromRegistrationId(registrationIdFromBody),
+  async ({ request, auth }) => {
+    try {
+      const body = await request.json()
+      const { registrationId, activityId, activityName, value } = body
 
-    if (!registrationId || !activityId || !activityName || typeof value !== "boolean") {
-      return new Response(JSON.stringify({ error: "Invalid request body" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      })
-    }
-
-    const supabase = await createUserClient(cookies)
-    const result = await updateRegistrationActivity(supabase, registrationId, activityId, value)
-
-    return new Response(JSON.stringify({ success: true, data: result }), {
-      headers: { "Content-Type": "application/json" },
-      status: 200,
-    })
-  } catch (error) {
-    return new Response(
-      JSON.stringify({
-        error: `Error updating activity: ${error instanceof Error ? error.message : error}`,
-      }),
-      {
-        headers: { "Content-Type": "application/json" },
-        status: 500,
+      if (!registrationId || !activityId || !activityName || typeof value !== "boolean") {
+        return new Response(JSON.stringify({ error: "Invalid request body" }), {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        })
       }
-    )
+
+      const result = await updateRegistrationActivity(
+        auth.supabase,
+        registrationId,
+        activityId,
+        value
+      )
+
+      return new Response(JSON.stringify({ success: true, data: result }), {
+        headers: { "Content-Type": "application/json" },
+        status: 200,
+      })
+    } catch (error) {
+      return new Response(
+        JSON.stringify({
+          error: `Error updating activity: ${error instanceof Error ? error.message : error}`,
+        }),
+        {
+          headers: { "Content-Type": "application/json" },
+          status: 500,
+        }
+      )
+    }
   }
-}
+)
