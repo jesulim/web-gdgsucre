@@ -1,0 +1,79 @@
+---
+import { hasRegistration } from "@/lib/services/registrationService"
+import { createUserClient } from "@/lib/supabase"
+
+const eventSlug = "devfest-26"
+let url = `/api/auth/signin?next=/registro/${eventSlug}`
+
+let registration = false
+const accessToken = Astro.cookies.get("sb-access-token")?.value
+
+if (accessToken) {
+  const supabase = await createUserClient(Astro.cookies)
+  const {
+    data: { claims },
+  } = await supabase.auth.getClaims(accessToken)
+
+  registration = await hasRegistration(supabase, claims?.sub, eventSlug)
+  url = registration ? `/registro/${eventSlug}/confirmado` : `/registro/${eventSlug}`
+}
+---
+
+<a
+  href={url}
+  class="rainbow-border rounded-full px-6 py-3 lg:px-8 lg:py-4 bg-white text-black font-medium text-xl"
+>
+  {registration ? "Ver Credencial" : "Regístrate ahora"}
+</a>
+
+<style>
+  @property --rainbow-angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+  }
+  .rainbow-border {
+    position: relative;
+  }
+
+  .rainbow-border::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    padding: 4px;
+    border-radius: inherit;
+    pointer-events: none;
+    background: conic-gradient(
+      from var(--rainbow-angle),
+      #4285f4,
+      #ea4335,
+      #fbbc04,
+      #34a853,
+      #4285f4
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box exclude,
+      linear-gradient(#000 0 0);
+    animation: rainbow-spin 7s linear infinite;
+  }
+
+  .rainbow-border:hover::before {
+    animation-duration: 1s;
+  }
+
+  @keyframes rainbow-spin {
+    to {
+      --rainbow-angle: 360deg;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rainbow-border::before {
+      animation: none;
+    }
+  }
+</style>

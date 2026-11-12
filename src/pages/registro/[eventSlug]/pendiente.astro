@@ -1,6 +1,7 @@
 ---
 import { ConfettiEffect } from "@/components/ConfettiEffect"
-import IoExtendedHeader from "@/components/events/io-extended-26/Header.astro"
+import Header from "@/components/events/devfest-26/Header.astro"
+import Footer from "@/components/landing/Footer.astro"
 import BaseLayout from "@/layout/BaseLayout.astro"
 
 import { getProfile } from "@/lib/services/profileService"
@@ -18,21 +19,28 @@ if (registration?.status !== "pending") return Astro.redirect("/")
 ---
 
 <BaseLayout theme="dark">
-  <IoExtendedHeader />
+  <Header />
+
   <ConfettiEffect client:load />
-  <main class="bg-io-bg flex min-h-screen pt-16 md:pt-24 text-io-text">
+  <main class="flex flex-col gap-4 flex-1 min-h-screen pt-16 md:pt-24">
     <div class="mx-auto px-4">
       <h1 class="text-xl mb-4">¡Hola, {profile?.first_name}!</h1>
       <p>
         Estamos procesando tu registro, Revisa tu correo donde te informaremos cuando haya sido
         validado.
         <br />
-        Mientras esperas, te invitamos a nuestra
+      </p>
+      <p>
+        Mientras esperas, te invitamos a nuestra{" "}
         <a
           href="https://chat.whatsapp.com/EHtkjWuuhPh8cPDY8U9A7O"
-          class="text-green-500 font-medium underline">Comunidad en WhatsApp</a
+          class="text-green-500 font-medium underline"
         >
+          Comunidad en WhatsApp
+        </a>
       </p>
     </div>
   </main>
+
+  <Footer />
 </BaseLayout>
