@@ -5,6 +5,8 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.111.0"
 import { Eta } from "jsr:@bgub/eta"
 import { serve } from "jsr:@std/http@0.224.0/server"
 
+import { getCalendarInviteAttachment } from "./calendarInvite.ts"
+
 const ALLOWED_ORIGINS = [
   "https://gdgsucre.com",
   "https://web-gdgsucre.vercel.app",
@@ -221,7 +223,10 @@ serve(async req => {
     }
 
     const { to, subject, data } = await config.formatEmail(body.data ?? {})
-    const file = EVENT_TEMPLATES[String(body.data.eventSlug)]?.[body.type] ?? config.file
+    const eventSlug = String(body.data.eventSlug)
+    const file = EVENT_TEMPLATES[eventSlug]?.[body.type] ?? config.file
+    // Calendar invites are only attached to payment confirmations
+    const invite = body.type === "payment" ? getCalendarInviteAttachment(eventSlug) : undefined
     const template = await Deno.readTextFile(new URL(`./templates/${file}`, import.meta.url))
     const html = eta.renderString(template, data)
 
@@ -247,6 +252,7 @@ serve(async req => {
       to,
       subject,
       html,
+      attachments: invite ? [invite] : [],
     })
 
     await client.close()
