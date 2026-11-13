@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="supported-color-schemes" content="dark" />
+    <title>¡Pago confirmado! - <%= it.eventName %></title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body
+    style="
+      margin: 0;
+      padding: 0;
+      background-color: #0b0b0e;
+      color: #ffffff;
+      font-family: 'Google Sans Flex', 'Google Sans', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    "
+  >
+    <div style="display: none; max-height: 0; overflow: hidden; opacity: 0">
+      Tu pago fue confirmado. Te esperamos en <%= it.eventName %>.
+    </div>
+
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #0b0b0e">
+      <tr>
+        <td align="center" style="padding: 24px 12px">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width: 600px; background-color: #0b0b0e; background: radial-gradient(circle 280px at 0% 0%, rgba(66, 133, 244, 0.45), rgba(66, 133, 244, 0)), radial-gradient(circle 260px at 100% 4%, rgba(234, 67, 53, 0.38), rgba(234, 67, 53, 0)), radial-gradient(circle 280px at 0% 55%, rgba(251, 188, 4, 0.22), rgba(251, 188, 4, 0)), radial-gradient(circle 300px at 100% 100%, rgba(52, 168, 83, 0.35), rgba(52, 168, 83, 0)), #0b0b0e; border-radius: 24px">
+            <tr><td style="padding: 0 24px">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+            <!-- Header -->
+            <tr>
+              <td align="center" style="padding: 40px 0 8px 0">
+                <a href="https://gdgsucre.com/">
+                  <img
+                    src="https://gdgsucre.com/events/devfest-26/email-logo.png"
+                    width="320"
+                    alt="DevFest Sucre 2026"
+                    style="display: block; width: 320px; max-width: 100%; height: auto; border: 0"
+                  />
+                </a>
+                <p style="margin: 20px 0 0 0; font-size: 22px; line-height: 1.35; font-weight: 500; color: #ffffff; text-align: center">
+                  Desarrolla y construye<br />en la era de los agentes
+                </p>
+              </td>
+            </tr>
+
+            <!-- Greeting -->
+            <tr>
+              <td style="padding: 32px 8px 24px 8px">
+                <h1 style="margin: 0 0 8px 0; font-size: 28px; line-height: 1.25; font-weight: 700; color: #ffffff">
+                  ¡Estás dentro, <%= it.userName %>!
+                </h1>
+                <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.5; color: #bdc1c6">
+                  Te esperamos en el <strong style="color: #ffffff"><%= it.eventName %></strong>.
+                </p>
+                <span
+                  style="
+                    display: inline-block;
+                    padding: 8px 16px;
+                    border: 1px solid #34a853;
+                    border-radius: 999px;
+                    background-color: #10261a;
+                    color: #81c995;
+                    font-size: 14px;
+                    font-weight: 500;
+                  "
+                >
+                  ✓ Pago confirmado
+                </span>
+              </td>
+            </tr>
+
+            <!-- Event card -->
+            <tr>
+              <td style="padding: 0 0 32px 0">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #16161b; background-color: rgba(255, 255, 255, 0.05); border: 1px solid #2a2b31; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 16px">
+                  <tr>
+                    <td style="padding: 20px 24px; border-bottom: 1px solid #2a2b31; border-bottom: 1px solid rgba(255, 255, 255, 0.12)">
+                      <p style="margin: 0; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: #9aa0a6">
+                        <span style="color: #4285f4">●</span>&nbsp; Fecha
+                      </p>
+                      <p style="margin: 4px 0 0 0; font-size: 16px; color: #ffffff">Sábado 28 de noviembre · 08:00</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 20px 24px; border-bottom: 1px solid #2a2b31; border-bottom: 1px solid rgba(255, 255, 255, 0.12)">
+                      <p style="margin: 0; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: #9aa0a6">
+                        <span style="color: #ea4335">●</span>&nbsp; Lugar
+                      </p>
+                      <p style="margin: 4px 0 0 0; font-size: 16px; color: #ffffff">
+                        Salón Pukara · Centro Cultural La Sombrerería
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 24px">
+                      <a
+                        href="https://gdgsucre.com/registro/devfest-26/confirmado"
+                        style="
+                          display: inline-block;
+                          padding: 14px 28px;
+                          border-radius: 999px;
+                          background-color: #ffffff;
+                          color: #0b0b0e;
+                          font-size: 16px;
+                          font-weight: 700;
+                          text-decoration: none;
+                        "
+                      >
+                        Ver mi credencial
+                      </a>
+                      <p style="margin: 12px 0 0 0; font-size: 13px; color: #9aa0a6">
+                        Muestra el QR al ingresar.
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- Instructions -->
+            <tr>
+              <td style="padding: 0 8px 32px 8px">
+                <p style="margin: 0 0 16px 0; font-size: 18px; font-weight: 700; color: #ffffff">Para el día del evento</p>
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td width="28" style="padding: 0 0 12px 0; vertical-align: top; color: #4285f4; font-size: 16px">●</td>
+                    <td style="padding: 0 0 12px 0; font-size: 15px; line-height: 1.5; color: #bdc1c6">
+                      <strong style="color: #ffffff">Llega 15 minutos antes</strong>.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td width="28" style="vertical-align: top; color: #ea4335; font-size: 16px">●</td>
+                    <td style="font-size: 15px; line-height: 1.5; color: #bdc1c6">
+                      <strong style="color: #ffffff">Lleva tu carnet de identidad</strong>.
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- WhatsApp -->
+            <tr>
+              <td style="padding: 0 8px 40px 8px">
+                <p style="margin: 0 0 16px 0; font-size: 15px; line-height: 1.6; color: #bdc1c6">
+                  Entérate de las novedades en nuestra comunidad.
+                </p>
+                <a
+                  href="https://chat.whatsapp.com/EHtkjWuuhPh8cPDY8U9A7O"
+                  style="
+                    display: inline-block;
+                    padding: 13px 23px;
+                    border: 1px solid #5f6368;
+                    border-radius: 999px;
+                    color: #ffffff;
+                    font-size: 16px;
+                    font-weight: 500;
+                    text-decoration: none;
+                  "
+                >
+                  Unirme al grupo de WhatsApp
+                </a>
+              </td>
+            </tr>
+
+            <!-- Footer -->
+            <tr>
+              <td style="padding: 24px 8px; border-top: 1px solid #2a2b31; border-top: 1px solid rgba(255, 255, 255, 0.12); text-align: center">
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin: 0 auto 12px auto">
+                  <tr>
+                    <td style="width: 24px; height: 4px; background-color: #4285f4; font-size: 0; line-height: 0">&nbsp;</td>
+                    <td style="width: 24px; height: 4px; background-color: #ea4335; font-size: 0; line-height: 0">&nbsp;</td>
+                    <td style="width: 24px; height: 4px; background-color: #fbbc04; font-size: 0; line-height: 0">&nbsp;</td>
+                    <td style="width: 24px; height: 4px; background-color: #34a853; font-size: 0; line-height: 0">&nbsp;</td>
+                  </tr>
+                </table>
+                <p style="margin: 0; font-size: 13px; color: #9aa0a6">
+                  Google Developer Group Sucre ·
+                  <a href="https://gdgsucre.com/" style="color: #ffffff; text-decoration: none">gdgsucre.com</a>
+                </p>
+              </td>
+            </tr>
+          </table>
+            </td></tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

@@ -33,6 +33,7 @@ export const POST = withStaffOrAdmin(
               userEmail: contact.email,
               userName: contact.name,
               eventName: contact.eventName,
+              eventSlug: contact.eventSlug,
             },
           },
         })
