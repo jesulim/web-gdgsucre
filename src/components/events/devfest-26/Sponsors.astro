@@ -1,0 +1,70 @@
+---
+import { Image } from "astro:assets"
+import Vector from "@/assets/events/devfest-26/Vector-10.svg"
+import Numeral from "@/assets/events/devfest-26/Vector-25.svg"
+import TenMinds from "@/assets/sponsors/10minds.webp"
+import Napp from "@/assets/sponsors/napp-dark.webp"
+
+const sponsors = [
+  { name: "Fundación NAPP", image: Napp, className: "max-w-56" },
+  { name: "10 Minds", image: TenMinds, className: "max-w-52" },
+]
+---
+
+<section
+  id="sponsors"
+  class="relative isolate overflow-hidden bg-df-black px-4 py-20 text-white md:py-28"
+>
+  <div
+    class="pointer-events-none absolute inset-0 overflow-hidden"
+    aria-hidden="true"
+  >
+    <div class="absolute -left-20 top-16 size-40 rounded-full bg-blue-500/25 blur-[70px] md:size-80"></div>
+    <div class="absolute -right-20 bottom-20 size-48 rounded-full bg-green-500/20 blur-[75px] md:size-96"></div>
+
+    <Numeral class="absolute -left-20 top-0 hidden size-72 opacity-70 lg:block" />
+    <Vector class="absolute bottom-5 -right-50 hidden size-120 opacity-60 lg:block" />
+  </div>
+
+  <div class="relative z-10 mx-auto max-w-5xl">
+    <div class="mb-10 flex items-center justify-center gap-4 md:mb-14">
+      <h2 class="text-center text-3xl font-bold tracking-tight md:text-5xl">
+        Sponsors
+      </h2>
+    </div>
+
+    <div class="sponsors-border relative mx-auto max-w-3xl rounded-4xl p-px lg:shadow-[0_0_70px_rgba(66,133,244,0.12)]">
+      <div class="grid grid-cols-2 lg:grid-cols-2 items-center gap-3 rounded-[calc(2rem-1px)] px-3 py-6 sm:min-h-64 sm:gap-10 sm:px-6 sm:py-10 md:px-16 md:py-14">
+        {sponsors.map((sponsor) => (
+          <div class="flex min-w-0 min-h-24 items-center justify-center rounded-2xl px-3 py-4 sm:min-h-36 sm:px-6 sm:py-5">
+            <Image
+              src={sponsor.image}
+              alt={`Logo de ${sponsor.name}`}
+              class:list={["h-auto w-full object-contain", sponsor.className]}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .sponsors-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(110deg, #4285f4, #ea4335 42%, #fbbc04 68%, #34a853);
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+  }
+</style>
