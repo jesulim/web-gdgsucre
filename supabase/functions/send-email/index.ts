@@ -149,6 +149,13 @@ const EMAIL_TYPES: Record<EmailType, TemplateConfig> = {
   },
 }
 
+const EVENT_TEMPLATES: Record<string, Partial<Record<EmailType, string>>> = {
+  "devfest-26": {
+    registration: "registrationEmailDevfest26.html",
+    payment: "paymentConfirmationEmailDevfest26.html",
+  },
+}
+
 const eta = new Eta({ autoEscape: true })
 
 const MAX_ENCODED_WORD_BYTES = 45
@@ -214,7 +221,8 @@ serve(async req => {
     }
 
     const { to, subject, data } = await config.formatEmail(body.data ?? {})
-    const template = await Deno.readTextFile(new URL(`./templates/${config.file}`, import.meta.url))
+    const file = EVENT_TEMPLATES[String(body.data.eventSlug)]?.[body.type] ?? config.file
+    const template = await Deno.readTextFile(new URL(`./templates/${file}`, import.meta.url))
     const html = eta.renderString(template, data)
 
     const emailHost = Deno.env.get("EMAIL_HOST")

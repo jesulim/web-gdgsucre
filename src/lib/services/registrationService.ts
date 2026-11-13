@@ -146,13 +146,13 @@ export async function getRegistrationEventId(supabase: SupabaseClient, registrat
 export async function getRegistrationContact(supabase: SupabaseClient, registrationId: number) {
   const { data, error } = await supabase
     .from("registrations")
-    .select("id, events(name), profiles(email, first_name)")
+    .select("id, events(name, slug), profiles(email, first_name)")
     .eq("id", registrationId)
     .maybeSingle()
     .overrideTypes<
       {
         id: number
-        events: { name: string } | null
+        events: { name: string; slug: string } | null
         profiles: { email: string | null; first_name: string | null } | null
       },
       { merge: false }
@@ -164,6 +164,7 @@ export async function getRegistrationContact(supabase: SupabaseClient, registrat
     email: data.profiles?.email ?? null,
     name: data.profiles?.first_name ?? "",
     eventName: data.events?.name ?? "",
+    eventSlug: data.events?.slug ?? "",
   }
 }
 
