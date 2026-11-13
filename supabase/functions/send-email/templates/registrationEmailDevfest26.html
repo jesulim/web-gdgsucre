@@ -3,8 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="color-scheme" content="dark" />
-    <meta name="supported-color-schemes" content="dark" />
+    <!-- Gmail (iOS/Android) only honors "light only": it stops its dark mode from inverting this design -->
+    <meta name="color-scheme" content="light only" />
+    <meta name="supported-color-schemes" content="light only" />
+    <style>
+      :root {
+        color-scheme: light only;
+      }
+    </style>
     <title>¡Registro recibido! - <%= it.eventName %></title>
     <link
       href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;700&display=swap"
