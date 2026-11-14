@@ -3,6 +3,12 @@ import Dino from "@/assets/events/devfest-26/dino2.svg"
 import GDGSucre from "@/assets/logos/GDGSucreLogo.svg"
 import Avatar from "@/components/Avatar.astro"
 
+interface Props {
+  showNav?: boolean
+}
+
+const { showNav = true } = Astro.props
+
 const navLinks = [
   { name: "DevFest 2026", href: "#about" },
   { name: "Sponsors", href: "#sponsors" },
@@ -24,29 +30,33 @@ const accessToken = Astro.cookies.get("sb-access-token")?.value
     <Dino class="ml-1 hidden h-13 opacity-90 lg:block" />
   </a>
 
-  <nav
-    id="mobile-menu"
-    class="hidden absolute w-full top-full left-0 md:static md:flex md:items-center md:w-fit"
-  >
-    <ul class="flex flex-col m-2 p-4 gap-4 font-light border border-white/40 rounded-xl md:border-0 md:p-0 md:flex-row md:h-full md:items-center">
-      {navLinks.map(link => (
-        <li>
-          <a
-            href={link.href}
-            class="flex items-center gap-4 hover:underline font-medium hover:text-blue-500 transition-colors duration-200"
-          >
-            {link.name}
-          </a>
-        </li>
-      ))}
-      <a
-        href="/eventos/"
-        class="w-fit border-2 border-white/20 hover:border-white/40 hover:bg-white/10 font-medium text-sm lg:text-base px-4 py-2 rounded-full transition-colors duration-200"
+  {
+    showNav && (
+      <nav
+        id="mobile-menu"
+        class="hidden absolute w-full top-full left-0 md:static md:flex md:items-center md:w-fit"
       >
-        Eventos Pasados
-      </a>
-    </ul>
-  </nav>
+        <ul class="flex flex-col m-2 p-4 gap-4 font-light border border-white/40 rounded-xl md:border-0 md:p-0 md:flex-row md:h-full md:items-center">
+          {navLinks.map(link => (
+            <li>
+              <a
+                href={link.href}
+                class="flex items-center gap-4 hover:underline font-medium hover:text-blue-500 transition-colors duration-200"
+              >
+                {link.name}
+              </a>
+            </li>
+          ))}
+          <a
+            href="/eventos/"
+            class="w-fit border-2 border-white/20 hover:border-white/40 hover:bg-white/10 font-medium text-sm lg:text-base px-4 py-2 rounded-full transition-colors duration-200"
+          >
+            Eventos Pasados
+          </a>
+        </ul>
+      </nav>
+    )
+  }
 
   <div class="ml-4">
     {accessToken ? (
@@ -61,24 +71,28 @@ const accessToken = Astro.cookies.get("sb-access-token")?.value
     )}
   </div>
 
-  <div class="flex items-center gap-3 pl-4">
-    <button id="menu-toggle" type="button" class="rounded md:hidden" aria-label="Abrir menú">
-      <svg
-        role="img"
-        aria-labelledby="menu-toggle"
-        class="size-6 stroke-black dark:stroke-white"
-        fill="none"
-        viewBox="0 0 24 24"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M4 6h16M4 12h16M4 18h16"
-        ></path>
-      </svg>
-    </button>
-  </div>
+  {
+    showNav && (
+      <div class="flex items-center gap-3 pl-4">
+        <button id="menu-toggle" type="button" class="rounded md:hidden" aria-label="Abrir menú">
+          <svg
+            role="img"
+            aria-labelledby="menu-toggle"
+            class="size-6 stroke-black dark:stroke-white"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    )
+  }
 </header>
 
 <div id="menu-overlay" class="fixed h-0 inset-0 z-40 bg-df-black/70 transition-all"></div>

@@ -1,5 +1,5 @@
 ---
-import IoExtendedHeader from "@/components/events/io-extended-26/Header.astro"
+import Header from "@/components/events/devfest-26/Header.astro"
 import { RegisterForm } from "@/components/registration/RegisterForm"
 import BaseLayout from "@/layout/BaseLayout.astro"
 
@@ -30,11 +30,16 @@ if (registration?.status === "confirmed") {
   return Astro.redirect(`/registro/${eventSlug}/confirmado`)
 }
 
-const formFields = await getFormFieldsByEvent(supabase, event?.id)
+const rawFormFields = await getFormFieldsByEvent(supabase, event?.id)
+const formFields = rawFormFields.map(field =>
+  eventSlug === "devfest-26" && field.name === "package"
+    ? { ...field, image_url: "/events/devfest-26/packages.webp" }
+    : field
+)
 ---
 
 <BaseLayout theme="dark">
-  <IoExtendedHeader />
+  <Header showNav={false} />
   <main class="bg-io-bg flex min-h-screen pt-[64px] md:pt-[96px] text-io-text">
     <div class="mx-auto px-4 pb-16">
       <h1 class="text-xl mb-4 font-medium">Regístrate al {event.name}</h1>
