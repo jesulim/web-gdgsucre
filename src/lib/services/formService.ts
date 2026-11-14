@@ -14,8 +14,12 @@ export interface EventFormFieldInput {
   type: string
   required: boolean
   options?: string[] | null
+  exempt_option?: string | null
   image_url?: string | null
 }
+
+const FIELD_COLUMNS =
+  "id, event_id, order, name, label, type, required, options, exempt_option, image_url"
 
 export async function getFormFieldsByEventAdmin(
   supabase: SupabaseClient,
@@ -23,7 +27,7 @@ export async function getFormFieldsByEventAdmin(
 ): Promise<EventFormFieldAdmin[]> {
   const { data, error } = await supabase
     .from("event_form_fields")
-    .select("id, event_id, order, name, label, type, required, options, image_url")
+    .select(FIELD_COLUMNS)
     .eq("event_id", eventId)
     .order("order")
 
@@ -61,9 +65,10 @@ export async function createFormField(
       type: field.type,
       required: field.required,
       options: field.type === "select" ? (field.options ?? []) : null,
+      exempt_option: field.type === "select" ? field.exempt_option || null : null,
       image_url: field.image_url || null,
     })
-    .select("id, event_id, order, name, label, type, required, options, image_url")
+    .select(FIELD_COLUMNS)
     .single()
 
   if (error) throw error
@@ -82,6 +87,7 @@ export async function updateFormField(
     type: field.type,
     required: field.required,
     options: field.type === "select" ? (field.options ?? []) : null,
+    exempt_option: field.type === "select" ? field.exempt_option || null : null,
     image_url: field.image_url || null,
   }
 
@@ -93,7 +99,7 @@ export async function updateFormField(
     .from("event_form_fields")
     .update(payload)
     .eq("id", id)
-    .select("id, event_id, order, name, label, type, required, options, image_url")
+    .select(FIELD_COLUMNS)
     .single()
 
   if (error) throw error
@@ -113,7 +119,7 @@ export async function getFormFieldsByEvent(
 ): Promise<FormFieldSchema[]> {
   const { data, error } = await supabase
     .from("event_form_fields")
-    .select("id, name, label, type, required, image_url, options")
+    .select("id, name, label, type, required, image_url, options, exempt_option")
     .eq("event_id", eventId)
     .order("order")
 

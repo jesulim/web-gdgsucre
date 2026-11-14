@@ -58,6 +58,7 @@ export function FormFieldsManager({ eventId }: FormFieldsManagerProps) {
       required: !field.required,
       order: field.order,
       options: field.options,
+      exempt_option: field.exempt_option,
       image_url: field.image_url,
     })
   }

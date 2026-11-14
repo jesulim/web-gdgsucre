@@ -11,6 +11,7 @@ export interface EventFormField {
   type: "text" | "select" | "file"
   required: boolean
   options: string[] | null
+  exempt_option: string | null
   image_url: string | null
 }
 
@@ -21,6 +22,7 @@ export interface EventFormFieldInput {
   type: "text" | "select" | "file"
   required: boolean
   options?: string[] | null
+  exempt_option?: string | null
   image_url?: string | null
 }
 

@@ -43,6 +43,7 @@ function validateFieldInput(body: Record<string, unknown>): {
   type: string
   required: boolean
   options: string[] | null
+  exempt_option: string | null
   image_url: string | null
 } | null {
   const { event_id, name, label, type, required } = body
@@ -60,6 +61,8 @@ function validateFieldInput(body: Record<string, unknown>): {
   const order = body.order === undefined || body.order === null ? null : Number(body.order)
   const imageUrl = typeof body.image_url === "string" ? body.image_url : null
   const options = parseOptions(body.options)
+  const exemptOption =
+    typeof body.exempt_option === "string" && body.exempt_option.trim() ? body.exempt_option : null
   const eventId =
     event_id === undefined || event_id === null
       ? null
@@ -67,7 +70,17 @@ function validateFieldInput(body: Record<string, unknown>): {
         ? Number(event_id)
         : null
 
-  return { event_id: eventId, order, name, label, type, required, options, image_url: imageUrl }
+  return {
+    event_id: eventId,
+    order,
+    name,
+    label,
+    type,
+    required,
+    options,
+    exempt_option: exemptOption,
+    image_url: imageUrl,
+  }
 }
 
 export const GET: APIRoute = async ({ url, cookies }) => {
@@ -108,6 +121,7 @@ export const POST = withAdmin(async ({ request, auth }) => {
       type: input.type,
       required: input.required,
       options: input.options,
+      exempt_option: input.exempt_option,
       image_url: input.image_url,
     })
 
@@ -143,6 +157,7 @@ export const PUT = withAdmin(async ({ request, auth }) => {
       type: input.type,
       required: input.required,
       options: input.options,
+      exempt_option: input.exempt_option,
       image_url: input.image_url,
     })
 

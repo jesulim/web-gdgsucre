@@ -88,6 +88,7 @@ async function syncPackageField(eventId: number, packageOptions: string[]) {
     type: "select" as const,
     required: true,
     options: packageOptions,
+    exempt_option: existing?.exempt_option ?? null,
   }
 
   const response = existing

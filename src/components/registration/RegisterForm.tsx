@@ -16,7 +16,11 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 
-import { buildZodSchemaFromFields, type FormFieldSchema } from "@/lib/validators/formFields"
+import {
+  buildZodSchemaFromFields,
+  type FormFieldSchema,
+  isFieldRequired,
+} from "@/lib/validators/formFields"
 
 import { FormFileInput } from "./FormFileInput"
 import { FormSelect } from "./FormSelect"
@@ -56,6 +60,8 @@ export function RegisterForm({ formFields, profile, event }: RegisterFormProps) 
     defaultValues,
   })
 
+  const watchedValues = form.watch()
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true)
 
@@ -65,6 +71,7 @@ export function RegisterForm({ formFields, profile, event }: RegisterFormProps) 
     formData.append("event_name", event.name)
 
     for (const [key, value] of Object.entries(values)) {
+      if (value === undefined) continue
       formData.append(key, value)
     }
 
@@ -103,7 +110,7 @@ export function RegisterForm({ formFields, profile, event }: RegisterFormProps) 
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  {formField.required ? (
+                  {isFieldRequired(formField, formFields, watchedValues) ? (
                     <>
                       {formField.label} <span className="text-destructive">*</span>
                     </>

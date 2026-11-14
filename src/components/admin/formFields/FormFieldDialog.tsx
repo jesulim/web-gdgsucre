@@ -17,6 +17,7 @@ import {
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -46,8 +47,11 @@ const formSchema = z.object({
   required: z.boolean(),
   order: z.string(),
   options: z.string(),
+  exempt_option: z.string(),
   image_url: z.string(),
 })
+
+const NO_EXEMPT_OPTION = "none"
 
 type FieldFormValues = z.infer<typeof formSchema>
 
@@ -77,11 +81,17 @@ export function FormFieldDialog({
       required: true,
       order: "",
       options: "",
+      exempt_option: NO_EXEMPT_OPTION,
       image_url: "",
     },
   })
 
   const selectedType = form.watch("type")
+  const optionList = form
+    .watch("options")
+    .split(",")
+    .map(option => option.trim())
+    .filter(Boolean)
 
   useEffect(() => {
     if (!open) return
@@ -93,6 +103,7 @@ export function FormFieldDialog({
       required: field?.required ?? true,
       order: field ? String(field.order) : "",
       options: field?.options?.join(", ") ?? "",
+      exempt_option: field?.exempt_option ?? NO_EXEMPT_OPTION,
       image_url: field?.image_url ?? "",
     })
   }, [open, field, form])
@@ -103,18 +114,24 @@ export function FormFieldDialog({
       parsedOrder = Number(values.order)
     }
 
+    const options =
+      values.type === "select"
+        ? values.options
+            .split(",")
+            .map(option => option.trim())
+            .filter(Boolean)
+        : null
+
     return {
       order: parsedOrder,
       name: values.name.trim(),
       label: values.label.trim(),
       type: values.type,
       required: values.required,
-      options:
-        values.type === "select"
-          ? values.options
-              .split(",")
-              .map(option => option.trim())
-              .filter(Boolean)
+      options,
+      exempt_option:
+        values.exempt_option !== NO_EXEMPT_OPTION && options?.includes(values.exempt_option)
+          ? values.exempt_option
           : null,
       image_url: values.image_url.trim() || null,
     }
@@ -231,6 +248,36 @@ export function FormFieldDialog({
                         onChange={field.onChange}
                       />
                     </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+            {selectedType === "select" && optionList.length > 0 && (
+              <FormField
+                control={form.control}
+                name="exempt_option"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Opción sin comprobante</FormLabel>
+                    <Select value={field.value || NO_EXEMPT_OPTION} onValueChange={field.onChange}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Opción sin comprobante" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value={NO_EXEMPT_OPTION}>Ninguna</SelectItem>
+                        {optionList.map(option => (
+                          <SelectItem key={option} value={option}>
+                            {option}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormDescription>
+                      Si el participante elige esta opción, los archivos del evento (comprobante)
+                      son opcionales.
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
