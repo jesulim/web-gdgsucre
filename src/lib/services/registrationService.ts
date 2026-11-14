@@ -1,6 +1,8 @@
 import { FunctionsHttpError, type SupabaseClient } from "@supabase/supabase-js"
 import { getEvent } from "@/lib/services/eventService"
+import { getFormFieldsByEvent } from "@/lib/services/formService"
 import { customAlphabetNanoid } from "@/lib/utils"
+import { areFilesOptional } from "@/lib/validators/formFields"
 
 async function uploadFile(
   supabase: SupabaseClient,
@@ -109,6 +111,23 @@ export async function submitRegistration(
   }
   if (!event.registration_open) {
     throw new Error("Las inscripciones para este evento están cerradas")
+  }
+
+  const formFields = await getFormFieldsByEvent(supabase, event.id)
+  const selectedValues = Object.fromEntries(
+    Object.entries(fields).map(([key, value]) => [key, typeof value === "string" ? value : ""])
+  )
+  const filesOptional = areFilesOptional(formFields, selectedValues)
+  const missingFiles = formFields.filter(
+    field =>
+      field.type === "file" &&
+      field.required &&
+      !filesOptional &&
+      !(fields[field.name] instanceof File)
+  )
+
+  if (missingFiles.length > 0) {
+    throw new Error(`Falta subir: ${missingFiles.map(field => field.label).join(", ")}`)
   }
 
   for (const [key, value] of Object.entries(fields)) {
