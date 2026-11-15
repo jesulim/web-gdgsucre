@@ -1,0 +1,621 @@
+/* Shared GDG language: Google Sans, code labels, ruled sections and flat Google colors. */
+.raffle {
+  --raffle-line: #dadce0;
+  --raffle-muted: #5f6368;
+  max-width: 1280px;
+  margin: auto;
+  padding: 0 32px;
+  color: var(--foreground);
+}
+.raffle button,
+.raffle select,
+.raffle input {
+  font: inherit;
+}
+.raffle button {
+  cursor: pointer;
+}
+.raffle button:disabled,
+.raffle select:disabled,
+.raffle input:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.raffle :is(button, a, input, select, summary):focus-visible {
+  outline: 3px solid #1a73e8;
+  outline-offset: 4px;
+}
+.raffle-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 20px;
+  padding: 42px 0 30px;
+}
+.raffle-eyebrow {
+  font-family: var(--font-monospace), monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--raffle-muted);
+}
+.raffle-heading h1 {
+  font-size: clamp(48px, 7vw, 80px);
+  font-weight: 500;
+  letter-spacing: -0.065em;
+  line-height: 1.1;
+  margin-top: 8px;
+}
+.raffle-period {
+  color: #4285f4;
+}
+.raffle-back {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 0;
+  font-size: 14px;
+}
+.raffle-back:hover {
+  text-decoration: underline;
+}
+.raffle-workspace {
+  display: grid;
+  grid-template-columns: 290px minmax(0, 1fr);
+  border: 1px solid var(--raffle-line);
+}
+.raffle-settings {
+  border-right: 1px solid var(--raffle-line);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+}
+.raffle-section-title {
+  font-family: var(--font-monospace), monospace;
+  font-size: 12px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: flex;
+  gap: 9px;
+  align-items: center;
+}
+.raffle-dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  background: #4285f4;
+}
+.raffle-field {
+  display: block;
+  margin-top: 26px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.raffle-field select {
+  display: block;
+  width: 100%;
+  margin-top: 9px;
+  padding: 12px 10px;
+  border: 1px solid var(--raffle-line);
+  border-radius: 3px;
+  background: var(--background);
+  font-size: 14px;
+  color: inherit;
+}
+.raffle-payment {
+  margin-top: 28px;
+  display: flex;
+  gap: 10px;
+  align-items: start;
+  font-size: 14px;
+  font-weight: 500;
+}
+.raffle-payment input {
+  accent-color: #1a73e8;
+  margin-top: 3px;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+.raffle-help {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--raffle-muted);
+  margin-top: 10px;
+}
+.raffle-details {
+  font-size: 12px;
+  color: var(--raffle-muted);
+  margin-top: 10px;
+  line-height: 1.6;
+}
+.raffle-details summary {
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.raffle-details p {
+  margin-top: 8px;
+}
+.raffle-settings-foot {
+  margin-top: auto;
+  padding-top: 40px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--raffle-muted);
+}
+.raffle-reset {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 8px 0;
+  color: inherit;
+}
+.raffle-reset:hover {
+  color: #1a73e8;
+}
+.raffle-main {
+  min-width: 0;
+}
+.raffle-stage-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 25px 30px;
+  border-bottom: 1px solid var(--raffle-line);
+}
+.raffle-live {
+  font-size: 11px;
+  color: var(--raffle-muted);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.raffle-live span {
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  background: #34a853;
+}
+.raffle-stage {
+  text-align: center;
+  min-height: 305px;
+  padding: 28px 24px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.raffle-shapes {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 25px;
+  height: 27px;
+}
+.raffle-shapes i {
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+.raffle-shapes i:nth-child(1) {
+  background: #4285f4;
+  border-radius: 50%;
+}
+.raffle-shapes i:nth-child(2) {
+  background: #ea4335;
+  width: 14px;
+  transform: rotate(25deg);
+}
+.raffle-shapes i:nth-child(3) {
+  background: #fbbc04;
+  border-radius: 24px 24px 0 0;
+}
+.raffle-shapes i:nth-child(4) {
+  background: #34a853;
+  width: 14px;
+  height: 14px;
+  transform: rotate(45deg);
+}
+.raffle-name {
+  font-size: clamp(30px, 4.5vw, 58px);
+  line-height: 1.1;
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  margin: 16px 0;
+  overflow-wrap: anywhere;
+  width: 100%;
+}
+.raffle-count {
+  font-size: clamp(70px, 9vw, 104px);
+  line-height: 1;
+  letter-spacing: -0.06em;
+  font-variant-numeric: tabular-nums;
+}
+.raffle-count-label {
+  display: block;
+  font-size: 15px;
+  letter-spacing: 0;
+  font-weight: 400;
+  margin-top: 8px;
+}
+.raffle-stage-hint {
+  color: var(--raffle-muted);
+  font-size: 13px;
+  margin-top: 4px;
+}
+.raffle-stage-winner {
+  background: #e6f4ea;
+  color: #174b2b;
+}
+.raffle-stage-winner .raffle-eyebrow,
+.raffle-stage-winner .raffle-stage-hint {
+  color: #246037;
+}
+.raffle-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 16px 24px 28px;
+}
+.raffle-primary {
+  min-height: 48px;
+  min-width: 240px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 28px;
+  background: #1a73e8;
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: 3px;
+  font-weight: 500;
+}
+.raffle-primary:hover:not(:disabled) {
+  background: #185abc;
+}
+.raffle-confirm {
+  background: #188038;
+  gap: 10px;
+}
+.raffle-confirm:hover:not(:disabled) {
+  background: #137333;
+}
+.raffle-secondary {
+  padding: 10px 16px;
+  border: 1px solid var(--raffle-line);
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  border-radius: 3px;
+}
+.raffle-text-button {
+  padding: 10px 8px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  font-size: 13px;
+}
+.raffle-tally {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  border-top: 1px solid var(--raffle-line);
+  padding: 17px 15px;
+  font-size: 12px;
+  color: var(--raffle-muted);
+}
+.raffle-tally > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.raffle-tally b {
+  color: var(--foreground);
+  font-weight: 500;
+}
+.raffle-dot-green,
+.raffle-dot-red {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+}
+.raffle-dot-green {
+  background: #34a853;
+}
+.raffle-dot-red {
+  background: #ea4335;
+}
+.raffle-records {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 310px;
+  margin-top: 40px;
+  border-top: 1px solid var(--raffle-line);
+}
+.raffle-roster {
+  padding: 24px 30px 24px 0;
+  min-width: 0;
+}
+.raffle-results {
+  border-left: 1px solid var(--raffle-line);
+  padding: 24px 0 24px 26px;
+}
+.raffle-list-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.raffle-records h2 {
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+}
+.raffle-records h2 span {
+  font-family: var(--font-monospace), monospace;
+  font-size: 12px;
+  vertical-align: middle;
+  margin-left: 8px;
+  color: var(--raffle-muted);
+}
+.raffle-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--raffle-line);
+  padding: 8px 0;
+  max-width: 100%;
+  color: var(--raffle-muted);
+}
+.raffle-search input {
+  outline: none;
+  min-width: 0;
+  width: 150px;
+  font-size: 13px;
+  background: transparent;
+  color: var(--foreground);
+}
+.raffle-table {
+  margin-top: 20px;
+}
+.raffle-table-head {
+  display: flex;
+  justify-content: space-between;
+  text-transform: uppercase;
+  font-family: var(--font-monospace), monospace;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--raffle-muted);
+  border-bottom: 1px solid var(--raffle-line);
+  padding-bottom: 10px;
+}
+.raffle-table ul {
+  max-height: 330px;
+  overflow: auto;
+}
+.raffle-table li {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: center;
+  border-bottom: 1px solid var(--raffle-line);
+  padding: 14px 0;
+  font-size: 14px;
+}
+.raffle-table li > span:last-child {
+  color: var(--raffle-muted);
+  font-size: 12px;
+  text-align: right;
+}
+.raffle-result-group {
+  margin-top: 25px;
+}
+.raffle-result-group h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.raffle-result-group h3 > span {
+  margin-left: auto;
+  color: var(--raffle-muted);
+  font-weight: 400;
+}
+.raffle-result-group li {
+  display: flex;
+  gap: 12px;
+  font-size: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--raffle-line);
+}
+.raffle-result-group li > span {
+  color: var(--raffle-muted);
+  font-family: var(--font-monospace), monospace;
+  font-size: 11px;
+  padding-top: 3px;
+}
+.raffle-empty {
+  padding: 18px 0;
+  color: var(--raffle-muted);
+  font-size: 13px;
+}
+.raffle-error {
+  padding: 14px 24px;
+  border-bottom: 1px solid #ea4335;
+  background: #fce8e6;
+  color: #a50e0e;
+  font-size: 13px;
+}
+.raffle-error button {
+  margin-left: 12px;
+  text-decoration: underline;
+}
+.raffle-footer {
+  border-top: 1px solid var(--raffle-line);
+  padding: 24px 0 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  color: var(--raffle-muted);
+  font-size: 11px;
+}
+.raffle-footer div {
+  display: flex;
+  height: 3px;
+  width: 56px;
+}
+.raffle-footer i {
+  flex: 1;
+  background: #4285f4;
+}
+.raffle-footer i:nth-child(2) {
+  background: #ea4335;
+}
+.raffle-footer i:nth-child(3) {
+  background: #fbbc04;
+}
+.raffle-footer i:nth-child(4) {
+  background: #34a853;
+}
+.dark .raffle {
+  --raffle-line: #3c4043;
+  --raffle-muted: #bdc1c6;
+}
+.dark .raffle-stage-winner {
+  background: #163a24;
+  color: #ceead6;
+}
+.dark .raffle-stage-winner .raffle-eyebrow,
+.dark .raffle-stage-winner .raffle-stage-hint {
+  color: #a8dab5;
+}
+@media (max-width: 800px) {
+  .raffle {
+    padding: 0 20px;
+  }
+  .raffle-heading {
+    padding: 30px 0 24px;
+  }
+  .raffle-workspace {
+    grid-template-columns: 240px minmax(0, 1fr);
+  }
+  .raffle-settings {
+    padding: 22px 18px;
+  }
+  .raffle-stage-top {
+    padding: 22px 20px;
+  }
+  .raffle-records {
+    grid-template-columns: minmax(0, 1fr) 250px;
+  }
+  .raffle-tally {
+    gap: 12px;
+  }
+  .raffle-live {
+    display: none;
+  }
+}
+@media (max-width: 600px) {
+  .raffle {
+    padding: 0 16px;
+  }
+  .raffle-heading {
+    align-items: center;
+  }
+  .raffle-heading h1 {
+    font-size: 52px;
+  }
+  .raffle-back {
+    font-size: 12px;
+    gap: 6px;
+  }
+  .raffle-workspace {
+    display: flex;
+    flex-direction: column;
+  }
+  .raffle-settings {
+    border-right: 0;
+    border-bottom: 1px solid var(--raffle-line);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 16px;
+    padding: 20px;
+  }
+  .raffle-settings .raffle-section-title,
+  .raffle-payment,
+  .raffle-settings > .raffle-help,
+  .raffle-details,
+  .raffle-settings-foot {
+    grid-column: 1 / -1;
+  }
+  .raffle-field {
+    margin-top: 18px;
+  }
+  .raffle-payment {
+    margin-top: 20px;
+  }
+  .raffle-settings-foot {
+    padding-top: 16px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  .raffle-settings-foot p {
+    font-size: 10px;
+    flex: 1;
+  }
+  .raffle-reset {
+    margin: 0;
+    white-space: nowrap;
+    font-size: 11px;
+  }
+  .raffle-stage {
+    min-height: 280px;
+    padding: 24px 16px 12px;
+  }
+  .raffle-stage .raffle-eyebrow {
+    font-size: 9px;
+  }
+  .raffle-name {
+    font-size: 38px;
+  }
+  .raffle-primary {
+    width: 100%;
+    min-width: 0;
+  }
+  .raffle-actions {
+    padding: 12px 20px 24px;
+  }
+  .raffle-tally {
+    font-size: 11px;
+    gap: 15px;
+  }
+  .raffle-records {
+    grid-template-columns: 1fr;
+    margin-top: 28px;
+  }
+  .raffle-roster {
+    padding: 22px 0;
+  }
+  .raffle-results {
+    border-left: 0;
+    border-top: 1px solid var(--raffle-line);
+    padding: 22px 0;
+  }
+  .raffle-footer > span:last-child {
+    display: none;
+  }
+  .raffle-search input {
+    width: 130px;
+  }
+  .raffle-table li {
+    gap: 12px;
+  }
+}
