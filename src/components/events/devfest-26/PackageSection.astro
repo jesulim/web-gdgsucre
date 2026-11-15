@@ -58,10 +58,13 @@ const packages = [
   </div>
 
   <div class="mx-auto max-w-6xl">
-    <div class="mb-10 flex items-center justify-center gap-4 md:mb-14">
-      <h2 class="text-center text-3xl font-bold tracking-tight md:text-5xl">
-        Arma tu kit de dev
+    <div class="grid grid-col gap-3 lg:ml-12 mb-10 md:mb-14">
+      <h2 id="packages-title" class="text-3xl font-bold tracking-tight md:text-4xl">
+        Mejora tu experiencia
       </h2>
+      <p class="text-white/90 md:text-lg md:w-5/6">
+        Asiste sin costo y si lo deseas, suma un paquete para una experiencia más completa.
+      </p>
     </div>
 
     <div class="relative">
@@ -69,7 +72,7 @@ const packages = [
         class="pointer-events-none absolute bottom-72 left-0 top-4 w-16 md:bottom-16 md:left-6 md:top-16 xl:bottom-6 xl:left-9.5 xl:top-18"
         aria-hidden="true"
       >
-        <span class="absolute inset-y-4.5 lg:-inset-y-10.5 left-3.75 w-1 lg:h-140 bg-blue-500 md:left-0.5"></span>
+        <span class="absolute h-[93%] inset-y-1.5 md:-inset-y-7.5 md:h-[95%] lg:-inset-y-9.5 left-3.75 w-1 lg:h-[80%] bg-blue-500 md:left-0.5"></span>
         <span class="absolute left-3.75 top-[25%] h-[50%] w-10.5 rounded-r-full border-y-5 border-r-5 border-green-500 md:left-0.5 md:w-8 xl:w-10 sm:top-[10%]"></span>
       </div>
 
@@ -127,7 +130,8 @@ const packages = [
             </figure>
 
             <ul
-              class="col-span-2 flex min-w-0 flex-wrap gap-2 md:col-start-4 md:row-start-1 md:content-center lg:px-35"
+              // class="col-span-2 flex min-w-0 flex-wrap gap-2 md:col-span-1 md:col-start-4 md:row-start-1 md:content-center lg:px-4"
+              class="col-span-2 flex min-w-0 flex-wrap gap-2 md:col-span-1 md:col-start-4 md:row-start-1 md:content-center lg:px-25"
               aria-label={`Incluye el paquete ${item.name}`}
             >
               {item.items.map((label, index) => (
