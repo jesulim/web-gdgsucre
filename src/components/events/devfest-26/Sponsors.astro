@@ -3,17 +3,25 @@ import { Image } from "astro:assets"
 import Vector from "@/assets/events/devfest-26/Vector-10.svg"
 import Numeral from "@/assets/events/devfest-26/Vector-25.svg"
 import TenMinds from "@/assets/sponsors/10minds.webp"
+import Cba from "@/assets/sponsors/cba.webp"
+import Cca from "@/assets/sponsors/cca2.webp"
+import Nible from "@/assets/sponsors/logo-nible-light.webp"
 import Napp from "@/assets/sponsors/napp-dark.webp"
+import Vaquita from "@/assets/sponsors/vaquita-logo.webp"
 
 const sponsors = [
   { name: "Fundación NAPP", image: Napp, className: "max-w-56" },
   { name: "10 Minds", image: TenMinds, className: "max-w-52" },
+  { name: "Vaquita", image: Vaquita, className: "max-w-56" },
+  { name: "Cba", image: Cba, className: "max-w-52" },
+  { name: "Nible", image: Nible, className: "max-w-52" },
+  { name: "Cca", image: Cca, className: "max-w-52" },
 ]
 ---
 
 <section
   id="sponsors"
-  class="relative isolate overflow-hidden bg-df-black px-4 py-20 text-white md:py-28"
+  class="relative isolate overflow-hidden bg-df-black px-4 py-10 text-white md:py-20"
 >
   <div
     class="pointer-events-none absolute inset-0 overflow-hidden"
@@ -33,10 +41,10 @@ const sponsors = [
       </h2>
     </div>
 
-    <div class="sponsors-border relative mx-auto max-w-3xl rounded-4xl p-px lg:shadow-[0_0_70px_rgba(66,133,244,0.12)]">
-      <div class="grid grid-cols-2 lg:grid-cols-2 items-center gap-3 rounded-[calc(2rem-1px)] px-3 py-6 sm:min-h-64 sm:gap-10 sm:px-6 sm:py-10 md:px-16 md:py-14">
+    <div class="sponsors-border relative mx-auto max-w-5xl rounded-4xl p-px lg:shadow-[0_0_70px_rgba(66,133,244,0.12)]">
+      <div class="grid grid-cols-2 lg:grid-cols-4 items-center gap-6 rounded-[calc(2rem-1px)] px-3 py-6 sm:min-h-64 sm:gap-5 sm:px-6 sm:py-10 md:px-10 md:py-10">
         {sponsors.map((sponsor) => (
-          <div class="flex min-w-0 min-h-24 items-center justify-center rounded-2xl px-3 py-4 sm:min-h-36 sm:px-6 sm:py-5">
+          <div class="flex min-w-0 min-h-24 items-center justify-center rounded-2xl px-2 py-2 sm:min-h-36 sm:px-2 sm:py-2">
             <Image
               src={sponsor.image}
               alt={`Logo de ${sponsor.name}`}

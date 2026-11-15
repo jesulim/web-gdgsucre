@@ -1,0 +1,155 @@
+---
+import { Image } from "astro:assets"
+import commitImage from "@/assets/events/devfest-26/commit.webp"
+import deployImage from "@/assets/events/devfest-26/deploy.webp"
+import mergeImage from "@/assets/events/devfest-26/merge.webp"
+import Vector from "@/assets/events/devfest-26/Quotes2.svg"
+import Equis from "@/assets/events/devfest-26/Vector-24.svg"
+
+const packages = [
+  {
+    number: "01",
+    name: "Commit",
+    price: "30",
+    image: commitImage,
+    items: ["Credencial", "Lanyard", "Stickers", "Botón 3D", "Pin", "Refrigerio y jugo"],
+    titleColor: "text-blue-400",
+    nodeColor: "bg-blue-500",
+    priceColor: "text-blue-400",
+  },
+  {
+    number: "02",
+    name: "Merge",
+    price: "45",
+    image: mergeImage,
+    items: ["Todo lo de Commit", " + Mousepad"],
+    titleColor: "text-green-400",
+    nodeColor: "bg-green-500",
+    priceColor: "text-green-400",
+  },
+  {
+    number: "03",
+    name: "Deploy",
+    price: "80",
+    image: deployImage,
+    items: ["Todo lo de Merge", " + Gorra bordada"],
+    titleColor: "text-blue-400",
+    nodeColor: "bg-blue-500",
+    priceColor: "text-blue-400",
+  },
+]
+---
+
+<section
+  id="paquetes"
+  aria-labelledby="packages-title"
+  class="relative isolate overflow-hidden bg-df-black px-5 py-10 text-white sm:px-8 md:py-20"
+>
+  <div
+    class="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+    aria-hidden="true"
+  >
+    <div class="absolute -right-32 top-8 size-64 rounded-full bg-blue-500/20 blur-[100px] md:size-96"></div>
+    <div class="absolute bottom-[35%] -left-42 size-72 rounded-full bg-green-500/15 blur-[75px] md:size-100"></div>
+    <div class="absolute -right-32 bottom-8 size-64 rounded-full bg-blue-500/20 blur-[100px] md:size-96"></div>
+
+    <Vector class="absolute left-20 bottom-[40%] hidden size-50 opacity-70 lg:block" />
+    <Equis class="absolute bottom-50 -right-80 hidden size-150 opacity-60 lg:block" />
+  </div>
+
+  <div class="mx-auto max-w-6xl">
+    <div class="grid grid-col gap-3 lg:ml-12 mb-10 md:mb-14">
+      <h2 id="packages-title" class="text-3xl font-bold tracking-tight md:text-4xl">
+        Mejora tu experiencia
+      </h2>
+      <p class="text-white/90 md:text-lg md:w-5/6">
+        Asiste sin costo y si lo deseas, suma un paquete para una experiencia más completa.
+      </p>
+    </div>
+
+    <div class="relative">
+      <div
+        class="pointer-events-none absolute bottom-72 left-0 top-4 w-16 md:bottom-16 md:left-6 md:top-16 xl:bottom-6 xl:left-9.5 xl:top-18"
+        aria-hidden="true"
+      >
+        <span class="absolute h-[91%] inset-y-1.5 md:-inset-y-7.5 md:h-[95%] lg:-inset-y-9.5 left-3.75 w-1 lg:h-[80%] bg-blue-500 md:left-0.5"></span>
+        <span class="absolute left-3.75 top-[25%] h-[50%] w-10.5 rounded-r-full border-y-5 border-r-5 border-green-500 md:left-0.5 md:w-8 xl:w-10 sm:top-[10%]"></span>
+      </div>
+
+      <div class="flex flex-col gap-16">
+        {packages.map((item) => (
+          <article
+            class:list={[
+              "relative grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-start gap-x-3 gap-y-3 pl-24 min-h-76 md:min-h-32 md:grid-cols-[88px_130px_170px_minmax(0,1fr)_90px] md:gap-x-5 md:pl-0 xl:min-h-36 xl:grid-cols-[110px_140px_190px_minmax(0,1fr)_100px] xl:gap-x-7",
+            ]}
+          >
+            <div
+              class:list={[
+                "absolute left-0 top-0 z-10 grid size-8 place-items-center rounded-full text-sm font-medium md:col-start-1 md:row-start-1 md:size-9 xl:size-10",
+                item.nodeColor,
+                item.number === "02"
+                  ? "left-10 md:absolute md:left-15 md:top-1/7 md:-translate-y-1/2"
+                  : "md:static md:ml-2 md:justify-self-start xl:ml-5",
+              ]}
+              aria-hidden="true"
+            >
+              {item.number}
+            </div>
+
+            <div class="min-w-0 md:col-start-2 md:row-start-1">
+              <p
+                class:list={[
+                  "mb-1 text-sm tracking-[0.25em]",
+                  item.titleColor,
+                ]}
+              >
+                PAQUETE
+              </p>
+              <h3 class="text-2xl font-bold leading-tight sm:text-3xl">
+                {item.name}
+              </h3>
+            </div>
+
+            <p
+              class:list={[
+                "flex items-baseline gap-1 font-bold leading-none md:col-start-5 md:row-start-1 md:justify-self-end",
+                item.priceColor,
+              ]}
+            >
+              <span class="text-3xl sm:text-5xl">{item.price}</span>
+              <span class="text-base sm:text-3xl">Bs</span>
+            </p>
+
+            <figure class="relative col-span-2 grid aspect-[1.25] place-items-center overflow-hidden rounded-2xl bg-white/10 md:col-span-1 md:col-start-3 md:row-start-1 lg:w-70">
+              <Image
+                src={item.image}
+                alt={`Artículos del paquete ${item.name} de DevFest Sucre`}
+                class="size-full object-contain p-3"
+                loading="lazy"
+              />
+            </figure>
+
+            <ul
+              // class="col-span-2 flex min-w-0 flex-wrap gap-2 md:col-span-1 md:col-start-4 md:row-start-1 md:content-center lg:px-4"
+              class="col-span-2 flex min-w-0 flex-wrap gap-2 md:col-span-1 md:col-start-4 md:row-start-1 md:content-center lg:px-25"
+              aria-label={`Incluye el paquete ${item.name}`}
+            >
+              {item.items.map((label, index) => (
+                <li
+                  class:list={[
+                    "inline-flex min-h-8 items-center rounded-full bg-white/10 px-4 py-2 text-sm text-white",
+                    index > 0 &&
+                      item.number !== "01" &&
+                      "border border-white bg-transparent",
+                  ]}
+                >
+                  {label}
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
