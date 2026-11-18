@@ -192,6 +192,28 @@ export function OrganizerFormModal({
 
   const initials = `${formData.first_name?.[0] ?? ""}${formData.last_name?.[0] ?? ""}`.toUpperCase()
 
+  const handleAvatarUpload = async (blob: Blob) => {
+    if (!formData.profile_id) {
+      throw new Error("No se encontró el ID de perfil")
+    }
+    const uploadData = new FormData()
+    uploadData.append("avatar", blob, "avatar.webp")
+    uploadData.append("profile_id", formData.profile_id)
+
+    const res = await fetch("/api/organizers/avatar", {
+      method: "POST",
+      body: uploadData,
+    })
+
+    if (!res.ok) {
+      const errJson = await res.json().catch(() => null)
+      throw new Error(errJson?.error || "Error al subir la foto de perfil")
+    }
+
+    const json = await res.json()
+    return json.avatar_url
+  }
+
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-md">
@@ -217,27 +239,7 @@ export function OrganizerFormModal({
                       onSuccess?.()
                     }
                   }}
-                  onUpload={async (blob: Blob) => {
-                    if (!formData.profile_id) {
-                      throw new Error("No se encontró el ID de perfil")
-                    }
-                    const uploadData = new FormData()
-                    uploadData.append("avatar", blob, "avatar.webp")
-                    uploadData.append("profile_id", formData.profile_id)
-
-                    const res = await fetch("/api/organizers/avatar", {
-                      method: "POST",
-                      body: uploadData,
-                    })
-
-                    if (!res.ok) {
-                      const errJson = await res.json().catch(() => null)
-                      throw new Error(errJson?.error || "Error al subir la foto de perfil")
-                    }
-
-                    const json = await res.json()
-                    return json.avatar_url
-                  }}
+                  onUpload={handleAvatarUpload}
                 />
                 <p className="text-xs text-muted-foreground mt-2">
                   Haz clic para cambiar la foto de perfil del organizador
