@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { toast } from "sonner"
 import { AvatarUpload } from "@/components/profile/AvatarUpload"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -42,6 +42,7 @@ interface OrganizerFormModalProps {
   mode: Mode
   initialData?: OrganizerFormData
   onSuccess?: () => void
+  onAvatarSuccess?: (newAvatarUrl: string) => void
 }
 
 export function OrganizerFormModal({
@@ -51,20 +52,26 @@ export function OrganizerFormModal({
   mode,
   initialData,
   onSuccess,
+  onAvatarSuccess,
 }: OrganizerFormModalProps) {
   const [step, setStep] = useState<Step>("form")
   const [formData, setFormData] = useState<OrganizerFormData>(initialData ?? emptyForm)
   const [emailSearch, setEmailSearch] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [isSearching, setIsSearching] = useState(false)
+  const [prevOpen, setPrevOpen] = useState(false)
+  const [prevId, setPrevId] = useState<number | undefined>(undefined)
 
-  useEffect(() => {
-    if (open) {
-      setFormData(initialData ?? emptyForm)
-      setStep("form")
-      setEmailSearch("")
-    }
-  }, [open, initialData])
+  if (open && (!prevOpen || initialData?.id !== prevId)) {
+    setPrevOpen(true)
+    setPrevId(initialData?.id)
+    setFormData(initialData ?? emptyForm)
+    setStep("form")
+    setEmailSearch("")
+  } else if (!open && prevOpen) {
+    setPrevOpen(false)
+    setPrevId(undefined)
+  }
 
   const handleClose = () => {
     onOpenChange(false)
@@ -200,11 +207,15 @@ export function OrganizerFormModal({
               <div className="flex flex-col items-center justify-center py-2">
                 <AvatarUpload
                   currentAvatarUrl={formData.avatar_url}
-                  userName={formData.first_name}
+                  userName={`${formData.first_name} ${formData.last_name}`.trim()}
                   avatarClassName="size-24"
                   onAvatarChange={newUrl => {
                     setFormData(p => ({ ...p, avatar_url: newUrl }))
-                    onSuccess?.()
+                    if (onAvatarSuccess) {
+                      onAvatarSuccess(newUrl)
+                    } else {
+                      onSuccess?.()
+                    }
                   }}
                   onUpload={async (blob: Blob) => {
                     if (!formData.profile_id) {

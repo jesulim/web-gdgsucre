@@ -44,6 +44,57 @@ describe("Organizer Avatar Upload API (/api/organizers/avatar)", () => {
     expect(json.error).toContain("imagen")
   })
 
+  it("returns 400 when avatar file has unsupported MIME type", async () => {
+    const formData = new FormData()
+    const textFile = new File(["not an image"], "document.txt", { type: "text/plain" })
+    formData.append("avatar", textFile)
+    formData.append("profile_id", "123e4567-e89b-12d3-a456-426614174000")
+
+    const mockRequest = new Request("http://localhost/api/organizers/avatar", {
+      method: "POST",
+      body: formData,
+    })
+
+    const mockAuthContext = {
+      request: mockRequest,
+      auth: {
+        supabase: {} as unknown,
+        profile: { id: "admin-id", is_admin: true } as unknown,
+      },
+    } as unknown as AuthContext
+
+    const response = await handleOrganizerAvatarUpload(mockAuthContext)
+    expect(response.status).toBe(400)
+    const json = await response.json()
+    expect(json.error).toContain("Formato de imagen no soportado")
+  })
+
+  it("returns 400 when avatar file exceeds maximum allowed size (5MB)", async () => {
+    const formData = new FormData()
+    const largeContent = new Uint8Array(5 * 1024 * 1024 + 1)
+    const largeFile = new File([largeContent], "large.webp", { type: "image/webp" })
+    formData.append("avatar", largeFile)
+    formData.append("profile_id", "123e4567-e89b-12d3-a456-426614174000")
+
+    const mockRequest = new Request("http://localhost/api/organizers/avatar", {
+      method: "POST",
+      body: formData,
+    })
+
+    const mockAuthContext = {
+      request: mockRequest,
+      auth: {
+        supabase: {} as unknown,
+        profile: { id: "admin-id", is_admin: true } as unknown,
+      },
+    } as unknown as AuthContext
+
+    const response = await handleOrganizerAvatarUpload(mockAuthContext)
+    expect(response.status).toBe(400)
+    const json = await response.json()
+    expect(json.error).toContain("5MB")
+  })
+
   it("returns 400 when profile_id is missing or invalid", async () => {
     const formData = new FormData()
     const file = new File(["dummy content"], "avatar.webp", { type: "image/webp" })
@@ -186,7 +237,7 @@ describe("Organizer Avatar Upload API (/api/organizers/avatar)", () => {
 describe("uploadProfileAvatar Service Function", () => {
   it("enforces deterministic .webp storage path and updates profiles table", async () => {
     const profileId = "987fcdeb-51a2-43d7-9012-3456789abcde"
-    const file = new File(["sample webp"], "avatar.png", { type: "image/webp" })
+    const file = new File(["sample webp"], "avatar.webp", { type: "image/webp" })
 
     let uploadedPath = ""
     let updatedAvatarUrl = ""
