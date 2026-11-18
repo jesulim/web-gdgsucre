@@ -178,3 +178,33 @@ export async function updateProfile(
 
   return { success: true }
 }
+
+export async function uploadProfileAvatar(
+  supabase: SupabaseClient,
+  profileId: string,
+  file: File
+): Promise<{ success: true; avatarUrl: string } | { success: false; error: string }> {
+  const filePath = `profile_pics/${profileId}.webp`
+
+  const { error: uploadError } = await supabase.storage
+    .from("assets")
+    .upload(filePath, file, { upsert: true, contentType: "image/webp" })
+
+  if (uploadError) {
+    return { success: false, error: `Error al subir la imagen: ${uploadError.message}` }
+  }
+
+  const { data: publicUrlData } = supabase.storage.from("assets").getPublicUrl(filePath)
+  const avatarUrl = `${publicUrlData.publicUrl}?t=${Date.now()}`
+
+  const { error: updateError } = await supabase
+    .from("profiles")
+    .update({ avatar_url: avatarUrl })
+    .eq("id", profileId)
+
+  if (updateError) {
+    return { success: false, error: `Error al actualizar el perfil: ${updateError.message}` }
+  }
+
+  return { success: true, avatarUrl }
+}

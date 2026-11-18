@@ -5,6 +5,7 @@ import { toast } from "sonner"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 
 function createImage(url: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
@@ -59,9 +60,19 @@ interface AvatarUploadProps {
   currentAvatarUrl?: string | null
   userName?: string
   onAvatarChange: (url: string) => void
+  onUpload?: (blob: Blob) => Promise<string>
+  className?: string
+  avatarClassName?: string
 }
 
-export function AvatarUpload({ currentAvatarUrl, userName, onAvatarChange }: AvatarUploadProps) {
+export function AvatarUpload({
+  currentAvatarUrl,
+  userName,
+  onAvatarChange,
+  onUpload,
+  className,
+  avatarClassName,
+}: AvatarUploadProps) {
   const [imageSrc, setImageSrc] = useState<string | null>(null)
   const [crop, setCrop] = useState({ x: 0, y: 0 })
   const [zoom, setZoom] = useState(1)
@@ -102,22 +113,31 @@ export function AvatarUpload({ currentAvatarUrl, userName, onAvatarChange }: Ava
 
     try {
       const blob = await getCroppedImg(imageSrc, croppedAreaPixels)
-      const formData = new FormData()
-      formData.append("avatar", blob, "avatar.webp")
+      let avatarUrl: string
 
-      const res = await fetch("/api/profile/avatar", {
-        method: "POST",
-        body: formData,
-      })
+      if (onUpload) {
+        avatarUrl = await onUpload(blob)
+      } else {
+        const formData = new FormData()
+        formData.append("avatar", blob, "avatar.webp")
 
-      if (!res.ok) throw new Error(await res.text())
+        const res = await fetch("/api/profile/avatar", {
+          method: "POST",
+          body: formData,
+        })
 
-      const { avatar_url } = await res.json()
-      onAvatarChange(avatar_url)
+        if (!res.ok) throw new Error(await res.text())
+
+        const data = await res.json()
+        avatarUrl = data.avatar_url
+      }
+
+      onAvatarChange(avatarUrl)
       toast.success("Foto de perfil actualizada")
       setImageSrc(null)
     } catch (error) {
-      toast.error("Error al actualizar la foto")
+      const message = error instanceof Error ? error.message : "Error al actualizar la foto"
+      toast.error(message)
       console.error(error)
     } finally {
       setUploading(false)
@@ -132,7 +152,7 @@ export function AvatarUpload({ currentAvatarUrl, userName, onAvatarChange }: Ava
 
   if (imageSrc) {
     return (
-      <div className="flex flex-col items-center gap-3 w-full">
+      <div className={cn("flex flex-col items-center gap-3 w-full", className)}>
         <div className="relative w-xs h-44 md:w-full md:h-48 bg-black/5 rounded-lg overflow-hidden">
           <Cropper
             image={imageSrc}
@@ -173,9 +193,12 @@ export function AvatarUpload({ currentAvatarUrl, userName, onAvatarChange }: Ava
   }
 
   return (
-    <div className="relative mx-auto">
+    <div className={cn("relative mx-auto", className)}>
       <Avatar
-        className="size-32 cursor-pointer border-off-white hover:border-blue-500 border-2 transition-colors"
+        className={cn(
+          "size-32 cursor-pointer border-off-white hover:border-blue-500 border-2 transition-colors",
+          avatarClassName
+        )}
         onClick={handleClick}
       >
         <AvatarImage src={currentAvatarUrl || ""} alt={userName} />
