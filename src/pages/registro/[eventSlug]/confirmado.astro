@@ -2,8 +2,8 @@
 import CredentialCardBWAI26 from "@/components/events/bwai-26/CredentialCard"
 import CredentialCardDevfest25 from "@/components/events/devfest-25/CredentialCard"
 import CredentialCardDevfest26 from "@/components/events/devfest-26/CredentialCard"
+import Header from "@/components/events/devfest-26/Header.astro"
 import CredentialCardIO26 from "@/components/events/io-extended-26/CredentialCard"
-import IoExtendedHeader from "@/components/events/io-extended-26/Header.astro"
 import CredentialCardIWD26 from "@/components/events/iwd-26/CredentialCard"
 
 import BaseLayout from "@/layout/BaseLayout.astro"
@@ -37,7 +37,7 @@ const cardProps = {
 ---
 
 <BaseLayout theme="dark">
-  <IoExtendedHeader />
+  <Header showNav={false} />
   <main class="bg-io-bg flex min-h-screen pt-[64px] md:pt-[96px] text-white">
     <div class="mx-auto px-4">
       {eventSlug === "io-extended-26" && <CredentialCardIO26 client:load {...cardProps} />}
