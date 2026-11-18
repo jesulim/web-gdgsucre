@@ -1,8 +1,6 @@
-import { z } from "zod"
 import { type AuthContext, withAdmin } from "@/lib/auth"
 import { uploadProfileAvatar } from "@/lib/services/profileService"
-
-const profileIdSchema = z.string().trim().uuid("El profile_id no es un UUID válido")
+import { organizerAvatarSchema } from "@/lib/validators/organizerAvatar"
 
 export async function handleOrganizerAvatarUpload({
   request,
@@ -13,21 +11,23 @@ export async function handleOrganizerAvatarUpload({
     return Response.json({ error: "Datos del formulario inválidos" }, { status: 400 })
   }
 
-  const file = formData.get("avatar") as File | null
-  if (!file || typeof file === "string") {
-    return Response.json({ error: "No se envió ninguna imagen de avatar" }, { status: 400 })
-  }
+  const parsed = organizerAvatarSchema.safeParse({
+    profile_id: formData.get("profile_id"),
+    avatar: formData.get("avatar"),
+  })
 
-  const rawProfileId = formData.get("profile_id")
-  const parsedProfileId = profileIdSchema.safeParse(rawProfileId)
-  if (!parsedProfileId.success) {
+  if (!parsed.success) {
     return Response.json(
-      { error: parsedProfileId.error.issues[0]?.message ?? "profile_id inválido" },
+      { error: parsed.error.issues[0]?.message ?? "Datos inválidos" },
       { status: 400 }
     )
   }
 
-  const result = await uploadProfileAvatar(auth.supabase, parsedProfileId.data, file)
+  const result = await uploadProfileAvatar(
+    auth.supabase,
+    parsed.data.profile_id,
+    parsed.data.avatar
+  )
   if (!result.success) {
     return Response.json({ error: result.error }, { status: 500 })
   }

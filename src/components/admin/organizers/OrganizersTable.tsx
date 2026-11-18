@@ -8,7 +8,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import { Loader2Icon, PlusIcon } from "lucide-react"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { toast } from "sonner"
 
 import { customFilterFn, SearchInput, TablePagination } from "@/components/admin/TableUtils"
@@ -152,6 +152,19 @@ export function OrganizersTable({ eventSlug }: { eventSlug: string }) {
     onGlobalFilterChange: setGlobalFilter,
   })
 
+  const initialData = useMemo(() => {
+    if (!editingOrganizer) return undefined
+    return {
+      id: editingOrganizer.id,
+      profile_id: editingOrganizer.profile_id,
+      first_name: editingOrganizer.first_name,
+      last_name: editingOrganizer.last_name,
+      email: editingOrganizer.email ?? "",
+      phone_number: editingOrganizer.phone_number ?? "",
+      avatar_url: editingOrganizer.image,
+    }
+  }, [editingOrganizer])
+
   return (
     <div>
       <Toaster position="top-right" />
@@ -229,19 +242,11 @@ export function OrganizersTable({ eventSlug }: { eventSlug: string }) {
         }}
         eventSlug={eventSlug}
         mode={editingOrganizer ? "edit" : "create"}
-        initialData={
-          editingOrganizer
-            ? {
-                id: editingOrganizer.id,
-                profile_id: editingOrganizer.profile_id,
-                first_name: editingOrganizer.first_name,
-                last_name: editingOrganizer.last_name,
-                email: editingOrganizer.email ?? "",
-                phone_number: editingOrganizer.phone_number ?? "",
-                avatar_url: editingOrganizer.image,
-              }
-            : undefined
-        }
+        initialData={initialData}
+        onAvatarSuccess={newUrl => {
+          setEditingOrganizer(prev => (prev ? { ...prev, image: newUrl } : null))
+          refetch()
+        }}
         onSuccess={() => refetch()}
       />
 
