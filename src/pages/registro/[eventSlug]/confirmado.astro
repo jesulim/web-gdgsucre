@@ -1,6 +1,7 @@
 ---
 import CredentialCardBWAI26 from "@/components/events/bwai-26/CredentialCard"
 import CredentialCardDevfest25 from "@/components/events/devfest-25/CredentialCard"
+import CredentialCardDevfest26 from "@/components/events/devfest-26/CredentialCard"
 import CredentialCardIO26 from "@/components/events/io-extended-26/CredentialCard"
 import IoExtendedHeader from "@/components/events/io-extended-26/Header.astro"
 import CredentialCardIWD26 from "@/components/events/iwd-26/CredentialCard"
@@ -42,7 +43,15 @@ const cardProps = {
       {eventSlug === "io-extended-26" && <CredentialCardIO26 client:load {...cardProps} />}
       {eventSlug === "iwd-26" && <CredentialCardIWD26 client:load {...cardProps} />}
       {eventSlug === "devfest-25" && <CredentialCardDevfest25 client:load {...cardProps} />}
-      {(eventSlug === "bwai-26" || !["io-extended-26", "iwd-26", "devfest-25"].includes(eventSlug)) && (
+      {eventSlug === "devfest-26" && (
+        <CredentialCardDevfest26
+          client:load
+          {...cardProps}
+          innerGradient="/events/devfest-26/bg-credencial.webp"
+        />
+      )}
+      {(eventSlug === "bwai-26" ||
+        !["io-extended-26", "iwd-26", "devfest-25", "devfest-26"].includes(eventSlug)) && (
         <CredentialCardBWAI26 client:load {...cardProps} />
       )}
     </div>
