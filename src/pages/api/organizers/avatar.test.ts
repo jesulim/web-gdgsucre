@@ -44,10 +44,10 @@ describe("Organizer Avatar Upload API (/api/organizers/avatar)", () => {
     expect(json.error).toContain("imagen")
   })
 
-  it("returns 400 when avatar file has unsupported MIME type", async () => {
+  it("returns 400 when avatar file has unsupported MIME type (e.g. text/plain or image/png)", async () => {
     const formData = new FormData()
-    const textFile = new File(["not an image"], "document.txt", { type: "text/plain" })
-    formData.append("avatar", textFile)
+    const pngFile = new File(["dummy png content"], "avatar.png", { type: "image/png" })
+    formData.append("avatar", pngFile)
     formData.append("profile_id", "123e4567-e89b-12d3-a456-426614174000")
 
     const mockRequest = new Request("http://localhost/api/organizers/avatar", {
@@ -66,7 +66,7 @@ describe("Organizer Avatar Upload API (/api/organizers/avatar)", () => {
     const response = await handleOrganizerAvatarUpload(mockAuthContext)
     expect(response.status).toBe(400)
     const json = await response.json()
-    expect(json.error).toContain("Formato de imagen no soportado")
+    expect(json.error).toContain("Debe ser WebP")
   })
 
   it("returns 400 when avatar file exceeds maximum allowed size (5MB)", async () => {
