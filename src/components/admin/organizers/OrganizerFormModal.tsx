@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
+import { AvatarUpload } from "@/components/profile/AvatarUpload"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -13,10 +15,13 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
 interface OrganizerFormData {
+  id?: number
+  profile_id?: string
   first_name: string
   last_name: string
   email: string
   phone_number: string
+  avatar_url?: string | null
 }
 
 const emptyForm: OrganizerFormData = {
@@ -24,6 +29,7 @@ const emptyForm: OrganizerFormData = {
   last_name: "",
   email: "",
   phone_number: "",
+  avatar_url: null,
 }
 
 type Mode = "create" | "edit"
@@ -34,7 +40,7 @@ interface OrganizerFormModalProps {
   onOpenChange: (open: boolean) => void
   eventSlug: string
   mode: Mode
-  initialData?: OrganizerFormData & { id?: number }
+  initialData?: OrganizerFormData
   onSuccess?: () => void
 }
 
@@ -160,6 +166,8 @@ export function OrganizerFormModal({
         last_name: result.data.last_name || "",
         email: result.data.email || trimmed,
         phone_number: result.data.phone_number || "",
+        avatar_url: result.data.avatar_url || null,
+        profile_id: result.data.id,
       })
 
       if (result.source === "auth") {
@@ -187,6 +195,44 @@ export function OrganizerFormModal({
                 {mode === "create" ? "Agregar organizador" : "Editar organizador"}
               </DialogTitle>
             </DialogHeader>
+
+            {mode === "edit" && formData.profile_id && (
+              <div className="flex flex-col items-center justify-center py-2">
+                <AvatarUpload
+                  currentAvatarUrl={formData.avatar_url}
+                  userName={formData.first_name}
+                  avatarClassName="size-24"
+                  onAvatarChange={newUrl => {
+                    setFormData(p => ({ ...p, avatar_url: newUrl }))
+                    onSuccess?.()
+                  }}
+                  onUpload={async (blob: Blob) => {
+                    if (!formData.profile_id) {
+                      throw new Error("No se encontró el ID de perfil")
+                    }
+                    const uploadData = new FormData()
+                    uploadData.append("avatar", blob, "avatar.webp")
+                    uploadData.append("profile_id", formData.profile_id)
+
+                    const res = await fetch("/api/organizers/avatar", {
+                      method: "POST",
+                      body: uploadData,
+                    })
+
+                    if (!res.ok) {
+                      const errJson = await res.json().catch(() => null)
+                      throw new Error(errJson?.error || "Error al subir la foto de perfil")
+                    }
+
+                    const json = await res.json()
+                    return json.avatar_url
+                  }}
+                />
+                <p className="text-xs text-muted-foreground mt-2">
+                  Haz clic para cambiar la foto de perfil del organizador
+                </p>
+              </div>
+            )}
 
             {mode === "create" && (
               <div className="bg-muted rounded-md p-3 space-y-2">
@@ -218,6 +264,25 @@ export function OrganizerFormModal({
                 <p className="text-xs text-muted-foreground">
                   Busca primero en perfiles y luego en cuentas registradas
                 </p>
+              </div>
+            )}
+
+            {mode === "create" && formData.profile_id && (
+              <div className="bg-muted/50 border rounded-md p-2.5 flex items-center gap-3">
+                <Avatar className="size-12 shrink-0 border">
+                  <AvatarImage src={formData.avatar_url || ""} alt={formData.first_name} />
+                  <AvatarFallback className="bg-blue-100 text-blue-800 text-sm font-medium">
+                    {initials || "?"}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="min-w-0">
+                  <p className="font-medium text-sm">
+                    {formData.first_name || formData.last_name
+                      ? `${formData.first_name} ${formData.last_name}`
+                      : "Usuario registrado"}
+                  </p>
+                  <p className="text-xs text-muted-foreground truncate">{formData.email}</p>
+                </div>
               </div>
             )}
 
@@ -287,9 +352,12 @@ export function OrganizerFormModal({
             </DialogHeader>
 
             <div className="bg-muted rounded-md p-3 flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-800 flex items-center justify-center text-sm font-medium shrink-0">
-                {initials || "?"}
-              </div>
+              <Avatar className="size-12 shrink-0 border">
+                <AvatarImage src={formData.avatar_url || ""} alt={formData.first_name} />
+                <AvatarFallback className="bg-blue-100 text-blue-800 text-sm font-medium">
+                  {initials || "?"}
+                </AvatarFallback>
+              </Avatar>
               <div className="min-w-0">
                 <p className="font-medium text-sm">
                   {formData.first_name} {formData.last_name}

@@ -44,7 +44,7 @@ interface OrganizerData {
   last_name: string
   email: string | null
   phone_number: string | null
-  avatar_url: string | null
+  image: string | null
 }
 
 const defaultOrganizers: OrganizerData[] = []
@@ -233,10 +233,12 @@ export function OrganizersTable({ eventSlug }: { eventSlug: string }) {
           editingOrganizer
             ? {
                 id: editingOrganizer.id,
+                profile_id: editingOrganizer.profile_id,
                 first_name: editingOrganizer.first_name,
                 last_name: editingOrganizer.last_name,
                 email: editingOrganizer.email ?? "",
                 phone_number: editingOrganizer.phone_number ?? "",
+                avatar_url: editingOrganizer.image,
               }
             : undefined
         }
