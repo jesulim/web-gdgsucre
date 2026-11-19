@@ -19,8 +19,8 @@
     ]
   },
   "dependencies": {
-    "@astrojs/react": "6.0.5",
-    "@astrojs/vercel": "11.0.10",
+    "@astrojs/react": "7.1.9",
+    "@astrojs/vercel": "11.0.22",
     "@base-ui/react": "^1.8.0",
     "@hookform/resolvers": "^5.9.1",
     "@supabase/ssr": "^0.12.7",
@@ -32,7 +32,7 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
     "@yudiel/react-qr-scanner": "^2.6.0",
-    "astro": "7.3.2",
+    "astro": "7.4.13",
     "atropos": "^2.0.2",
     "canvas-confetti": "^1.9.4",
     "class-variance-authority": "^0.7.1",

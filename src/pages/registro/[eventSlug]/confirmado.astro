@@ -1,9 +1,7 @@
 ---
-import CredentialCardBWAI26 from "@/components/events/bwai-26/CredentialCard"
-import CredentialCardDevfest25 from "@/components/events/devfest-25/CredentialCard"
-import CredentialCardIO26 from "@/components/events/io-extended-26/CredentialCard"
-import IoExtendedHeader from "@/components/events/io-extended-26/Header.astro"
-import CredentialCardIWD26 from "@/components/events/iwd-26/CredentialCard"
+import CredentialCardByEvent from "@/components/events/CredentialCardByEvent"
+import Header from "@/components/events/devfest-26/Header.astro"
+import Footer from "@/components/landing/Footer.astro"
 
 import BaseLayout from "@/layout/BaseLayout.astro"
 
@@ -26,25 +24,17 @@ const cardProps = {
   firstName: profile.first_name,
   lastName: profile.last_name,
   role: registration.role || "Asistente",
-  handle: profile.email,
   enableTilt: true,
   enableMobileTilt: false,
-  innerGradient: `/events/${eventSlug}/bg-credencial.svg`,
   grainUrl: "/grain.webp",
   qrUrl: registration?.qr_url,
 }
 ---
 
 <BaseLayout theme="dark">
-  <IoExtendedHeader />
-  <main class="bg-io-bg flex min-h-screen pt-[64px] md:pt-[96px] text-white">
-    <div class="mx-auto px-4">
-      {eventSlug === "io-extended-26" && <CredentialCardIO26 client:load {...cardProps} />}
-      {eventSlug === "iwd-26" && <CredentialCardIWD26 client:load {...cardProps} />}
-      {eventSlug === "devfest-25" && <CredentialCardDevfest25 client:load {...cardProps} />}
-      {(eventSlug === "bwai-26" || !["io-extended-26", "iwd-26", "devfest-25"].includes(eventSlug)) && (
-        <CredentialCardBWAI26 client:load {...cardProps} />
-      )}
-    </div>
+  <Header showNav={false} />
+  <main class="flex-1 pt-16 md:pt-24 text-white pb-12">
+    <CredentialCardByEvent client:load eventSlug={eventSlug} {...cardProps} />
   </main>
+  <Footer />
 </BaseLayout>

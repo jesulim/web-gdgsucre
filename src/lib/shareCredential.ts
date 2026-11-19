@@ -11,35 +11,72 @@ export interface CredentialData {
   avatarUrl: string
   qrUrl: string
   bgImageUrl: string
+  layout?: Partial<CredentialLayout>
+}
+
+export interface CredentialLayout {
+  baseWidth: number
+  baseHeight: number
+  fontFamily: string
+  nameCenterY: number
+  nameMaxWidth: number
+  nameFontSize: number
+  nameColor: string
+  avatarCenterY: number
+  avatarDiameter: number
+  avatarRingWidth: number
+  avatarRingStops: [number, string][]
+  roleCenterY: number
+  roleFontSize: number
+  roleFontWeight: string
+  roleColor: string | null
+  qrCenterY: number
+  qrBoxSize: number
+}
+
+const DEFAULT_LAYOUT: CredentialLayout = {
+  baseWidth: 362,
+  baseHeight: 540,
+  fontFamily: "Inter, system-ui, -apple-system, sans-serif",
+  nameCenterY: 0.09,
+  nameMaxWidth: 0.69,
+  nameFontSize: 16,
+  nameColor: "#000000",
+  avatarCenterY: 0.298,
+  avatarDiameter: 0.38,
+  avatarRingWidth: 0,
+  avatarRingStops: [],
+  roleCenterY: 0.512,
+  roleFontSize: 20,
+  roleFontWeight: "bold",
+  roleColor: null,
+  qrCenterY: 0.71,
+  qrBoxSize: 128,
 }
 
 const SCALE = 2
-const BASE_W = 362
-const BASE_H = 540
-const W = BASE_W * SCALE
-const H = BASE_H * SCALE
-const RADIUS = 16 * SCALE
 
-function loadImage(src: string): Promise<HTMLImageElement> {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const res = await fetch(src)
-      const blob = await res.blob()
-      const objectUrl = URL.createObjectURL(blob)
+async function loadImage(src: string): Promise<HTMLImageElement> {
+  let blob: Blob
+  try {
+    const res = await fetch(src)
+    blob = await res.blob()
+  } catch {
+    throw new Error(`Failed to fetch: ${src}`)
+  }
 
-      const img = new Image()
-      img.onload = () => {
-        URL.revokeObjectURL(objectUrl)
-        resolve(img)
-      }
-      img.onerror = () => {
-        URL.revokeObjectURL(objectUrl)
-        reject(new Error(`Failed to load: ${src}`))
-      }
-      img.src = objectUrl
-    } catch {
-      reject(new Error(`Failed to fetch: ${src}`))
+  const objectUrl = URL.createObjectURL(blob)
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    img.onload = () => {
+      URL.revokeObjectURL(objectUrl)
+      resolve(img)
     }
+    img.onerror = () => {
+      URL.revokeObjectURL(objectUrl)
+      reject(new Error(`Failed to load: ${src}`))
+    }
+    img.src = objectUrl
   })
 }
 
@@ -83,6 +120,11 @@ function wrapText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number)
 }
 
 async function renderCredentialCanvas(data: CredentialData): Promise<HTMLCanvasElement> {
+  const layout = { ...DEFAULT_LAYOUT, ...data.layout }
+  const W = layout.baseWidth * SCALE
+  const H = layout.baseHeight * SCALE
+  const RADIUS = 16 * SCALE
+
   const canvas = document.createElement("canvas")
   canvas.width = W
   canvas.height = H
@@ -104,14 +146,16 @@ async function renderCredentialCanvas(data: CredentialData): Promise<HTMLCanvasE
     ctx.fillRect(0, 0, W, H)
   }
 
-  const nameY = H * 0.09
-  const nameMaxWidth = W * 0.69
-  const nameFontSize = 16 * SCALE
+  if ("fonts" in document) await document.fonts.ready
 
-  ctx.font = `bold ${nameFontSize}px Inter, system-ui, -apple-system, sans-serif`
+  const nameY = H * layout.nameCenterY
+  const nameMaxWidth = W * layout.nameMaxWidth
+  const nameFontSize = layout.nameFontSize * SCALE
+
+  ctx.font = `bold ${nameFontSize}px ${layout.fontFamily}`
   ctx.textAlign = "center"
   ctx.textBaseline = "middle"
-  ctx.fillStyle = "#000000"
+  ctx.fillStyle = layout.nameColor
 
   const nameText = `${data.firstName} ${data.lastName}`
   const nameLines = wrapText(ctx, nameText, nameMaxWidth)
@@ -123,8 +167,8 @@ async function renderCredentialCanvas(data: CredentialData): Promise<HTMLCanvasE
     ctx.fillText(nameLines[i], W / 2, nameStartY + i * nameLineHeight)
   }
 
-  const avatarCenterY = H * 0.298
-  const avatarDiameter = W * 0.38
+  const avatarCenterY = H * layout.avatarCenterY
+  const avatarDiameter = W * layout.avatarDiameter
   const avatarRadius = avatarDiameter / 2
 
   ctx.save()
@@ -151,7 +195,7 @@ async function renderCredentialCanvas(data: CredentialData): Promise<HTMLCanvasE
     ctx.fillStyle = "#e5e7eb"
     ctx.fillRect(W / 2 - avatarRadius, avatarCenterY - avatarRadius, avatarDiameter, avatarDiameter)
     ctx.fillStyle = "#6b7280"
-    ctx.font = `bold ${40 * SCALE}px Inter, system-ui, sans-serif`
+    ctx.font = `bold ${40 * SCALE}px ${layout.fontFamily}`
     ctx.textAlign = "center"
     ctx.textBaseline = "middle"
 
@@ -166,26 +210,41 @@ async function renderCredentialCanvas(data: CredentialData): Promise<HTMLCanvasE
   }
   ctx.restore()
 
-  const roleCenterY = H * 0.512
-  const roleFontSize = 20 * SCALE
+  if (layout.avatarRingWidth > 0 && layout.avatarRingStops.length > 0) {
+    const ringWidth = layout.avatarRingWidth * SCALE
+    const ring = ctx.createConicGradient(-Math.PI / 2, W / 2, avatarCenterY)
+    for (const [offset, color] of layout.avatarRingStops) ring.addColorStop(offset, color)
 
-  ctx.font = `bold ${roleFontSize}px Inter, system-ui, -apple-system, sans-serif`
+    ctx.beginPath()
+    ctx.arc(W / 2, avatarCenterY, avatarRadius + ringWidth / 2, 0, Math.PI * 2)
+    ctx.strokeStyle = ring
+    ctx.lineWidth = ringWidth
+    ctx.stroke()
+  }
+
+  const roleCenterY = H * layout.roleCenterY
+  const roleFontSize = layout.roleFontSize * SCALE
+
+  ctx.font = `${layout.roleFontWeight} ${roleFontSize}px ${layout.fontFamily}`
   ctx.textAlign = "center"
   ctx.textBaseline = "middle"
 
-  const roleWidth = ctx.measureText(data.role).width
-  const gradientR = Math.max(roleWidth / 2, 40 * SCALE)
-  const gradient = ctx.createRadialGradient(W / 2, roleCenterY, 0, W / 2, roleCenterY, gradientR)
-  gradient.addColorStop(0.1, "#4285F4")
-  gradient.addColorStop(0.41, "#EA4335")
-  gradient.addColorStop(0.61, "#F9AB00")
-  gradient.addColorStop(1.0, "#34A853")
-
-  ctx.fillStyle = gradient
+  if (layout.roleColor) {
+    ctx.fillStyle = layout.roleColor
+  } else {
+    const roleWidth = ctx.measureText(data.role).width
+    const gradientR = Math.max(roleWidth / 2, 40 * SCALE)
+    const gradient = ctx.createRadialGradient(W / 2, roleCenterY, 0, W / 2, roleCenterY, gradientR)
+    gradient.addColorStop(0.1, "#4285F4")
+    gradient.addColorStop(0.41, "#EA4335")
+    gradient.addColorStop(0.61, "#F9AB00")
+    gradient.addColorStop(1.0, "#34A853")
+    ctx.fillStyle = gradient
+  }
   ctx.fillText(data.role, W / 2, roleCenterY)
 
-  const qrCenterY = H * 0.71
-  const qrBoxSize = 128 * SCALE
+  const qrCenterY = H * layout.qrCenterY
+  const qrBoxSize = layout.qrBoxSize * SCALE
   const qrPadding = 8 * SCALE
   const qrCornerR = 12 * SCALE
   const qrX = W / 2 - qrBoxSize / 2
