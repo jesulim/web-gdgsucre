@@ -9,6 +9,7 @@ type Row = Record<string, unknown>
 let currentUser: string | null = null
 let tables: Record<string, Row[]> = {}
 let queriedTables: string[] = []
+let missingPaymentConfiguration = false
 const client = {
   auth: {
     getUser: async () => ({
@@ -33,7 +34,10 @@ const client = {
         rows = rows.slice(from, to + 1)
         return query
       },
-      maybeSingle: async () => ({ data: rows[0] ?? null, error: null }),
+      maybeSingle: async () =>
+        table === "event_form_fields" && missingPaymentConfiguration
+          ? { data: null, error: { code: "42703" } }
+          : { data: rows[0] ?? null, error: null },
       // biome-ignore lint/suspicious/noThenProperty: Model the real Supabase thenable transport.
       then(resolve: (result: { data: Row[]; error: null }) => unknown) {
         return Promise.resolve(resolve({ data: rows, error: null }))
@@ -48,6 +52,7 @@ const { GET } = await import("../src/pages/api/random-registrations")
 function setup(user: string | null, admin = false, staffEvent?: number) {
   currentUser = user
   queriedTables = []
+  missingPaymentConfiguration = false
   tables = {
     profiles: user ? [{ id: user, is_admin: admin, first_name: "Staff", last_name: "User" }] : [],
     events: [
@@ -117,4 +122,13 @@ test("missing event and invalid filters fail before querying data", async () => 
   assert.equal((await request("")).status, 400)
   assert.equal((await request("eventSlug=devfest&paymentConfirmed=invalid")).status, 400)
   assert.equal(queriedTables.length, 0)
+})
+
+test("missing payment migration does not break the default draw and returns an actionable filter error", async () => {
+  setup("admin", true)
+  missingPaymentConfiguration = true
+  assert.equal((await request()).status, 200)
+  const response = await request("eventSlug=devfest&paymentConfirmed=true")
+  assert.equal(response.status, 503)
+  assert.match((await response.json()).error, /actualizar la configuración/)
 })
