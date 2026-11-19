@@ -5,6 +5,7 @@ import {
   fetchRaffleEvents,
   getRaffleParticipants,
   hasConfirmedRafflePayment,
+  RaffleConfigurationError,
 } from "../src/lib/services/raffleService"
 import { RaffleFiltersSchema } from "../src/lib/validators/raffle"
 
@@ -63,7 +64,10 @@ function fakeClient(tables: Record<string, Row[]>, failTable?: string) {
           return query
         },
         maybeSingle() {
-          return Promise.resolve({ data: rows[0] ?? null, error: null })
+          return Promise.resolve({
+            data: table === failTable ? null : (rows[0] ?? null),
+            error: table === failTable ? { code: "42703" } : null,
+          })
         },
         // biome-ignore lint/suspicious/noThenProperty: Supabase query builders are intentionally thenable.
         then(resolve: (result: { data: Row[]; error: object | null }) => unknown) {
@@ -155,5 +159,26 @@ test("database failures fail closed and unknown event has no participants", asyn
   assert.equal(
     await getRaffleParticipants(client, { eventSlug: "missing", paymentConfirmed: false }),
     null
+  )
+})
+
+test("unfiltered draw does not depend on payment configuration being migrated", async () => {
+  const { client, queries } = fakeClient(tables([registration(1)]), "event_form_fields")
+  const result = await getRaffleParticipants(client, {
+    eventSlug: "devfest",
+    paymentConfirmed: false,
+  })
+  assert.equal(result?.length, 1)
+  assert.equal(
+    queries.some(query => query.table === "event_form_fields"),
+    false
+  )
+})
+
+test("payment filter fails explicitly rather than including exempt people without configuration", async () => {
+  const { client } = fakeClient(tables([registration(1)]), "event_form_fields")
+  await assert.rejects(
+    getRaffleParticipants(client, { eventSlug: "devfest", paymentConfirmed: true }),
+    RaffleConfigurationError
   )
 })

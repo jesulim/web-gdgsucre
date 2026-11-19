@@ -20,7 +20,7 @@ const events = await fetchRaffleEvents(
 
 <BaseLayout title="Sorteos · GDG Sucre">
   <SorteoHeader />
-  <main class="min-h-screen bg-background text-foreground">
+  <main class="flex-1 bg-background text-foreground">
     <RandomWinner events={events} client:load />
   </main>
 </BaseLayout>

@@ -1,6 +1,8 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
 import type { RaffleFilters } from "@/lib/validators/raffle"
 
+export class RaffleConfigurationError extends Error {}
+
 export interface RaffleParticipant {
   id: number
   first_name: string
@@ -44,16 +46,29 @@ export async function getRaffleParticipants(supabase: SupabaseClient, filters: R
     .select("id")
     .eq("slug", filters.eventSlug)
     .maybeSingle()
-  if (eventError) throw new Error("No se pudo consultar el evento")
+  if (eventError) throw new Error("No se pudo consultar el evento", { cause: eventError.code })
   if (!event) return null
 
-  const { data: packageField, error: packageError } = await supabase
-    .from("event_form_fields")
-    .select("exempt_option")
-    .eq("event_id", event.id)
-    .eq("name", "package")
-    .maybeSingle()
-  if (packageError) throw new Error("No se pudo consultar la configuración del paquete")
+  let exemptOption: string | null = null
+  if (filters.paymentConfirmed) {
+    const { data: packageField, error: packageError } = await supabase
+      .from("event_form_fields")
+      .select("exempt_option")
+      .eq("event_id", event.id)
+      .eq("name", "package")
+      .maybeSingle()
+    if (packageError?.code === "42703") {
+      throw new RaffleConfigurationError(
+        "El filtro de pago requiere actualizar la configuración de la base de datos.",
+        { cause: packageError.code }
+      )
+    }
+    if (packageError)
+      throw new Error("No se pudo consultar la configuración del paquete", {
+        cause: packageError.code,
+      })
+    exemptOption = packageField?.exempt_option ?? null
+  }
 
   const organizerIds = new Set<string>()
   // Small pages also work with installations configured below Supabase's default 1,000-row cap.
@@ -65,7 +80,7 @@ export async function getRaffleParticipants(supabase: SupabaseClient, filters: R
       .eq("event_id", event.id)
       .order("id")
       .range(offset, offset + pageSize - 1)
-    if (error) throw new Error("No se pudieron consultar los organizadores")
+    if (error) throw new Error("No se pudieron consultar los organizadores", { cause: error.code })
     for (const row of data ?? []) organizerIds.add(row.profile_id)
     if (!data || data.length < pageSize) break
   }
@@ -83,13 +98,13 @@ export async function getRaffleParticipants(supabase: SupabaseClient, filters: R
       .range(offset, offset + pageSize - 1)
     if (filters.paymentConfirmed) query = query.eq("status", "confirmed")
     const { data, error } = await query
-    if (error) throw new Error("No se pudieron consultar los participantes")
+    if (error) throw new Error("No se pudieron consultar los participantes", { cause: error.code })
     for (const row of data ?? []) {
       const role = organizerIds.has(row.user_id) ? "Organizer" : "Participante"
       if (filters.role && filters.role !== role) continue
       if (
         filters.paymentConfirmed &&
-        !hasConfirmedRafflePayment(row.status, row.package, packageField?.exempt_option)
+        !hasConfirmedRafflePayment(row.status, row.package, exemptOption)
       )
         continue
       if (seenUsers.has(row.user_id)) continue

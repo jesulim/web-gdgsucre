@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro"
 import { eventFromSlugParam, withStaffOrAdmin } from "@/lib/auth"
-import { getRaffleParticipants } from "@/lib/services/raffleService"
+import { getRaffleParticipants, RaffleConfigurationError } from "@/lib/services/raffleService"
 import { RaffleFiltersSchema } from "@/lib/validators/raffle"
 
 const authorizedGet = withStaffOrAdmin(eventFromSlugParam("eventSlug"), async ({ url, auth }) => {
@@ -14,11 +14,20 @@ const authorizedGet = withStaffOrAdmin(eventFromSlugParam("eventSlug"), async ({
         headers: { "Cache-Control": "private, no-store" },
       }
     )
-  } catch {
+  } catch (error) {
+    console.error("[raffle] Participant query failed", {
+      message: error instanceof Error ? error.message : "Unknown error",
+      code: error instanceof Error ? error.cause : undefined,
+    })
     return Response.json(
-      { error: "No se pudieron cargar los participantes. Intenta nuevamente." },
       {
-        status: 500,
+        error:
+          error instanceof RaffleConfigurationError
+            ? error.message
+            : "No se pudieron cargar los participantes. Intenta nuevamente.",
+      },
+      {
+        status: error instanceof RaffleConfigurationError ? 503 : 500,
         headers: { "Cache-Control": "private, no-store" },
       }
     )
