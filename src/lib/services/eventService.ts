@@ -24,7 +24,7 @@ export async function getEvents(
     )
     .order("date", { ascending: false })
 
-  if (staffRoles && staffRoles.constructor !== Object) {
+  if (staffRoles && staffRoles?.constructor === Object) {
     query = query.in("slug", Object.keys(staffRoles))
   }
 

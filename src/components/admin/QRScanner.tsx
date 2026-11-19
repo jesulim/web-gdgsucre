@@ -188,7 +188,7 @@ export function QRScanner({ eventSlug, activities }: QRScannerProps) {
 
         {devices?.length > 1 && (
           <Select onValueChange={value => setSelectedDevice(value)}>
-            <SelectTrigger className="w-[200px]">
+            <SelectTrigger className="w-50">
               <SelectValue placeholder="Selecciona una cámara" />
             </SelectTrigger>
             <SelectContent>
@@ -210,7 +210,9 @@ export function QRScanner({ eventSlug, activities }: QRScannerProps) {
 
       <div className="max-w-2xl mx-auto">
         <Scanner
-          classNames={["rounded-md"]}
+          styles={{
+            container: { borderRadius: "1rem", overflow: "hidden" },
+          }}
           onScan={handleOnScan}
           formats={["qr_code"]}
           constraints={{
@@ -220,7 +222,39 @@ export function QRScanner({ eventSlug, activities }: QRScannerProps) {
             width: { ideal: 600 },
             height: { ideal: 600 },
           }}
-        />
+          components={{ finder: false }}
+          allowMultiple={!isProcessing && !dialogOpen}
+        >
+          <svg
+            viewBox="0 0 100 100"
+            style={{
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              pointerEvents: "none",
+            }}
+          >
+            <title>overlay</title>
+            <defs>
+              <mask id="gdg-scan-mask">
+                <rect width="100" height="100" fill="white" />
+                <rect x="10" y="10" width="80" height="80" rx="14" fill="black" />
+              </mask>
+            </defs>
+            <rect width="100" height="100" fill="rgba(0, 0, 0, 0.45)" mask="url(#gdg-scan-mask)" />
+
+            <g strokeWidth="9" strokeLinecap="round">
+              <line x1="26" y1="40" x2="10" y2="50" stroke="#EA4335" />
+              <line x1="10" y1="50" x2="26" y2="61" stroke="#4285F4" />
+            </g>
+
+            <g strokeWidth="9" strokeLinecap="round">
+              <line x1="90" y1="50" x2="74" y2="61" stroke="#FBBC04" />
+              <line x1="74" y1="40" x2="90" y2="50" stroke="#34A853" />
+            </g>
+          </svg>
+        </Scanner>
       </div>
 
       {isProcessing && (

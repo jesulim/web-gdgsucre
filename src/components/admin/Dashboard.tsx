@@ -108,7 +108,7 @@ function DashboardContainer({ userData, events }: DashboardProps) {
     },
     scanner: {
       title: "Escanear QR",
-      component: <QRScanner eventSlug={eventSlug} activities={selectedEvent.activities} />,
+      component: <QRScanner eventSlug={eventSlug} activities={selectedEvent?.activities} />,
     },
     organizers: {
       title: "Organizadores",
