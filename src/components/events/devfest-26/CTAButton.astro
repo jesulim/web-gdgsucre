@@ -10,12 +10,12 @@ const accessToken = Astro.cookies.get("sb-access-token")?.value
 
 if (accessToken) {
   const supabase = await createUserClient(Astro.cookies)
-  const {
-    data: { claims },
-  } = await supabase.auth.getClaims(accessToken)
+  const { data } = await supabase.auth.getClaims(accessToken)
 
-  registration = await hasRegistration(supabase, claims?.sub, eventSlug)
-  url = registration ? `/registro/${eventSlug}/confirmado` : `/registro/${eventSlug}`
+  if (data?.claims) {
+    registration = await hasRegistration(supabase, data.claims.sub, eventSlug)
+    url = registration ? `/registro/${eventSlug}/confirmado` : `/registro/${eventSlug}`
+  }
 }
 ---
 

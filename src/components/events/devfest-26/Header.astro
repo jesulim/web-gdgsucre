@@ -15,6 +15,7 @@ const navLinks = [
   { name: "Sponsors", href: "#sponsors" },
 ]
 
+const eventSlug = Astro.params.eventSlug || "devfest-26"
 const accessToken = Astro.cookies.get("sb-access-token")?.value
 ---
 
@@ -61,7 +62,7 @@ const accessToken = Astro.cookies.get("sb-access-token")?.value
 
   <div class="ml-4">
     {accessToken ? (
-      <Avatar eventSlug="devfest-26" />
+      <Avatar eventSlug={eventSlug} />
     ) : (
       <a
         href="/api/auth/signin"
