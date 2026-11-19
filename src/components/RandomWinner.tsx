@@ -1,490 +1,263 @@
-import { useCallback, useEffect, useMemo, useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { QueryClient, useQuery } from "@tanstack/react-query"
+import { ArrowRight, Check, Waves } from "lucide-react"
+import { useEffect, useMemo, useRef, useState } from "react"
+import type { RaffleParticipant } from "@/lib/services/raffleService"
+import { ResetRaffleDialog } from "./ResetRaffleDialog"
+import { ParticipantMural } from "./raffle/ParticipantMural"
+import { RaffleRecords } from "./raffle/RaffleRecords"
+import { RaffleSettings } from "./raffle/RaffleSettings"
+import {
+  type EventOption,
+  participantName,
+  participantPackage,
+  type RoundEntry,
+  type Selection,
+} from "./raffle/round"
+import "./sorteo.css"
 
-interface Registration {
-  id: number
-  first_name: string
-  last_name: string
-  email: string
-  phone_number?: string
-  status: string
-  role: string
-  created_at: string
+type Stage =
+  | { phase: "ready" | "drawing" }
+  | { phase: "selected" | RoundEntry["outcome"]; person: RaffleParticipant }
+
+const emptyList: RaffleParticipant[] = []
+const outcomeDurationMs = 1000
+const posterLabels = {
+  selected: "Persona seleccionada",
+  confirmed: "Ganador confirmado",
+  excluded: "Participante al agua",
 }
 
-interface ApiResponse {
-  data: Registration[]
-  count: number
-  requested_limit: number
-  requested_role?: string
-}
-
-export default function RandomWinnerSelector() {
-  const [allRegistrations, setAllRegistrations] = useState<Registration[]>([]) // Todos los registros originales
-  const [registrations, setRegistrations] = useState<Registration[]>([]) // Registros activos (sin ganadores ni descartados)
-  const [winners, setWinners] = useState<Registration[]>([]) // Lista de ganadores
-  const [discarded, setDiscarded] = useState<Registration[]>([]) // Lista de descartados
-  const [isLoading, setIsLoading] = useState(false)
-  const [isSelecting, setIsSelecting] = useState(false)
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [winner, setWinner] = useState<Registration | null>(null)
-  const [showWinner, setShowWinner] = useState(false)
-  const [limit] = useState<number | null>(null)
-  const [selectedRole, setSelectedRole] = useState<string>("")
-  const [searchTerm, setSearchTerm] = useState<string>("")
-
-  const fetchRegistrations = useCallback(async () => {
-    setIsLoading(true)
-    setWinner(null)
-    setShowWinner(false)
-
-    try {
-      // Construir URL con parámetros opcionales
-      let url = "/api/random-registrations"
-      const params = new URLSearchParams()
-
-      if (limit) params.append("limit", limit.toString())
-      if (selectedRole) params.append("role", selectedRole)
-
-      if (params.toString()) {
-        url += `?${params.toString()}`
-      }
-
-      const response = await fetch(url)
-      const data: ApiResponse = await response.json()
-
-      if (response.ok) {
-        setAllRegistrations(data.data)
-        // Filtrar los que ya están en ganadores o descartados
-        const activeRegistrations = data.data.filter(
-          reg => !winners.find(w => w.id === reg.id) && !discarded.find(d => d.id === reg.id)
-        )
-        setRegistrations(activeRegistrations)
-      } else {
-        console.error("Error fetching registrations:", data)
-        alert("Error al obtener los registros")
-      }
-    } catch (error) {
-      console.error("Error:", error)
-      alert("Error de conexión")
-    } finally {
-      setIsLoading(false)
-    }
-  }, [limit, selectedRole, winners, discarded])
-
-  useEffect(() => {
-    fetchRegistrations()
-  }, [fetchRegistrations])
-
-  const getSecureRandomIndex = (max: number): number => {
-    const randomBuffer = new Uint32Array(1)
-    crypto.getRandomValues(randomBuffer)
-    return Math.floor((randomBuffer[0] / (0xffffffff + 1)) * max)
+export default function RandomWinner({ events }: { events: EventOption[] }) {
+  const [selection, setSelection] = useState<Selection>({
+    eventSlug: events[0]?.slug ?? "",
+    role: "",
+    packageName: "",
+    paymentConfirmed: false,
+  })
+  const { eventSlug, paymentConfirmed, role, packageName } = selection
+  const event = events.find(event => event.slug === eventSlug)
+  const [client] = useState(() => new QueryClient())
+  const {
+    data: participants = emptyList,
+    error,
+    isFetching: loading,
+    refetch,
+  } = useQuery(
+    {
+      queryKey: ["raffle", eventSlug, paymentConfirmed],
+      enabled: !!eventSlug,
+      staleTime: 60_000,
+      retry: false,
+      networkMode: "always",
+      queryFn: async ({ signal }): Promise<RaffleParticipant[]> => {
+        const params = new URLSearchParams({
+          eventSlug,
+          paymentConfirmed: String(paymentConfirmed),
+        })
+        const response = await fetch(`/api/random-registrations?${params}`, { signal })
+        if (!response.ok) {
+          const data = await response.json().catch(() => null)
+          throw new Error(data?.error || "No se pudieron cargar los participantes.")
+        }
+        return (await response.json()).data
+      },
+    },
+    client
+  )
+  const [history, setHistory] = useState<RoundEntry[]>([])
+  const [stage, setStage] = useState<Stage>({ phase: "ready" })
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const packages = useMemo(() => {
+    const names = new Set(participants.map(participantPackage))
+    // Keep the filter removable even if the payment filter leaves no matching registrations.
+    if (packageName) names.add(packageName)
+    return [...names].sort((a, b) => a.localeCompare(b, "es", { numeric: true }))
+  }, [participants, packageName])
+  const pool = useMemo(() => {
+    const excluded = new Set(history.map(entry => entry.person.id))
+    return participants.filter(
+      person =>
+        (!role || person.role === role) &&
+        (!packageName || participantPackage(person) === packageName) &&
+        !excluded.has(person.id)
+    )
+  }, [history, participants, role, packageName])
+  const busy = stage.phase !== "ready"
+  const canDraw = !!event && !loading && !error && pool.length > 0
+  const labelCount = `${pool.length} ${pool.length === 1 ? "persona" : "personas"}`
+  const primaryLabels = {
+    ready: canDraw ? `Sortear entre ${labelCount}` : "Sortear",
+    drawing: "Sorteando…",
+    selected: "Confirmar ganador",
+    confirmed: "Confirmado",
+    excluded: "Excluido",
   }
 
-  const startSelection = () => {
-    if (registrations.length === 0) {
-      alert("Primero debes cargar los registros")
+  useEffect(
+    () => () => {
+      if (timer.current !== null) clearTimeout(timer.current)
+    },
+    []
+  )
+
+  function clearRound() {
+    setHistory([])
+    setStage({ phase: "ready" })
+  }
+
+  function applySelection(next: Selection) {
+    const changed =
+      next.eventSlug !== eventSlug ||
+      next.role !== role ||
+      next.packageName !== packageName ||
+      next.paymentConfirmed !== paymentConfirmed
+    if (busy || !changed) return
+    clearRound()
+    setSelection(next)
+  }
+
+  function draw() {
+    if (
+      !canDraw ||
+      (stage.phase !== "ready" && stage.phase !== "selected") ||
+      timer.current !== null
+    )
+      return
+    // Pick from the entire eligible pool before animating the mural.
+    const buffer = new Uint32Array(1)
+    const ceiling = 2 ** 32 - (2 ** 32 % pool.length)
+    do {
+      crypto.getRandomValues(buffer)
+    } while (buffer[0] >= ceiling)
+    const person = pool[buffer[0] % pool.length]
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setStage({ phase: "selected", person })
       return
     }
-
-    setIsSelecting(true)
-    setShowWinner(false)
-    setCurrentIndex(0)
-
-    let speed = 50 // Velocidad inicial muy rápida
-    let currentIdx = 0
-    const startTime = Date.now()
-    const duration = 5000 // 5 segundos exactos
-
-    const animate = () => {
-      currentIdx = (currentIdx + 1) % registrations.length
-      setCurrentIndex(currentIdx)
-
-      const elapsed = Date.now() - startTime
-
-      speed += Math.max(1, elapsed / 100)
-
-      if (elapsed < duration) {
-        setTimeout(animate, Math.min(speed, 300))
-      } else {
-        const finalIndex = getSecureRandomIndex(registrations.length)
-        setCurrentIndex(finalIndex)
-        setWinner(registrations[finalIndex])
-        setIsSelecting(false)
-
-        setTimeout(() => {
-          setShowWinner(true)
-        }, 500)
-      }
-    }
-
-    animate()
+    setStage({ phase: "drawing" })
+    timer.current = setTimeout(() => {
+      timer.current = null
+      setStage({ phase: "selected", person })
+    }, 1200)
   }
 
-  const markAsWinner = () => {
-    if (winner) {
-      setWinners(prev => [...prev, winner])
-      setRegistrations(prev => prev.filter(reg => reg.id !== winner.id))
-      setWinner(null)
-      setShowWinner(false)
-      setCurrentIndex(0)
-    }
+  function resolve(outcome: RoundEntry["outcome"]) {
+    if (stage.phase !== "selected") return
+    const { person } = stage
+    setHistory(entries => [...entries, { person, outcome }])
+    setStage({ phase: outcome, person })
+    timer.current = setTimeout(() => {
+      timer.current = null
+      setStage({ phase: "ready" })
+    }, outcomeDurationMs)
   }
 
-  const markAsDiscarded = () => {
-    if (winner) {
-      setDiscarded(prev => [...prev, winner])
-      setRegistrations(prev => prev.filter(reg => reg.id !== winner.id))
-      setWinner(null)
-      setShowWinner(false)
-      setCurrentIndex(0)
-    }
-  }
-
-  const continueInList = () => {
-    setWinner(null)
-    setShowWinner(false)
-    setCurrentIndex(0)
-  }
-
-  const resetAll = () => {
-    setWinner(null)
-    setShowWinner(false)
-    setCurrentIndex(0)
-    setWinners([])
-    setDiscarded([])
-    setRegistrations(allRegistrations)
-  }
-
-  // Filtrar participantes por búsqueda
-  const filteredRegistrations = useMemo(() => {
-    if (!searchTerm.trim()) return registrations
-
-    const search = searchTerm.toLowerCase().trim()
-    return registrations.filter(
-      reg =>
-        reg.first_name.toLowerCase().includes(search) ||
-        reg.last_name.toLowerCase().includes(search) ||
-        `${reg.first_name} ${reg.last_name}`.toLowerCase().includes(search)
-    )
-  }, [registrations, searchTerm])
+  const poster = "person" in stage
+  const emptyMessage = !event
+    ? "No tienes eventos disponibles."
+    : error
+      ? error.message
+      : loading
+        ? "Cargando participantes…"
+        : history.length && !pool.length
+          ? "No quedan participantes en esta ronda."
+          : "No hay participantes con esta selección."
 
   return (
-    <div className="max-w-7xl mx-auto p-6 space-y-6">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#4285F4] via-[#EA4335] to-[#FBBC04] bg-clip-text text-transparent">
-          🎰 Ruleta de Ganadores GDG Sucre
-        </h1>
-        <p className="text-gray-600 dark:text-gray-400 text-lg">
-          Animación de ruleta por 5 segundos para seleccionar un ganador
+    <div className="raffle">
+      <div className="raffle-context">
+        <RaffleSettings
+          events={events}
+          packages={packages}
+          selection={selection}
+          disabled={busy || !event}
+          onChange={applySelection}
+        />
+        <ResetRaffleDialog
+          disabled={busy || !event}
+          onConfirm={() => {
+            clearRound()
+            void client.resetQueries({ queryKey: ["raffle", eventSlug] })
+          }}
+        />
+      </div>
+
+      <section className="raffle-stage" aria-label="Sorteo en vivo">
+        {poster ? (
+          <div className="raffle-poster" data-phase={stage.phase}>
+            <div className="raffle-poster-copy">
+              <p className="raffle-caption">{posterLabels[stage.phase]}</p>
+              <h2>{participantName(stage.person)}</h2>
+            </div>
+            <div className="raffle-print" aria-hidden="true">
+              <i />
+              <i />
+              <i />
+              <i />
+            </div>
+          </div>
+        ) : canDraw || stage.phase === "drawing" ? (
+          <ParticipantMural people={pool} drawing={stage.phase === "drawing"} />
+        ) : (
+          <div className="raffle-empty" role={error ? "alert" : "status"}>
+            <p>{emptyMessage}</p>
+            {error && (
+              <button type="button" className="raffle-link" onClick={() => void refetch()}>
+                Reintentar
+              </button>
+            )}
+          </div>
+        )}
+        <p className="sr-only" aria-live="polite" aria-atomic="true">
+          {poster
+            ? `${posterLabels[stage.phase]}: ${participantName(stage.person)}`
+            : stage.phase === "drawing"
+              ? "Sorteando…"
+              : ""}
         </p>
-      </div>
-
-      {isLoading && registrations.length === 0 && (
-        <div className="text-center">
-          <p className="text-lg text-gray-600 dark:text-gray-400">🔄 Cargando participantes...</p>
+        <div className="raffle-controls">
+          <div className="raffle-actions">
+            <button
+              type="button"
+              className="raffle-primary"
+              disabled={stage.phase !== "selected" && (!canDraw || busy)}
+              onClick={() => (stage.phase === "selected" ? resolve("confirmed") : draw())}
+            >
+              {primaryLabels[stage.phase]}
+              {stage.phase === "excluded" ? (
+                <Waves size={20} aria-hidden="true" />
+              ) : poster ? (
+                <Check size={20} aria-hidden="true" />
+              ) : (
+                <ArrowRight size={20} aria-hidden="true" />
+              )}
+            </button>
+            {stage.phase === "selected" && (
+              <>
+                <button type="button" className="raffle-link" onClick={() => resolve("excluded")}>
+                  Excluir de esta ronda
+                </button>
+                <button type="button" className="raffle-link" disabled={!canDraw} onClick={draw}>
+                  Devolver al grupo y sortear
+                </button>
+              </>
+            )}
+          </div>
+          <RaffleRecords
+            pool={pool}
+            history={history}
+            unavailable={!event || loading || !!error || stage.phase === "drawing"}
+          />
         </div>
-      )}
-
-      <div className="flex flex-col lg:flex-row gap-4 items-center justify-center bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border-2 border-transparent bg-gradient-to-r from-[#4285F4]/10 via-[#EA4335]/10 to-[#FBBC04]/10">
-        <div className="flex items-center gap-3">
-          <label
-            htmlFor="roleFilter"
-            className="text-sm font-semibold text-[#4285F4] dark:text-[#4285F4] whitespace-nowrap"
-          >
-            Filtrar por rol:
-          </label>
-          <select
-            id="roleFilter"
-            value={selectedRole}
-            onChange={e => setSelectedRole(e.target.value)}
-            className="border-2 border-[#4285F4] dark:border-[#4285F4] rounded-lg px-4 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-[#4285F4] focus:outline-none"
-            disabled={isSelecting || isLoading}
-          >
-            <option value="">Todos los roles</option>
-            <option value="Participante">Participantes</option>
-            <option value="Organizer">Organizadores</option>
-          </select>
-        </div>
-
-        <div className="hidden lg:block w-px h-8 bg-gradient-to-b from-[#4285F4] via-[#EA4335] to-[#FBBC04]" />
-
-        <div className="flex flex-col sm:flex-row gap-3">
-          <Button
-            onClick={startSelection}
-            disabled={registrations.length === 0 || isSelecting || isLoading}
-            className="bg-[#34A853] hover:bg-[#2d9249] text-white text-lg px-8 py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 rounded-lg"
-          >
-            {isSelecting ? "🎰 Girando ruleta..." : "🎰 Girar Ruleta"}
-          </Button>
-
-          <Button
-            onClick={resetAll}
-            variant="outline"
-            className="border-2 border-[#EA4335] text-[#EA4335] hover:bg-[#EA4335] hover:text-white text-lg px-8 py-3 font-semibold rounded-lg transition-all duration-300"
-            disabled={isLoading}
-          >
-            {isLoading ? "Cargando..." : "🔄 Reiniciar Todo"}
-          </Button>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-        <div className="space-y-6">
-          {showWinner && winner ? (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-8 sticky top-6 border-4 border-transparent bg-gradient-to-br from-[#4285F4]/10 via-[#EA4335]/10 to-[#FBBC04]/10">
-              <div className="text-center">
-                <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-[#4285F4] via-[#EA4335] to-[#FBBC04] bg-clip-text text-transparent">
-                  🎉 ¡PARTICIPANTE SELECCIONADO! 🎉
-                </h2>
-
-                <div className="bg-gradient-to-br from-[#4285F4] via-[#EA4335] to-[#FBBC04] text-white rounded-2xl p-8 mb-6 animate-winner-glow shadow-2xl">
-                  <div className="text-5xl mb-4">🎊</div>
-                  <div className="text-4xl font-bold mb-2">
-                    {winner.first_name} {winner.last_name}
-                  </div>
-                  <div className="text-xl opacity-95 mb-4 font-medium">
-                    ¿Qué acción deseas tomar?
-                  </div>
-                  <div className="space-y-3 py-4">
-                    <Button
-                      onClick={markAsWinner}
-                      className="w-full bg-[#34A853] hover:bg-[#2d9249] text-white text-lg px-8 py-4 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 rounded-lg"
-                    >
-                      🏆 Marcar como Ganador
-                    </Button>
-
-                    <Button
-                      onClick={markAsDiscarded}
-                      className="w-full bg-[#EA4335] hover:bg-[#d33426] text-white text-lg px-8 py-4 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 rounded-lg"
-                    >
-                      ❌ Descartar
-                    </Button>
-
-                    <Button
-                      onClick={continueInList}
-                      variant="outline"
-                      className="w-full border-2 border-[#FBBC04] text-[#FBBC04] hover:bg-[#FBBC04] hover:text-white text-lg px-8 py-4 font-semibold rounded-lg transition-all duration-300"
-                    >
-                      ↩️ Continuar en la Lista
-                    </Button>
-                  </div>
-                  <div className="bg-white/20 rounded-xl p-6 backdrop-blur-sm shadow-lg">
-                    <div className="text-sm opacity-90 mb-1">🏷️ Rol:</div>
-                    <div className="font-semibold">{winner.role}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-8 sticky top-6 border-4 border-transparent bg-gradient-to-br from-[#4285F4]/10 via-[#EA4335]/10 to-[#FBBC04]/10">
-              <div className="text-center">
-                <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-[#4285F4] via-[#EA4335] to-[#FBBC04] bg-clip-text text-transparent">
-                  🏆 Esperando Ganador GDG
-                </h2>
-                <div className="text-gray-500 dark:text-gray-400 mb-8">
-                  <div className="text-6xl mb-4">🎰</div>
-                  <p className="text-lg">
-                    {isSelecting
-                      ? "La ruleta está girando..."
-                      : registrations.length > 0
-                        ? "Haz clic en 'Girar Ruleta' para seleccionar un ganador"
-                        : "Cargando participantes..."}
-                  </p>
-                </div>
-
-                {registrations.length > 0 && !isSelecting && (
-                  <div className="space-y-4">
-                    <div className="bg-gradient-to-br from-[#4285F4]/20 via-[#EA4335]/20 to-[#FBBC04]/20 dark:from-[#4285F4]/30 dark:via-[#EA4335]/30 dark:to-[#FBBC04]/30 rounded-xl p-8 border-2 border-[#4285F4]/30">
-                      <div className="text-5xl mb-4">👥</div>
-                      <div className="text-2xl font-bold text-[#4285F4] dark:text-[#4285F4] mb-1">
-                        {registrations.length} participantes activos
-                      </div>
-                      <div className="text-base text-gray-600 dark:text-gray-400 font-medium">
-                        listos para el sorteo
-                      </div>
-                    </div>
-
-                    {(winners.length > 0 || discarded.length > 0) && (
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="bg-[#34A853]/10 dark:bg-[#34A853]/20 rounded-lg p-4 border-2 border-[#34A853]/30">
-                          <div className="text-3xl mb-2">🏆</div>
-                          <div className="text-xl font-bold text-[#34A853]">{winners.length}</div>
-                          <div className="text-sm text-gray-600 dark:text-gray-400">Ganadores</div>
-                        </div>
-                        <div className="bg-[#EA4335]/10 dark:bg-[#EA4335]/20 rounded-lg p-4 border-2 border-[#EA4335]/30">
-                          <div className="text-3xl mb-2">❌</div>
-                          <div className="text-xl font-bold text-[#EA4335]">{discarded.length}</div>
-                          <div className="text-sm text-gray-600 dark:text-gray-400">
-                            Descartados
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-        </div>
-        <div className="space-y-6">
-          {registrations.length > 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 border-2 border-[#4285F4]/20">
-              <div className="text-center mb-6">
-                <h2 className="text-2xl font-bold mb-4 text-[#4285F4]">
-                  {isSelecting
-                    ? "🎰 Ruleta en acción..."
-                    : showWinner
-                      ? "🎉 ¡Participante seleccionado!"
-                      : "👥 Participante Actual"}
-                </h2>
-
-                <div
-                  className={`
-                  p-8 rounded-xl border-4 transition-all duration-300 shadow-lg
-                  ${
-                    isSelecting
-                      ? "border-[#4285F4] bg-gradient-to-br from-[#4285F4]/20 to-[#EA4335]/20 dark:bg-gradient-to-br dark:from-[#4285F4]/30 dark:to-[#EA4335]/30 animate-pulse-glow animate-roulette-spin"
-                      : showWinner
-                        ? "border-[#34A853] bg-gradient-to-br from-[#34A853]/20 to-[#FBBC04]/20 dark:bg-gradient-to-br dark:from-[#34A853]/30 dark:to-[#FBBC04]/30 animate-winner-bounce animate-winner-glow"
-                        : "border-gray-200 dark:border-gray-600"
-                  }
-                `}
-                >
-                  <div className="text-2xl font-bold text-gray-800 dark:text-gray-200">
-                    {registrations[currentIndex]?.first_name}{" "}
-                    {registrations[currentIndex]?.last_name}
-                  </div>
-                  {/* <div className="text-gray-600 dark:text-gray-400 mt-2">
-                    📧 {registrations[currentIndex]?.email}
-                  </div>
-                  {registrations[currentIndex]?.phone_number && (
-                    <div className="text-gray-600 dark:text-gray-400">
-                      📱 {registrations[currentIndex]?.phone_number}
-                    </div>
-                  )} */}
-                  <div className="text-sm text-gray-500 dark:text-gray-500 mt-2">
-                    🏷️ {registrations[currentIndex]?.role} • 📅{" "}
-                    {new Date(registrations[currentIndex]?.created_at).toLocaleDateString()}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-          {winners.length > 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 border-2 border-[#34A853]/40">
-              <h3 className="text-xl font-bold mb-4 text-[#34A853]">🏆 Ganadores</h3>
-              <div className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-                {winners.length} ganador{winners.length !== 1 ? "es" : ""}
-              </div>
-              <div className="grid gap-2 max-h-64 overflow-y-auto">
-                {winners.map(registration => (
-                  <div
-                    key={registration.id}
-                    className="p-3 rounded-lg border-2 border-[#34A853] bg-gradient-to-r from-[#34A853]/20 to-[#FBBC04]/20 dark:bg-gradient-to-r dark:from-[#34A853]/30 dark:to-[#FBBC04]/30"
-                  >
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <div className="font-medium">
-                          🏆 {registration.first_name} {registration.last_name}
-                        </div>
-                      </div>
-                      <div className="text-sm text-gray-500">{registration.role}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {registrations.length > 0 && !isSelecting && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 border-2 border-[#EA4335]/20">
-              <h3 className="text-xl font-bold mb-4 text-[#EA4335]">
-                📋 Lista de Participantes Activos
-              </h3>
-
-              <div className="mb-4">
-                <Input
-                  type="text"
-                  placeholder="🔍 Buscar por nombre..."
-                  value={searchTerm}
-                  onChange={e => setSearchTerm(e.target.value)}
-                  className="w-full border-2 border-[#EA4335]/30 focus:border-[#EA4335] rounded-lg"
-                />
-              </div>
-
-              <div className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-                {filteredRegistrations.length} de {registrations.length} participante
-                {registrations.length !== 1 ? "s" : ""} {searchTerm ? "encontrado" : "disponible"}
-                {filteredRegistrations.length !== 1 ? "s" : ""}
-              </div>
-
-              <div className="grid gap-2 max-h-96 overflow-y-auto">
-                {filteredRegistrations.length > 0 ? (
-                  filteredRegistrations.map((registration, index) => (
-                    <div
-                      key={registration.id}
-                      className={`
-                        p-3 rounded-lg border-2 transition-all duration-200
-                        ${
-                          index === currentIndex
-                            ? "border-[#4285F4] bg-gradient-to-r from-[#4285F4]/20 to-[#EA4335]/20 dark:bg-gradient-to-r dark:from-[#4285F4]/30 dark:to-[#EA4335]/30 shadow-md"
-                            : winner?.id === registration.id
-                              ? "border-[#34A853] bg-gradient-to-r from-[#34A853]/20 to-[#FBBC04]/20 dark:bg-gradient-to-r dark:from-[#34A853]/30 dark:to-[#FBBC04]/30 shadow-md"
-                              : "border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-[#4285F4]/50"
-                        }
-                      `}
-                    >
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <div className="font-medium">
-                            {registration.first_name} {registration.last_name}
-                            {winner?.id === registration.id && <span className="ml-2">🎯</span>}
-                          </div>
-                        </div>
-                        <div className="text-sm text-gray-500">{registration.role}</div>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-                    <div className="text-4xl mb-2">🔍</div>
-                    <p>No se encontraron participantes con "{searchTerm}"</p>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
-          {discarded.length > 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 border-2 border-[#EA4335]/40">
-              <h3 className="text-xl font-bold mb-4 text-[#EA4335]">❌ Descartados</h3>
-              <div className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-                {discarded.length} descartado{discarded.length !== 1 ? "s" : ""}
-              </div>
-              <div className="grid gap-2 max-h-64 overflow-y-auto">
-                {discarded.map(registration => (
-                  <div
-                    key={registration.id}
-                    className="p-3 rounded-lg border-2 border-[#EA4335] bg-gradient-to-r from-[#EA4335]/20 to-[#EA4335]/10 dark:bg-gradient-to-r dark:from-[#EA4335]/30 dark:to-[#EA4335]/20"
-                  >
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <div className="font-medium">
-                          ❌ {registration.first_name} {registration.last_name}
-                        </div>
-                      </div>
-                      <div className="text-sm text-gray-500">{registration.role}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
+        {poster && error && (
+          <div role="alert" className="raffle-note">
+            {error.message}{" "}
+            <button type="button" className="raffle-link" onClick={() => void refetch()}>
+              Reintentar
+            </button>
+          </div>
+        )}
+      </section>
     </div>
   )
 }

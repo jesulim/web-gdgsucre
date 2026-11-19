@@ -2,30 +2,13 @@
 import { Image } from "astro:assets"
 import LogoHorizontalBlack from "@/assets/logos/LogoHorizontalBlack.png"
 ---
-
-<header class="min-h-fit sm:h-32 bg-gradient-to-r from-white via-gray-50 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 border-b-4 border-transparent bg-gradient-to-r border-image-slice-1 shadow-lg flex items-center justify-center px-4 sm:px-6 lg:px-16 xl:px-28">
-  <style>
-    header {
-      border-image: linear-gradient(to right, #4285F4, #EA4335, #FBBC04, #34A853) 1;
-    }
-  </style>
-  
-  <div
-    class="w-full flex flex-col items-center gap-3 sm:gap-4 lg:gap-6 lg:flex-row lg:justify-between lg:items-center py-4 sm:py-6"
-  >
-    <a href="/" class="hover:scale-105 transition-transform duration-300 flex-shrink-0">
-      <Image 
-        src={LogoHorizontalBlack} 
-        alt="GDG Sucre Logo" 
-        width={350} 
-        class="h-auto w-[250px] sm:w-[300px] lg:w-[350px] dark:brightness-0 dark:invert" 
-      />
+<header class="border-b border-border bg-background px-4 sm:px-8">
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 py-3 sm:py-4">
+    <a href="/" aria-label="GDG Sucre, inicio">
+      <Image src={LogoHorizontalBlack} alt="GDG Sucre" width={240} class="h-auto w-36 sm:w-44 dark:brightness-0 dark:invert" />
     </a>
-
-    <div class="px-2 sm:px-4 text-center lg:text-left">
-      <p class="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-[#4285F4] via-[#EA4335] to-[#FBBC04] bg-clip-text text-transparent leading-tight">
-        🎰 Sorteo de Ganadores
-      </p>
-    </div>
+    <a href="/admin" class="inline-flex min-h-11 items-center gap-2 text-sm hover:underline">
+      Administración <span aria-hidden="true">↗</span>
+    </a>
   </div>
 </header>
