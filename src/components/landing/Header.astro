@@ -11,8 +11,10 @@ const navLinks = [
   { name: "¿Por qué unirte?", href: "/#info" },
   { name: "Destacados", href: "/#featured" },
   { name: "Eventos pasados", href: "/eventos", external: true },
+  { name: "Sponsors", href: "/sponsors", external: true },
 ]
 
+const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/"
 const accessToken = Astro.cookies.has("sb-access-token")
 ---
 
@@ -23,47 +25,64 @@ const accessToken = Astro.cookies.has("sb-access-token")
   <a
     id="logo"
     href="/#"
-    class="pr-4 h-full flex items-center gap-4 text-xl sm:border-r-2 border-off-white"
+    class="pr-3 md:pr-4 h-full flex items-center gap-3 md:gap-4 text-xl md:border-r-2 border-off-white shrink-0"
   >
     <GDGSucre class="h-full" />
-    <span class="hidden lg:block"> Google Developer Group Sucre </span>
-    <span class="lg:hidden"> GDG Sucre </span>
+    <span class="hidden lg:block whitespace-nowrap"> Google Developer Group Sucre </span>
+    <span class="lg:hidden whitespace-nowrap"> GDG Sucre </span>
   </a>
 
   <nav
     id="mobile-menu"
-    class="hidden absolute top-full left-0 w-full bg-white dark:bg-black border-y-2 border-off-white sm:h-full sm:static sm:flex sm:items-center sm:w-fit sm:ml-auto sm:border-0 sm:border-l-2"
+    aria-label="Navegación principal"
+    class="hidden absolute top-full left-0 w-full bg-white dark:bg-black border-y-2 border-off-white md:h-full md:static md:flex md:items-center md:w-fit md:ml-auto md:border-0 md:border-l-2"
   >
     <ul
-      class="flex flex-col py-4 gap-4 sm:p-0 sm:pl-auto sm:flex-row sm:h-full sm:items-center uppercase font-light"
+      class="flex flex-col py-4 gap-4 md:p-0 md:gap-0 md:flex-row md:h-full md:items-center uppercase font-light"
     >
       {
-        navLinks.map(link => (
-          <li class={`pl-4 ${!link.external && "sm:hidden"}`}>
-            <a href={link.href} class="flex items-center gap-4 hover:underline font-monospace">
-              {link.name}
-              {link.external && <ArrowOutward class="size-5" />}
-            </a>
-          </li>
-        ))
+        navLinks.map(link => {
+          const isCurrent = link.external && currentPath === link.href
+          return (
+            <li class:list={["pl-4 md:pl-3 lg:pl-4 md:pr-1", !link.external && "md:hidden"]}>
+              <a
+                href={link.href}
+                aria-current={isCurrent ? "page" : undefined}
+                class:list={[
+                  "flex items-center gap-2 lg:gap-3 hover:underline font-monospace whitespace-nowrap",
+                  isCurrent && "underline decoration-2 underline-offset-4",
+                ]}
+              >
+                {link.name}
+                {link.external && (
+                  <ArrowOutward class="size-5 shrink-0 fill-current" aria-hidden="true" />
+                )}
+              </a>
+            </li>
+          )
+        })
       }
 
-      <hr class="border border-off-white sm:hidden" />
+      <hr class="border border-off-white md:hidden" />
 
       {
         accessToken ? (
           <LoggedInMenu server:defer>
-            <div class="h-full w-23.5 border-l-2 border-off-white" slot="fallback" />
+            <li
+              class="hidden md:block h-full w-23.5 border-l-2 border-off-white md:ml-2"
+              slot="fallback"
+              aria-hidden="true"
+            />
           </LoggedInMenu>
         ) : (
-          <li class="pl-4 mx-auto h-full flex items-center border-off-white sm:border-l-2">
+          <li class="pl-4 md:pl-3 lg:pl-4 mx-auto h-full flex items-center border-off-white md:ml-2 md:border-l-2">
             <a
               href="/api/auth/signin"
-              class="flex items-center gap-3 font-monospace font-light uppercase hover:underline"
+              class="flex items-center gap-2.5 lg:gap-3 font-monospace font-light uppercase hover:underline whitespace-nowrap"
               aria-label="Iniciar sesión"
             >
               Iniciar Sesión
-              <UserSignIn class="size-5" />
+              <UserSignIn class="size-5 shrink-0" aria-hidden="true" />
             </a>
           </li>
         )
@@ -71,10 +90,22 @@ const accessToken = Astro.cookies.has("sb-access-token")
     </ul>
   </nav>
 
-  <div class="flex items-center gap-3 pl-4">
+  <div class="flex items-center gap-3 pl-3 lg:pl-4 shrink-0">
   <ModeToggle client:load />
-  <button id="menu-toggle" class="rounded sm:hidden" aria-label="Abrir menú">
-    <svg class="size-6 stroke-black dark:stroke-white" fill="none" viewBox="0 0 24 24">
+  <button
+    type="button"
+    id="menu-toggle"
+    class="rounded md:hidden"
+    aria-label="Abrir menú"
+    aria-expanded="false"
+    aria-controls="mobile-menu"
+  >
+    <svg
+      class="size-6 stroke-black dark:stroke-white"
+      fill="none"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
       <path
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -85,7 +116,7 @@ const accessToken = Astro.cookies.has("sb-access-token")
   </div>
 </header>
 
-<div id="menu-overlay" class="fixed h-0 inset-0 z-40 bg-black/30 transition-all"></div>
+<div id="menu-overlay" class="fixed h-0 inset-0 z-40 bg-black/30 transition-all md:hidden"></div>
 
 <style>
   #header {
@@ -100,10 +131,12 @@ const accessToken = Astro.cookies.has("sb-access-token")
     border: 2px solid var(--color-off-white);
   }
 
-  #header.floating #mobile-menu:not(.hidden) {
-    left: -2px;
-    width: calc(100% + 4px);
-    border: 2px solid var(--color-off-white);
+  @media (width < 48rem) {
+    #header.floating #mobile-menu:not(.hidden) {
+      left: -2px;
+      width: calc(100% + 4px);
+      border: 2px solid var(--color-off-white);
+    }
   }
 </style>
 
@@ -114,30 +147,37 @@ const accessToken = Astro.cookies.has("sb-access-token")
   const mobileMenu = document.getElementById("mobile-menu")
   const menuOverlay = document.getElementById("menu-overlay")
 
-  function toggleMenu() {
-    mobileMenu?.classList.toggle("hidden")
-
-    menuToggle?.setAttribute(
-      "aria-label",
-      mobileMenu?.classList.contains("hidden") ? "Abrir menú" : "Cerrar menú",
-    )
-
-    menuOverlay?.classList.toggle("backdrop-blur-sm")
-    menuOverlay?.classList.toggle("h-auto")
+  function setMenuOpen(open: boolean) {
+    mobileMenu?.classList.toggle("hidden", !open)
+    menuToggle?.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú")
+    menuToggle?.setAttribute("aria-expanded", String(open))
+    menuOverlay?.classList.toggle("backdrop-blur-sm", open)
+    menuOverlay?.classList.toggle("h-auto", open)
   }
 
-  // mobileMenu?.addEventListener("click", e => {
-  //   if (e.target instanceof HTMLAnchorElement) return
-  //   if (e.target instanceof HTMLAnchorElement) {
-  //     toggleMenu()
-  //   }
-  // })
+  function toggleMenu() {
+    const isClosed = mobileMenu?.classList.contains("hidden") ?? true
+    setMenuOpen(isClosed)
+  }
+
   logo?.addEventListener("click", () => {
     if (mobileMenu?.classList.contains("hidden")) return
-    toggleMenu()
+    setMenuOpen(false)
   })
   menuToggle?.addEventListener("click", () => toggleMenu())
-  menuOverlay?.addEventListener("click", () => toggleMenu())
+  menuOverlay?.addEventListener("click", () => setMenuOpen(false))
+
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && !mobileMenu?.classList.contains("hidden")) {
+      setMenuOpen(false)
+      menuToggle?.focus()
+    }
+  })
+
+  const desktopMedia = window.matchMedia("(min-width: 768px)")
+  desktopMedia.addEventListener("change", event => {
+    if (event.matches) setMenuOpen(false)
+  })
 
   function updateHeader() {
     if (window.scrollY > 0) {

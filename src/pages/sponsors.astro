@@ -1,0 +1,378 @@
+---
+import ArrowOutward from "@/assets/icons/arrow_outward.svg"
+import Facebook from "@/assets/icons/social/Facebook.svg"
+import Instagram from "@/assets/icons/social/Instagram.svg"
+import LinkedIn from "@/assets/icons/social/Linkedin.svg"
+import Tiktok from "@/assets/icons/social/Tiktok.svg"
+import Twitter from "@/assets/icons/social/Twitter.svg"
+import WebIcon from "@/assets/icons/social/Web.svg"
+import YouTube from "@/assets/icons/social/Youtube.svg"
+import Footer from "@/components/landing/Footer.astro"
+import Header from "@/components/landing/Header.astro"
+import ScrambledText from "@/components/landing/ScrambledText.astro"
+import SponsorshipBenefits from "@/components/sponsors/SponsorshipBenefits.astro"
+import SponsorsMasonry from "@/components/sponsors/SponsorsMasonry.astro"
+import BaseLayout from "@/layout/BaseLayout.astro"
+import { INSTITUTIONAL_CONTACT, SPONSORS } from "@/lib/data/sponsors"
+
+const socialIconMap = {
+  LinkedIn,
+  Instagram,
+  Facebook,
+  TikTok: Tiktok,
+  "X (Twitter)": Twitter,
+  YouTube,
+} as const
+---
+
+<BaseLayout
+  enableThemePreference
+  title="Sponsors y Alianzas | GDG Sucre"
+  description="Impulsa tu marca junto a la comunidad tecnológica de Sucre. Conoce nuestro impacto anual, modalidades de patrocinio y las 26 organizaciones que confían en GDG Sucre."
+>
+  <Header />
+
+  <main class="flex-1 overflow-x-hidden mt-16">
+    <section
+      class="relative isolate py-14 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-[radial-gradient(circle,color-mix(in_srgb,var(--color-black)_8%,transparent)_1px,transparent_1px)] dark:bg-[radial-gradient(circle,color-mix(in_srgb,var(--color-white)_10%,transparent)_1px,transparent_1px)] bg-size-[20px_20px]"
+    >
+      <div class="pointer-events-none absolute inset-0 -z-10 overflow-clip" aria-hidden="true">
+        <div
+          class="absolute -left-24 top-0 size-72 rounded-full bg-blue-500/12 blur-3xl dark:bg-blue-500/15"
+        >
+        </div>
+        <div
+          class="absolute -right-24 bottom-0 size-72 rounded-full bg-green-500/12 blur-3xl dark:bg-green-500/12"
+        >
+        </div>
+      </div>
+
+      <div class="mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+        <div class="lg:col-span-7 flex flex-col gap-6">
+          <div class="flex items-center gap-3 text-xs sm:text-sm">
+            <ScrambledText text="{ CONVIÉRTETE EN SPONSOR }" />
+            <span class="flex items-center gap-1 shrink-0" aria-hidden="true">
+              <span class="size-2 rounded-full bg-blue-500"></span>
+              <span class="size-2 rounded-full bg-red-500"></span>
+              <span class="size-2 rounded-full bg-yellow-600"></span>
+              <span class="size-2 rounded-full bg-green-500"></span>
+            </span>
+          </div>
+
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-tight text-balance">
+            Tu marca, frente a la{" "}
+            <span class="text-blue-700 dark:text-io-accent">comunidad tech</span> de Sucre
+          </h1>
+
+          <p class="text-base sm:text-lg leading-relaxed text-black/80 dark:text-io-text-secondary max-w-2xl text-pretty">
+            GDG Sucre es un capítulo oficial de Google Developer Groups: una comunidad de
+            desarrolladores, estudiantes y profesionales que aprenden juntos sobre IA, Cloud,
+            Android, Flutter y Web. Somos voluntarios sin fines de lucro dentro de una red global de
+            +1.000 capítulos en más de 145 países.
+          </p>
+
+          <div class="flex flex-col gap-3 pt-1">
+            <div class="flex flex-wrap items-center gap-3.5">
+              <a
+                href={INSTITUTIONAL_CONTACT.emailHref}
+                class="group inline-flex w-full sm:w-auto items-center justify-center gap-3 rounded-xl bg-blue-500 px-6 py-3.5 font-monospace text-sm font-medium uppercase tracking-wide text-black transition-colors hover:bg-green-500 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-500"
+              >
+                <span>Quiero ser Sponsor</span>
+                <ArrowOutward
+                  aria-hidden="true"
+                  class="size-5 shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
+                />
+              </a>
+
+              <button
+                type="button"
+                disabled
+                aria-describedby="brochure-status-hero"
+                class="inline-flex w-full sm:w-auto items-center justify-center gap-2.5 rounded-xl border border-dashed border-black/25 dark:border-white/25 bg-neutral-100 dark:bg-white/5 px-5 py-3.5 font-monospace text-sm text-black/70 dark:text-white/75 cursor-not-allowed"
+              >
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  class="size-4 shrink-0"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 3v12m0 0-4-4m4 4 4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"
+                  ></path>
+                </svg>
+                <span>Brochure oficial</span>
+                <span
+                  class="rounded-full bg-yellow-pastel px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-black"
+                >
+                  Próximamente
+                </span>
+              </button>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+              <p
+                id="brochure-status-hero"
+                class="font-monospace text-xs text-black/70 dark:text-io-text-muted text-pretty"
+              >
+                El brochure general estará disponible próximamente; mientras tanto escríbenos para
+                armar una propuesta a medida.
+              </p>
+
+              <a
+                href="#sponsors-wall"
+                class="font-monospace text-xs uppercase tracking-wider text-blue-700 dark:text-io-accent hover:underline shrink-0"
+              >
+                Ver {SPONSORS.length} aliados ↓
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <aside class="lg:col-span-5" aria-label="Resumen de impacto de GDG Sucre">
+          <div
+            class="rounded-2xl border border-black/15 dark:border-white/15 bg-white dark:bg-[#18191e] shadow-lg overflow-clip"
+          >
+            <div class="grid grid-cols-4 h-1.5" aria-hidden="true">
+              <span class="bg-blue-500"></span>
+              <span class="bg-red-500"></span>
+              <span class="bg-yellow-600"></span>
+              <span class="bg-green-500"></span>
+            </div>
+
+            <div class="p-6 sm:p-8 flex flex-col gap-6">
+              <div class="flex items-center justify-between gap-2 border-b border-black/10 dark:border-white/10 pb-4">
+                <span
+                  class="font-monospace text-xs uppercase tracking-widest text-black/70 dark:text-io-text-muted"
+                >
+                  gdg-sucre // impacto-anual
+                </span>
+                <span
+                  class="inline-flex items-center gap-1.5 rounded-full bg-green-pastel/80 dark:bg-green-500/20 px-2.5 py-0.5 font-monospace text-xs text-black dark:text-io-green-light"
+                >
+                  <span class="size-1.5 rounded-full bg-green-500" aria-hidden="true"></span>
+                  <span>Sin fines de lucro</span>
+                </span>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4">
+                <div class="rounded-xl border border-black/10 dark:border-white/10 bg-neutral-50 dark:bg-[#202127] p-4 flex flex-col gap-1">
+                  <span class="text-2xl sm:text-3xl font-bold tabular-nums text-blue-700 dark:text-io-accent">
+                    386+
+                  </span>
+                  <span class="text-xs sm:text-sm text-black/75 dark:text-io-text-secondary">
+                    Asistentes en eventos anuales
+                  </span>
+                </div>
+
+                <div class="rounded-xl border border-black/10 dark:border-white/10 bg-neutral-50 dark:bg-[#202127] p-4 flex flex-col gap-1">
+                  <span class="text-2xl sm:text-3xl font-bold tabular-nums text-red-600 dark:text-red-400">
+                    31.200+
+                  </span>
+                  <span class="text-xs sm:text-sm text-black/75 dark:text-io-text-secondary">
+                    Personas alcanzadas
+                  </span>
+                </div>
+
+                <div class="rounded-xl border border-black/10 dark:border-white/10 bg-neutral-50 dark:bg-[#202127] p-4 flex flex-col gap-1">
+                  <span class="text-2xl sm:text-3xl font-bold tabular-nums text-yellow-700 dark:text-io-yellow">
+                    71.724+
+                  </span>
+                  <span class="text-xs sm:text-sm text-black/75 dark:text-io-text-secondary">
+                    Visualizaciones en redes
+                  </span>
+                </div>
+
+                <div class="rounded-xl border border-black/10 dark:border-white/10 bg-neutral-50 dark:bg-[#202127] p-4 flex flex-col gap-1">
+                  <span class="text-2xl sm:text-3xl font-bold tabular-nums text-green-700 dark:text-io-green-light">
+                    {SPONSORS.length}
+                  </span>
+                  <span class="text-xs sm:text-sm text-black/75 dark:text-io-text-secondary">
+                    Organizaciones aliadas
+                  </span>
+                </div>
+              </div>
+
+              <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-black/10 dark:border-white/10 font-monospace text-xs text-black/70 dark:text-io-text-muted">
+                <span>Sucre, Bolivia</span>
+                <a
+                  href={INSTITUTIONAL_CONTACT.calendarUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="hover:underline text-blue-700 dark:text-io-accent"
+                >
+                  {INSTITUTIONAL_CONTACT.calendarLabel}
+                </a>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <SponsorshipBenefits />
+
+    <SponsorsMasonry />
+
+    <section
+      id="sumate"
+      class="border-t border-black/10 dark:border-white/10 py-16 sm:py-20 px-4 sm:px-6 lg:px-8"
+    >
+      <div class="mx-auto max-w-6xl">
+        <div
+          class="relative rounded-3xl border border-black/15 dark:border-white/15 bg-neutral-50 dark:bg-[#1b1c21] overflow-clip shadow-sm"
+        >
+          <div class="grid grid-cols-4 h-1.5" aria-hidden="true">
+            <span class="bg-blue-500"></span>
+            <span class="bg-red-500"></span>
+            <span class="bg-yellow-600"></span>
+            <span class="bg-green-500"></span>
+          </div>
+
+          <div class="p-6 sm:p-10 lg:p-12 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+            <div class="lg:col-span-7 flex flex-col gap-5">
+              <div class="flex items-center gap-2 text-xs sm:text-sm">
+                <ScrambledText text="{ SÚMATE }" />
+                <span class="w-3 h-1 bg-red-500 shrink-0" aria-hidden="true"></span>
+              </div>
+
+              <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight text-balance">
+                Construyamos juntos el próximo hito tecnológico en Sucre
+              </h2>
+
+              <p class="text-base sm:text-lg leading-relaxed text-black/75 dark:text-io-text-secondary text-pretty">
+                ¿Tu empresa, universidad o institución quiere patrocinar nuestras actividades
+                anuales o el próximo evento insignia? Escríbenos por nuestros canales
+                institucionales y co-creemos una propuesta a la medida.
+              </p>
+
+              <div class="flex flex-wrap items-center gap-3.5 pt-2">
+                <a
+                  href={INSTITUTIONAL_CONTACT.emailHref}
+                  class="group inline-flex w-full sm:w-auto items-center justify-center gap-3 rounded-xl bg-blue-500 px-6 py-3.5 font-monospace text-sm font-medium uppercase tracking-wide text-black transition-colors hover:bg-green-500 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-500"
+                >
+                  <span>Escribir a {INSTITUTIONAL_CONTACT.email}</span>
+                  <ArrowOutward
+                    aria-hidden="true"
+                    class="size-5 shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
+                  />
+                </a>
+
+                <button
+                  type="button"
+                  disabled
+                  aria-describedby="brochure-status-footer"
+                  class="inline-flex w-full sm:w-auto items-center justify-center gap-2.5 rounded-xl border border-dashed border-black/25 dark:border-white/25 bg-white dark:bg-white/5 px-5 py-3.5 font-monospace text-sm text-black/70 dark:text-white/75 cursor-not-allowed"
+                >
+                  <span>Descargar Brochure</span>
+                  <span
+                    class="rounded-full bg-yellow-pastel px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-black"
+                  >
+                    Próximamente
+                  </span>
+                </button>
+              </div>
+
+              <p
+                id="brochure-status-footer"
+                class="font-monospace text-xs text-black/70 dark:text-io-text-muted text-pretty"
+              >
+                Estamos preparando la versión pública del dossier general de GDG Sucre.
+              </p>
+            </div>
+
+            <div
+              class="lg:col-span-5 rounded-2xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#14151a] p-6 flex flex-col gap-5"
+            >
+              <div class="flex flex-col gap-1 border-b border-black/10 dark:border-white/10 pb-3">
+                <span
+                  class="font-monospace text-xs uppercase tracking-widest text-black/70 dark:text-io-text-muted"
+                >
+                  Contacto institucional
+                </span>
+                <h3 class="text-lg font-semibold">Canales oficiales de GDG Sucre</h3>
+              </div>
+
+              <dl class="flex flex-col gap-4 text-sm">
+                <div class="flex flex-col gap-1">
+                  <dt class="font-monospace text-xs uppercase tracking-wider text-black/70 dark:text-io-text-muted">
+                    Correo electrónico
+                  </dt>
+                  <dd>
+                    <a
+                      href={INSTITUTIONAL_CONTACT.emailHref}
+                      class="font-medium text-blue-700 dark:text-io-accent hover:underline break-all"
+                    >
+                      {INSTITUTIONAL_CONTACT.email}
+                    </a>
+                  </dd>
+                </div>
+
+                <div class="flex flex-col gap-1">
+                  <dt class="font-monospace text-xs uppercase tracking-wider text-black/70 dark:text-io-text-muted">
+                    Sitio web y calendario
+                  </dt>
+                  <dd class="flex flex-wrap items-center gap-x-4 gap-y-2">
+                    <a
+                      href={INSTITUTIONAL_CONTACT.websiteUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-flex items-center gap-1.5 font-medium hover:text-blue-700 dark:hover:text-io-accent hover:underline"
+                    >
+                      <WebIcon class="size-4 shrink-0" aria-hidden="true" />
+                      <span>{INSTITUTIONAL_CONTACT.websiteLabel}</span>
+                    </a>
+                    <a
+                      href={INSTITUTIONAL_CONTACT.calendarUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="font-medium hover:text-blue-700 dark:hover:text-io-accent hover:underline"
+                    >
+                      {INSTITUTIONAL_CONTACT.calendarLabel}
+                    </a>
+                  </dd>
+                </div>
+
+                <div class="flex flex-col gap-2 pt-1 border-t border-black/10 dark:border-white/10">
+                  <dt class="font-monospace text-xs uppercase tracking-wider text-black/70 dark:text-io-text-muted">
+                    Redes sociales ({INSTITUTIONAL_CONTACT.handle})
+                  </dt>
+                  <dd class="grid grid-cols-2 gap-2">
+                    {
+                      INSTITUTIONAL_CONTACT.socials.map(social => {
+                        const Icon = socialIconMap[social.name]
+                        return (
+                          <a
+                            href={social.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="inline-flex items-center gap-2 rounded-lg border border-black/10 dark:border-white/10 bg-neutral-50 dark:bg-white/5 px-3 py-2 text-xs font-monospace transition-colors hover:border-blue-500 hover:text-blue-700 dark:hover:text-io-accent"
+                          >
+                            <Icon class="size-4 shrink-0" aria-hidden="true" />
+                            <span class="truncate">{social.name}</span>
+                          </a>
+                        )
+                      })
+                    }
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style is:global>
+  :where(a, button, [role="button"]):focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
+</style>
