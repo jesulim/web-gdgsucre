@@ -37,52 +37,37 @@ import useOrganizers from "@/hooks/admin/useOrganizers"
 
 import { OrganizerFormModal } from "./OrganizerFormModal"
 
-interface OrganizerData {
+export interface OrganizerData {
   id: number
   profile_id?: string
   first_name: string
   last_name: string
   email: string | null
   phone_number: string | null
-  avatar_url: string | null
+  image: string | null
 }
 
 const defaultOrganizers: OrganizerData[] = []
 
 export function OrganizersTable({ eventSlug }: { eventSlug: string }) {
   const [globalFilter, setGlobalFilter] = useState("")
-  const { organizers, isLoading, isFetching, refetch } = useOrganizers(eventSlug)
+  const { organizers, isLoading, isFetching, refetch, deleteOrganizer, isDeleting } =
+    useOrganizers(eventSlug)
 
   const columnHelper = createColumnHelper<OrganizerData>()
 
   const [modalOpen, setModalOpen] = useState(false)
   const [editingOrganizer, setEditingOrganizer] = useState<OrganizerData | null>(null)
   const [deletingOrganizer, setDeletingOrganizer] = useState<OrganizerData | null>(null)
-  const [isDeleting, setIsDeleting] = useState(false)
 
   const handleDelete = async () => {
     if (!deletingOrganizer) return
-    setIsDeleting(true)
     try {
-      const res = await fetch("/api/organizers", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: deletingOrganizer.id }),
-      })
-
-      if (!res.ok) {
-        const errorData = await res.json()
-        throw new Error(errorData.error || "Error al eliminar")
-      }
-
-      toast.success("Organizador eliminado exitosamente")
-      await refetch()
+      await deleteOrganizer(deletingOrganizer.id)
       setDeletingOrganizer(null)
     } catch (error) {
       const message = error instanceof Error ? error.message : "Error al eliminar organizador"
       toast.error(message)
-    } finally {
-      setIsDeleting(false)
     }
   }
 
@@ -156,12 +141,18 @@ export function OrganizersTable({ eventSlug }: { eventSlug: string }) {
     <div>
       <Toaster position="top-right" />
 
-      <div className="grid grid-cols-[1fr_auto] gap-4 mb-4">
+      <div className="flex gap-4 mb-4">
         <SearchInput
           placeholder="Buscar por nombre, apellido o correo electrónico..."
           globalFilter={globalFilter}
           setGlobalFilter={setGlobalFilter}
         />
+
+        <Button variant="secondary" className=" w-fit" onClick={() => refetch()}>
+          {isFetching && <Loader2Icon className="animate-spin" />}
+          Actualizar
+        </Button>
+
         <Button
           className="bg-blue-500 rounded-sm"
           onClick={() => {
@@ -171,10 +162,6 @@ export function OrganizersTable({ eventSlug }: { eventSlug: string }) {
         >
           <PlusIcon className="mr-1 h-4 w-4" />
           Agregar
-        </Button>
-        <Button className="bg-blue-500 rounded-sm w-fit" onClick={() => refetch()}>
-          {isFetching && <Loader2Icon className="animate-spin" />}
-          Actualizar
         </Button>
       </div>
 
@@ -223,24 +210,9 @@ export function OrganizersTable({ eventSlug }: { eventSlug: string }) {
 
       <OrganizerFormModal
         open={modalOpen}
-        onOpenChange={open => {
-          setModalOpen(open)
-          if (!open) setEditingOrganizer(null)
-        }}
+        onOpenChange={open => setModalOpen(open)}
         eventSlug={eventSlug}
-        mode={editingOrganizer ? "edit" : "create"}
-        initialData={
-          editingOrganizer
-            ? {
-                id: editingOrganizer.id,
-                first_name: editingOrganizer.first_name,
-                last_name: editingOrganizer.last_name,
-                email: editingOrganizer.email ?? "",
-                phone_number: editingOrganizer.phone_number ?? "",
-              }
-            : undefined
-        }
-        onSuccess={() => refetch()}
+        organizer={editingOrganizer}
       />
 
       <AlertDialog
