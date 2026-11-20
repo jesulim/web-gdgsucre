@@ -17,9 +17,15 @@ const SPONSOR_TEMPLATE_FILES = [
   path.resolve(import.meta.dir, "../../pages/sponsors.astro"),
   path.resolve(import.meta.dir, "../../pages/landing.astro"),
   path.resolve(import.meta.dir, "../../components/landing/SponsorsSection.astro"),
+  path.resolve(import.meta.dir, "../../components/sponsors/BrochureButton.astro"),
+  path.resolve(import.meta.dir, "../../components/sponsors/SponsorsHero.astro"),
+  path.resolve(import.meta.dir, "../../components/sponsors/AnnualImpactSection.astro"),
+  path.resolve(import.meta.dir, "../../components/sponsors/WhySponsorSection.astro"),
+  path.resolve(import.meta.dir, "../../components/sponsors/HowToSupportSection.astro"),
   path.resolve(import.meta.dir, "../../components/sponsors/SponsorLogo.astro"),
+  path.resolve(import.meta.dir, "../../components/sponsors/SponsorCard.astro"),
   path.resolve(import.meta.dir, "../../components/sponsors/SponsorsMasonry.astro"),
-  path.resolve(import.meta.dir, "../../components/sponsors/SponsorshipBenefits.astro"),
+  path.resolve(import.meta.dir, "../../components/sponsors/SponsorsContactSection.astro"),
 ]
 
 describe("Sponsors catalog & institutional data", () => {
@@ -111,8 +117,12 @@ describe("Sponsors catalog & institutional data", () => {
   })
 
   it("renders disabled brochure actions and avoids duplicate alt announcements on masonry cards", () => {
-    const sponsorsPage = fs.readFileSync(
-      path.resolve(import.meta.dir, "../../pages/sponsors.astro"),
+    const brochureButton = fs.readFileSync(
+      path.resolve(import.meta.dir, "../../components/sponsors/BrochureButton.astro"),
+      "utf-8"
+    )
+    const sponsorCard = fs.readFileSync(
+      path.resolve(import.meta.dir, "../../components/sponsors/SponsorCard.astro"),
       "utf-8"
     )
     const masonry = fs.readFileSync(
@@ -120,9 +130,13 @@ describe("Sponsors catalog & institutional data", () => {
       "utf-8"
     )
 
-    expect(sponsorsPage).toContain("disabled")
-    expect(sponsorsPage).toContain("Próximamente")
-    expect(masonry).toContain("decorative={true}")
+    expect(brochureButton).toContain("disabled")
+    expect(brochureButton).toContain("Próximamente")
+    expect(sponsorCard).toContain("decorative={true}")
+    expect(masonry).toContain("data-filter-all")
+    expect(masonry).toContain("data-filter-category")
+    expect(masonry).toContain("aria-pressed")
+    expect(masonry).toContain("selectedCategories")
   })
 
   it("renders an accessible auto-rotating sponsor carousel for all sponsors and join CTA on the landing section", () => {

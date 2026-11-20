@@ -70,6 +70,7 @@ export const SPONSOR_CATEGORY_META: Record<
     accentBarClass: string
     dotClass: string
     badgeClass: string
+    filterActiveClass: string
   }
 > = {
   "Tecnología & Software": {
@@ -77,24 +78,32 @@ export const SPONSOR_CATEGORY_META: Record<
     dotClass: "bg-blue-500",
     badgeClass:
       "bg-blue-pastel/70 text-black border-blue-500/30 dark:bg-blue-500/15 dark:text-io-accent dark:border-blue-500/30",
+    filterActiveClass:
+      "bg-blue-pastel text-black border-blue-500 dark:bg-blue-500/25 dark:text-white dark:border-io-accent",
   },
   "Educación & Talento": {
     accentBarClass: "bg-green-500",
     dotClass: "bg-green-500",
     badgeClass:
       "bg-green-pastel/70 text-black border-green-500/30 dark:bg-green-500/15 dark:text-io-green-light dark:border-green-500/30",
+    filterActiveClass:
+      "bg-green-pastel text-black border-green-500 dark:bg-green-500/25 dark:text-white dark:border-io-green-light",
   },
   "Ecosistema & Comunidad": {
     accentBarClass: "bg-yellow-600",
     dotClass: "bg-yellow-600",
     badgeClass:
       "bg-yellow-pastel/80 text-black border-yellow-600/35 dark:bg-yellow-600/15 dark:text-io-yellow dark:border-yellow-600/35",
+    filterActiveClass:
+      "bg-yellow-pastel text-black border-yellow-600 dark:bg-yellow-600/25 dark:text-white dark:border-io-yellow",
   },
   "Industria & Servicios": {
     accentBarClass: "bg-red-500",
     dotClass: "bg-red-500",
     badgeClass:
       "bg-red-pastel/75 text-black border-red-500/30 dark:bg-red-500/15 dark:text-red-300 dark:border-red-500/30",
+    filterActiveClass:
+      "bg-red-pastel text-black border-red-500 dark:bg-red-500/25 dark:text-white dark:border-red-400",
   },
 }
 

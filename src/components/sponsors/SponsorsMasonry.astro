@@ -1,8 +1,6 @@
 ---
-import { Image } from "astro:assets"
-import ArrowOutward from "@/assets/icons/arrow_outward.svg"
 import ScrambledText from "@/components/landing/ScrambledText.astro"
-import SponsorLogo from "@/components/sponsors/SponsorLogo.astro"
+import SponsorCard from "@/components/sponsors/SponsorCard.astro"
 import { SPONSOR_CATEGORY_META, SPONSORS, type SponsorCategory } from "@/lib/data/sponsors"
 
 const categories = Object.entries(SPONSOR_CATEGORY_META) as [
@@ -37,129 +35,82 @@ const categoryCounts = SPONSORS.reduce<Record<string, number>>((acc, sponsor) =>
       </p>
     </div>
 
-    <ul role="list" class="flex flex-wrap gap-2.5" aria-label="Categorías de organizaciones aliadas">
-      {
-        categories.map(([category, meta]) => (
-          <li class="inline-flex items-center gap-2 rounded-full border border-black/10 dark:border-white/15 bg-white dark:bg-[#18191e] px-3.5 py-1.5 text-xs font-monospace">
-            <span class:list={["size-2 rounded-full shrink-0", meta.dotClass]} aria-hidden="true" />
-            <span>{category}</span>
-            <span class="text-black/70 dark:text-io-text-muted tabular-nums">
-              ({categoryCounts[category] || 0})
-            </span>
-          </li>
-        ))
-      }
-    </ul>
-
-    <div class="sponsors-masonry py-2 px-1 -my-1 -mx-1">
-      {
-        SPONSORS.map(sponsor => {
-          const meta = SPONSOR_CATEGORY_META[sponsor.category]
-          const isFeatured = sponsor.masonrySize === "featured"
-          const isCompact = sponsor.masonrySize === "compact"
-
-          const cardPaddingClass = isFeatured
-            ? "p-5 sm:p-6 gap-4"
-            : isCompact
-              ? "p-3.5 sm:p-4 gap-3"
-              : "p-4 sm:p-5 gap-3.5"
-
-          const stageClass = isFeatured
-            ? "min-h-40 sm:min-h-44 p-5"
-            : isCompact
-              ? "min-h-24 p-3"
-              : "min-h-32 p-4"
-
-          const imgClass = isFeatured
-            ? "max-h-24 sm:max-h-28 w-auto max-w-full"
-            : isCompact
-              ? "max-h-14 w-auto max-w-full"
-              : "max-h-20 w-auto max-w-full"
-
-          return (
-            <article
-              class:list={[
-                "sponsors-masonry-item group relative flex flex-col justify-between rounded-2xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#18191e] overflow-clip transition-all duration-200 hover:-translate-y-1 hover:shadow-lg dark:hover:border-white/25",
-                cardPaddingClass,
-              ]}
+    <div class="flex flex-col gap-3" data-sponsors-filter-root>
+      <ul
+        role="list"
+        class="flex flex-wrap gap-2.5"
+        aria-label="Filtrar organizaciones aliadas por categoría"
+      >
+        <li>
+          <button
+            type="button"
+            data-filter-all
+            aria-pressed="true"
+            class="sponsor-filter-btn inline-flex items-center gap-2 rounded-full border min-h-9 px-3.5 py-1.5 text-xs font-monospace transition-colors cursor-pointer touch-manipulation bg-black text-white border-black dark:bg-white dark:text-black dark:border-white"
+          >
+            <svg
+              data-filter-check
+              aria-hidden="true"
+              viewBox="0 0 20 20"
+              class="size-3.5 fill-current shrink-0"
             >
-              {isFeatured && (
+              <path
+                fill-rule="evenodd"
+                d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z"
+                clip-rule="evenodd"></path>
+            </svg>
+            <span>Todas</span>
+            <span class="opacity-80 tabular-nums">({SPONSORS.length})</span>
+          </button>
+        </li>
+
+        {
+          categories.map(([category, meta]) => (
+            <li>
+              <button
+                type="button"
+                data-filter-category={category}
+                data-active-class={meta.filterActiveClass}
+                aria-pressed="false"
+                class="sponsor-filter-btn inline-flex items-center gap-2 rounded-full border min-h-9 px-3.5 py-1.5 text-xs font-monospace transition-colors cursor-pointer touch-manipulation border-black/15 dark:border-white/15 bg-white dark:bg-[#18191e] text-black dark:text-white hover:border-black/40 dark:hover:border-white/40"
+              >
                 <span
-                  class:list={["absolute inset-x-0 top-0 h-1", meta.accentBarClass]}
+                  class:list={["size-2 rounded-full shrink-0", meta.dotClass]}
                   aria-hidden="true"
                 />
-              )}
+                <span>{category}</span>
+                <span class="text-black/70 dark:text-io-text-muted tabular-nums">
+                  ({categoryCounts[category] || 0})
+                </span>
+                <svg
+                  data-filter-check
+                  aria-hidden="true"
+                  viewBox="0 0 20 20"
+                  class="hidden size-3.5 fill-current shrink-0"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </button>
+            </li>
+          ))
+        }
+      </ul>
 
-              <SponsorLogo
-                sponsor={sponsor}
-                decorative={true}
-                stageClass={`${stageClass} group-hover:scale-[1.01]`}
-                imgClass={imgClass}
-              />
+      <p
+        data-filter-summary
+        class="font-monospace text-xs text-black/70 dark:text-io-text-muted"
+      >
+        Mostrando {SPONSORS.length} de {SPONSORS.length} organizaciones
+      </p>
+      <span data-filter-live class="sr-only" role="status" aria-live="polite"></span>
+    </div>
 
-              <div class="flex flex-col gap-2">
-                <div class="flex items-start justify-between gap-2">
-                  <h3 class:list={["font-semibold leading-snug text-balance", isFeatured ? "text-lg" : "text-base"]}>
-                    {sponsor.url ? (
-                      <a
-                        href={sponsor.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="sponsor-card-link after:absolute after:inset-0 focus-visible:outline-none hover:underline"
-                      >
-                        {sponsor.name}
-                        <span class="sr-only"> (sitio externo, abre en una nueva pestaña)</span>
-                      </a>
-                    ) : (
-                      sponsor.name
-                    )}
-                  </h3>
-
-                  {sponsor.url && (
-                    <ArrowOutward
-                      aria-hidden="true"
-                      class="size-4 shrink-0 mt-1 fill-current text-black/65 dark:text-io-text-muted group-hover:text-blue-700 dark:group-hover:text-io-accent group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"
-                    />
-                  )}
-                </div>
-
-                {!isCompact && (
-                  <p class="text-xs sm:text-sm leading-relaxed text-black/75 dark:text-io-text-secondary text-pretty">
-                    {sponsor.note}
-                  </p>
-                )}
-
-                <div class="flex items-center justify-between gap-2 pt-1">
-                  <span
-                    class:list={[
-                      "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 font-monospace text-xs leading-tight",
-                      meta.badgeClass,
-                    ]}
-                  >
-                    <span
-                      class:list={["size-1.5 rounded-full shrink-0", meta.dotClass]}
-                      aria-hidden="true"
-                    />
-                    <span>{sponsor.category}</span>
-                  </span>
-
-                  {sponsor.emblem && (
-                    <span class="inline-flex items-center justify-center rounded-lg bg-blue-500/8 dark:bg-blue-500/15 p-1.5 shrink-0">
-                      <Image
-                        src={sponsor.emblem}
-                        alt=""
-                        loading="lazy"
-                        decoding="async"
-                        class="size-5 object-contain"
-                      />
-                    </span>
-                  )}
-                </div>
-              </div>
-            </article>
-          )
-        })
-      }
+    <div class="sponsors-masonry py-2 px-1 -my-1 -mx-1">
+      {SPONSORS.map(sponsor => <SponsorCard sponsor={sponsor} />)}
     </div>
   </div>
 </section>
@@ -188,16 +139,20 @@ const categoryCounts = SPONSORS.reduce<Record<string, number>>((acc, sponsor) =>
     }
   }
 
-  .sponsors-masonry-item {
+  .sponsors-masonry > :global(.sponsors-masonry-item) {
     display: inline-flex;
     width: 100%;
     break-inside: avoid;
     margin-block-end: 1rem;
   }
 
-  .sponsors-masonry-item:has(.sponsor-card-link:focus-visible) {
-    outline: 2px solid var(--color-blue-500);
-    outline-offset: 2px;
+  .sponsors-masonry > :global(.sponsors-masonry-item[hidden]) {
+    display: none;
+  }
+
+  .sponsor-filter-btn[aria-pressed="true"] {
+    outline: 1px solid currentColor;
+    outline-offset: -1px;
   }
 
   @supports (grid-template-rows: masonry) {
@@ -209,9 +164,113 @@ const categoryCounts = SPONSORS.reduce<Record<string, number>>((acc, sponsor) =>
       columns: unset;
     }
 
-    .sponsors-masonry-item {
+    .sponsors-masonry > :global(.sponsors-masonry-item) {
       display: flex;
       margin-block-end: 0;
     }
+
+    .sponsors-masonry > :global(.sponsors-masonry-item[hidden]) {
+      display: none;
+    }
   }
 </style>
+
+<script>
+  const wallSection = document.getElementById("sponsors-wall")
+  const allBtn = wallSection?.querySelector<HTMLButtonElement>("[data-filter-all]")
+  const categoryBtns = Array.from(
+    wallSection?.querySelectorAll<HTMLButtonElement>("[data-filter-category]") ?? []
+  )
+  const cards = Array.from(wallSection?.querySelectorAll<HTMLElement>("[data-sponsor-card]") ?? [])
+  const summaryEl = wallSection?.querySelector<HTMLElement>("[data-filter-summary]")
+  const liveEl = wallSection?.querySelector<HTMLElement>("[data-filter-live]")
+
+  if (allBtn && categoryBtns.length > 0 && cards.length > 0) {
+    const ALL_ACTIVE_CLASSES = [
+      "bg-black",
+      "text-white",
+      "border-black",
+      "dark:bg-white",
+      "dark:text-black",
+      "dark:border-white",
+    ]
+    const INACTIVE_CLASSES = [
+      "border-black/15",
+      "dark:border-white/15",
+      "bg-white",
+      "dark:bg-[#18191e]",
+      "text-black",
+      "dark:text-white",
+      "hover:border-black/40",
+      "dark:hover:border-white/40",
+    ]
+
+    const selectedCategories = new Set<string>()
+    const totalCount = cards.length
+
+    const setClasses = (el: HTMLElement, classes: string[], present: boolean) => {
+      for (const cls of classes) {
+        if (cls) el.classList.toggle(cls, present)
+      }
+    }
+
+    const applyFilter = (announce: boolean) => {
+      const showAll = selectedCategories.size === 0
+
+      allBtn.setAttribute("aria-pressed", String(showAll))
+      setClasses(allBtn, ALL_ACTIVE_CLASSES, showAll)
+      setClasses(allBtn, INACTIVE_CLASSES, !showAll)
+      allBtn.querySelector("[data-filter-check]")?.classList.toggle("hidden", !showAll)
+
+      for (const btn of categoryBtns) {
+        const category = btn.dataset.filterCategory ?? ""
+        const isActive = selectedCategories.has(category)
+        const activeClasses = (btn.dataset.activeClass ?? "").split(/\s+/).filter(Boolean)
+
+        btn.setAttribute("aria-pressed", String(isActive))
+        setClasses(btn, activeClasses, isActive)
+        setClasses(btn, INACTIVE_CLASSES, !isActive)
+        btn.querySelector("[data-filter-check]")?.classList.toggle("hidden", !isActive)
+      }
+
+      let visibleCount = 0
+      for (const card of cards) {
+        const category = card.dataset.category ?? ""
+        const isVisible = showAll || selectedCategories.has(category)
+        card.hidden = !isVisible
+        if (isVisible) visibleCount++
+      }
+
+      const message = showAll
+        ? `Mostrando ${visibleCount} de ${totalCount} organizaciones`
+        : `Mostrando ${visibleCount} de ${totalCount} organizaciones (${selectedCategories.size} ${selectedCategories.size === 1 ? "categoría seleccionada" : "categorías seleccionadas"})`
+
+      if (summaryEl) {
+        summaryEl.textContent = message
+      }
+      if (announce && liveEl) {
+        liveEl.textContent = message
+      }
+    }
+
+    allBtn.addEventListener("click", () => {
+      selectedCategories.clear()
+      applyFilter(true)
+    })
+
+    for (const btn of categoryBtns) {
+      btn.addEventListener("click", () => {
+        const category = btn.dataset.filterCategory
+        if (!category) return
+
+        if (selectedCategories.has(category)) {
+          selectedCategories.delete(category)
+        } else {
+          selectedCategories.add(category)
+        }
+
+        applyFilter(true)
+      })
+    }
+  }
+</script>
