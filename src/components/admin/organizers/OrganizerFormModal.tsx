@@ -1,5 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from "react"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useEffect, useState } from "react"
+import { useForm } from "react-hook-form"
 import { toast } from "sonner"
+import * as z from "zod"
+
 import { AvatarUpload } from "@/components/profile/AvatarUpload"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -11,20 +15,32 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import useOrganizers, { type OrganizerSearchResult } from "@/hooks/admin/useOrganizers"
+import { cn } from "@/lib/utils"
 
-interface OrganizerFormData {
-  id?: number
-  profile_id?: string
-  first_name: string
-  last_name: string
-  email: string
-  phone_number: string
-  avatar_url?: string | null
-}
+import type { OrganizerData } from "./OrganizersTable"
 
-const emptyForm: OrganizerFormData = {
+const formSchema = z.object({
+  first_name: z.string().min(1, "El nombre es requerido."),
+  last_name: z.string().min(1, "El apellido es requerido."),
+  email: z.string().min(1, "El correo es requerido."),
+  phone_number: z.string(),
+  profile_id: z.string().optional(),
+  avatar_url: z.string().nullish(),
+})
+
+type OrganizerFormValues = z.infer<typeof formSchema>
+
+const emptyForm: OrganizerFormValues = {
   first_name: "",
   last_name: "",
   email: "",
@@ -32,157 +48,70 @@ const emptyForm: OrganizerFormData = {
   avatar_url: null,
 }
 
-type Mode = "create" | "edit"
 type Step = "form" | "confirm"
 
 interface OrganizerFormModalProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   eventSlug: string
-  mode: Mode
-  initialData?: OrganizerFormData
-  onSuccess?: () => void
-  onAvatarSuccess?: (newAvatarUrl: string) => void
+  organizer: OrganizerData | null
 }
 
-export function OrganizerFormModal({
-  open,
-  onOpenChange,
-  eventSlug,
-  mode,
-  initialData,
-  onSuccess,
-  onAvatarSuccess,
-}: OrganizerFormModalProps) {
-  const [step, setStep] = useState<Step>("form")
-  const [formData, setFormData] = useState<OrganizerFormData>(initialData ?? emptyForm)
-  const [emailSearch, setEmailSearch] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const [isSearching, setIsSearching] = useState(false)
-  const [prevOpen, setPrevOpen] = useState(false)
-  const [prevId, setPrevId] = useState<number | undefined>(undefined)
-  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+function OrganizerSummary({
+  values,
+  className,
+}: {
+  values: OrganizerFormValues
+  className?: string
+}) {
+  const initials = `${values.first_name?.[0] ?? ""}${values.last_name?.[0] ?? ""}`.toUpperCase()
 
-  const clearCloseTimeout = useCallback(() => {
-    if (closeTimeoutRef.current) {
-      clearTimeout(closeTimeoutRef.current)
-      closeTimeoutRef.current = null
-    }
-  }, [])
+  return (
+    <div className={cn("flex items-center gap-3", className)}>
+      <Avatar className="size-12 shrink-0 border">
+        <AvatarImage src={values.avatar_url || ""} alt={values.first_name} />
+        <AvatarFallback className="bg-blue-100 text-blue-800 text-sm font-medium">
+          {initials || "?"}
+        </AvatarFallback>
+      </Avatar>
+      <div className="min-w-0">
+        <p className="font-medium text-sm">
+          {values.first_name || values.last_name
+            ? `${values.first_name} ${values.last_name}`
+            : "Usuario registrado"}
+        </p>
+        <p className="text-xs text-muted-foreground truncate">{values.email}</p>
+        {values.phone_number && (
+          <p className="text-xs text-muted-foreground">{values.phone_number}</p>
+        )}
+      </div>
+    </div>
+  )
+}
 
-  useEffect(() => {
-    return () => {
-      clearCloseTimeout()
-    }
-  }, [clearCloseTimeout])
+function EmailSearch({
+  onFound,
+  searchOrganizer,
+  isSearching,
+}: {
+  onFound: (values: OrganizerFormValues) => void
+  searchOrganizer: (email: string) => Promise<OrganizerSearchResult>
+  isSearching: boolean
+}) {
+  const [email, setEmail] = useState("")
 
-  if (open && (!prevOpen || initialData?.id !== prevId)) {
-    clearCloseTimeout()
-    setPrevOpen(true)
-    setPrevId(initialData?.id)
-    setFormData(initialData ?? emptyForm)
-    setStep("form")
-    setEmailSearch("")
-  } else if (!open && prevOpen) {
-    setPrevOpen(false)
-    setPrevId(undefined)
-  }
-
-  const handleClose = () => {
-    clearCloseTimeout()
-    onOpenChange(false)
-    closeTimeoutRef.current = setTimeout(() => {
-      setStep("form")
-      setFormData(emptyForm)
-      setEmailSearch("")
-      closeTimeoutRef.current = null
-    }, 200)
-  }
-
-  const handleOpenChange = (nextOpen: boolean) => {
-    if (!nextOpen) {
-      handleClose()
-    }
-  }
-
-  const handleContinue = () => {
-    if (!formData.first_name || !formData.last_name || !formData.email) {
-      toast.error("Nombre, apellido y correo son requeridos")
-      return
-    }
-    setStep("confirm")
-  }
-
-  const handleConfirm = async () => {
-    setIsLoading(true)
-    try {
-      if (mode === "create") {
-        const res = await fetch("/api/organizers", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...formData, eventSlug }),
-        })
-        const data = await res.json()
-        if (res.status === 400 && data.reason === "already_organizer") {
-          toast.error("El usuario ya es un organizador de este evento")
-          return
-        }
-        if (!res.ok) {
-          throw new Error(data.error || data.message || "Error al agregar organizador")
-        }
-        toast.success("Organizador agregado exitosamente")
-      } else {
-        const res = await fetch("/api/organizers", {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            id: initialData?.id,
-            ...formData,
-          }),
-        })
-
-        if (!res.ok) {
-          const errorData = await res.json()
-          throw new Error(errorData.error || "Error al actualizar")
-        }
-
-        toast.success("Organizador actualizado exitosamente")
-      }
-      onSuccess?.()
-      handleClose()
-    } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : mode === "create"
-            ? "Error al agregar organizador"
-            : "Error al actualizar organizador"
-      toast.error(message)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const handleSearchProfile = async () => {
-    const trimmed = emailSearch.trim()
+  const handleSearch = async () => {
+    const trimmed = email.trim()
     if (!trimmed) {
       toast.error("Por favor ingresa un correo para buscar")
       return
     }
 
-    setIsSearching(true)
     try {
-      const response = await fetch("/api/organizers/byEmail", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: trimmed }),
-      })
+      const result = await searchOrganizer(trimmed)
 
-      const result = await response.json()
-
-      if (!response.ok || !result.success) {
-        const errorMessage = result.error || "Usuario no encontrado"
-        toast.error(errorMessage)
+      if (!result.success) {
+        toast.error(result.error || "Usuario no encontrado")
         return
       }
 
@@ -191,7 +120,7 @@ export function OrganizerFormModal({
         return
       }
 
-      setFormData({
+      onFound({
         first_name: result.data.first_name || "",
         last_name: result.data.last_name || "",
         email: result.data.email || trimmed,
@@ -208,209 +137,241 @@ export function OrganizerFormModal({
     } catch (error) {
       console.error("Error buscando usuario", error)
       toast.error("Error al buscar usuario")
-    } finally {
-      setIsSearching(false)
     }
-  }
-
-  const initials = `${formData.first_name?.[0] ?? ""}${formData.last_name?.[0] ?? ""}`.toUpperCase()
-
-  const handleAvatarUpload = async (blob: Blob) => {
-    if (!formData.profile_id) {
-      throw new Error("No se encontró el ID de perfil")
-    }
-    const uploadData = new FormData()
-    uploadData.append("avatar", blob, "avatar.webp")
-    uploadData.append("profile_id", formData.profile_id)
-
-    const res = await fetch("/api/organizers/avatar", {
-      method: "POST",
-      body: uploadData,
-    })
-
-    if (!res.ok) {
-      const errJson = await res.json().catch(() => null)
-      throw new Error(errJson?.error || "Error al subir la foto de perfil")
-    }
-
-    const json = await res.json()
-    return json.avatar_url
   }
 
   return (
-    <Dialog open={open} onOpenChange={handleOpenChange}>
+    <div className="bg-muted rounded-md p-3 space-y-2">
+      <p className="text-xs text-muted-foreground">Buscar usuario registrado por correo</p>
+      <div className="flex gap-2">
+        <Input
+          placeholder="correo@ejemplo.com"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          onKeyDown={e => {
+            if (e.key === "Enter") {
+              e.preventDefault()
+              handleSearch()
+            }
+          }}
+          className="text-sm"
+        />
+        <Button variant="outline" size="sm" onClick={handleSearch} disabled={isSearching}>
+          {isSearching ? "Buscando..." : "Buscar"}
+        </Button>
+      </div>
+      <p className="text-xs text-muted-foreground">
+        Busca primero en perfiles y luego en cuentas registradas
+      </p>
+    </div>
+  )
+}
+
+export function OrganizerFormModal({
+  open,
+  onOpenChange,
+  eventSlug,
+  organizer,
+}: OrganizerFormModalProps) {
+  const [step, setStep] = useState<Step>("form")
+  const [isCropping, setIsCropping] = useState(false)
+
+  const { addOrganizer, updateOrganizer, isSaving, searchOrganizer, isSearching, uploadAvatar } =
+    useOrganizers(eventSlug)
+
+  const isEdit = Boolean(organizer)
+
+  const form = useForm<OrganizerFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: emptyForm,
+  })
+
+  useEffect(() => {
+    if (!open) return
+
+    form.reset(
+      organizer
+        ? {
+            first_name: organizer.first_name,
+            last_name: organizer.last_name,
+            email: organizer.email ?? "",
+            phone_number: organizer.phone_number ?? "",
+            profile_id: organizer.profile_id,
+            avatar_url: organizer.image,
+          }
+        : emptyForm
+    )
+    setStep("form")
+    setIsCropping(false)
+  }, [open, organizer, form])
+
+  const values = form.watch()
+
+  const handleConfirm = async () => {
+    const formValues = form.getValues()
+    try {
+      if (isEdit && organizer) {
+        await updateOrganizer({ id: organizer.id, ...formValues })
+      } else {
+        await addOrganizer(formValues)
+      }
+      onOpenChange(false)
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : isEdit
+            ? "Error al actualizar organizador"
+            : "Error al agregar organizador"
+      toast.error(message)
+    }
+  }
+
+  const handleAvatarUpload = (blob: Blob) => {
+    const profileId = form.getValues("profile_id")
+    if (!profileId) return Promise.reject(new Error("No se encontró el ID de perfil"))
+    return uploadAvatar({ blob, profileId })
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         {step === "form" ? (
           <>
             <DialogHeader>
-              <DialogTitle>
-                {mode === "create" ? "Agregar organizador" : "Editar organizador"}
-              </DialogTitle>
+              <DialogTitle>{isEdit ? "Editar organizador" : "Agregar organizador"}</DialogTitle>
             </DialogHeader>
 
-            {mode === "edit" && formData.profile_id && (
+            {isEdit && values.profile_id && (
               <div className="flex flex-col items-center justify-center py-2">
                 <AvatarUpload
-                  currentAvatarUrl={formData.avatar_url}
-                  userName={`${formData.first_name} ${formData.last_name}`.trim()}
-                  avatarClassName="size-24"
-                  onAvatarChange={newUrl => {
-                    setFormData(p => ({ ...p, avatar_url: newUrl }))
-                    if (onAvatarSuccess) {
-                      onAvatarSuccess(newUrl)
-                    } else {
-                      onSuccess?.()
-                    }
-                  }}
+                  currentAvatarUrl={values.avatar_url}
+                  userName={`${values.first_name} ${values.last_name}`.trim()}
+                  avatarClassName="size-28"
+                  onAvatarChange={newUrl => form.setValue("avatar_url", newUrl)}
                   onUpload={handleAvatarUpload}
+                  onCroppingChange={setIsCropping}
                 />
-                <p className="text-xs text-muted-foreground mt-2">
-                  Haz clic para cambiar la foto de perfil del organizador
-                </p>
               </div>
             )}
 
-            {mode === "create" && (
-              <div className="bg-muted rounded-md p-3 space-y-2">
-                <p className="text-xs text-muted-foreground">
-                  Buscar usuario registrado por correo
-                </p>
-                <div className="flex gap-2">
-                  <Input
-                    placeholder="correo@ejemplo.com"
-                    value={emailSearch}
-                    onChange={e => setEmailSearch(e.target.value)}
-                    onKeyDown={e => {
-                      if (e.key === "Enter") {
-                        e.preventDefault()
-                        handleSearchProfile()
-                      }
-                    }}
-                    className="text-sm"
-                  />
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleSearchProfile}
-                    disabled={isSearching}
+            {!isEdit && (
+              <EmailSearch
+                onFound={values => form.reset(values)}
+                searchOrganizer={searchOrganizer}
+                isSearching={isSearching}
+              />
+            )}
+
+            {!isEdit && values.profile_id && (
+              <OrganizerSummary values={values} className="bg-muted/50 border rounded-md p-2.5" />
+            )}
+
+            {!isCropping && (
+              <>
+                <Form {...form}>
+                  <form
+                    id="organizer-form"
+                    noValidate
+                    className="space-y-4"
+                    onSubmit={form.handleSubmit(() => setStep("confirm"))}
                   >
-                    {isSearching ? "Buscando..." : "Buscar"}
+                    <div className="grid grid-cols-2 gap-3">
+                      <FormField
+                        control={form.control}
+                        name="first_name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Nombre(s)</FormLabel>
+                            <FormControl>
+                              <Input {...field} placeholder="Ana" />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="last_name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Apellido(s)</FormLabel>
+                            <FormControl>
+                              <Input {...field} placeholder="García" />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Correo electrónico</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              type="email"
+                              placeholder="ana@ejemplo.com"
+                              disabled={isEdit}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="phone_number"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Teléfono</FormLabel>
+                          <FormControl>
+                            <Input {...field} placeholder="+591 7xxxxxxx" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </form>
+                </Form>
+
+                <DialogFooter>
+                  <Button variant="outline" onClick={() => onOpenChange(false)}>
+                    Cancelar
                   </Button>
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  Busca primero en perfiles y luego en cuentas registradas
-                </p>
-              </div>
+                  <Button type="submit" form="organizer-form" className="bg-blue-500">
+                    Continuar
+                  </Button>
+                </DialogFooter>
+              </>
             )}
-
-            {mode === "create" && formData.profile_id && (
-              <div className="bg-muted/50 border rounded-md p-2.5 flex items-center gap-3">
-                <Avatar className="size-12 shrink-0 border">
-                  <AvatarImage src={formData.avatar_url || ""} alt={formData.first_name} />
-                  <AvatarFallback className="bg-blue-100 text-blue-800 text-sm font-medium">
-                    {initials || "?"}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="min-w-0">
-                  <p className="font-medium text-sm">
-                    {formData.first_name || formData.last_name
-                      ? `${formData.first_name} ${formData.last_name}`
-                      : "Usuario registrado"}
-                  </p>
-                  <p className="text-xs text-muted-foreground truncate">{formData.email}</p>
-                </div>
-              </div>
-            )}
-
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1">
-                <Label htmlFor="first_name">Nombre(s)</Label>
-                <Input
-                  id="first_name"
-                  value={formData.first_name}
-                  onChange={e => setFormData(p => ({ ...p, first_name: e.target.value }))}
-                  placeholder="Ana"
-                />
-              </div>
-              <div className="space-y-1">
-                <Label htmlFor="last_name">Apellido(s)</Label>
-                <Input
-                  id="last_name"
-                  value={formData.last_name}
-                  onChange={e => setFormData(p => ({ ...p, last_name: e.target.value }))}
-                  placeholder="García"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-1">
-              <Label htmlFor="email">Correo electrónico</Label>
-              <Input
-                id="email"
-                type="email"
-                value={formData.email}
-                onChange={e => setFormData(p => ({ ...p, email: e.target.value }))}
-                placeholder="ana@ejemplo.com"
-                disabled={mode === "edit"}
-              />
-            </div>
-
-            <div className="space-y-1">
-              <Label htmlFor="phone_number">Teléfono</Label>
-              <Input
-                id="phone_number"
-                value={formData.phone_number}
-                onChange={e => setFormData(p => ({ ...p, phone_number: e.target.value }))}
-                placeholder="+591 7xxxxxxx"
-              />
-            </div>
-
-            <DialogFooter>
-              <Button variant="outline" onClick={handleClose}>
-                Cancelar
-              </Button>
-              <Button className="bg-blue-500" onClick={handleContinue}>
-                Continuar
-              </Button>
-            </DialogFooter>
           </>
         ) : (
           <>
             <DialogHeader>
               <DialogTitle>
-                {mode === "create" ? "Confirmar nuevo organizador" : "Confirmar cambios"}
+                {isEdit ? "Confirmar cambios" : "Confirmar nuevo organizador"}
               </DialogTitle>
               <DialogDescription>
-                {mode === "create"
-                  ? "¿Deseas agregar este organizador al evento?"
-                  : "¿Deseas guardar los cambios de este organizador?"}
+                {isEdit
+                  ? "¿Deseas guardar los cambios de este organizador?"
+                  : "¿Deseas agregar este organizador al evento?"}
               </DialogDescription>
             </DialogHeader>
 
-            <div className="bg-muted rounded-md p-3 flex items-center gap-3">
-              <Avatar className="size-12 shrink-0 border">
-                <AvatarImage src={formData.avatar_url || ""} alt={formData.first_name} />
-                <AvatarFallback className="bg-blue-100 text-blue-800 text-sm font-medium">
-                  {initials || "?"}
-                </AvatarFallback>
-              </Avatar>
-              <div className="min-w-0">
-                <p className="font-medium text-sm">
-                  {formData.first_name} {formData.last_name}
-                </p>
-                <p className="text-xs text-muted-foreground truncate">{formData.email}</p>
-                {formData.phone_number && (
-                  <p className="text-xs text-muted-foreground">{formData.phone_number}</p>
-                )}
-              </div>
-            </div>
+            <OrganizerSummary values={values} className="bg-muted rounded-md p-3" />
 
             <DialogFooter>
               <Button variant="outline" onClick={() => setStep("form")}>
                 Volver
               </Button>
-              <Button className="bg-blue-500" onClick={handleConfirm} disabled={isLoading}>
-                {isLoading ? "Guardando..." : "Confirmar"}
+              <Button className="bg-blue-500" onClick={handleConfirm} disabled={isSaving}>
+                {isSaving ? "Guardando..." : "Confirmar"}
               </Button>
             </DialogFooter>
           </>
