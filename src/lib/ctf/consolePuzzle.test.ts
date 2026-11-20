@@ -1,15 +1,11 @@
 import { describe, expect, it } from "bun:test"
+import { getProfileUrl, getStorageBadgeUrl, initConsolePuzzle } from "./consolePuzzle"
 import {
-  CANONICAL_DINO_KEY,
   analyzeSubmission,
+  CANONICAL_DINO_KEY,
   generateDinoPackets,
   validateFlag,
 } from "./obfuscation"
-import {
-  initConsolePuzzle,
-  getProfileUrl,
-  getStorageBadgeUrl,
-} from "./consolePuzzle"
 
 describe("DevTools Challenge Dino Pipeline", () => {
   it("should generate 20 packets with both valid and corrupted items", () => {
@@ -135,8 +131,7 @@ describe("DevTools Challenge Dino Pipeline", () => {
         dispatchEvent: () => true,
       }
       globalAny.window = mockWin
-      globalAny.fetch = async () =>
-        new Response(JSON.stringify({ ok: true }), { status: 200 })
+      globalAny.fetch = async () => new Response(JSON.stringify({ ok: true }), { status: 200 })
 
       initConsolePuzzle()
 
