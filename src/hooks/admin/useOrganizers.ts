@@ -12,16 +12,15 @@ interface OrganizerInput {
 
 export interface OrganizerSearchResult {
   success?: boolean
-  source?: string
   error?: string
-  data?: {
+  data?: Array<{
     id: string
-    email?: string
-    first_name?: string
-    last_name?: string
-    phone_number?: string
-    avatar_url?: string | null
-  } | null
+    email: string
+    first_name: string
+    last_name: string
+    phone_number: string
+    avatar_url: string | null
+  }> | null
 }
 
 async function parseError(response: Response, fallback: string) {
@@ -97,11 +96,11 @@ export default function useOrganizers(slug: string) {
   })
 
   const searchMutation = useMutation({
-    mutationFn: async (email: string): Promise<OrganizerSearchResult> => {
-      const response = await fetch("/api/organizers/byEmail", {
+    mutationFn: async (query: string): Promise<OrganizerSearchResult> => {
+      const response = await fetch("/api/organizers/search", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email: query }),
       })
       return response.json()
     },
