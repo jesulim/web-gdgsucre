@@ -48,7 +48,7 @@ const emptyForm: OrganizerFormValues = {
   avatar_url: null,
 }
 
-type Step = "form" | "confirm"
+type Step = "search" | "form" | "confirm"
 
 interface OrganizerFormModalProps {
   open: boolean
@@ -89,65 +89,57 @@ function OrganizerSummary({
   )
 }
 
+type SearchUser = NonNullable<OrganizerSearchResult["data"]>[number]
+
 function EmailSearch({
-  onFound,
+  onSelect,
   searchOrganizer,
   isSearching,
 }: {
-  onFound: (values: OrganizerFormValues) => void
-  searchOrganizer: (email: string) => Promise<OrganizerSearchResult>
+  onSelect: (values: OrganizerFormValues) => void
+  searchOrganizer: (query: string) => Promise<OrganizerSearchResult>
   isSearching: boolean
 }) {
-  const [email, setEmail] = useState("")
+  const [query, setQuery] = useState("")
+  const [matches, setMatches] = useState<SearchUser[]>([])
+  const [searched, setSearched] = useState(false)
 
   const handleSearch = async () => {
-    const trimmed = email.trim()
+    const trimmed = query.trim()
     if (!trimmed) {
-      toast.error("Por favor ingresa un correo para buscar")
+      toast.error("Por favor ingresa un correo o nombre para buscar")
       return
     }
 
     try {
       const result = await searchOrganizer(trimmed)
-
-      if (!result.success) {
-        toast.error(result.error || "Usuario no encontrado")
-        return
-      }
-
-      if (!result.data) {
-        toast.error("Usuario no encontrado")
-        return
-      }
-
-      onFound({
-        first_name: result.data.first_name || "",
-        last_name: result.data.last_name || "",
-        email: result.data.email || trimmed,
-        phone_number: result.data.phone_number || "",
-        avatar_url: result.data.avatar_url || null,
-        profile_id: result.data.id,
-      })
-
-      if (result.source === "auth") {
-        toast.info("Usuario encontrado en la plataforma. Completa sus datos si es necesario.")
-      } else {
-        toast.success("Perfil encontrado y cargado")
-      }
+      setMatches(result.success ? (result.data ?? []) : [])
+      setSearched(true)
+      if (!result.success) toast.error(result.error || "No se encontraron resultados")
     } catch (error) {
       console.error("Error buscando usuario", error)
       toast.error("Error al buscar usuario")
     }
   }
 
+  const handleSelect = (user: SearchUser) => {
+    onSelect({
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      phone_number: user.phone_number,
+      avatar_url: user.avatar_url,
+      profile_id: user.id,
+    })
+  }
+
   return (
-    <div className="bg-muted rounded-md p-3 space-y-2">
-      <p className="text-xs text-muted-foreground">Buscar usuario registrado por correo</p>
+    <div className="space-y-3">
       <div className="flex gap-2">
         <Input
-          placeholder="correo@ejemplo.com"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
+          placeholder="Correo o nombre"
+          value={query}
+          onChange={e => setQuery(e.target.value)}
           onKeyDown={e => {
             if (e.key === "Enter") {
               e.preventDefault()
@@ -156,13 +148,43 @@ function EmailSearch({
           }}
           className="text-sm"
         />
-        <Button variant="outline" size="sm" onClick={handleSearch} disabled={isSearching}>
+        <Button onClick={handleSearch} disabled={isSearching}>
           {isSearching ? "Buscando..." : "Buscar"}
         </Button>
       </div>
-      <p className="text-xs text-muted-foreground">
-        Busca primero en perfiles y luego en cuentas registradas
-      </p>
+
+      {matches.length > 0 && (
+        <div className="max-h-64 space-y-2 overflow-y-auto pr-1">
+          {matches.map(user => (
+            <button
+              key={user.id}
+              type="button"
+              onClick={() => handleSelect(user)}
+              className="w-full rounded-md border bg-muted/40 p-2.5 text-left transition-colors hover:bg-accent"
+            >
+              <OrganizerSummary
+                values={{
+                  first_name: user.first_name,
+                  last_name: user.last_name,
+                  email: user.email,
+                  phone_number: user.phone_number,
+                  avatar_url: user.avatar_url,
+                }}
+              />
+            </button>
+          ))}
+        </div>
+      )}
+
+      {searched && matches.length === 0 && !isSearching && (
+        <p className="py-2 text-center text-sm text-muted-foreground">
+          No se encontraron usuarios. Puedes registrar uno desde cero.
+        </p>
+      )}
+
+      <Button variant="secondary" className="w-full" onClick={() => onSelect({ ...emptyForm })}>
+        Agregar desde cero
+      </Button>
     </div>
   )
 }
@@ -201,7 +223,7 @@ export function OrganizerFormModal({
           }
         : emptyForm
     )
-    setStep("form")
+    setStep(organizer ? "form" : "search")
     setIsCropping(false)
   }, [open, organizer, form])
 
@@ -236,7 +258,23 @@ export function OrganizerFormModal({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
-        {step === "form" ? (
+        {step === "search" ? (
+          <>
+            <DialogHeader>
+              <DialogTitle>Agregar organizador</DialogTitle>
+              <DialogDescription>Busca un usuario por email o nombre.</DialogDescription>
+            </DialogHeader>
+
+            <EmailSearch
+              onSelect={values => {
+                form.reset(values)
+                setStep("form")
+              }}
+              searchOrganizer={searchOrganizer}
+              isSearching={isSearching}
+            />
+          </>
+        ) : step === "form" ? (
           <>
             <DialogHeader>
               <DialogTitle>{isEdit ? "Editar organizador" : "Agregar organizador"}</DialogTitle>
@@ -253,14 +291,6 @@ export function OrganizerFormModal({
                   onCroppingChange={setIsCropping}
                 />
               </div>
-            )}
-
-            {!isEdit && (
-              <EmailSearch
-                onFound={values => form.reset(values)}
-                searchOrganizer={searchOrganizer}
-                isSearching={isSearching}
-              />
             )}
 
             {!isEdit && values.profile_id && (
@@ -331,7 +361,7 @@ export function OrganizerFormModal({
                         <FormItem>
                           <FormLabel>Teléfono</FormLabel>
                           <FormControl>
-                            <Input {...field} placeholder="+591 7xxxxxxx" />
+                            <Input {...field} placeholder="71234567" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>

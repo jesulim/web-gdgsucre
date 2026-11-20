@@ -1,5 +1,4 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
-import { getProfileByEmail } from "./profileService"
 
 const capitalizeName = (name: string) => {
   if (!name) return ""
@@ -100,58 +99,66 @@ export async function getOrganizersForAdmin(
   })
 }
 
-export async function searchUserByEmail(
+export async function searchUsers(
   supabase: SupabaseClient,
-  email: string
-): Promise<{ source: "profiles" | "auth"; user: SearchedUser } | null> {
-  const profile = await getProfileByEmail(supabase, email)
-  if (profile) {
-    return {
-      source: "profiles",
-      user: {
-        id: profile.id,
-        email: profile.email || email,
-        first_name: profile.first_name || "",
-        last_name: profile.last_name || "",
-        phone_number: profile.phone_number || "",
-        avatar_url: profile.avatar_url || null,
-      },
-    }
+  query: string
+): Promise<SearchedUser[]> {
+  const pattern = query.replace(/[,()]/g, "\\$&")
+  const { data: profiles, error } = await supabase
+    .from("profiles")
+    .select("id, email, first_name, last_name, phone_number, avatar_url")
+    .or(`email.ilike.%${pattern}%,first_name.ilike.%${pattern}%,last_name.ilike.%${pattern}%`)
+    .limit(20)
+
+  if (error) {
+    console.error("Error searching profiles", error)
+    return []
   }
 
+  const users: SearchedUser[] = (profiles ?? []).map(profile => ({
+    id: profile.id,
+    email: profile.email || query,
+    first_name: profile.first_name || "",
+    last_name: profile.last_name || "",
+    phone_number: profile.phone_number || "",
+    avatar_url: profile.avatar_url || null,
+  }))
+
+  if (users.length > 0) return users
+
+  // Auth users without a profile are only reachable by their exact email.
+  if (!query.includes("@")) return []
+
   const { data: authUser, error: rpcError } = await supabase.rpc("get_user_by_email", {
-    p_email: email,
+    p_email: query,
   })
 
   if (rpcError) {
     console.error("Error searching auth user by email via RPC", rpcError)
   }
 
-  if (authUser?.id) {
-    const meta = authUser.raw_user_meta_data || {}
-    const fullName: string = meta.full_name || meta.name || ""
-    let firstName = meta.first_name || ""
-    let lastName = meta.last_name || ""
-    if (!firstName && fullName) {
-      const parts = fullName.trim().split(" ")
-      firstName = parts[0] || ""
-      lastName = parts.slice(1).join(" ")
-    }
+  if (!authUser?.id) return []
 
-    return {
-      source: "auth",
-      user: {
-        id: authUser.id,
-        email: authUser.email || email,
-        first_name: firstName,
-        last_name: lastName,
-        phone_number: meta.phone_number || meta.phone || "",
-        avatar_url: meta.avatar_url || null,
-      },
-    }
+  const meta = authUser.raw_user_meta_data || {}
+  const fullName: string = meta.full_name || meta.name || ""
+  let firstName = meta.first_name || ""
+  let lastName = meta.last_name || ""
+  if (!firstName && fullName) {
+    const parts = fullName.trim().split(" ")
+    firstName = parts[0] || ""
+    lastName = parts.slice(1).join(" ")
   }
 
-  return null
+  return [
+    {
+      id: authUser.id,
+      email: authUser.email || query,
+      first_name: firstName,
+      last_name: lastName,
+      phone_number: meta.phone_number || meta.phone || "",
+      avatar_url: meta.avatar_url || null,
+    },
+  ]
 }
 
 export async function addOrganizer(
