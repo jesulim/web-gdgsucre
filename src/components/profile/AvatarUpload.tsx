@@ -57,6 +57,7 @@ interface AvatarUploadProps {
   userName?: string
   onAvatarChange: (url: string) => void
   onUpload?: (blob: Blob) => Promise<string>
+  onCroppingChange?: (cropping: boolean) => void
   className?: string
   avatarClassName?: string
 }
@@ -66,6 +67,7 @@ export function AvatarUpload({
   userName,
   onAvatarChange,
   onUpload,
+  onCroppingChange,
   className,
   avatarClassName,
 }: AvatarUploadProps) {
@@ -98,7 +100,10 @@ export function AvatarUpload({
     if (!file) return
 
     const reader = new FileReader()
-    reader.onload = () => setImageSrc(reader.result as string)
+    reader.onload = () => {
+      setImageSrc(reader.result as string)
+      onCroppingChange?.(true)
+    }
     reader.readAsDataURL(file)
     e.target.value = ""
   }
@@ -131,6 +136,7 @@ export function AvatarUpload({
       onAvatarChange(avatarUrl)
       toast.success("Foto de perfil actualizada")
       setImageSrc(null)
+      onCroppingChange?.(false)
     } catch (error) {
       const message = error instanceof Error ? error.message : "Error al actualizar la foto"
       toast.error(message)
@@ -142,6 +148,7 @@ export function AvatarUpload({
 
   function handleCancel() {
     setImageSrc(null)
+    onCroppingChange?.(false)
     setZoom(1)
     setCrop({ x: 0, y: 0 })
   }
