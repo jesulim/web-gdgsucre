@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { toast } from "sonner"
 import { AvatarUpload } from "@/components/profile/AvatarUpload"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -61,8 +61,23 @@ export function OrganizerFormModal({
   const [isSearching, setIsSearching] = useState(false)
   const [prevOpen, setPrevOpen] = useState(false)
   const [prevId, setPrevId] = useState<number | undefined>(undefined)
+  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const clearCloseTimeout = useCallback(() => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current)
+      closeTimeoutRef.current = null
+    }
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      clearCloseTimeout()
+    }
+  }, [clearCloseTimeout])
 
   if (open && (!prevOpen || initialData?.id !== prevId)) {
+    clearCloseTimeout()
     setPrevOpen(true)
     setPrevId(initialData?.id)
     setFormData(initialData ?? emptyForm)
@@ -74,12 +89,20 @@ export function OrganizerFormModal({
   }
 
   const handleClose = () => {
+    clearCloseTimeout()
     onOpenChange(false)
-    setTimeout(() => {
+    closeTimeoutRef.current = setTimeout(() => {
       setStep("form")
-      setFormData(initialData ?? emptyForm)
+      setFormData(emptyForm)
       setEmailSearch("")
+      closeTimeoutRef.current = null
     }, 200)
+  }
+
+  const handleOpenChange = (nextOpen: boolean) => {
+    if (!nextOpen) {
+      handleClose()
+    }
   }
 
   const handleContinue = () => {
@@ -215,7 +238,7 @@ export function OrganizerFormModal({
   }
 
   return (
-    <Dialog open={open} onOpenChange={handleClose}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-md">
         {step === "form" ? (
           <>
