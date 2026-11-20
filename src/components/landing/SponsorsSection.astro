@@ -2,7 +2,9 @@
 import ArrowOutward from "@/assets/icons/arrow_outward.svg"
 import ScrambledText from "@/components/landing/ScrambledText.astro"
 import SponsorLogo from "@/components/sponsors/SponsorLogo.astro"
-import { FEATURED_SPONSORS, SPONSORS } from "@/lib/data/sponsors"
+import { SPONSORS } from "@/lib/data/sponsors"
+
+const markerSponsors = SPONSORS.slice(0, -3)
 ---
 
 <section id="sponsors" class="flex flex-col gap-4 border-t-2 border-off-white pt-8 mb-12">
@@ -11,27 +13,117 @@ import { FEATURED_SPONSORS, SPONSORS } from "@/lib/data/sponsors"
     <span class="w-3 h-1 bg-red-500"></span>
   </div>
 
-  <h2 class="px-4 text-3xl font-medium text-balance">
-    Empresas e instituciones que impulsan la comunidad
-  </h2>
+  <div class="px-4 flex flex-col gap-2">
+    <h2 class="text-3xl font-medium text-balance">
+      Empresas e instituciones que impulsan la comunidad
+    </h2>
+    <p class="max-w-3xl opacity-90 text-pretty">
+      {SPONSORS.length} organizaciones han respaldado nuestras charlas, talleres y conferencias
+      anuales en Sucre para mantener el conocimiento tecnológico abierto y gratuito.
+    </p>
+  </div>
 
-  <p class="px-4 max-w-3xl opacity-90 text-pretty">
-    {SPONSORS.length} organizaciones han respaldado nuestras charlas, talleres y conferencias
-    anuales en Sucre para mantener el conocimiento tecnológico abierto y gratuito.
-  </p>
+  <div
+    data-sponsor-carousel
+    role="region"
+    aria-roledescription="carousel"
+    aria-label="Sponsors de GDG Sucre"
+    class="flex flex-col gap-3"
+  >
+    <div
+      data-sponsor-track
+      tabindex="0"
+      role="group"
+      aria-label="Lista de sponsors"
+      class="sponsor-carousel-track flex overflow-x-auto border-y-2 border-off-white focus-visible:outline-2 focus-visible:outline-blue-500 focus-visible:-outline-offset-2"
+    >
+      {
+        SPONSORS.map((sponsor, index) => (
+          <div
+            data-sponsor-slide
+            data-sponsor-name={sponsor.name}
+            role="group"
+            aria-roledescription="slide"
+            aria-label={`${index + 1} de ${SPONSORS.length}: ${sponsor.name}`}
+            class="sponsor-carousel-slide shrink-0 flex items-center justify-center p-4 sm:p-6 border-r-2 border-off-white min-h-32 sm:min-h-36"
+          >
+            <SponsorLogo
+              sponsor={sponsor}
+              loading={index < 4 ? "eager" : "lazy"}
+              stageClass="h-22 sm:h-24 p-2.5 sm:p-3"
+              imgClass="max-h-14 sm:max-h-16 w-auto max-w-full"
+            />
+          </div>
+        ))
+      }
+    </div>
 
-  <div class="grid grid-cols-2 sm:grid-cols-4 border-t-2 border-off-white">
-    {
-      FEATURED_SPONSORS.map(sponsor => (
-        <div class="flex items-center justify-center p-4 sm:p-6 border-b-2 border-r-2 even:border-r-0 sm:even:border-r-2 sm:[&:nth-child(4n)]:border-r-0 border-off-white min-h-32 sm:min-h-36">
-          <SponsorLogo
-            sponsor={sponsor}
-            stageClass="h-22 sm:h-24 p-2.5 sm:p-3"
-            imgClass="max-h-14 sm:max-h-16 w-auto max-w-full"
-          />
+    <p data-sponsor-status class="sr-only" role="status" aria-live="polite"></p>
+
+    <div class="px-4 flex items-center justify-center gap-2 sm:gap-4">
+      <button
+        type="button"
+        data-sponsor-carousel-prev
+        aria-label="Sponsor anterior"
+        class="size-9 shrink-0 inline-flex items-center justify-center border-2 border-black/45 dark:border-off-white rounded-sm hover:bg-blue-500 hover:text-black hover:border-blue-500 transition-colors cursor-pointer touch-manipulation"
+      >
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          class="size-4"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 18l-6-6 6-6"></path>
+        </svg>
+      </button>
+
+      <nav
+        data-sponsor-markers-nav
+        class="box-content w-35 sm:w-49 px-1.5 py-2 overflow-clip"
+        aria-label="Elegir sponsor"
+      >
+        <div data-sponsor-markers-track class="sponsor-markers-track flex items-center">
+          {
+            markerSponsors.map((sponsor, index) => (
+              <button
+                type="button"
+                data-sponsor-marker={index}
+                data-bullet-distance={Math.min(index, 3)}
+                data-bullet-visible={index < 5 ? "true" : "false"}
+                aria-label={`Ir al sponsor ${index + 1} de ${markerSponsors.length}: ${sponsor.name}`}
+                aria-current={index === 0 ? "true" : undefined}
+                class="sponsor-marker size-7 shrink-0 inline-flex items-center justify-center rounded-full cursor-pointer touch-manipulation"
+              >
+                <span
+                  aria-hidden="true"
+                  class="sponsor-marker-dot block h-2 w-2 rounded-full bg-black/45 dark:bg-white/40"
+                />
+              </button>
+            ))
+          }
         </div>
-      ))
-    }
+      </nav>
+
+      <button
+        type="button"
+        data-sponsor-carousel-next
+        aria-label="Siguiente sponsor"
+        class="size-9 shrink-0 inline-flex items-center justify-center border-2 border-black/45 dark:border-off-white rounded-sm hover:bg-blue-500 hover:text-black hover:border-blue-500 transition-colors cursor-pointer touch-manipulation"
+      >
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          class="size-4"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"></path>
+        </svg>
+      </button>
+    </div>
   </div>
 
   <div class="px-4 pt-2 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -48,11 +140,393 @@ import { FEATURED_SPONSORS, SPONSORS } from "@/lib/data/sponsors"
       href="/sponsors"
       class="group w-full md:w-auto md:min-w-80 flex items-center justify-between gap-4 bg-blue-500 text-black p-4 rounded-sm uppercase font-monospace font-light hover:bg-green-500 transition-colors"
     >
-      <span>Conoce a nuestros sponsors</span>
+      <span>Únete como Sponsor</span>
       <ArrowOutward
         aria-hidden="true"
-        class="size-5 shrink-0 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform ease-in-out"
+        class="size-5 fill-current shrink-0 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform ease-in-out"
       />
     </a>
   </div>
 </section>
+
+<style>
+  .sponsor-carousel-track {
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    touch-action: manipulation;
+    scrollbar-width: none;
+  }
+
+  .sponsor-carousel-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .sponsor-carousel-track {
+      scroll-behavior: smooth;
+    }
+
+    .sponsor-markers-track {
+      transition: transform 300ms ease;
+    }
+
+    .sponsor-marker,
+    .sponsor-marker-dot {
+      transition:
+        transform 300ms ease,
+        width 300ms ease,
+        opacity 300ms ease,
+        background-color 300ms ease;
+    }
+  }
+
+  .sponsor-carousel-slide {
+    flex: 0 0 50%;
+    scroll-snap-align: start;
+  }
+
+  @media (min-width: 640px) {
+    .sponsor-carousel-slide {
+      flex: 0 0 33.333333%;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .sponsor-carousel-slide {
+      flex: 0 0 25%;
+    }
+  }
+
+  .sponsor-marker[data-bullet-visible="false"] {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .sponsor-marker[data-bullet-distance="1"] .sponsor-marker-dot {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+
+  .sponsor-marker[data-bullet-distance="2"] .sponsor-marker-dot {
+    transform: scale(0.75);
+    opacity: 0.65;
+  }
+
+  .sponsor-marker[data-bullet-distance="3"] .sponsor-marker-dot {
+    transform: scale(0.5);
+    opacity: 0.45;
+  }
+
+  .sponsor-marker[aria-current="true"] .sponsor-marker-dot {
+    width: 1.25rem;
+    transform: scale(1);
+    opacity: 1;
+    background-color: var(--color-blue-500);
+    outline: 1px solid currentColor;
+    outline-offset: 1px;
+  }
+</style>
+
+<script>
+  const carouselRoot = document.querySelector<HTMLElement>("[data-sponsor-carousel]")
+  const sectionRoot = carouselRoot?.closest("#sponsors")
+  const track = carouselRoot?.querySelector<HTMLElement>("[data-sponsor-track]")
+  const prevBtn = carouselRoot?.querySelector<HTMLButtonElement>("[data-sponsor-carousel-prev]")
+  const nextBtn = carouselRoot?.querySelector<HTMLButtonElement>("[data-sponsor-carousel-next]")
+  const markersNav = carouselRoot?.querySelector<HTMLElement>("[data-sponsor-markers-nav]")
+  const markersTrack = carouselRoot?.querySelector<HTMLElement>("[data-sponsor-markers-track]")
+  const statusEl = carouselRoot?.querySelector<HTMLElement>("[data-sponsor-status]")
+  const slides = Array.from(
+    carouselRoot?.querySelectorAll<HTMLElement>("[data-sponsor-slide]") ?? []
+  )
+  const markers = Array.from(
+    carouselRoot?.querySelectorAll<HTMLButtonElement>("[data-sponsor-marker]") ?? []
+  )
+
+  if (track && slides.length > 0) {
+    const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
+    const desktopBulletsQuery = window.matchMedia("(min-width: 640px)")
+    const AUTO_INTERVAL_MS = 3000
+    const BULLET_SLOT_PX = 28
+    let interactionPaused = false
+    let autoTimer: number | null = null
+    let pendingTargetIndex: number | null = null
+    let pendingTargetLeft: number | null = null
+    let scrollOriginLeft: number | null = null
+    let lastSettledIndex = 0
+    let lastDrawnMarker = -1
+    let isUserInitiated = false
+    let rafId: number | null = null
+    let scrollFallbackTimer: number | null = null
+
+    const getVisibleSlots = () => (desktopBulletsQuery.matches ? 7 : 5)
+
+    const getMaxScroll = () => Math.max(0, track.scrollWidth - track.clientWidth)
+
+    const getTargetLeftForSlide = (index: number) => {
+      const clamped = Math.max(0, Math.min(index, slides.length - 1))
+      return Math.min(slides[clamped].offsetLeft, getMaxScroll())
+    }
+
+    const getNearestSlideIndex = () => {
+      const currentLeft = track.scrollLeft
+      let nearestIdx = 0
+      let minDist = Number.POSITIVE_INFINITY
+
+      for (let i = 0; i < slides.length; i++) {
+        const targetLeft = getTargetLeftForSlide(i)
+        const dist = Math.abs(targetLeft - currentLeft)
+        if (dist < minDist) {
+          minDist = dist
+          nearestIdx = i
+        }
+      }
+      return nearestIdx
+    }
+
+    const renderBulletsWindow = (windowCenterIndex: number, activeIndex: number) => {
+      if (markers.length === 0) return
+      const visibleSlots = Math.min(getVisibleSlots(), markers.length)
+      const half = Math.floor(visibleSlots / 2)
+      const clampedCenter = Math.max(0, Math.min(windowCenterIndex, markers.length - 1))
+      const clampedActive = Math.max(0, Math.min(activeIndex, markers.length - 1))
+      const windowStart = Math.max(
+        0,
+        Math.min(clampedCenter - half, markers.length - visibleSlots)
+      )
+      const windowEnd = windowStart + visibleSlots - 1
+
+      if (markersTrack) {
+        markersTrack.style.transform = `translateX(${-(windowStart * BULLET_SLOT_PX)}px)`
+      }
+
+      for (let i = 0; i < markers.length; i++) {
+        const dist = Math.min(Math.abs(i - clampedCenter), 3)
+        const isVisible = i >= windowStart && i <= windowEnd
+        markers[i].setAttribute("data-bullet-distance", String(dist))
+        markers[i].setAttribute("data-bullet-visible", String(isVisible))
+
+        if (i === clampedActive) {
+          markers[i].setAttribute("aria-current", "true")
+        } else {
+          markers[i].removeAttribute("aria-current")
+        }
+      }
+    }
+
+    const updateMarkers = (activeIndex: number, force = false) => {
+      if (markers.length === 0) return
+      const clampedMarkerIndex = Math.max(0, Math.min(activeIndex, markers.length - 1))
+      if (!force && clampedMarkerIndex === lastDrawnMarker) return
+      lastDrawnMarker = clampedMarkerIndex
+      renderBulletsWindow(clampedMarkerIndex, clampedMarkerIndex)
+    }
+
+    const handleSettle = (forceImmediate = false) => {
+      if (
+        !forceImmediate &&
+        scrollOriginLeft !== null &&
+        pendingTargetLeft !== null &&
+        Math.abs(pendingTargetLeft - scrollOriginLeft) > 4 &&
+        Math.abs(track.scrollLeft - scrollOriginLeft) < 2
+      ) {
+        // Ignore an earlier scroll settling right before the new scroll starts moving.
+        return
+      }
+
+      const settledIndex =
+        pendingTargetIndex !== null &&
+        pendingTargetLeft !== null &&
+        Math.abs(track.scrollLeft - pendingTargetLeft) <= 8
+          ? pendingTargetIndex
+          : getNearestSlideIndex()
+
+      pendingTargetIndex = null
+      pendingTargetLeft = null
+      scrollOriginLeft = null
+      updateMarkers(settledIndex)
+
+      if (isUserInitiated && settledIndex !== lastSettledIndex && statusEl) {
+        const sponsorName = slides[settledIndex]?.dataset.sponsorName ?? ""
+        statusEl.textContent = `Sponsor ${settledIndex + 1} de ${slides.length}: ${sponsorName}`
+      }
+      lastSettledIndex = settledIndex
+      isUserInitiated = false
+    }
+
+    const scrollToSlide = (targetIndex: number, userTriggered: boolean) => {
+      const normalizedIndex = ((targetIndex % slides.length) + slides.length) % slides.length
+      const targetLeft = getTargetLeftForSlide(normalizedIndex)
+      isUserInitiated = userTriggered
+      pendingTargetIndex = normalizedIndex
+      pendingTargetLeft = targetLeft
+      scrollOriginLeft = track.scrollLeft
+      updateMarkers(normalizedIndex)
+
+      if (Math.abs(targetLeft - track.scrollLeft) <= 2) {
+        handleSettle(true)
+        return
+      }
+
+      track.scrollTo({
+        left: targetLeft,
+        behavior: reducedMotionQuery.matches ? "auto" : "smooth",
+      })
+    }
+
+    const stepNext = (userTriggered: boolean) => {
+      const maxScroll = getMaxScroll()
+      if (maxScroll <= 2) return
+      if (track.scrollLeft >= maxScroll - 4) {
+        scrollToSlide(0, userTriggered)
+        return
+      }
+      const baseIndex = pendingTargetIndex ?? getNearestSlideIndex()
+      let nextIndex = baseIndex + 1
+      while (
+        nextIndex < slides.length &&
+        getTargetLeftForSlide(nextIndex) <= track.scrollLeft + 2
+      ) {
+        nextIndex++
+      }
+      scrollToSlide(nextIndex >= slides.length ? 0 : nextIndex, userTriggered)
+    }
+
+    const stepPrev = (userTriggered: boolean) => {
+      const maxScroll = getMaxScroll()
+      if (maxScroll <= 2) return
+      if (track.scrollLeft <= 4) {
+        let lastDistinctIndex = slides.length - 1
+        while (
+          lastDistinctIndex > 0 &&
+          getTargetLeftForSlide(lastDistinctIndex - 1) >= maxScroll - 2
+        ) {
+          lastDistinctIndex--
+        }
+        scrollToSlide(lastDistinctIndex, userTriggered)
+        return
+      }
+      const baseIndex = pendingTargetIndex ?? getNearestSlideIndex()
+      let prevIndex = Math.max(0, baseIndex - 1)
+      while (prevIndex > 0 && getTargetLeftForSlide(prevIndex) >= track.scrollLeft - 2) {
+        prevIndex--
+      }
+      scrollToSlide(prevIndex, userTriggered)
+    }
+
+    const stopAutoplay = () => {
+      if (autoTimer !== null) {
+        window.clearInterval(autoTimer)
+        autoTimer = null
+      }
+    }
+
+    const startAutoplay = () => {
+      stopAutoplay()
+      if (interactionPaused || reducedMotionQuery.matches || document.hidden) return
+      autoTimer = window.setInterval(() => {
+        stepNext(false)
+      }, AUTO_INTERVAL_MS)
+    }
+
+    prevBtn?.addEventListener("click", () => {
+      stepPrev(true)
+    })
+
+    nextBtn?.addEventListener("click", () => {
+      stepNext(true)
+    })
+
+    for (const marker of markers) {
+      marker.addEventListener("click", () => {
+        const index = Number(marker.dataset.sponsorMarker ?? 0)
+        scrollToSlide(index, true)
+      })
+
+      marker.addEventListener("focus", () => {
+        if (markersNav) markersNav.scrollLeft = 0
+        const index = Number(marker.dataset.sponsorMarker ?? 0)
+        renderBulletsWindow(index, lastDrawnMarker >= 0 ? lastDrawnMarker : 0)
+      })
+    }
+
+    markersNav?.addEventListener("focusout", event => {
+      const nextFocused = event.relatedTarget as Node | null
+      if (!nextFocused || !markersNav.contains(nextFocused)) {
+        renderBulletsWindow(
+          lastDrawnMarker >= 0 ? lastDrawnMarker : 0,
+          lastDrawnMarker >= 0 ? lastDrawnMarker : 0
+        )
+      }
+    })
+
+    track.addEventListener(
+      "scroll",
+      () => {
+        if (pendingTargetIndex === null) {
+          isUserInitiated = true
+          if (rafId === null) {
+            rafId = window.requestAnimationFrame(() => {
+              rafId = null
+              updateMarkers(getNearestSlideIndex())
+            })
+          }
+        }
+
+        if (!("onscrollend" in window)) {
+          if (scrollFallbackTimer !== null) window.clearTimeout(scrollFallbackTimer)
+          scrollFallbackTimer = window.setTimeout(() => handleSettle(false), 140)
+        }
+      },
+      { passive: true }
+    )
+
+    if ("onscrollend" in window) {
+      track.addEventListener("scrollend", () => handleSettle(false))
+    }
+
+    const setInteractionPaused = (paused: boolean) => {
+      interactionPaused = paused
+      if (paused) {
+        stopAutoplay()
+      } else {
+        startAutoplay()
+      }
+    }
+
+    sectionRoot?.addEventListener("mouseenter", () => setInteractionPaused(true))
+    sectionRoot?.addEventListener("mouseleave", () => setInteractionPaused(false))
+    sectionRoot?.addEventListener("focusin", () => setInteractionPaused(true))
+    sectionRoot?.addEventListener("focusout", event => {
+      const nextFocused = event.relatedTarget as Node | null
+      if (!nextFocused || !sectionRoot.contains(nextFocused)) {
+        setInteractionPaused(false)
+      }
+    })
+    track.addEventListener("touchstart", () => setInteractionPaused(true), { passive: true })
+    track.addEventListener("touchend", () => setInteractionPaused(false), { passive: true })
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        stopAutoplay()
+      } else {
+        startAutoplay()
+      }
+    })
+
+    desktopBulletsQuery.addEventListener("change", () => {
+      updateMarkers(lastDrawnMarker >= 0 ? lastDrawnMarker : 0, true)
+    })
+
+    reducedMotionQuery.addEventListener("change", event => {
+      if (event.matches) {
+        stopAutoplay()
+      } else {
+        startAutoplay()
+      }
+    })
+
+    updateMarkers(0, true)
+    startAutoplay()
+  }
+</script>

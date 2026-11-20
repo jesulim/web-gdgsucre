@@ -124,4 +124,24 @@ describe("Sponsors catalog & institutional data", () => {
     expect(sponsorsPage).toContain("Próximamente")
     expect(masonry).toContain("decorative={true}")
   })
+
+  it("renders an accessible auto-rotating sponsor carousel for all sponsors and join CTA on the landing section", () => {
+    const sponsorsSection = fs.readFileSync(
+      path.resolve(import.meta.dir, "../../components/landing/SponsorsSection.astro"),
+      "utf-8"
+    )
+
+    expect(sponsorsSection).toContain('aria-roledescription="carousel"')
+    expect(sponsorsSection).toContain('aria-roledescription="slide"')
+    expect(sponsorsSection).toContain("SPONSORS.map")
+    expect(sponsorsSection).toContain("SPONSORS.slice(0, -3)")
+    expect(sponsorsSection).toContain("data-sponsor-markers-track")
+    expect(sponsorsSection).toContain("data-bullet-distance")
+    expect(sponsorsSection).not.toContain("FEATURED_SPONSORS")
+    expect(sponsorsSection).toContain("AUTO_INTERVAL_MS = 3000")
+    expect(sponsorsSection).toContain("data-sponsor-carousel-prev")
+    expect(sponsorsSection).toContain("data-sponsor-carousel-next")
+    expect(sponsorsSection).not.toContain("data-sponsor-carousel-toggle")
+    expect(sponsorsSection).toContain("Únete como Sponsor")
+  })
 })
