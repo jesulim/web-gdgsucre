@@ -1,0 +1,53 @@
+---
+interface Props {
+  label?: string
+  describedBy?: string
+  surface?: "hero" | "card"
+  showDownloadIcon?: boolean
+}
+
+const {
+  label = "Brochure oficial",
+  describedBy,
+  surface = "hero",
+  showDownloadIcon = false,
+} = Astro.props
+
+const surfaceClass =
+  surface === "hero" ? "bg-neutral-100 dark:bg-white/5" : "bg-white dark:bg-white/5"
+---
+
+<button
+  type="button"
+  disabled
+  aria-describedby={describedBy}
+  class:list={[
+    "inline-flex w-full sm:w-auto items-center justify-center gap-2.5 rounded-xl border border-dashed border-black/25 dark:border-white/25 px-5 py-3.5 font-monospace text-sm text-black/70 dark:text-white/75 cursor-not-allowed",
+    surfaceClass,
+  ]}
+>
+  {
+    showDownloadIcon && (
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        class="size-4 shrink-0"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M12 3v12m0 0-4-4m4 4 4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"
+        />
+      </svg>
+    )
+  }
+  <span>{label}</span>
+  <span
+    class="rounded-full bg-yellow-pastel px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-black"
+  >
+    Próximamente
+  </span>
+</button>

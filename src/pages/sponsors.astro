@@ -1,0 +1,37 @@
+---
+import Footer from "@/components/landing/Footer.astro"
+import Header from "@/components/landing/Header.astro"
+import AnnualImpactSection from "@/components/sponsors/AnnualImpactSection.astro"
+import HowToSupportSection from "@/components/sponsors/HowToSupportSection.astro"
+import SponsorsContactSection from "@/components/sponsors/SponsorsContactSection.astro"
+import SponsorsHero from "@/components/sponsors/SponsorsHero.astro"
+import SponsorsMasonry from "@/components/sponsors/SponsorsMasonry.astro"
+import WhySponsorSection from "@/components/sponsors/WhySponsorSection.astro"
+import BaseLayout from "@/layout/BaseLayout.astro"
+---
+
+<BaseLayout
+  enableThemePreference
+  title="Sponsors y Alianzas | GDG Sucre"
+  description="Impulsa tu marca junto a la comunidad tecnológica de Sucre. Conoce nuestro impacto anual, modalidades de patrocinio y las 26 organizaciones que confían en GDG Sucre."
+>
+  <Header />
+
+  <main class="flex-1 overflow-x-hidden mt-16">
+    <SponsorsHero />
+    <AnnualImpactSection />
+    <WhySponsorSection />
+    <HowToSupportSection />
+    <SponsorsMasonry />
+    <SponsorsContactSection />
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style is:global>
+  :where(a, button, [role="button"]):focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
+</style>

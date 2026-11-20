@@ -1,0 +1,77 @@
+---
+import { Image } from "astro:assets"
+import type { SponsorItem } from "@/lib/data/sponsors"
+
+interface Props {
+  sponsor: SponsorItem
+  stageClass?: string
+  imgClass?: string
+  loading?: "lazy" | "eager"
+  decorative?: boolean
+}
+
+const {
+  sponsor,
+  stageClass = "",
+  imgClass = "max-h-20 w-auto max-w-full",
+  loading = "lazy",
+  decorative = false,
+} = Astro.props
+
+const altText = decorative ? "" : sponsor.name
+const isFullBleedBrandTile = sponsor.logoTreatment === "brand-tile" && !sponsor.stageBgClass
+
+const stageSurfaceClass =
+  sponsor.logoTreatment === "dark-stage"
+    ? "bg-[#16171d] dark:bg-transparent border border-black/10 dark:border-transparent"
+    : sponsor.logoTreatment === "light-stage"
+      ? "bg-white dark:bg-white border border-transparent dark:border-white/15"
+      : sponsor.logoTreatment === "brand-tile"
+        ? sponsor.stageBgClass
+          ? `${sponsor.stageBgClass} border border-black/8 dark:border-white/15`
+          : "bg-transparent"
+        : "bg-transparent"
+---
+
+<div
+  class:list={[
+    "flex w-full items-center justify-center rounded-xl overflow-clip transition-transform duration-300",
+    stageSurfaceClass,
+    stageClass,
+  ]}
+>
+  {
+    sponsor.logoTreatment === "theme-pair" && sponsor.darkLogo ? (
+      <>
+        <Image
+          src={sponsor.logo}
+          alt={altText}
+          loading={loading}
+          decoding="async"
+          class:list={["block dark:hidden object-contain", sponsor.imgScaleClass, imgClass]}
+        />
+        <Image
+          src={sponsor.darkLogo}
+          alt={altText}
+          loading={loading}
+          decoding="async"
+          class:list={["hidden dark:block object-contain", sponsor.darkImgScaleClass, imgClass]}
+        />
+      </>
+    ) : (
+      <Image
+        src={sponsor.logo}
+        alt={altText}
+        loading={loading}
+        decoding="async"
+        class:list={[
+          "object-contain",
+          sponsor.logoTreatment === "monochrome-dark" && "dark:invert",
+          isFullBleedBrandTile && "rounded-xl shadow-xs",
+          sponsor.imgScaleClass,
+          imgClass,
+        ]}
+      />
+    )
+  }
+</div>
