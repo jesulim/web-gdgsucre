@@ -1,0 +1,2484 @@
+{
+  "type": "base",
+  "version": "10",
+  "dialect": "postgres",
+  "id": "e25a50e4-d437-40ea-bd60-d8fafafe1f80",
+  "prevIds": ["00000000-0000-0000-0000-000000000000"],
+  "footprints": [
+    {
+      "statementType": "create_table",
+      "statementTarget": ["table", "public", "activities"],
+      "writes": [
+        "s|tbl|public.activities",
+        "n|tbl|public.activities",
+        "e|tbl|public.activities",
+        "n|rel|public.activities",
+        "n|type|public.activities",
+        "n|rel|public.activities_pkey",
+        "n|rel|public.unique_activities_name_event"
+      ],
+      "reads": ["n|sch|public"]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": ["table", "public", "badges"],
+      "writes": [
+        "s|tbl|public.badges",
+        "n|tbl|public.badges",
+        "e|tbl|public.badges",
+        "n|rel|public.badges",
+        "n|type|public.badges",
+        "n|rel|public.badges_pkey",
+        "n|rel|public.badges_name_key"
+      ],
+      "reads": ["n|sch|public"]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": ["table", "public", "calendar_events"],
+      "writes": [
+        "s|tbl|public.calendar_events",
+        "n|tbl|public.calendar_events",
+        "e|tbl|public.calendar_events",
+        "n|rel|public.calendar_events",
+        "n|type|public.calendar_events",
+        "n|rel|public.calendar_events_pkey"
+      ],
+      "reads": ["n|sch|public"]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": ["table", "public", "communities"],
+      "writes": [
+        "s|tbl|public.communities",
+        "n|tbl|public.communities",
+        "e|tbl|public.communities",
+        "n|rel|public.communities",
+        "n|type|public.communities",
+        "n|rel|public.communities_pkey"
+      ],
+      "reads": ["n|sch|public"]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": ["table", "public", "event_form_fields"],
+      "writes": [
+        "s|tbl|public.event_form_fields",
+        "n|tbl|public.event_form_fields",
+        "e|tbl|public.event_form_fields",
+        "n|rel|public.event_form_fields",
+        "n|type|public.event_form_fields",
+        "n|rel|public.event_form_fields_pkey",
+        "n|rel|public.unique_event_form_fields_name_event",
+        "n|rel|public.unique_event_form_fields_order_event"
+      ],
+      "reads": ["n|sch|public"]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": ["table", "public", "event_staff"],
+      "writes": [
+        "s|tbl|public.event_staff",
+        "n|tbl|public.event_staff",
+        "e|tbl|public.event_staff",
+        "n|rel|public.event_staff",
+        "n|type|public.event_staff",
+        "n|rel|public.event_staff_pkey",
+        "n|rel|public.unique_event_staff_profile_event"
+      ],
+      "reads": ["n|sch|public"]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": ["table", "public", "events"],
+      "writes": [
+        "s|tbl|public.events",
+        "n|tbl|public.events",
+        "e|tbl|public.events",
+        "n|rel|public.events",
+        "n|type|public.events",
+        "n|rel|public.events_pkey"
+      ],
+      "reads": ["n|sch|public"]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": ["table", "public", "organizers"],
+      "writes": [
+        "s|tbl|public.organizers",
+        "n|tbl|public.organizers",
+        "e|tbl|public.organizers",
+        "n|rel|public.organizers",
+        "n|type|public.organizers",
+        "n|rel|public.organizers_pkey",
+        "n|rel|public.unique_organizers_profile_event"
+      ],
+      "reads": ["n|sch|public"]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": ["table", "public", "profiles"],
+      "writes": [
+        "s|tbl|public.profiles",
+        "n|tbl|public.profiles",
+        "e|tbl|public.profiles",
+        "n|rel|public.profiles",
+        "n|type|public.profiles",
+        "n|rel|public.profiles_pkey"
+      ],
+      "reads": ["n|sch|public"]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": ["table", "public", "registration_activities"],
+      "writes": [
+        "s|tbl|public.registration_activities",
+        "n|tbl|public.registration_activities",
+        "e|tbl|public.registration_activities",
+        "n|rel|public.registration_activities",
+        "n|type|public.registration_activities",
+        "n|rel|public.registration_activities_pkey"
+      ],
+      "reads": ["n|sch|public"]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": ["table", "public", "registrations"],
+      "writes": [
+        "s|tbl|public.registrations",
+        "n|tbl|public.registrations",
+        "e|tbl|public.registrations",
+        "n|rel|public.registrations",
+        "n|type|public.registrations",
+        "n|rel|public.registrations_pkey",
+        "n|rel|public.unique_registrations_token_event",
+        "n|rel|public.unique_registrations_user_event"
+      ],
+      "reads": ["n|sch|public"]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": ["table", "public", "team_registrations"],
+      "writes": [
+        "s|tbl|public.team_registrations",
+        "n|tbl|public.team_registrations",
+        "e|tbl|public.team_registrations",
+        "n|rel|public.team_registrations",
+        "n|type|public.team_registrations",
+        "n|rel|public.team_registrations_pkey",
+        "n|rel|public.team_registrations_registration_id_key"
+      ],
+      "reads": ["n|sch|public"]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": ["table", "public", "teams"],
+      "writes": [
+        "s|tbl|public.teams",
+        "n|tbl|public.teams",
+        "e|tbl|public.teams",
+        "n|rel|public.teams",
+        "n|type|public.teams",
+        "n|rel|public.teams_pkey",
+        "n|rel|public.unique_teams_event_code"
+      ],
+      "reads": ["n|sch|public"]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": ["table", "public", "user_badges"],
+      "writes": [
+        "s|tbl|public.user_badges",
+        "n|tbl|public.user_badges",
+        "e|tbl|public.user_badges",
+        "n|rel|public.user_badges",
+        "n|type|public.user_badges",
+        "n|rel|public.user_badges_pkey"
+      ],
+      "reads": ["n|sch|public"]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": ["index", "public", "events", "idx_events_slug"],
+      "writes": [
+        "s|idx|public.idx_events_slug",
+        "n|idx|public.idx_events_slug",
+        "e|idx|public.idx_events_slug",
+        "n|rel|public.idx_events_slug"
+      ],
+      "reads": ["n|tbl|public.events", "n|sch|public", "n|col|public.events.slug"]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "team_registrations",
+        "idx_team_registrations_one_leader_per_team"
+      ],
+      "writes": [
+        "s|idx|public.idx_team_registrations_one_leader_per_team",
+        "n|idx|public.idx_team_registrations_one_leader_per_team",
+        "e|idx|public.idx_team_registrations_one_leader_per_team",
+        "n|rel|public.idx_team_registrations_one_leader_per_team"
+      ],
+      "reads": [
+        "n|tbl|public.team_registrations",
+        "n|sch|public",
+        "n|col|public.team_registrations.team_id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": ["table", "public", "activities"],
+      "writes": [
+        "s|fk|public.activities.activities_event_id_events_id_fkey",
+        "n|fk|public.activities.activities_event_id_events_id_fkey",
+        "e|fk|public.activities.activities_event_id_events_id_fkey",
+        "n|con|public.activities.activities_event_id_events_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.activities",
+        "n|sch|public",
+        "n|tbl|public.events",
+        "n|sch|public",
+        "n|col|public.activities.event_id",
+        "n|col|public.events.id",
+        "e|uniqueness|public.events.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": ["table", "public", "calendar_events"],
+      "writes": [
+        "s|fk|public.calendar_events.calendar_events_community_id_communities_id_fkey",
+        "n|fk|public.calendar_events.calendar_events_community_id_communities_id_fkey",
+        "e|fk|public.calendar_events.calendar_events_community_id_communities_id_fkey",
+        "n|con|public.calendar_events.calendar_events_community_id_communities_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.calendar_events",
+        "n|sch|public",
+        "n|tbl|public.communities",
+        "n|sch|public",
+        "n|col|public.calendar_events.community_id",
+        "n|col|public.communities.id",
+        "e|uniqueness|public.communities.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": ["table", "public", "event_form_fields"],
+      "writes": [
+        "s|fk|public.event_form_fields.event_form_fields_event_id_events_id_fkey",
+        "n|fk|public.event_form_fields.event_form_fields_event_id_events_id_fkey",
+        "e|fk|public.event_form_fields.event_form_fields_event_id_events_id_fkey",
+        "n|con|public.event_form_fields.event_form_fields_event_id_events_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.event_form_fields",
+        "n|sch|public",
+        "n|tbl|public.events",
+        "n|sch|public",
+        "n|col|public.event_form_fields.event_id",
+        "n|col|public.events.id",
+        "e|uniqueness|public.events.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": ["table", "public", "event_staff"],
+      "writes": [
+        "s|fk|public.event_staff.event_staff_profile_id_profiles_id_fkey",
+        "n|fk|public.event_staff.event_staff_profile_id_profiles_id_fkey",
+        "e|fk|public.event_staff.event_staff_profile_id_profiles_id_fkey",
+        "n|con|public.event_staff.event_staff_profile_id_profiles_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.event_staff",
+        "n|sch|public",
+        "n|tbl|public.profiles",
+        "n|sch|public",
+        "n|col|public.event_staff.profile_id",
+        "n|col|public.profiles.id",
+        "e|uniqueness|public.profiles.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": ["table", "public", "event_staff"],
+      "writes": [
+        "s|fk|public.event_staff.event_staff_event_id_events_id_fkey",
+        "n|fk|public.event_staff.event_staff_event_id_events_id_fkey",
+        "e|fk|public.event_staff.event_staff_event_id_events_id_fkey",
+        "n|con|public.event_staff.event_staff_event_id_events_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.event_staff",
+        "n|sch|public",
+        "n|tbl|public.events",
+        "n|sch|public",
+        "n|col|public.event_staff.event_id",
+        "n|col|public.events.id",
+        "e|uniqueness|public.events.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": ["table", "public", "organizers"],
+      "writes": [
+        "s|fk|public.organizers.organizers_profile_id_profiles_id_fkey",
+        "n|fk|public.organizers.organizers_profile_id_profiles_id_fkey",
+        "e|fk|public.organizers.organizers_profile_id_profiles_id_fkey",
+        "n|con|public.organizers.organizers_profile_id_profiles_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.organizers",
+        "n|sch|public",
+        "n|tbl|public.profiles",
+        "n|sch|public",
+        "n|col|public.organizers.profile_id",
+        "n|col|public.profiles.id",
+        "e|uniqueness|public.profiles.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": ["table", "public", "organizers"],
+      "writes": [
+        "s|fk|public.organizers.organizers_event_id_events_id_fkey",
+        "n|fk|public.organizers.organizers_event_id_events_id_fkey",
+        "e|fk|public.organizers.organizers_event_id_events_id_fkey",
+        "n|con|public.organizers.organizers_event_id_events_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.organizers",
+        "n|sch|public",
+        "n|tbl|public.events",
+        "n|sch|public",
+        "n|col|public.organizers.event_id",
+        "n|col|public.events.id",
+        "e|uniqueness|public.events.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": ["table", "public", "registration_activities"],
+      "writes": [
+        "s|fk|public.registration_activities.registration_activities_updated_by_profiles_id_fkey",
+        "n|fk|public.registration_activities.registration_activities_updated_by_profiles_id_fkey",
+        "e|fk|public.registration_activities.registration_activities_updated_by_profiles_id_fkey",
+        "n|con|public.registration_activities.registration_activities_updated_by_profiles_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.registration_activities",
+        "n|sch|public",
+        "n|tbl|public.profiles",
+        "n|sch|public",
+        "n|col|public.registration_activities.updated_by",
+        "n|col|public.profiles.id",
+        "e|uniqueness|public.profiles.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": ["table", "public", "registration_activities"],
+      "writes": [
+        "s|fk|public.registration_activities.registration_activities_registration_id_registrations_id_fkey",
+        "n|fk|public.registration_activities.registration_activities_registration_id_registrations_id_fkey",
+        "e|fk|public.registration_activities.registration_activities_registration_id_registrations_id_fkey",
+        "n|con|public.registration_activities.registration_activities_registration_id_registrations_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.registration_activities",
+        "n|sch|public",
+        "n|tbl|public.registrations",
+        "n|sch|public",
+        "n|col|public.registration_activities.registration_id",
+        "n|col|public.registrations.id",
+        "e|uniqueness|public.registrations.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": ["table", "public", "registration_activities"],
+      "writes": [
+        "s|fk|public.registration_activities.registration_activities_activity_id_activities_id_fkey",
+        "n|fk|public.registration_activities.registration_activities_activity_id_activities_id_fkey",
+        "e|fk|public.registration_activities.registration_activities_activity_id_activities_id_fkey",
+        "n|con|public.registration_activities.registration_activities_activity_id_activities_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.registration_activities",
+        "n|sch|public",
+        "n|tbl|public.activities",
+        "n|sch|public",
+        "n|col|public.registration_activities.activity_id",
+        "n|col|public.activities.id",
+        "e|uniqueness|public.activities.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": ["table", "public", "registrations"],
+      "writes": [
+        "s|fk|public.registrations.registrations_event_id_events_id_fkey",
+        "n|fk|public.registrations.registrations_event_id_events_id_fkey",
+        "e|fk|public.registrations.registrations_event_id_events_id_fkey",
+        "n|con|public.registrations.registrations_event_id_events_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.registrations",
+        "n|sch|public",
+        "n|tbl|public.events",
+        "n|sch|public",
+        "n|col|public.registrations.event_id",
+        "n|col|public.events.id",
+        "e|uniqueness|public.events.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": ["table", "public", "registrations"],
+      "writes": [
+        "s|fk|public.registrations.registrations_profile_id_profiles_id_fkey",
+        "n|fk|public.registrations.registrations_profile_id_profiles_id_fkey",
+        "e|fk|public.registrations.registrations_profile_id_profiles_id_fkey",
+        "n|con|public.registrations.registrations_profile_id_profiles_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.registrations",
+        "n|sch|public",
+        "n|tbl|public.profiles",
+        "n|sch|public",
+        "n|col|public.registrations.profile_id",
+        "n|col|public.profiles.id",
+        "e|uniqueness|public.profiles.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": ["table", "public", "team_registrations"],
+      "writes": [
+        "s|fk|public.team_registrations.team_registrations_team_id_teams_id_fkey",
+        "n|fk|public.team_registrations.team_registrations_team_id_teams_id_fkey",
+        "e|fk|public.team_registrations.team_registrations_team_id_teams_id_fkey",
+        "n|con|public.team_registrations.team_registrations_team_id_teams_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.team_registrations",
+        "n|sch|public",
+        "n|tbl|public.teams",
+        "n|sch|public",
+        "n|col|public.team_registrations.team_id",
+        "n|col|public.teams.id",
+        "e|uniqueness|public.teams.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": ["table", "public", "team_registrations"],
+      "writes": [
+        "s|fk|public.team_registrations.team_registrations_registration_id_registrations_id_fkey",
+        "n|fk|public.team_registrations.team_registrations_registration_id_registrations_id_fkey",
+        "e|fk|public.team_registrations.team_registrations_registration_id_registrations_id_fkey",
+        "n|con|public.team_registrations.team_registrations_registration_id_registrations_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.team_registrations",
+        "n|sch|public",
+        "n|tbl|public.registrations",
+        "n|sch|public",
+        "n|col|public.team_registrations.registration_id",
+        "n|col|public.registrations.id",
+        "e|uniqueness|public.registrations.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": ["table", "public", "teams"],
+      "writes": [
+        "s|fk|public.teams.teams_event_id_events_id_fkey",
+        "n|fk|public.teams.teams_event_id_events_id_fkey",
+        "e|fk|public.teams.teams_event_id_events_id_fkey",
+        "n|con|public.teams.teams_event_id_events_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.teams",
+        "n|sch|public",
+        "n|tbl|public.events",
+        "n|sch|public",
+        "n|col|public.teams.event_id",
+        "n|col|public.events.id",
+        "e|uniqueness|public.events.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": ["table", "public", "user_badges"],
+      "writes": [
+        "s|fk|public.user_badges.user_badges_profile_id_profiles_id_fkey",
+        "n|fk|public.user_badges.user_badges_profile_id_profiles_id_fkey",
+        "e|fk|public.user_badges.user_badges_profile_id_profiles_id_fkey",
+        "n|con|public.user_badges.user_badges_profile_id_profiles_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.user_badges",
+        "n|sch|public",
+        "n|tbl|public.profiles",
+        "n|sch|public",
+        "n|col|public.user_badges.profile_id",
+        "n|col|public.profiles.id",
+        "e|uniqueness|public.profiles.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": ["table", "public", "user_badges"],
+      "writes": [
+        "s|fk|public.user_badges.user_badges_badge_id_badges_id_fkey",
+        "n|fk|public.user_badges.user_badges_badge_id_badges_id_fkey",
+        "e|fk|public.user_badges.user_badges_badge_id_badges_id_fkey",
+        "n|con|public.user_badges.user_badges_badge_id_badges_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.user_badges",
+        "n|sch|public",
+        "n|tbl|public.badges",
+        "n|sch|public",
+        "n|col|public.user_badges.badge_id",
+        "n|col|public.badges.id",
+        "e|uniqueness|public.badges.id"
+      ]
+    }
+  ],
+  "ddl": [
+    {
+      "schema": "public",
+      "name": "activities",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "badges",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "calendar_events",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "communities",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "event_form_fields",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "event_staff",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "events",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "organizers",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "profiles",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "registration_activities",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "registrations",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "team_registrations",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "teams",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "user_badges",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "table": "activities",
+      "name": "id",
+      "type": "bigserial",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "activities",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "activities",
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "activities",
+      "name": "event_id",
+      "type": "bigint",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "activities",
+      "name": "name",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "activities",
+      "name": "label",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "badges",
+      "name": "id",
+      "type": "bigserial",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "badges",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "badges",
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "badges",
+      "name": "name",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "badges",
+      "name": "image_url",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "calendar_events",
+      "name": "id",
+      "type": "bigserial",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "calendar_events",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "calendar_events",
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "calendar_events",
+      "name": "name",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "calendar_events",
+      "name": "community_id",
+      "type": "bigint",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "calendar_events",
+      "name": "start_datetime",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "calendar_events",
+      "name": "end_datetime",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "calendar_events",
+      "name": "format",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "calendar_events",
+      "name": "registration_link",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "calendar_events",
+      "name": "location",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "calendar_events",
+      "name": "accepted",
+      "type": "boolean",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "false",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "communities",
+      "name": "id",
+      "type": "bigserial",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "communities",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "communities",
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "communities",
+      "name": "name",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "communities",
+      "name": "short_name",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "communities",
+      "name": "website",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "communities",
+      "name": "contact_email",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "communities",
+      "name": "image",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "communities",
+      "name": "accepted",
+      "type": "boolean",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "false",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "communities",
+      "name": "color",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "event_form_fields",
+      "name": "id",
+      "type": "bigserial",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "event_form_fields",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "event_form_fields",
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "event_form_fields",
+      "name": "event_id",
+      "type": "bigint",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "event_form_fields",
+      "name": "order",
+      "type": "smallint",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "event_form_fields",
+      "name": "options",
+      "type": "jsonb",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "event_form_fields",
+      "name": "image_url",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "event_form_fields",
+      "name": "name",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "event_form_fields",
+      "name": "label",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "event_form_fields",
+      "name": "type",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "event_form_fields",
+      "name": "required",
+      "type": "boolean",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "true",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "event_form_fields",
+      "name": "exempt_option",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "event_staff",
+      "name": "id",
+      "type": "bigserial",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "event_staff",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "event_staff",
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "event_staff",
+      "name": "profile_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "event_staff",
+      "name": "event_id",
+      "type": "bigint",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "event_staff",
+      "name": "role",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "events",
+      "name": "id",
+      "type": "bigserial",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "events",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "events",
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "events",
+      "name": "name",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "events",
+      "name": "date",
+      "type": "date",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "events",
+      "name": "slug",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "events",
+      "name": "registration_open",
+      "type": "boolean",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "true",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "organizers",
+      "name": "id",
+      "type": "bigserial",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "organizers",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "organizers",
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "organizers",
+      "name": "profile_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "organizers",
+      "name": "event_id",
+      "type": "bigint",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "organizers",
+      "name": "areas",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "profiles",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "profiles",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "profiles",
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "profiles",
+      "name": "first_name",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "profiles",
+      "name": "last_name",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "profiles",
+      "name": "email",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "profiles",
+      "name": "occupation",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "profiles",
+      "name": "phone_number",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "profiles",
+      "name": "avatar_url",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "profiles",
+      "name": "display_name",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "profiles",
+      "name": "share_data",
+      "type": "boolean",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "false",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "profiles",
+      "name": "is_admin",
+      "type": "boolean",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "false",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "registration_activities",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "registration_activities",
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "registration_activities",
+      "name": "updated_by",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "registration_activities",
+      "name": "registration_id",
+      "type": "bigint",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "registration_activities",
+      "name": "activity_id",
+      "type": "bigint",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "registration_activities",
+      "name": "completed",
+      "type": "boolean",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": "false",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "registrations",
+      "name": "id",
+      "type": "bigserial",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "registrations",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "registrations",
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "registrations",
+      "name": "event_id",
+      "type": "bigint",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "registrations",
+      "name": "profile_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "registrations",
+      "name": "responses",
+      "type": "jsonb",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "registrations",
+      "name": "status",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "'pending'",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "registrations",
+      "name": "token",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "registrations",
+      "name": "qr_url",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "team_registrations",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "team_registrations",
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "team_registrations",
+      "name": "team_id",
+      "type": "bigint",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "team_registrations",
+      "name": "registration_id",
+      "type": "bigint",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "team_registrations",
+      "name": "leader",
+      "type": "boolean",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "false",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "teams",
+      "name": "id",
+      "type": "bigserial",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "teams",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "teams",
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "teams",
+      "name": "event_id",
+      "type": "bigint",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "teams",
+      "name": "name",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "teams",
+      "name": "code",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "user_badges",
+      "name": "profile_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "user_badges",
+      "name": "badge_id",
+      "type": "bigint",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "user_badges",
+      "name": "issued_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "events",
+      "name": "idx_events_slug",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "slug",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": true,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "team_registrations",
+      "name": "idx_team_registrations_one_leader_per_team",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "team_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": true,
+      "where": "\"leader\" = true",
+      "with": "",
+      "method": "btree",
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "activities",
+      "name": "activities_event_id_events_id_fkey",
+      "nameExplicit": false,
+      "columns": ["event_id"],
+      "schemaTo": "public",
+      "tableTo": "events",
+      "columnsTo": ["id"],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "calendar_events",
+      "name": "calendar_events_community_id_communities_id_fkey",
+      "nameExplicit": false,
+      "columns": ["community_id"],
+      "schemaTo": "public",
+      "tableTo": "communities",
+      "columnsTo": ["id"],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "event_form_fields",
+      "name": "event_form_fields_event_id_events_id_fkey",
+      "nameExplicit": false,
+      "columns": ["event_id"],
+      "schemaTo": "public",
+      "tableTo": "events",
+      "columnsTo": ["id"],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "event_staff",
+      "name": "event_staff_profile_id_profiles_id_fkey",
+      "nameExplicit": false,
+      "columns": ["profile_id"],
+      "schemaTo": "public",
+      "tableTo": "profiles",
+      "columnsTo": ["id"],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "event_staff",
+      "name": "event_staff_event_id_events_id_fkey",
+      "nameExplicit": false,
+      "columns": ["event_id"],
+      "schemaTo": "public",
+      "tableTo": "events",
+      "columnsTo": ["id"],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "organizers",
+      "name": "organizers_profile_id_profiles_id_fkey",
+      "nameExplicit": false,
+      "columns": ["profile_id"],
+      "schemaTo": "public",
+      "tableTo": "profiles",
+      "columnsTo": ["id"],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "organizers",
+      "name": "organizers_event_id_events_id_fkey",
+      "nameExplicit": false,
+      "columns": ["event_id"],
+      "schemaTo": "public",
+      "tableTo": "events",
+      "columnsTo": ["id"],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "registration_activities",
+      "name": "registration_activities_updated_by_profiles_id_fkey",
+      "nameExplicit": false,
+      "columns": ["updated_by"],
+      "schemaTo": "public",
+      "tableTo": "profiles",
+      "columnsTo": ["id"],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "registration_activities",
+      "name": "registration_activities_registration_id_registrations_id_fkey",
+      "nameExplicit": false,
+      "columns": ["registration_id"],
+      "schemaTo": "public",
+      "tableTo": "registrations",
+      "columnsTo": ["id"],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "registration_activities",
+      "name": "registration_activities_activity_id_activities_id_fkey",
+      "nameExplicit": false,
+      "columns": ["activity_id"],
+      "schemaTo": "public",
+      "tableTo": "activities",
+      "columnsTo": ["id"],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "registrations",
+      "name": "registrations_event_id_events_id_fkey",
+      "nameExplicit": false,
+      "columns": ["event_id"],
+      "schemaTo": "public",
+      "tableTo": "events",
+      "columnsTo": ["id"],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "registrations",
+      "name": "registrations_profile_id_profiles_id_fkey",
+      "nameExplicit": false,
+      "columns": ["profile_id"],
+      "schemaTo": "public",
+      "tableTo": "profiles",
+      "columnsTo": ["id"],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "team_registrations",
+      "name": "team_registrations_team_id_teams_id_fkey",
+      "nameExplicit": false,
+      "columns": ["team_id"],
+      "schemaTo": "public",
+      "tableTo": "teams",
+      "columnsTo": ["id"],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "team_registrations",
+      "name": "team_registrations_registration_id_registrations_id_fkey",
+      "nameExplicit": false,
+      "columns": ["registration_id"],
+      "schemaTo": "public",
+      "tableTo": "registrations",
+      "columnsTo": ["id"],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "teams",
+      "name": "teams_event_id_events_id_fkey",
+      "nameExplicit": false,
+      "columns": ["event_id"],
+      "schemaTo": "public",
+      "tableTo": "events",
+      "columnsTo": ["id"],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "user_badges",
+      "name": "user_badges_profile_id_profiles_id_fkey",
+      "nameExplicit": false,
+      "columns": ["profile_id"],
+      "schemaTo": "public",
+      "tableTo": "profiles",
+      "columnsTo": ["id"],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "user_badges",
+      "name": "user_badges_badge_id_badges_id_fkey",
+      "nameExplicit": false,
+      "columns": ["badge_id"],
+      "schemaTo": "public",
+      "tableTo": "badges",
+      "columnsTo": ["id"],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "registration_activities",
+      "name": "registration_activities_pkey",
+      "columns": ["registration_id", "activity_id"],
+      "nameExplicit": true,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "team_registrations",
+      "name": "team_registrations_pkey",
+      "columns": ["team_id", "registration_id"],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "user_badges",
+      "name": "user_badges_pkey",
+      "columns": ["profile_id", "badge_id"],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "activities",
+      "name": "activities_pkey",
+      "columns": ["id"],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "badges",
+      "name": "badges_pkey",
+      "columns": ["id"],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "calendar_events",
+      "name": "calendar_events_pkey",
+      "columns": ["id"],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "communities",
+      "name": "communities_pkey",
+      "columns": ["id"],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "event_form_fields",
+      "name": "event_form_fields_pkey",
+      "columns": ["id"],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "event_staff",
+      "name": "event_staff_pkey",
+      "columns": ["id"],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "events",
+      "name": "events_pkey",
+      "columns": ["id"],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "organizers",
+      "name": "organizers_pkey",
+      "columns": ["id"],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "profiles",
+      "name": "profiles_pkey",
+      "columns": ["id"],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "registrations",
+      "name": "registrations_pkey",
+      "columns": ["id"],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "teams",
+      "name": "teams_pkey",
+      "columns": ["id"],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "activities",
+      "name": "unique_activities_name_event",
+      "nameExplicit": true,
+      "columns": ["name", "event_id"],
+      "nullsNotDistinct": false,
+      "entityType": "uniques"
+    },
+    {
+      "schema": "public",
+      "table": "event_form_fields",
+      "name": "unique_event_form_fields_name_event",
+      "nameExplicit": true,
+      "columns": ["name", "event_id"],
+      "nullsNotDistinct": false,
+      "entityType": "uniques"
+    },
+    {
+      "schema": "public",
+      "table": "event_form_fields",
+      "name": "unique_event_form_fields_order_event",
+      "nameExplicit": true,
+      "columns": ["order", "event_id"],
+      "nullsNotDistinct": false,
+      "entityType": "uniques"
+    },
+    {
+      "schema": "public",
+      "table": "event_staff",
+      "name": "unique_event_staff_profile_event",
+      "nameExplicit": true,
+      "columns": ["profile_id", "event_id"],
+      "nullsNotDistinct": false,
+      "entityType": "uniques"
+    },
+    {
+      "schema": "public",
+      "table": "organizers",
+      "name": "unique_organizers_profile_event",
+      "nameExplicit": true,
+      "columns": ["profile_id", "event_id"],
+      "nullsNotDistinct": false,
+      "entityType": "uniques"
+    },
+    {
+      "schema": "public",
+      "table": "registrations",
+      "name": "unique_registrations_token_event",
+      "nameExplicit": true,
+      "columns": ["token", "event_id"],
+      "nullsNotDistinct": false,
+      "entityType": "uniques"
+    },
+    {
+      "schema": "public",
+      "table": "registrations",
+      "name": "unique_registrations_user_event",
+      "nameExplicit": true,
+      "columns": ["profile_id", "event_id"],
+      "nullsNotDistinct": false,
+      "entityType": "uniques"
+    },
+    {
+      "schema": "public",
+      "table": "teams",
+      "name": "unique_teams_event_code",
+      "nameExplicit": true,
+      "columns": ["event_id", "code"],
+      "nullsNotDistinct": false,
+      "entityType": "uniques"
+    },
+    {
+      "schema": "public",
+      "table": "badges",
+      "name": "badges_name_key",
+      "nameExplicit": false,
+      "columns": ["name"],
+      "nullsNotDistinct": false,
+      "entityType": "uniques"
+    },
+    {
+      "schema": "public",
+      "table": "team_registrations",
+      "name": "team_registrations_registration_id_key",
+      "nameExplicit": false,
+      "columns": ["registration_id"],
+      "nullsNotDistinct": false,
+      "entityType": "uniques"
+    },
+    {
+      "schema": "public",
+      "table": "calendar_events",
+      "name": "check_calendar_events_dates",
+      "value": "\"end_datetime\" IS NULL OR\n      \"start_datetime\" IS NULL OR\n      \"end_datetime\" >= \"start_datetime\"",
+      "entityType": "checks"
+    },
+    {
+      "schema": "public",
+      "table": "event_form_fields",
+      "name": "check_event_form_fields_type",
+      "value": "type = ANY (ARRAY['text'::text, 'select'::text, 'file'::text])",
+      "entityType": "checks"
+    },
+    {
+      "schema": "public",
+      "table": "event_form_fields",
+      "name": "check_event_form_fields_options_for_select",
+      "value": "(options IS NULL) OR ((type = 'select'::text) AND (jsonb_typeof(options) = 'array'::text))",
+      "entityType": "checks"
+    },
+    {
+      "schema": "public",
+      "table": "registrations",
+      "name": "check_registrations_status",
+      "value": "\"status\" IN ('pending', 'confirmed')",
+      "entityType": "checks"
+    }
+  ]
+}
