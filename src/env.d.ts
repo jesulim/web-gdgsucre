@@ -7,12 +7,6 @@ interface ImportMeta {
   readonly env: ImportMetaEnv
 }
 
-declare module "react-big-calendar" {
-  export type SlotInfo = unknown
-  export const Calendar: any
-  export function momentLocalizer(moment: any): any
-}
-
 declare module "*?url" {
   const content: string
   export default content
