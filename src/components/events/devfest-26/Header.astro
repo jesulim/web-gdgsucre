@@ -12,6 +12,7 @@ const { showNav = true } = Astro.props
 const navLinks = [
   { name: "DevFest 2026", href: "#about" },
   { name: "Paquetes", href: "#paquetes" },
+  { name: "Speakers", href: "#speakers" },
   { name: "Sponsors", href: "#sponsors" },
 ]
 
@@ -60,7 +61,7 @@ const accessToken = Astro.cookies.get("sb-access-token")?.value
     )
   }
 
-  <div class="ml-4">
+  <div class="ml-2">
     {accessToken ? (
       <Avatar eventSlug={eventSlug} />
     ) : (
