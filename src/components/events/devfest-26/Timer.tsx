@@ -113,17 +113,17 @@ export const Timer = ({ initialTime, targetDate }: TimerProps) => {
 
   return (
     <div
-      className="w-full items-center px-4 py-0 sm:px-8 lg:px-16 lg:py-8 2xl:py-6"
+      className="w-full items-center px-4 sm:px-8 lg:px-16 pb-8"
       role="timer"
       aria-live="polite"
       aria-label="Cuenta regresiva para DevFest Sucre 2026"
     >
-      <h2 className="mt-3 text-center text-2xl font-bold tracking-tight text-white sm:text-3xl md:text-4xl">
+      <h2 className="text-center text-2xl font-bold tracking-tight text-white sm:text-3xl md:text-4xl">
         El evento comienza en
       </h2>
 
-      <div className="mx-auto max-w-md md:max-w-2xl">
-        <div className="mt-8 grid w-full grid-cols-4 md:grid-cols-7 gap-2 md:gap-20">
+      <div className="mx-auto max-w-md md:max-w-2xl pt-4">
+        <div className="grid w-full grid-cols-4 gap-2 md:grid-cols-7 md:gap-20">
           {timeUnits.map((unit, index) => (
             <Fragment key={unit.label}>
               <TimeUnit {...unit} />

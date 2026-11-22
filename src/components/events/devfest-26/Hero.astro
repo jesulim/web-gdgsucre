@@ -15,28 +15,30 @@ const eventDate = new Date("2026-11-28T08:00:00-04:00")
 const initialTime = eventDate.getTime() - Date.now()
 ---
 
-<section id="hero" class="relative overflow-hidden bg-df-black pb-16 text-white">
+<section id="hero" class="relative overflow-hidden bg-df-black pb-12 text-white">
   <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
     <div class="absolute -left-8 -top-12 size-64 animate-blob rounded-full bg-blue-500/40 blur-[45px] sm:size-40 md:left-[2%] md:top-[5%] md:size-44 lg:size-56 lg:blur-[65px]"></div>
 
-    <div class="absolute right-4 top-8 size-40 animate-blob rounded-full bg-red-500/40 blur-2xl animation-delay-2000 sm:size-40 md:right-[8%] md:top-[10%] md:size-40 lg:size-48 lg:blur-[55px]"></div>
+    <div class="absolute right-4 top-8 size-40 animate-blob rounded-full bg-red-500/40 blur-2xl animation-delay-2000 sm:size-40 md:right-20 md:top-[10%] md:size-40 lg:size-48 lg:blur-[55px]"></div>
 
-    <div class="absolute bottom-[45%] left-4 size-40 animate-blob rounded-full bg-yellow-500/40 blur-[45px] animation-delay-4000 sm:size-40 md:bottom-[40%] md:left-[6%] md:size-44 lg:size-56 lg:blur-[65px]"></div>
+    <div class="absolute bottom-[40%] left-4 size-40 animate-blob rounded-full bg-yellow-500/40 blur-[45px] animation-delay-4000 sm:size-40 md:bottom-[36%] md:left-[6%] md:size-44 lg:size-56 lg:blur-[65px]"></div>
 
     <div class="absolute bottom-[40%] right-0 size-32 animate-blob rounded-full bg-green-500/45 blur-[45px] sm:size-40 md:bottom-[40%] md:right-[1%] md:size-40 lg:size-48 lg:blur-[55px]"></div>
-  </div>
 
-  <div class="pointer-events-none absolute inset-0 z-1 hidden lg:block" aria-hidden="true">
-    <Diagonal class="absolute -left-12 size-96" />
-    <div class="absolute right-16 top-32 flex gap-8 w-50">
+    <Diagonal class="hidden lg:block absolute -left-12 size-96" />
+
+    <div class="hidden lg:flex absolute right-16 top-12 gap-8 w-50">
       <Menor />
       <Mayor />
     </div>
-    <Equis class="absolute bottom-[42%] left-[8%] size-50" />
-    <Vector class="absolute bottom-[30%] right-[-7%] size-96" />
+
+    <Equis class="hidden lg:block absolute bottom-[38%] left-[8%] size-50" />
+
+    <Vector class="hidden lg:block absolute bottom-[30%] -right-16 size-80" />
   </div>
-  <div class="relative flex min-h-100 flex-col items-center justify-start overflow-hidden px-4 pt-28 md:pt-40 lg:min-h-180 lg:justify-center">
-    <div class="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center">
+
+  <div class="flex flex-col items-center justify-start overflow-hidden px-4 pt-24 pb-4 md:pt-48 md:pb-16 lg:justify-center">
+    <div class="z-10 mx-auto flex w-full max-w-4xl flex-col items-center">
       <DevFest26Logo class="mx-auto w-5/6 md:max-w-md lg:max-w-lg" />
       <p class="text-2xl md:text-4xl font-medium leading-normal my-6 text-center">
         Desarrolla y construye en la era de los agentes
