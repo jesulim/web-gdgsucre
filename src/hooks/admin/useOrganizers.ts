@@ -100,10 +100,22 @@ export default function useOrganizers(slug: string) {
       const response = await fetch("/api/organizers/search", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: query }),
+        body: JSON.stringify({ query }),
       })
       return response.json()
     },
+  })
+
+  const staffMutation = useMutation({
+    mutationFn: async ({ id, is_staff }: { id: number; is_staff: boolean }) => {
+      const response = await fetch("/api/organizers/toggle-staff", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, is_staff }),
+      })
+      if (!response.ok) await parseError(response, "Error al actualizar el staff")
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey }),
   })
 
   const avatarMutation = useMutation({
@@ -136,6 +148,8 @@ export default function useOrganizers(slug: string) {
     isDeleting: deleteMutation.isPending,
     searchOrganizer: searchMutation.mutateAsync,
     isSearching: searchMutation.isPending,
+    toggleStaff: staffMutation.mutateAsync,
+    isTogglingStaff: staffMutation.isPending,
     uploadAvatar: avatarMutation.mutateAsync,
   }
 }

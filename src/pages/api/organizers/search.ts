@@ -3,7 +3,7 @@ import { withAdmin } from "@/lib/auth"
 import { searchUsers } from "@/lib/services/organizersService"
 
 const searchUserSchema = z.object({
-  email: z.string().trim().min(1, "Ingresa un correo o nombre").max(100),
+  query: z.string().trim().min(1, "Ingresa un correo o nombre").max(100),
 })
 
 export const POST = withAdmin(async ({ request, auth }) => {
@@ -20,7 +20,7 @@ export const POST = withAdmin(async ({ request, auth }) => {
       )
     }
 
-    const result = await searchUsers(auth.supabase, parsed.data.email)
+    const result = await searchUsers(auth.supabase, parsed.data.query)
 
     return new Response(
       JSON.stringify({

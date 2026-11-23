@@ -45,9 +45,14 @@ const sendConfirmationEmail = async (
   }
 }
 
-const deleteRegistration = async (id: number, refetch: () => void) => {
+const deleteRegistration = async (
+  id: number,
+  first_name: string,
+  last_name: string,
+  refetch: () => void
+) => {
   const confirmed = window.confirm(
-    "¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer."
+    `¿Deseas eliminar el registro de ${first_name} ${last_name}? Esta acción no se puede deshacer.`
   )
   if (!confirmed) return
 
@@ -105,7 +110,14 @@ export default function RegistrationRowActions({
 
         <DropdownMenuItem
           variant="destructive"
-          onClick={() => deleteRegistration(row.original.id, refetch)}
+          onClick={() =>
+            deleteRegistration(
+              row.original.id,
+              row.original.first_name,
+              row.original.last_name,
+              refetch
+            )
+          }
         >
           <Trash2 />
           Eliminar registro

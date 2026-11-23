@@ -19,6 +19,7 @@ export interface OrganizerResult extends PublicOrganizer {
   profile_id: string
   email: string | null
   phone_number: string | null
+  is_staff: boolean
 }
 
 export interface SearchedUser {
@@ -76,13 +77,31 @@ export async function getOrganizersForAdmin(
   const { data, error } = await supabase
     .from("organizers")
     .select(
-      "id, profile_id, profiles!inner (id, first_name, last_name, avatar_url, email, phone_number), events!inner(slug)"
+      "id, profile_id, profiles!inner (id, first_name, last_name, avatar_url, email, phone_number), events!inner(id, slug)"
     )
     .eq("events.slug", eventSlug)
 
   if (error) {
     console.error("Error fetching organizers", error)
     return null
+  }
+
+  const eventId = data[0]?.events?.id
+  const profileIds = data.map(item => item.profile_id).filter(Boolean)
+
+  let staffIds = new Set<string>()
+  if (eventId && profileIds.length > 0) {
+    const { data: staff, error: staffError } = await supabase
+      .from("event_staff")
+      .select("user_id")
+      .eq("event_id", eventId)
+      .in("user_id", profileIds)
+
+    if (staffError) {
+      console.error("Error fetching event staff", staffError)
+    } else {
+      staffIds = new Set((staff ?? []).map((member: { user_id: string }) => member.user_id))
+    }
   }
 
   return data.map(organizer => {
@@ -95,8 +114,43 @@ export async function getOrganizersForAdmin(
       last_name: capitalizeName(profile?.last_name ?? ""),
       email: profile?.email ?? null,
       phone_number: profile?.phone_number ?? null,
+      is_staff: staffIds.has(organizer.profile_id),
     }
   })
+}
+
+export async function setOrganizerStaff(
+  supabase: SupabaseClient,
+  organizerId: number,
+  isStaff: boolean
+): Promise<boolean> {
+  const { data: organizer } = await supabase
+    .from("organizers")
+    .select("event_id, profile_id")
+    .eq("id", organizerId)
+    .single()
+
+  if (!organizer) return false
+
+  const { error } = isStaff
+    ? await supabase
+        .from("event_staff")
+        .upsert(
+          { user_id: organizer.profile_id, event_id: organizer.event_id, role: "accreditation" },
+          { onConflict: "user_id,event_id" }
+        )
+    : await supabase
+        .from("event_staff")
+        .delete()
+        .eq("user_id", organizer.profile_id)
+        .eq("event_id", organizer.event_id)
+
+  if (error) {
+    console.error("Error updating event staff", error)
+    return false
+  }
+
+  return true
 }
 
 export async function searchUsers(

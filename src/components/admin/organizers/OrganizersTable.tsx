@@ -23,6 +23,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Toaster } from "@/components/ui/sonner"
 import {
   Table,
@@ -45,14 +46,23 @@ export interface OrganizerData {
   email: string | null
   phone_number: string | null
   image: string | null
+  is_staff: boolean
 }
 
 const defaultOrganizers: OrganizerData[] = []
 
 export function OrganizersTable({ eventSlug }: { eventSlug: string }) {
   const [globalFilter, setGlobalFilter] = useState("")
-  const { organizers, isLoading, isFetching, refetch, deleteOrganizer, isDeleting } =
-    useOrganizers(eventSlug)
+  const {
+    organizers,
+    isLoading,
+    isFetching,
+    refetch,
+    deleteOrganizer,
+    isDeleting,
+    toggleStaff,
+    isTogglingStaff,
+  } = useOrganizers(eventSlug)
 
   const columnHelper = createColumnHelper<OrganizerData>()
 
@@ -68,6 +78,14 @@ export function OrganizersTable({ eventSlug }: { eventSlug: string }) {
     } catch (error) {
       const message = error instanceof Error ? error.message : "Error al eliminar organizador"
       toast.error(message)
+    }
+  }
+
+  const handleToggleStaff = async (organizer: OrganizerData, is_staff: boolean) => {
+    try {
+      await toggleStaff({ id: organizer.id, is_staff })
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Error al actualizar el staff")
     }
   }
 
@@ -94,6 +112,22 @@ export function OrganizersTable({ eventSlug }: { eventSlug: string }) {
       header: "Teléfono",
       enableGlobalFilter: false,
       cell: info => info.getValue() ?? "-",
+    }),
+    columnHelper.display({
+      id: "staff",
+      header: "Staff",
+      cell: ({ row }) => (
+        <div className="grid place-content-center">
+          <Checkbox
+            aria-label={`Alternar staff de ${row.original.first_name} ${row.original.last_name}`}
+            checked={row.original.is_staff}
+            disabled={isTogglingStaff}
+            onCheckedChange={checked => {
+              if (typeof checked === "boolean") handleToggleStaff(row.original, checked)
+            }}
+          />
+        </div>
+      ),
     }),
     columnHelper.display({
       id: "actions",
