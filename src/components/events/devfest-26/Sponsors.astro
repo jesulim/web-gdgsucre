@@ -7,15 +7,42 @@ import Cba from "@/assets/sponsors/cba.webp"
 import Cca from "@/assets/sponsors/cca2.webp"
 import Nible from "@/assets/sponsors/logo-nible-light.webp"
 import Napp from "@/assets/sponsors/napp-dark.webp"
+import Nova from "@/assets/sponsors/nova.webp"
 import Vaquita from "@/assets/sponsors/vaquita-logo.webp"
 
 const sponsors = [
-  { name: "Fundación NAPP", image: Napp, className: "max-w-56" },
-  { name: "10 Minds", image: TenMinds, className: "max-w-52" },
-  { name: "Vaquita", image: Vaquita, className: "max-w-56" },
+  {
+    name: "Fundación NAPP",
+    image: Napp,
+    className: "max-w-56",
+    href: "https://fundacion-napp.org/",
+  },
+  {
+    name: "10 Minds",
+    image: TenMinds,
+    className: "max-w-52",
+    href: "https://10minds.org/",
+  },
+  {
+    name: "Vaquita",
+    image: Vaquita,
+    className: "max-w-56",
+    href: "https://www.instagram.com/vaquitaprotocol",
+  },
   { name: "Cba", image: Cba, className: "max-w-52" },
-  { name: "Nible", image: Nible, className: "max-w-52" },
-  { name: "Cca", image: Cca, className: "max-w-52" },
+  {
+    name: "Nible",
+    image: Nible,
+    className: "max-w-52",
+    href: "https://www.instagram.com/nible.pro/",
+  },
+  {
+    name: "Cca",
+    image: Cca,
+    className: "max-w-52",
+    href: "https://sucre.cca.edu.bo/",
+  },
+  { name: "Nova Computers", image: Nova, className: "max-w-52" },
 ]
 ---
 
@@ -45,11 +72,22 @@ const sponsors = [
       <div class="grid grid-cols-2 lg:grid-cols-4 items-center gap-6 rounded-[calc(2rem-1px)] px-3 py-6 sm:min-h-64 sm:gap-5 sm:px-6 sm:py-10 md:px-10 md:py-10">
         {sponsors.map((sponsor) => (
           <div class="flex min-w-0 min-h-24 items-center justify-center rounded-2xl px-2 py-2 sm:min-h-36 sm:px-2 sm:py-2">
-            <Image
-              src={sponsor.image}
-              alt={`Logo de ${sponsor.name}`}
-              class:list={["h-auto w-full object-contain", sponsor.className]}
-            />
+            <a
+              href={sponsor.href}
+              target={sponsor.href ? "_blank" : undefined}
+              rel={sponsor.href ? "noopener noreferrer" : undefined}
+              class:list={[
+                "flex w-full justify-center rounded-sm",
+                sponsor.href &&
+                  "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white",
+              ]}
+            >
+              <Image
+                src={sponsor.image}
+                alt={`Logo de ${sponsor.name}`}
+                class:list={["h-auto w-full object-contain", sponsor.className]}
+              />
+            </a>
           </div>
         ))}
       </div>
