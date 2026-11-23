@@ -140,6 +140,24 @@ export async function createProfile(
   return data
 }
 
+export async function setShareData(supabase: SupabaseClient, shareData: boolean) {
+  const user = await getUser(supabase)
+  if (!user) {
+    throw new Error("No se pudo actualizar el perfil: No se pudo obtener el usuario")
+  }
+
+  const { error } = await supabase
+    .from("profiles")
+    .update({ share_data: shareData })
+    .eq("id", user.id)
+
+  if (error) {
+    throw new Error(`No se pudo actualizar el perfil: ${error.message}`)
+  }
+
+  return { success: true }
+}
+
 export async function updateProfile(
   supabase: SupabaseClient,
   data: {

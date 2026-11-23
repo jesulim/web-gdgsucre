@@ -1,7 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
 import type { APIRoute } from "astro"
 
-import { createProfile, getProfile } from "@/lib/services/profileService"
+import { createProfile, getProfile, setShareData } from "@/lib/services/profileService"
 import { submitRegistration } from "@/lib/services/registrationService"
 import { createSupabaseServerClient } from "@/lib/supabase"
 
@@ -30,8 +30,16 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   const supabase = createSupabaseServerClient({ request, cookies })
   const formData = await request.formData()
 
-  const { event_id, event_slug, event_name, first_name, last_name, phone_number, ...fields } =
-    Object.fromEntries(formData)
+  const {
+    event_id,
+    event_slug,
+    event_name,
+    first_name,
+    last_name,
+    phone_number,
+    share_data,
+    ...fields
+  } = Object.fromEntries(formData)
 
   if (first_name && last_name && phone_number) {
     try {
@@ -39,6 +47,12 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     } catch (error) {
       return new Response(`Error al crear el perfil: ${error}`, { status: 500 })
     }
+  }
+
+  try {
+    await setShareData(supabase, share_data === "true")
+  } catch (error) {
+    console.log(`Error al actualizar el perfil: ${error}`)
   }
 
   try {
