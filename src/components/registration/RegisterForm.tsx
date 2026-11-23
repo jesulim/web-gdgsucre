@@ -25,15 +25,17 @@ import {
 import { FormFileInput } from "./FormFileInput"
 import { FormSelect } from "./FormSelect"
 import ProfileFormFields from "./ProfileFormFields"
+import ShareDataCheckbox from "./ShareDataCheckbox"
 
 interface RegisterFormProps {
   event: { id: string; slug: string; name: string }
   formFields: FormFieldSchema[]
-  profile: { id: string; first_name: string; last_name: string } | null
+  profile: { id: string; first_name: string; last_name: string; share_data?: boolean | null } | null
 }
 
 export function RegisterForm({ formFields, profile, event }: RegisterFormProps) {
   const [loading, setLoading] = useState(false)
+  const [shareData, setShareData] = useState(profile?.share_data ?? false)
 
   let formSchema = buildZodSchemaFromFields(formFields)
   let defaultValues = Object.fromEntries(
@@ -69,6 +71,7 @@ export function RegisterForm({ formFields, profile, event }: RegisterFormProps) 
     formData.append("event_id", event.id)
     formData.append("event_slug", event.slug)
     formData.append("event_name", event.name)
+    formData.append("share_data", String(shareData))
 
     for (const [key, value] of Object.entries(values)) {
       if (value === undefined) continue
@@ -101,6 +104,8 @@ export function RegisterForm({ formFields, profile, event }: RegisterFormProps) 
         ) : (
           <ProfileFormFields form={form} />
         )}
+
+        <ShareDataCheckbox checked={shareData} onCheckedChange={setShareData} />
 
         {formFields.map(formField => (
           <FormField

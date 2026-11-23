@@ -1,5 +1,6 @@
 ---
 import Header from "@/components/events/devfest-26/Header.astro"
+import Footer from "@/components/landing/Footer.astro"
 import { RegisterForm } from "@/components/registration/RegisterForm"
 import BaseLayout from "@/layout/BaseLayout.astro"
 
@@ -40,41 +41,18 @@ const formFields = rawFormFields.map(field =>
 
 <BaseLayout theme="dark">
   <Header showNav={false} />
-  <main class="bg-io-bg flex min-h-screen pt-[64px] md:pt-[96px] text-io-text">
+  <main class="bg-io-bg flex min-h-screen pt-16 md:pt-24 text-io-text">
     <div class="mx-auto px-4 pb-16">
       <h1 class="text-xl mb-4 font-medium">Regístrate al {event.name}</h1>
-      {
-        eventSlug == "bwai-26" && (
-          <p class="mb-4">
-            Al registrarte de manera individual, te asignaremos un equipo el día del evento.
-          </p>
-        )
-      }
-      <div class="io-register-form">
+      {eventSlug == "bwai-26" && (
+        <p class="mb-4">
+          Al registrarte de manera individual, te asignaremos un equipo el día del evento.
+        </p>
+      )}
+      <div class="max-w-3xl">
         <RegisterForm formFields={formFields} profile={profile} event={event} client:load />
       </div>
     </div>
   </main>
+  <Footer />
 </BaseLayout>
-
-<style is:global>
-  .io-register-form label {
-    color: var(--color-io-text);
-  }
-
-  .io-register-form input {
-    color: var(--color-io-text);
-  }
-
-  .io-register-form input::placeholder {
-    color: var(--color-io-text-muted);
-  }
-
-  .io-register-form [data-slot="select-trigger"] {
-    color: var(--color-io-text);
-  }
-
-  .io-register-form [data-slot="select-trigger"] span {
-    color: var(--color-io-text-muted);
-  }
-</style>
