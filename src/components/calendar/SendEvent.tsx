@@ -418,7 +418,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                     disabled={disabled}
                     placeholder="https://..."
                     enterKeyHint="done"
-                    className="rounded-none border-white"
+                    className="font-google rounded-none border-white"
                   />
                 </FormControl>
                 <FormMessage />
