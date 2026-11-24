@@ -1,0 +1,116 @@
+---
+import { getOrganizers } from "@/lib/services/organizersService"
+import { supabase } from "@/lib/supabase"
+import { OrganizerCard } from "./OrganizerCard"
+
+const organizers = (await getOrganizers(supabase, "devfest-26")) ?? []
+---
+
+<section
+  id="organizers"
+  class="relative isolate overflow-hidden bg-df-black px-4 py-10 text-white md:py-16"
+>
+  <div class="absolute -left-12 bottom-12 -z-10 size-50 rounded-full bg-red-500/25 blur-3xl md:left-12 md:size-56"></div>
+  <div class="absolute -right-12 top-12 -z-10 size-50 rounded-full bg-yellow-500/25 blur-3xl md:right-16 md:size-56"></div>
+
+  <div class="mx-auto flex max-w-307.5 flex-col gap-8 md:gap-10">
+    <h2 class="text-3xl font-bold tracking-tight md:text-5xl mb-4 md:mb-8">Organizers</h2>
+
+    {organizers.length > 0 ? (
+      <div class="relative">
+        <button
+          type="button"
+          aria-label="Desplazar organizadores a la izquierda"
+          class="absolute -left-15 top-1/2 z-10 hidden size-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-neutral-900/90 text-2xl text-white shadow-lg transition hover:bg-neutral-700 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-yellow-400 md:flex"
+          onclick="this.nextElementSibling.scrollBy({ left: -320, behavior: 'smooth' })"
+        >
+          &#8249;
+        </button>
+
+        <div class="organizers-container flex w-full gap-5 overflow-x-auto scroll-smooth pb-4 md:gap-6">
+          {organizers.map(organizer => (
+            <div class="w-64 shrink-0 sm:w-72">
+              <OrganizerCard img={organizer.image} full_name={organizer.name?.trim()} />
+            </div>
+          ))}
+        </div>
+
+        <button
+          type="button"
+          aria-label="Desplazar organizadores a la derecha"
+          class="absolute -right-15 top-1/2 z-10 hidden size-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-neutral-900/90 text-2xl text-white shadow-lg transition hover:bg-neutral-700 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-yellow-400 md:flex"
+          onclick="this.previousElementSibling.scrollBy({ left: 320, behavior: 'smooth' })"
+        >
+          &#8250;
+        </button>
+      </div>
+    ) : (
+      <p class="rounded-2xl border border-white/15 bg-white/5 px-6 py-10 text-center text-white/70">
+        No se encontraron organizadores.
+      </p>
+    )}
+  </div>
+</section>
+
+<style>
+  .organizers-container {
+    scrollbar-width: none;
+  }
+
+  .organizers-container::-webkit-scrollbar {
+    display: none;
+  }
+</style>
+
+<script>
+  const section = document.querySelector<HTMLElement>("#organizers")
+  const carousel = section?.querySelector<HTMLElement>(".organizers-container")
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)")
+
+  if (section && carousel && carousel.children.length > 1) {
+    let interval: number | undefined
+
+    const advance = () => {
+      const firstCard = carousel.firstElementChild
+      if (!(firstCard instanceof HTMLElement)) return
+
+      const gap = Number.parseFloat(window.getComputedStyle(carousel).columnGap) || 0
+      const step = firstCard.getBoundingClientRect().width + gap
+      const reachedEnd = carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 2
+
+      carousel.scrollTo({ left: reachedEnd ? 0 : carousel.scrollLeft + step, behavior: "smooth" })
+    }
+
+    const start = () => {
+      if (
+        interval !== undefined ||
+        reducedMotion.matches ||
+        section.matches(":hover") ||
+        section.contains(document.activeElement)
+      ) {
+        return
+      }
+      interval = window.setInterval(advance, 3500)
+    }
+
+    const pause = () => {
+      window.clearInterval(interval)
+      interval = undefined
+    }
+
+    section.addEventListener("pointerenter", pause)
+    section.addEventListener("pointerleave", start)
+    section.addEventListener("focusin", pause)
+    section.addEventListener("focusout", event => {
+      if (!section.contains(event.relatedTarget as Node | null)) {
+        start()
+      }
+    })
+    reducedMotion.addEventListener("change", () => {
+      if (reducedMotion.matches) pause()
+      else start()
+    })
+
+    start()
+  }
+</script>

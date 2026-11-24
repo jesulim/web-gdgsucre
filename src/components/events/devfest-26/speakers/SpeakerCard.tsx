@@ -56,12 +56,15 @@ export const SpeakerCard = ({ area, img, name, bio, index }: SpeakersCardProps) 
                 />
               </div>
 
-              <h3 className="text-xl font-bold text-white md:text-2xl" data-atropos-offset="2">
+              <h3
+                className="text-center text-xl font-bold text-white sm:text-left md:text-2xl"
+                data-atropos-offset="2"
+              >
                 {name}
               </h3>
 
               <p
-                className="hidden text-md text-white/80 md:line-clamp-5 font-monospace"
+                className="hidden text-md text-white/80 sm:line-clamp-1 md:line-clamp-5 font-monospace"
                 data-atropos-offset="1"
               >
                 {bio}

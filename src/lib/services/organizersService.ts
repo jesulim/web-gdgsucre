@@ -50,7 +50,7 @@ export async function getOrganizers(
   const { data, error } = await supabase
     .from("organizers")
     .select(
-      "id, profile_id, profiles!inner (first_name, last_name, avatar_url), events!inner(slug)"
+      "id, profile_id, profiles!inner (first_name, last_name, display_name, avatar_url), events!inner(slug)"
     )
     .eq("events.slug", eventSlug)
 
@@ -64,6 +64,9 @@ export async function getOrganizers(
     return {
       id: organizer.id,
       image: profile?.avatar_url ?? null,
+      name:
+        profile?.display_name ||
+        `${capitalizeName(profile?.first_name ?? "")} ${capitalizeName(profile?.last_name ?? "")}`,
       first_name: capitalizeName(profile?.first_name ?? ""),
       last_name: capitalizeName(profile?.last_name ?? ""),
     }

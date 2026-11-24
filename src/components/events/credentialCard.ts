@@ -5,6 +5,7 @@ export interface CredentialCardProps {
   enableTilt?: boolean
   enableMobileTilt?: boolean
   mobileTiltSensitivity?: number
+  name?: string
   firstName: string
   lastName: string
   role: string

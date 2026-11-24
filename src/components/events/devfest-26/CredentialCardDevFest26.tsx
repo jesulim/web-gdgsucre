@@ -48,6 +48,7 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
   enableTilt = true,
   enableMobileTilt = false,
   mobileTiltSensitivity = 3,
+  name,
   firstName,
   lastName,
   role,
@@ -124,7 +125,7 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
 
             <div className="absolute top-[45.34%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[83%] grid place-items-center text-white pointer-events-auto">
               <p className="text-lg sm:text-xl font-bold leading-tight wrap-break-word text-center">
-                {`${firstName} ${lastName}`}
+                {name}
               </p>
             </div>
 

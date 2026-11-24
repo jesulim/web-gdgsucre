@@ -2,7 +2,7 @@ import type { ComponentType } from "react"
 import CardBWAI from "@/components/events/bwai-26/CredentialCard"
 import type { CredentialCardProps } from "@/components/events/credentialCard"
 import CardDevfest25 from "@/components/events/devfest-25/CredentialCard"
-import CardDevfest26 from "@/components/events/devfest-26/CredentialCard"
+import CardDevfest26 from "@/components/events/devfest-26/CredentialCardDevFest26"
 import CardIO from "@/components/events/io-extended-26/CredentialCard"
 import CardIWD from "@/components/events/iwd-26/CredentialCard"
 

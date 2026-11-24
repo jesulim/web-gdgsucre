@@ -21,6 +21,7 @@ if (registration?.status !== "confirmed") return Astro.redirect(`/registro/${eve
 
 const cardProps = {
   avatarUrl: profile.avatar_url,
+  name: profile.display_name || `${profile.first_name} ${profile.last_name}`,
   firstName: profile.first_name,
   lastName: profile.last_name,
   role: registration.role || "Asistente",
