@@ -1,126 +1,205 @@
-import type { SupabaseClient } from "@supabase/supabase-js"
+import { eq } from "drizzle-orm"
 
-interface CalendarEvent {
-  id?: number
+import { db } from "@/db/client"
+import { calendarEvents } from "@/db/schema"
+import type {
+  CreateCalendarEventInput,
+  UpdateCalendarEventInput,
+} from "@/lib/validators/calendarEvent"
+
+interface MappableCalendarEvent {
+  id: number
+  createdAt: string
+  updatedAt?: string
   name: string
-  community_id: number
-  start_datetime?: string
-  end_datetime?: string
-  format?: string
-  registration_link?: string
-  location?: string
-  accepted?: boolean
+  communityId: number
+  startDatetime: string | null
+  endDatetime: string | null
+  format: string | null
+  registrationLink: string | null
+  location: string | null
+  accepted: boolean
+  community?: {
+    id: number
+    name: string
+    shortName: string | null
+    color: string | null
+    image?: string | null
+    contactEmail?: string
+  } | null
 }
 
-export async function getCalendarEvents(supabase: SupabaseClient, start: string, end: string) {
-  const { data: calendarEvents, error } = await supabase
-    .from("calendar_events")
-    .select(`
-      id,
-      name,
-      community_id,
-      start_datetime,
-      end_datetime,
-      format,
-      registration_link,
-      location,
-      communities(id, name, short_name, color)
-    `)
-    .is("accepted", true)
-    .gte("start_datetime", start)
-    .lte("start_datetime", end)
-    .order("start_datetime", { ascending: true })
-
-  if (error) throw new Error(error.message)
-
-  return calendarEvents
+function mapCalendarEvent(event: MappableCalendarEvent) {
+  return {
+    id: event.id,
+    created_at: event.createdAt,
+    name: event.name,
+    community_id: event.communityId,
+    start_datetime: event.startDatetime,
+    end_datetime: event.endDatetime,
+    format: event.format,
+    registration_link: event.registrationLink,
+    location: event.location,
+    accepted: event.accepted,
+    communities: event.community
+      ? {
+          id: event.community.id,
+          name: event.community.name,
+          short_name: event.community.shortName,
+          color: event.community.color,
+          image: event.community.image,
+          contact_email: event.community.contactEmail,
+        }
+      : null,
+  }
 }
 
-export async function getUpcomingCalendarEvents(supabase: SupabaseClient) {
-  const NEXT_EVENTS_LIMIT = 4
+export async function getCalendarEvents(start: string, end: string) {
+  const events = await db.query.calendarEvents.findMany({
+    where: {
+      accepted: true,
+      startDatetime: { gte: start, lte: end },
+    },
+    orderBy: { startDatetime: "asc" },
+    with: {
+      community: {
+        columns: {
+          id: true,
+          name: true,
+          shortName: true,
+          color: true,
+        },
+      },
+    },
+  })
 
-  const startOfToday = new Date(Date.now() - 4 * 60 * 60 * 1000)
-
-  const { data: calendarEvents, error } = await supabase
-    .from("calendar_events")
-    .select(
-      `id, name, start_datetime, end_datetime, format, registration_link, location,
-      communities(id, name, short_name, image, color)`
-    )
-    .eq("accepted", true)
-    .or(`end_datetime.gte.${startOfToday.toISOString()},start_datetime.is.null`)
-    .order("start_datetime", { ascending: true })
-    .limit(NEXT_EVENTS_LIMIT)
-
-  if (error) throw new Error(error.message)
-
-  return calendarEvents
+  return events.map(mapCalendarEvent)
 }
 
-export async function getAllCalendarEvents(supabase: SupabaseClient) {
-  const { data: calendarEvents, error } = await supabase
-    .from("calendar_events")
-    .select(`
-      id,
-      created_at,
-      name,
-      start_datetime,
-      end_datetime,
-      format,
-      registration_link,
-      location,
-      accepted,
-      communities(id, name, short_name, contact_email, image, color)`)
-    .order("created_at", { ascending: false })
+export async function getUpcomingCalendarEvents(limit = 4) {
+  const nowInBolivia = new Date(Date.now() - 4 * 60 * 60 * 1000)
 
-  if (error) throw new Error(error.message)
+  const events = await db.query.calendarEvents.findMany({
+    where: {
+      accepted: true,
+      OR: [
+        { endDatetime: { gte: nowInBolivia.toISOString() } },
+        { startDatetime: { isNull: true } },
+      ],
+    },
+    orderBy: {
+      startDatetime: "asc",
+    },
+    limit,
+    with: {
+      community: {
+        columns: {
+          id: true,
+          name: true,
+          shortName: true,
+          image: true,
+          color: true,
+        },
+      },
+    },
+  })
 
-  return calendarEvents
+  return events.map(mapCalendarEvent)
 }
 
-export async function createCalendarEvent(supabase: SupabaseClient, calendarEvent: CalendarEvent) {
-  const { data, error } = await supabase
-    .from("calendar_events")
-    .insert(calendarEvent)
-    .select("id")
-    .single()
+export async function getAllCalendarEvents() {
+  const events = await db.query.calendarEvents.findMany({
+    orderBy: (eventsTable, { desc }) => [desc(eventsTable.createdAt)],
+    with: {
+      community: {
+        columns: {
+          id: true,
+          name: true,
+          shortName: true,
+          contactEmail: true,
+          image: true,
+          color: true,
+        },
+      },
+    },
+  })
 
-  if (error) {
-    console.error(`error creating calendar event: ${error.message}`)
+  return events.map(mapCalendarEvent)
+}
+
+export async function createCalendarEvent(event: CreateCalendarEventInput): Promise<number | null> {
+  try {
+    const [inserted] = await db
+      .insert(calendarEvents)
+      .values({
+        name: event.name,
+        communityId: event.community_id,
+        startDatetime: event.start_datetime ?? null,
+        endDatetime: event.end_datetime ?? null,
+        format: event.format ?? null,
+        registrationLink: event.registration_link || null,
+        location: event.location ?? null,
+        accepted: false,
+      })
+      .returning({ id: calendarEvents.id })
+
+    return inserted?.id ?? null
+  } catch (error) {
+    console.error("error creating calendar event:", error)
     return null
   }
-
-  return data.id
 }
 
-export async function updateCalendarEvent(
-  supabase: SupabaseClient,
-  id: number,
-  calendarEvent: Partial<CalendarEvent>
-) {
-  const { data, error } = await supabase
-    .from("calendar_events")
-    .update(calendarEvent)
-    .eq("id", id)
-    .select()
+export async function updateCalendarEvent(id: number, event: Omit<UpdateCalendarEventInput, "id">) {
+  const values: Partial<typeof calendarEvents.$inferInsert> = {}
+  if (event.name !== undefined) values.name = event.name
+  if (event.community_id !== undefined) values.communityId = event.community_id
+  if (event.start_datetime !== undefined) values.startDatetime = event.start_datetime
+  if (event.end_datetime !== undefined) values.endDatetime = event.end_datetime
+  if (event.format !== undefined) values.format = event.format
+  if (event.registration_link !== undefined)
+    values.registrationLink = event.registration_link || null
+  if (event.location !== undefined) values.location = event.location
+  if (event.accepted !== undefined) values.accepted = event.accepted
 
-  if (error) {
-    console.error(`error updating calendar event: ${error.message}`)
+  try {
+    const updated = await db
+      .update(calendarEvents)
+      .set(values)
+      .where(eq(calendarEvents.id, id))
+      .returning()
+
+    if (updated.length === 0) return null
+
+    return updated.map(row => ({
+      id: row.id,
+      created_at: row.createdAt,
+      updated_at: row.updatedAt,
+      name: row.name,
+      community_id: row.communityId,
+      start_datetime: row.startDatetime,
+      end_datetime: row.endDatetime,
+      format: row.format,
+      registration_link: row.registrationLink,
+      location: row.location,
+      accepted: row.accepted,
+    }))
+  } catch (error) {
+    console.error("error updating calendar event:", error)
     return null
   }
-
-  if (data.length === 0) return null
-
-  return data
 }
 
-export async function deleteCalendarEvent(supabase: SupabaseClient, id: number) {
-  const { data, error } = await supabase.from("calendar_events").delete().eq("id", id).select()
+export async function deleteCalendarEvent(id: number): Promise<boolean> {
+  try {
+    const deleted = await db
+      .delete(calendarEvents)
+      .where(eq(calendarEvents.id, id))
+      .returning({ id: calendarEvents.id })
 
-  if (error) {
-    console.error(`error deleting calendar event: ${error.message}`)
+    return deleted.length > 0
+  } catch (error) {
+    console.error("error deleting calendar event:", error)
     return false
   }
-
-  return data.length > 0
 }

@@ -7,14 +7,29 @@ import {
   getCommunities,
   updateCommunity,
 } from "@/lib/services/communityService"
-import { createUserClient } from "@/lib/supabase"
+import {
+  createCommunitySchema,
+  deleteCommunitySchema,
+  getCommunitiesQuerySchema,
+  updateCommunitySchema,
+} from "@/lib/validators/calendarEvent"
 
-export const GET: APIRoute = async ({ url, cookies }) => {
+export const GET: APIRoute = async ({ url }) => {
   try {
-    const name = url.searchParams.get("name") ?? undefined
+    const query = Object.fromEntries(url.searchParams.entries())
+    const parsed = getCommunitiesQuerySchema.safeParse(query)
 
-    const supabase = await createUserClient(cookies)
-    const communities = await getCommunities(supabase, name)
+    if (!parsed.success) {
+      return new Response(
+        JSON.stringify({ error: parsed.error.issues[0]?.message ?? "Parámetros inválidos" }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        }
+      )
+    }
+
+    const communities = await getCommunities(parsed.data.name)
 
     return new Response(JSON.stringify(communities), {
       headers: { "Content-Type": "application/json" },
@@ -27,27 +42,25 @@ export const GET: APIRoute = async ({ url, cookies }) => {
   }
 }
 
-export const POST: APIRoute = async ({ request, cookies }) => {
+export const POST: APIRoute = async ({ request }) => {
   try {
-    const body = await request.json()
-    const { name, short_name, website, contact_email, image, color } = body
+    const body = await request.json().catch(() => null)
+    const parsed = createCommunitySchema.safeParse(body)
 
-    if (!name || !contact_email) {
-      return new Response(JSON.stringify({ error: "Invalid request body" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      })
+    if (!parsed.success) {
+      return new Response(
+        JSON.stringify({
+          error: parsed.error.issues[0]?.message ?? "Datos inválidos",
+          issues: parsed.error.issues,
+        }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        }
+      )
     }
 
-    const supabase = await createUserClient(cookies)
-    const id = await createCommunity(supabase, {
-      name,
-      short_name,
-      website,
-      contact_email,
-      image,
-      color,
-    })
+    const id = await createCommunity(parsed.data)
 
     if (id === null) {
       return new Response(JSON.stringify({ error: "Failed to create community" }), {
@@ -67,28 +80,26 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   }
 }
 
-export const PUT = withAdmin(async ({ request, auth }) => {
+export const PUT = withAdmin(async ({ request }) => {
   try {
-    const body = await request.json()
-    const { id, name, short_name, website, contact_email, image, color, accepted } = body
+    const body = await request.json().catch(() => null)
+    const parsed = updateCommunitySchema.safeParse(body)
 
-    if (!id) {
-      return new Response(JSON.stringify({ error: "Invalid request body" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      })
+    if (!parsed.success) {
+      return new Response(
+        JSON.stringify({
+          error: parsed.error.issues[0]?.message ?? "Datos inválidos",
+          issues: parsed.error.issues,
+        }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        }
+      )
     }
 
-    const supabase = auth.supabase
-    const result = await updateCommunity(supabase, id, {
-      name,
-      short_name,
-      website,
-      contact_email,
-      image,
-      color,
-      accepted,
-    })
+    const { id, ...data } = parsed.data
+    const result = await updateCommunity(id, data)
 
     if (!result) {
       return new Response(
@@ -111,19 +122,21 @@ export const PUT = withAdmin(async ({ request, auth }) => {
   }
 })
 
-export const DELETE = withAdmin(async ({ url, auth }) => {
+export const DELETE = withAdmin(async ({ url }) => {
   try {
-    const id = url.searchParams.get("id")
+    const parsed = deleteCommunitySchema.safeParse({ id: url.searchParams.get("id") })
 
-    if (!id) {
-      return new Response(JSON.stringify({ error: "id es requerido" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      })
+    if (!parsed.success) {
+      return new Response(
+        JSON.stringify({ error: parsed.error.issues[0]?.message ?? "id es requerido" }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        }
+      )
     }
 
-    const supabase = auth.supabase
-    const success = await deleteCommunity(supabase, Number(id))
+    const success = await deleteCommunity(parsed.data.id)
 
     if (!success) {
       return new Response(

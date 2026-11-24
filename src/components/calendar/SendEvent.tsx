@@ -251,9 +251,9 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                   <Input
                     {...field}
                     disabled={disabled}
-                    placeholder="DevFest Sucre 2026"
+                    placeholder="Tech day"
                     enterKeyHint="next"
-                    className="rounded-none border-white"
+                    className="font-google rounded-none border-white"
                   />
                 </FormControl>
                 <FormMessage />
@@ -302,7 +302,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                     className="rounded-none border-white"
                   />
                 </FormControl>
-                <FormLabel className="text-xs uppercase">Fechas por definir</FormLabel>
+                <FormLabel className="font-google">Fechas por definir</FormLabel>
               </FormItem>
             )}
           />
@@ -321,7 +321,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                         type="datetime-local"
                         disabled={disabled}
                         enterKeyHint="next"
-                        className="rounded-none border-white"
+                        className="font-google rounded-none border-white"
                       />
                     </FormControl>
                     <FormMessage />
@@ -341,7 +341,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                         type="datetime-local"
                         disabled={disabled}
                         enterKeyHint="next"
-                        className="rounded-none border-white"
+                        className="font-google rounded-none border-white"
                       />
                     </FormControl>
                     <FormMessage />
@@ -352,7 +352,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
           )}
 
           {!datesTbd && isOutsideBolivia && (
-            <p className="text-muted-foreground text-xs">
+            <p className="font-google text-muted-foreground text-xs">
               Tu zona horaria es {browserTimeZone}: los horarios se publican en hora de Bolivia
               (UTC-4).
             </p>
@@ -398,7 +398,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                       isVirtual ? "https://meet.google.com/..." : "Hub de innovación USFX, Sucre"
                     }
                     enterKeyHint="next"
-                    className="rounded-none border-white"
+                    className="font-google rounded-none border-white"
                   />
                 </FormControl>
                 <FormMessage />
@@ -418,7 +418,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                     disabled={disabled}
                     placeholder="https://..."
                     enterKeyHint="done"
-                    className="rounded-none border-white"
+                    className="font-google rounded-none border-white"
                   />
                 </FormControl>
                 <FormMessage />
@@ -440,8 +440,8 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
                       className="rounded-none border-white"
                     />
                   </FormControl>
-                  <FormLabel className="text-sm font-normal normal-case">
-                    Acepto que mi evento sea revisado antes de ser publicado
+                  <FormLabel className="font-google leading-tight">
+                    Acepto que los datos enviados sean revisados antes de publicarse
                   </FormLabel>
                 </div>
                 <FormMessage />

@@ -1,4 +1,3 @@
-import type { SupabaseClient } from "@supabase/supabase-js"
 import type { APIRoute } from "astro"
 
 import { withAdmin } from "@/lib/auth"
@@ -9,59 +8,79 @@ import {
   getCalendarEvents,
   updateCalendarEvent,
 } from "@/lib/services/calendarEventService"
-
 import { acceptCommunityOnFirstEvent } from "@/lib/services/communityService"
-import { createUserClient } from "@/lib/supabase"
+import {
+  createCalendarEventSchema,
+  deleteCalendarEventSchema,
+  getCalendarEventsQuerySchema,
+  updateCalendarEventSchema,
+} from "@/lib/validators/calendarEvent"
 
 const sendCalendarEventEmail = async (
-  supabase: SupabaseClient,
   type: "event-received" | "event-accepted",
   eventId: number
 ) => {
-  const { error } = await supabase.functions.invoke("send-email", {
-    headers: { Prefer: "return=minimal" },
-    body: { type, data: { eventId } },
-  })
+  const branchId = import.meta.env.NEON_BRANCH_ID
+  const hostSuffix = import.meta.env.NEON_FUNCTION_HOST_SUFFIX
+  const secret = import.meta.env.FUNCTION_SECRET
 
-  if (error) {
-    const details =
-      error.context instanceof Response ? await error.context.text().catch(() => "") : ""
-    console.error(`error sending ${type} email: ${error.message} ${details}`)
+  if (!branchId || !hostSuffix || !secret) {
+    console.error(`error sending ${type} email: Neon function is not configured`)
+    return
+  }
+
+  try {
+    const response = await fetch(`https://${branchId}-sendemail${hostSuffix}/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-function-secret": secret,
+      },
+      body: JSON.stringify({ type, data: { eventId } }),
+    })
+
+    if (!response.ok) {
+      const details = await response.text().catch(() => "")
+      console.error(`error sending ${type} email: ${response.status} ${details}`)
+    }
+  } catch (error) {
+    console.error("error invoking send email email:", error)
   }
 }
 
-export const GET: APIRoute = async ({ url, cookies }) => {
+export const GET: APIRoute = async ({ url }) => {
   try {
-    const startParam = url.searchParams.get("start")
-    const endParam = url.searchParams.get("end")
-    const yearParam = url.searchParams.get("year")
-    const monthParam = url.searchParams.get("month")
+    const query = Object.fromEntries(url.searchParams.entries())
+    const parsed = getCalendarEventsQuerySchema.safeParse(query)
 
-    const supabase = await createUserClient(cookies)
+    if (!parsed.success) {
+      return new Response(
+        JSON.stringify({ error: parsed.error.issues[0]?.message ?? "Parámetros inválidos" }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        }
+      )
+    }
+
+    const { start, end, year, month } = parsed.data
 
     let calendarEvents:
       | Awaited<ReturnType<typeof getCalendarEvents>>
       | Awaited<ReturnType<typeof getAllCalendarEvents>>
 
-    if (startParam && endParam) {
-      calendarEvents = await getCalendarEvents(supabase, startParam, endParam)
-    } else if (yearParam || monthParam) {
+    if (start && end) {
+      calendarEvents = await getCalendarEvents(start, end)
+    } else if (year || month) {
       const now = new Date()
-      const year = yearParam ? Number(yearParam) : now.getUTCFullYear()
-      const month = monthParam ? Number(monthParam) : now.getUTCMonth() + 1
+      const targetYear = year ?? now.getUTCFullYear()
+      const targetMonth = month ?? now.getUTCMonth() + 1
 
-      if (!Number.isInteger(year) || !Number.isInteger(month) || month < 1 || month > 12) {
-        return new Response(JSON.stringify({ error: "year/month inválidos" }), {
-          status: 400,
-          headers: { "Content-Type": "application/json" },
-        })
-      }
-
-      const start = new Date(Date.UTC(year, month - 1, 1)).toISOString()
-      const end = new Date(Date.UTC(year, month, 1)).toISOString()
-      calendarEvents = await getCalendarEvents(supabase, start, end)
+      const rangeStart = new Date(Date.UTC(targetYear, targetMonth - 1, 1)).toISOString()
+      const rangeEnd = new Date(Date.UTC(targetYear, targetMonth, 1)).toISOString()
+      calendarEvents = await getCalendarEvents(rangeStart, rangeEnd)
     } else {
-      calendarEvents = await getAllCalendarEvents(supabase)
+      calendarEvents = await getAllCalendarEvents()
     }
 
     return new Response(JSON.stringify(calendarEvents), {
@@ -75,36 +94,25 @@ export const GET: APIRoute = async ({ url, cookies }) => {
   }
 }
 
-export const POST: APIRoute = async ({ request, cookies }) => {
+export const POST: APIRoute = async ({ request }) => {
   try {
-    const body = await request.json()
-    const {
-      name,
-      community_id,
-      start_datetime,
-      end_datetime,
-      format,
-      registration_link,
-      location,
-    } = body
+    const body = await request.json().catch(() => null)
+    const parsed = createCalendarEventSchema.safeParse(body)
 
-    if (!name || !community_id) {
-      return new Response(JSON.stringify({ error: "Invalid request body" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      })
+    if (!parsed.success) {
+      return new Response(
+        JSON.stringify({
+          error: parsed.error.issues[0]?.message ?? "Datos inválidos",
+          issues: parsed.error.issues,
+        }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        }
+      )
     }
 
-    const supabase = await createUserClient(cookies)
-    const id = await createCalendarEvent(supabase, {
-      name,
-      community_id,
-      start_datetime,
-      end_datetime,
-      format,
-      registration_link,
-      location,
-    })
+    const id = await createCalendarEvent(parsed.data)
 
     if (!id) {
       return new Response(JSON.stringify({ error: "Failed to create calendar event" }), {
@@ -114,9 +122,9 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     }
 
     // Skip await to reduce response time
-    sendCalendarEventEmail(supabase, "event-received", id)
+    sendCalendarEventEmail("event-received", id)
 
-    return new Response(JSON.stringify({ message: "Evento creado exitosamente" }), {
+    return new Response(JSON.stringify({ message: "Evento creado exitosamente", id }), {
       headers: { "Content-Type": "application/json" },
       status: 201,
     })
@@ -127,39 +135,26 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   }
 }
 
-export const PUT = withAdmin(async ({ request, auth }) => {
+export const PUT = withAdmin(async ({ request }) => {
   try {
-    const body = await request.json()
-    const {
-      id,
-      name,
-      community_id,
-      start_datetime,
-      end_datetime,
-      format,
-      registration_link,
-      location,
-      accepted,
-    } = body
+    const body = await request.json().catch(() => null)
+    const parsed = updateCalendarEventSchema.safeParse(body)
 
-    if (!id) {
-      return new Response(JSON.stringify({ error: "Invalid request body" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      })
+    if (!parsed.success) {
+      return new Response(
+        JSON.stringify({
+          error: parsed.error.issues[0]?.message ?? "Datos inválidos",
+          issues: parsed.error.issues,
+        }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        }
+      )
     }
 
-    const supabase = auth.supabase
-    const result = await updateCalendarEvent(supabase, id, {
-      name,
-      community_id,
-      start_datetime,
-      end_datetime,
-      format,
-      registration_link,
-      location,
-      accepted,
-    })
+    const { id, ...data } = parsed.data
+    const result = await updateCalendarEvent(id, data)
 
     if (!result) {
       return new Response(JSON.stringify({ error: "Evento no encontrado" }), {
@@ -168,11 +163,11 @@ export const PUT = withAdmin(async ({ request, auth }) => {
       })
     }
 
-    if (accepted === true) {
-      await acceptCommunityOnFirstEvent(supabase, id)
+    if (data.accepted === true) {
+      await acceptCommunityOnFirstEvent(id)
 
       // Skip await to reduce response time
-      sendCalendarEventEmail(supabase, "event-accepted", id)
+      sendCalendarEventEmail("event-accepted", id)
     }
 
     return new Response(JSON.stringify(result), {
@@ -187,19 +182,21 @@ export const PUT = withAdmin(async ({ request, auth }) => {
   }
 })
 
-export const DELETE = withAdmin(async ({ url, auth }) => {
+export const DELETE = withAdmin(async ({ url }) => {
   try {
-    const id = url.searchParams.get("id")
+    const parsed = deleteCalendarEventSchema.safeParse({ id: url.searchParams.get("id") })
 
-    if (!id) {
-      return new Response(JSON.stringify({ error: "id es requerido" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      })
+    if (!parsed.success) {
+      return new Response(
+        JSON.stringify({ error: parsed.error.issues[0]?.message ?? "id es requerido" }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        }
+      )
     }
 
-    const supabase = auth.supabase
-    const success = await deleteCalendarEvent(supabase, Number(id))
+    const success = await deleteCalendarEvent(parsed.data.id)
 
     if (!success) {
       return new Response(

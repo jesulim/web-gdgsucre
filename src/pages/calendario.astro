@@ -10,13 +10,10 @@ import PublishEvent from "@/components/calendar/PublishEvent.astro"
 import BaseLayout from "@/layout/BaseLayout.astro"
 import { getUpcomingCalendarEvents } from "@/lib/services/calendarEventService"
 import { getCommunitiesWithEventCount } from "@/lib/services/communityService"
-import { createUserClient } from "@/lib/supabase"
-
-const supabase = await createUserClient(Astro.cookies)
 
 const [upcomingEvents, communities] = await Promise.all([
-  getUpcomingCalendarEvents(supabase),
-  getCommunitiesWithEventCount(supabase),
+  getUpcomingCalendarEvents(),
+  getCommunitiesWithEventCount(),
 ])
 ---
 
