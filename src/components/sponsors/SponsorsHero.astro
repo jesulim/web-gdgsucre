@@ -1,0 +1,156 @@
+---
+import ArrowOutward from "@/assets/icons/arrow_outward.svg"
+import ScrambledText from "@/components/landing/ScrambledText.astro"
+import BrochureButton from "@/components/sponsors/BrochureButton.astro"
+import { INSTITUTIONAL_CONTACT, SPONSORS } from "@/lib/data/sponsors"
+
+const heroSummaryStats = [
+  {
+    value: "386+",
+    label: "Asistentes en eventos anuales",
+    accentClass: "text-blue-700 dark:text-io-accent",
+  },
+  {
+    value: "31.200+",
+    label: "Personas alcanzadas",
+    accentClass: "text-red-600 dark:text-red-400",
+  },
+  {
+    value: "71.724+",
+    label: "Visualizaciones en redes",
+    accentClass: "text-yellow-700 dark:text-io-yellow",
+  },
+  {
+    value: String(SPONSORS.length),
+    label: "Organizaciones aliadas",
+    accentClass: "text-green-700 dark:text-io-green-light",
+  },
+] as const
+---
+
+<section
+  class="relative isolate py-14 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-[radial-gradient(circle,color-mix(in_srgb,var(--color-black)_8%,transparent)_1px,transparent_1px)] dark:bg-[radial-gradient(circle,color-mix(in_srgb,var(--color-white)_10%,transparent)_1px,transparent_1px)] bg-size-[20px_20px]"
+>
+  <div class="pointer-events-none absolute inset-0 -z-10 overflow-clip" aria-hidden="true">
+    <div
+      class="absolute -left-24 top-0 size-72 rounded-full bg-blue-500/12 blur-3xl dark:bg-blue-500/15"
+    >
+    </div>
+    <div
+      class="absolute -right-24 bottom-0 size-72 rounded-full bg-green-500/12 blur-3xl dark:bg-green-500/12"
+    >
+    </div>
+  </div>
+
+  <div class="mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+    <div class="lg:col-span-7 flex flex-col gap-6">
+      <div class="flex items-center gap-3 text-xs sm:text-sm">
+        <ScrambledText text="{ CONVIÉRTETE EN SPONSOR }" />
+        <span class="flex items-center gap-1 shrink-0" aria-hidden="true">
+          <span class="size-2 rounded-full bg-blue-500"></span>
+          <span class="size-2 rounded-full bg-red-500"></span>
+          <span class="size-2 rounded-full bg-yellow-600"></span>
+          <span class="size-2 rounded-full bg-green-500"></span>
+        </span>
+      </div>
+
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-tight text-balance">
+        Tu marca, frente a la{" "}
+        <span class="text-blue-700 dark:text-io-accent">comunidad tech</span> de Sucre
+      </h1>
+
+      <p class="text-base sm:text-lg leading-relaxed text-black/80 dark:text-io-text-secondary max-w-2xl text-pretty">
+        GDG Sucre es un capítulo oficial de Google Developer Groups: una comunidad de
+        desarrolladores, estudiantes y profesionales que aprenden juntos sobre IA, Cloud, Android,
+        Flutter y Web. Somos voluntarios sin fines de lucro dentro de una red global de +1.000
+        capítulos en más de 145 países.
+      </p>
+
+      <div class="flex flex-col gap-3 pt-1">
+        <div class="flex flex-wrap items-center gap-3.5">
+          <a
+            href={INSTITUTIONAL_CONTACT.emailHref}
+            class="group inline-flex w-full sm:w-auto items-center justify-center gap-3 rounded-xl bg-blue-500 px-6 py-3.5 font-monospace text-sm font-medium uppercase tracking-wide text-black transition-colors hover:bg-green-500 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-500"
+          >
+            <span>Quiero ser Sponsor</span>
+            <ArrowOutward
+              aria-hidden="true"
+              class="size-5 shrink-0 fill-current group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
+            />
+          </a>
+
+          <BrochureButton
+            label="Brochure oficial"
+            describedBy="brochure-status-hero"
+            surface="hero"
+            showDownloadIcon={true}
+          />
+        </div>
+
+        <p
+          id="brochure-status-hero"
+          class="font-monospace text-xs text-black/70 dark:text-io-text-muted text-pretty pt-1"
+        >
+          El brochure general estará disponible próximamente; mientras tanto escríbenos para armar
+          una propuesta a medida.
+        </p>
+      </div>
+    </div>
+
+    <aside class="lg:col-span-5" aria-label="Resumen de impacto de GDG Sucre">
+      <div
+        class="rounded-2xl border border-black/15 dark:border-white/15 bg-white dark:bg-[#18191e] shadow-lg overflow-clip"
+      >
+        <div class="grid grid-cols-4 h-1.5" aria-hidden="true">
+          <span class="bg-blue-500"></span>
+          <span class="bg-red-500"></span>
+          <span class="bg-yellow-600"></span>
+          <span class="bg-green-500"></span>
+        </div>
+
+        <div class="p-6 sm:p-8 flex flex-col gap-6">
+          <div class="flex items-center justify-between gap-2 border-b border-black/10 dark:border-white/10 pb-4">
+            <span
+              class="font-monospace text-xs uppercase tracking-widest text-black/70 dark:text-io-text-muted"
+            >
+              gdg-sucre // impacto-anual
+            </span>
+            <span
+              class="inline-flex items-center gap-1.5 rounded-full bg-green-pastel/80 dark:bg-green-500/20 px-2.5 py-0.5 font-monospace text-xs text-black dark:text-io-green-light"
+            >
+              <span class="size-1.5 rounded-full bg-green-500" aria-hidden="true"></span>
+              <span>Sin fines de lucro</span>
+            </span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            {
+              heroSummaryStats.map(stat => (
+                <div class="rounded-xl border border-black/10 dark:border-white/10 bg-neutral-50 dark:bg-[#202127] p-4 flex flex-col gap-1">
+                  <span class:list={["text-2xl sm:text-3xl font-bold tabular-nums", stat.accentClass]}>
+                    {stat.value}
+                  </span>
+                  <span class="text-xs sm:text-sm text-black/75 dark:text-io-text-secondary">
+                    {stat.label}
+                  </span>
+                </div>
+              ))
+            }
+          </div>
+
+          <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-black/10 dark:border-white/10 font-monospace text-xs text-black/70 dark:text-io-text-muted">
+            <span>Sucre, Bolivia</span>
+            <a
+              href={INSTITUTIONAL_CONTACT.calendarUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="hover:underline text-blue-700 dark:text-io-accent"
+            >
+              {INSTITUTIONAL_CONTACT.calendarLabel}
+            </a>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>

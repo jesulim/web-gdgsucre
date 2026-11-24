@@ -1,0 +1,134 @@
+---
+import ScrambledText from "@/components/landing/ScrambledText.astro"
+import { AUDIENCE_SEGMENTS, REACH_METRICS, STRATEGIC_PILLARS } from "@/lib/data/sponsors"
+---
+
+<section
+  id="por-que-sumarte"
+  class="border-t border-black/10 dark:border-white/10 bg-neutral-50/70 dark:bg-[#1b1c21]/60 py-16 sm:py-20 px-4 sm:px-6 lg:px-8"
+>
+  <div class="mx-auto max-w-6xl flex flex-col gap-10">
+    <div class="flex flex-col gap-3 max-w-3xl">
+      <div class="flex items-center gap-2 text-xs sm:text-sm">
+        <ScrambledText text="{ POR QUÉ SUMARTE }" />
+        <span class="w-3 h-1 bg-blue-500 shrink-0" aria-hidden="true"></span>
+      </div>
+
+      <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight text-balance">
+        Visibilidad estratégica con impacto real en el talento regional
+      </h2>
+
+      <p class="text-base sm:text-lg text-black/75 dark:text-io-text-secondary text-pretty">
+        Auspiciar a GDG Sucre posiciona tu organización ante una audiencia técnica activa y
+        financia espacios gratuitos para que más personas aprendan y construyan tecnología.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {
+        STRATEGIC_PILLARS.map(pillar => (
+          <article
+            class:list={[
+              "flex flex-col gap-3 rounded-2xl border border-black/10 dark:border-white/10 border-t-4 bg-white dark:bg-[#18191e] p-6 sm:p-7",
+              pillar.borderAccentClass,
+            ]}
+          >
+            <span class="font-monospace text-xs uppercase tracking-widest text-black/70 dark:text-io-text-muted">
+              {pillar.tag}
+            </span>
+            <h3 class="text-xl font-semibold text-balance">{pillar.title}</h3>
+            <p class="text-sm sm:text-base leading-relaxed text-black/75 dark:text-io-text-secondary text-pretty">
+              {pillar.description}
+            </p>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+      <div
+        class="lg:col-span-6 flex flex-col justify-between gap-6 rounded-2xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#18191e] p-6 sm:p-8"
+      >
+        <div class="flex flex-col gap-1">
+          <span
+            class="font-monospace text-xs uppercase tracking-widest text-black/70 dark:text-io-text-muted"
+          >
+            Alcance comprobado
+          </span>
+          <h3 class="text-2xl font-semibold text-balance">Presencia digital y presencial</h3>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          {
+            REACH_METRICS.map(metric => (
+              <div class="flex flex-col gap-1 rounded-xl border border-black/10 dark:border-white/10 bg-neutral-50 dark:bg-[#202127] p-4">
+                <span class:list={["text-3xl font-bold tabular-nums", metric.accentClass]}>
+                  {metric.value}
+                </span>
+                <span class="text-sm text-black/75 dark:text-io-text-secondary text-pretty">
+                  {metric.label}
+                </span>
+              </div>
+            ))
+          }
+        </div>
+
+        <p
+          class="font-monospace text-xs uppercase tracking-wider text-black/70 dark:text-io-text-muted border-t border-black/10 dark:border-white/10 pt-4"
+        >
+          +28 organizadores voluntarios activos impulsando la comunidad en Sucre
+        </p>
+      </div>
+
+      <div
+        class="lg:col-span-6 flex flex-col justify-between gap-6 rounded-2xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#18191e] p-6 sm:p-8"
+      >
+        <div class="flex flex-col gap-1">
+          <span
+            class="font-monospace text-xs uppercase tracking-widest text-black/70 dark:text-io-text-muted"
+          >
+            Demografía de asistentes
+          </span>
+          <h3 class="text-2xl font-semibold text-balance">¿A quién llega tu marca?</h3>
+          <p class="text-sm text-black/75 dark:text-io-text-secondary text-pretty">
+            Una combinación sólida de futuros profesionales tech, desarrolladores activos y
+            emprendedores de la región.
+          </p>
+        </div>
+
+        <ul role="list" class="flex flex-col gap-4">
+          {
+            AUDIENCE_SEGMENTS.map(segment => (
+              <li class="flex flex-col gap-1.5">
+                <div class="flex items-center justify-between gap-2 text-sm font-medium">
+                  <span class="flex items-center gap-2">
+                    <span
+                      class:list={["size-2.5 rounded-full shrink-0", segment.dotClass]}
+                      aria-hidden="true"
+                    />
+                    <span>{segment.label}</span>
+                  </span>
+                  <span class="font-monospace font-semibold tabular-nums">
+                    {segment.percentage}%
+                  </span>
+                </div>
+                <div
+                  class="h-3 w-full rounded-full border border-black/10 dark:border-white/15 bg-black/8 dark:bg-white/10 overflow-clip forced-colors:border-[CanvasText]"
+                  aria-hidden="true"
+                >
+                  <div
+                    class:list={[
+                      "h-full rounded-full forced-colors:bg-[Highlight]",
+                      segment.barColorClass,
+                    ]}
+                    style={`width: ${segment.percentage}%`}
+                  />
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,92 @@
+---
+import ScrambledText from "@/components/landing/ScrambledText.astro"
+import { BRAND_DELIVERABLES, CONTRIBUTION_MODALITIES } from "@/lib/data/sponsors"
+---
+
+<section
+  id="como-aportar"
+  class="border-t border-black/10 dark:border-white/10 py-16 sm:py-20 px-4 sm:px-6 lg:px-8"
+>
+  <div class="mx-auto max-w-6xl flex flex-col gap-10">
+    <div class="flex flex-col gap-3 max-w-3xl">
+      <div class="flex items-center gap-2 text-xs sm:text-sm">
+        <ScrambledText text="{ CÓMO APORTAR }" />
+        <span class="w-3 h-1 bg-green-500 shrink-0" aria-hidden="true"></span>
+      </div>
+
+      <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight text-balance">
+        Alianzas flexibles a la medida de tu organización
+      </h2>
+
+      <p class="text-base sm:text-lg text-black/75 dark:text-io-text-secondary text-pretty">
+        No trabajamos con paquetes cerrados ni esquemas rígidos: armamos la propuesta junto a tu
+        equipo, según lo que quieran lograr y aportar durante el año o en eventos específicos.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+      {
+        CONTRIBUTION_MODALITIES.map(modality => (
+          <article
+            class:list={[
+              "flex flex-col gap-4 rounded-2xl border border-black/10 dark:border-white/10 border-t-4 bg-neutral-50 dark:bg-[#1b1c21] p-6",
+              modality.topBorderClass,
+            ]}
+          >
+            <div class="flex items-center justify-between gap-2">
+              <span
+                class:list={[
+                  "inline-flex items-center rounded-full px-3 py-1 font-monospace text-xs font-medium",
+                  modality.pillClass,
+                ]}
+              >
+                Modalidad {modality.number}
+              </span>
+            </div>
+            <h3 class="text-xl font-semibold text-balance">{modality.title}</h3>
+            <p class="text-sm leading-relaxed text-black/75 dark:text-io-text-secondary text-pretty">
+              {modality.description}
+            </p>
+          </article>
+        ))
+      }
+    </div>
+
+    <div
+      class="rounded-2xl border border-black/10 dark:border-white/10 bg-neutral-50 dark:bg-[#1b1c21] p-6 sm:p-8 flex flex-col gap-6"
+    >
+      <div class="flex flex-col gap-1">
+        <span
+          class="font-monospace text-xs uppercase tracking-widest text-black/70 dark:text-io-text-muted"
+        >
+          Retorno de marca
+        </span>
+        <h3 class="text-2xl font-semibold text-balance">
+          ¿Qué recibe tu empresa o institución al sumarse?
+        </h3>
+      </div>
+
+      <ul role="list" class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3.5">
+        {
+          BRAND_DELIVERABLES.map(deliverable => (
+            <li class="flex items-start gap-3 text-sm sm:text-base text-black/85 dark:text-io-text">
+              <span
+                class="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-green-500/15 text-green-700 dark:text-io-green-light"
+                aria-hidden="true"
+              >
+                <svg viewBox="0 0 20 20" class="size-3.5 fill-current">
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </span>
+              <span class="text-pretty">{deliverable}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
