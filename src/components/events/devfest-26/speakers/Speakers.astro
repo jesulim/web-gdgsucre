@@ -14,13 +14,13 @@ const speakers = [
     area: "AI On-Device",
     img: yuryImg.src,
     name: "Yury Camacho",
-    bio: "Yury Camacho es Ingeniero de Sistemas por la Universidad Mayor de San Simón de Cochabamba, Bolivia. Cuenta con experiencia en desarrollo móvil desde 2010, trabajando con plataformas como Symbian, BlackBerry, iOS y Android. También fue uno de los Google Glass Explorers.Es organizador de GDG Cochabamba y disfruta compartir conocimientos mediante charlas, talleres y mentorías. Actualmente se desempeña como Android Technical Lead en el equipo de Payments de Ualá, y ha trabajado en empresas como Globant, OLX y Rappi, además de desempeñarse como consultor independiente.",
+    bio: "Ingeniero de Sistemas por la Universidad Mayor de San Simón de Cochabamba, Bolivia. Cuenta con experiencia en desarrollo móvil desde 2010, trabajando con plataformas como Symbian, BlackBerry, iOS y Android. También fue uno de los Google Glass Explorers.Es organizador de GDG Cochabamba y disfruta compartir conocimientos mediante charlas, talleres y mentorías. Actualmente se desempeña como Android Technical Lead en el equipo de Payments de Ualá, y ha trabajado en empresas como Globant, OLX y Rappi, además de desempeñarse como consultor independiente.",
   },
   {
     area: "Real-time AI",
     img: brianImg.src,
     name: "Brian Castillo",
-    bio: "Brian fundó y fue CTO de Wibo, startup con sede en Santiago de Chile, dedicada a mejorar la experiencia de compra en sitios web optimizando la eficiencia de los procesos de venta para generar engagement con los usuarios. Anteriormente, fundó y fue CTO de Horses Developer, fábrica de software en Lima, Perú, donde lideró y participó en proyectos móviles para clientes de Latinoamérica. Cuenta con más de 9 años de experiencia en tecnologías móviles, lo que lo llevó a involucrarse en las comunidades de Google Developer Groups (GDG). Actualmente, lidera y organiza los eventos del capítulo de GDG Lima, Perú.",
+    bio: "Fundó y fue CTO de Wibo, startup con sede en Santiago de Chile, dedicada a mejorar la experiencia de compra en sitios web optimizando la eficiencia de los procesos de venta para generar engagement con los usuarios. Anteriormente, fundó y fue CTO de Horses Developer, fábrica de software en Lima, Perú, donde lideró y participó en proyectos móviles para clientes de Latinoamérica. Cuenta con más de 9 años de experiencia en tecnologías móviles, lo que lo llevó a involucrarse en las comunidades de Google Developer Groups (GDG). Actualmente, lidera y organiza los eventos del capítulo de GDG Lima, Perú.",
   },
   {
     area: "AI Engineering",
@@ -45,19 +45,16 @@ const speakers = [
     <div class="absolute top-32 -left-4 size-40 rounded-full bg-yellow-500/30 blur-[45px] animation-delay-4000 sm:size-40 md:bottom-[40%] md:left-[6%] md:size-44 lg:size-56 lg:blur-[65px]"></div>
     <div class="absolute bottom-8 right-0 size-32 rounded-full bg-red-500/40 blur-[45px] sm:size-40 md:size-40 lg:size-48 lg:blur-[55px] md:bottom-20 md:right-8"></div>
     <div class="absolute top-1/5 left-4 hidden lg:block">
-      <BracketOpen/>
+      <BracketOpen />
     </div>
 
     <div class="absolute bottom-4 right-8 hidden lg:block">
-      <Semicolon/>
+      <Semicolon />
     </div>
-
   </div>
 
   <div class="mx-auto max-w-5xl">
-    <h2 class="text-3xl font-bold tracking-tight md:text-5xl mb-4 md:mb-8">
-      Speakers
-    </h2>
+    <h2 class="text-3xl font-bold tracking-tight md:text-5xl mb-4 md:mb-8">Speakers</h2>
 
     <div class="grid gap-4 grid-cols-2 justify-items-center md:grid-cols-4">
       {speakers.map((speaker, i) => (
@@ -66,4 +63,3 @@ const speakers = [
     </div>
   </div>
 </section>
-

@@ -10,13 +10,11 @@ const organizers = (await getOrganizers(supabase, "devfest-26")) ?? []
   id="organizers"
   class="relative isolate overflow-hidden bg-df-black px-4 py-10 text-white md:py-16"
 >
-  <div class="absolute -left-12 top-12 -z-10 size-50 rounded-full bg-red-500/25 blur-3xl md:left-12 md:size-56"></div>
-  <div class="absolute -right-12 bottom-0 -z-10 size-50 rounded-full bg-yellow-500/25 blur-3xl md:right-16 md:size-56"></div>
+  <div class="absolute -left-12 bottom-12 -z-10 size-50 rounded-full bg-red-500/25 blur-3xl md:left-12 md:size-56"></div>
+  <div class="absolute -right-12 top-12 -z-10 size-50 rounded-full bg-yellow-500/25 blur-3xl md:right-16 md:size-56"></div>
 
   <div class="mx-auto flex max-w-307.5 flex-col gap-8 md:gap-10">
-    <h2 class="text-3xl font-bold tracking-tight md:text-5xl mb-4 md:mb-8">
-      Organizers
-    </h2>
+    <h2 class="text-3xl font-bold tracking-tight md:text-5xl mb-4 md:mb-8">Organizers</h2>
 
     {organizers.length > 0 ? (
       <div class="relative">
@@ -32,10 +30,7 @@ const organizers = (await getOrganizers(supabase, "devfest-26")) ?? []
         <div class="organizers-container flex w-full gap-5 overflow-x-auto scroll-smooth pb-4 md:gap-6">
           {organizers.map(organizer => (
             <div class="w-64 shrink-0 sm:w-72">
-              <OrganizerCard
-                img={organizer.image}
-                full_name={`${organizer.first_name} ${organizer.last_name}`.trim()}
-              />
+              <OrganizerCard img={organizer.image} full_name={organizer.name?.trim()} />
             </div>
           ))}
         </div>

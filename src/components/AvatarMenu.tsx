@@ -1,4 +1,4 @@
-import { Dices, LogOut, Ticket, TicketCheck, Users } from "lucide-react"
+import { Dices, LogOut, Ticket, TicketCheck, User2, Users } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   DropdownMenu,
@@ -42,7 +42,11 @@ export default function AvatarMenu({
           <p className="opacity-80">{email}</p>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-
+        <DropdownMenuItem asChild>
+          <a href="/perfil">
+            <User2 /> Mi perfil
+          </a>
+        </DropdownMenuItem>
         {admin && (
           <>
             <DropdownMenuItem asChild>
