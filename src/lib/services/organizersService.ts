@@ -1,5 +1,4 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
-import { getProfileByEmail } from "./profileService"
 
 const capitalizeName = (name: string) => {
   if (!name) return ""
@@ -20,6 +19,7 @@ export interface OrganizerResult extends PublicOrganizer {
   profile_id: string
   email: string | null
   phone_number: string | null
+  is_staff: boolean
 }
 
 export interface SearchedUser {
@@ -77,13 +77,31 @@ export async function getOrganizersForAdmin(
   const { data, error } = await supabase
     .from("organizers")
     .select(
-      "id, profile_id, profiles!inner (id, first_name, last_name, avatar_url, email, phone_number), events!inner(slug)"
+      "id, profile_id, profiles!inner (id, first_name, last_name, avatar_url, email, phone_number), events!inner(id, slug)"
     )
     .eq("events.slug", eventSlug)
 
   if (error) {
     console.error("Error fetching organizers", error)
     return null
+  }
+
+  const eventId = data[0]?.events?.id
+  const profileIds = data.map(item => item.profile_id).filter(Boolean)
+
+  let staffIds = new Set<string>()
+  if (eventId && profileIds.length > 0) {
+    const { data: staff, error: staffError } = await supabase
+      .from("event_staff")
+      .select("user_id")
+      .eq("event_id", eventId)
+      .in("user_id", profileIds)
+
+    if (staffError) {
+      console.error("Error fetching event staff", staffError)
+    } else {
+      staffIds = new Set((staff ?? []).map((member: { user_id: string }) => member.user_id))
+    }
   }
 
   return data.map(organizer => {
@@ -96,62 +114,105 @@ export async function getOrganizersForAdmin(
       last_name: capitalizeName(profile?.last_name ?? ""),
       email: profile?.email ?? null,
       phone_number: profile?.phone_number ?? null,
+      is_staff: staffIds.has(organizer.profile_id),
     }
   })
 }
 
-export async function searchUserByEmail(
+export async function setOrganizerStaff(
   supabase: SupabaseClient,
-  email: string
-): Promise<{ source: "profiles" | "auth"; user: SearchedUser } | null> {
-  const profile = await getProfileByEmail(supabase, email)
-  if (profile) {
-    return {
-      source: "profiles",
-      user: {
-        id: profile.id,
-        email: profile.email || email,
-        first_name: profile.first_name || "",
-        last_name: profile.last_name || "",
-        phone_number: profile.phone_number || "",
-        avatar_url: profile.avatar_url || null,
-      },
-    }
+  organizerId: number,
+  isStaff: boolean
+): Promise<boolean> {
+  const { data: organizer } = await supabase
+    .from("organizers")
+    .select("event_id, profile_id")
+    .eq("id", organizerId)
+    .single()
+
+  if (!organizer) return false
+
+  const { error } = isStaff
+    ? await supabase
+        .from("event_staff")
+        .upsert(
+          { user_id: organizer.profile_id, event_id: organizer.event_id, role: "accreditation" },
+          { onConflict: "user_id,event_id" }
+        )
+    : await supabase
+        .from("event_staff")
+        .delete()
+        .eq("user_id", organizer.profile_id)
+        .eq("event_id", organizer.event_id)
+
+  if (error) {
+    console.error("Error updating event staff", error)
+    return false
   }
 
+  return true
+}
+
+export async function searchUsers(
+  supabase: SupabaseClient,
+  query: string
+): Promise<SearchedUser[]> {
+  const pattern = query.replace(/[,()]/g, "\\$&")
+  const { data: profiles, error } = await supabase
+    .from("profiles")
+    .select("id, email, first_name, last_name, phone_number, avatar_url")
+    .or(`email.ilike.%${pattern}%,first_name.ilike.%${pattern}%,last_name.ilike.%${pattern}%`)
+    .limit(20)
+
+  if (error) {
+    console.error("Error searching profiles", error)
+    return []
+  }
+
+  const users: SearchedUser[] = (profiles ?? []).map(profile => ({
+    id: profile.id,
+    email: profile.email || query,
+    first_name: profile.first_name || "",
+    last_name: profile.last_name || "",
+    phone_number: profile.phone_number || "",
+    avatar_url: profile.avatar_url || null,
+  }))
+
+  if (users.length > 0) return users
+
+  // Auth users without a profile are only reachable by their exact email.
+  if (!query.includes("@")) return []
+
   const { data: authUser, error: rpcError } = await supabase.rpc("get_user_by_email", {
-    p_email: email,
+    p_email: query,
   })
 
   if (rpcError) {
     console.error("Error searching auth user by email via RPC", rpcError)
   }
 
-  if (authUser?.id) {
-    const meta = authUser.raw_user_meta_data || {}
-    const fullName: string = meta.full_name || meta.name || ""
-    let firstName = meta.first_name || ""
-    let lastName = meta.last_name || ""
-    if (!firstName && fullName) {
-      const parts = fullName.trim().split(" ")
-      firstName = parts[0] || ""
-      lastName = parts.slice(1).join(" ")
-    }
+  if (!authUser?.id) return []
 
-    return {
-      source: "auth",
-      user: {
-        id: authUser.id,
-        email: authUser.email || email,
-        first_name: firstName,
-        last_name: lastName,
-        phone_number: meta.phone_number || meta.phone || "",
-        avatar_url: meta.avatar_url || null,
-      },
-    }
+  const meta = authUser.raw_user_meta_data || {}
+  const fullName: string = meta.full_name || meta.name || ""
+  let firstName = meta.first_name || ""
+  let lastName = meta.last_name || ""
+  if (!firstName && fullName) {
+    const parts = fullName.trim().split(" ")
+    firstName = parts[0] || ""
+    lastName = parts.slice(1).join(" ")
   }
 
-  return null
+  return [
+    {
+      id: authUser.id,
+      email: authUser.email || query,
+      first_name: firstName,
+      last_name: lastName,
+      phone_number: meta.phone_number || meta.phone || "",
+      avatar_url: meta.avatar_url || null,
+    },
+  ]
 }
 
 export async function addOrganizer(

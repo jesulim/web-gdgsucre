@@ -1,38 +1,38 @@
 export interface EasterEggBadge {
-  id: string;
-  name: string;
-  description: string;
-  image_url: string;
-  unlockedAt: number;
-  flag: string;
+  id: string
+  name: string
+  description: string
+  image_url: string
+  unlockedAt: number
+  flag: string
 }
 
 export interface ClaimResult {
-  success: boolean;
-  message: string;
-  badge?: EasterEggBadge;
+  success: boolean
+  message: string
+  badge?: EasterEggBadge
 }
 
 export interface DinoPacket {
-  seq: number;
-  char: string;
-  corrupted: boolean;
+  seq: number
+  char: string
+  corrupted: boolean
 }
 
 export interface GDGConsoleInterface {
-  start: () => void;
-  packets: DinoPacket[];
-  hint: () => void;
-  unlock: (key: string) => Promise<ClaimResult | undefined>;
-  status: () => void;
+  start: () => void
+  packets: DinoPacket[]
+  hint: () => void
+  unlock: (key: string) => Promise<ClaimResult | undefined>
+  status: () => void
 }
 
 declare global {
   interface Window {
-    gdg?: GDGConsoleInterface;
+    gdg?: GDGConsoleInterface
   }
 
   interface WindowEventMap {
-    "gdg:badge-unlocked": CustomEvent<EasterEggBadge>;
+    "gdg:badge-unlocked": CustomEvent<EasterEggBadge>
   }
 }

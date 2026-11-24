@@ -52,7 +52,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   try {
     await setShareData(supabase, share_data === "true")
   } catch (error) {
-    console.log(`Error al actualizar el perfil: ${error}`)
+    console.log(`Error al actualizar share_data: ${error}`)
   }
 
   try {
