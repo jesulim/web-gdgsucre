@@ -165,7 +165,10 @@ function DayDetailPanel({ date, events }: { date: Date; events: CalendarDayEvent
             <div key={event.id} className="flex gap-4">
               <div
                 style={communityColorStyle(event.communityColor)}
-                className={clsx("w-2 min-h-full mb-1", communityColorClass(event.community_id))}
+                className={clsx(
+                  "w-2 shrink-0 min-h-full mb-1",
+                  communityColorClass(event.community_id)
+                )}
               />
               <div className="flex flex-col gap-1">
                 <h3 className="font-google text-lg leading-tight font-bold">{event.label}</h3>
@@ -249,7 +252,7 @@ function DayCell({
               key={event.id}
               style={communityColorStyle(event.communityColor)}
               className={clsx(
-                "min-w-2 min-h-2 text-xs text-black line-clamp-1 text-ellipsis",
+                "flex-1 min-h-2 text-xs text-black line-clamp-1 text-ellipsis",
                 communityColorClass(event.community_id)
               )}
             >

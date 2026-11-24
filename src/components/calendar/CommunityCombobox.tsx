@@ -58,7 +58,6 @@ export function CommunityCombobox({
         onOpenChange={setComboOpen}
         onValueChange={next => {
           onChange(next)
-          // Reset the filter after a selection so the next open shows all results.
           if (next) setSearch("")
         }}
         itemToStringLabel={(community: Community) => community.name}
@@ -72,9 +71,9 @@ export function CommunityCombobox({
           placeholder="Buscar comunidad..."
           disabled={disabled}
           showClear={!!value}
-          className="border-white rounded-none"
+          className="font-google border-white rounded-none"
         />
-        <ComboboxContent className="font-monospace rounded-none border border-white">
+        <ComboboxContent className="rounded-none border border-white">
           {isFetching ? (
             <div className="text-muted-foreground flex items-center gap-2 px-2 py-3 text-sm">
               <Loader2Icon className="size-4 animate-spin" /> Buscando...
