@@ -252,7 +252,7 @@ function DayCell({
               key={event.id}
               style={communityColorStyle(event.communityColor)}
               className={clsx(
-                "flex-1 min-h-2 text-xs text-black line-clamp-1 text-ellipsis",
+                "min-w-2 min-h-2 text-xs text-black line-clamp-1 text-ellipsis sm:flex-1",
                 communityColorClass(event.community_id)
               )}
             >
