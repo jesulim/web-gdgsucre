@@ -181,6 +181,7 @@ describe("DevFest 26 Agenda.astro component rendering", () => {
     expect(sectionTagMatch?.[0]).toContain("relative")
     expect(sectionTagMatch?.[0]).toContain("isolate")
     expect(sectionTagMatch?.[0]).toContain("overflow-hidden")
+    expect(sectionTagMatch?.[0]).toContain("scroll-mt-24")
 
     const backdropMatch = html.match(
       /<div\b[^>]*aria-hidden="true"[^>]*>([\s\S]*?)<\/div>\s*<div\b[^>]*relative z-10/

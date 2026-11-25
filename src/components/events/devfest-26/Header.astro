@@ -13,6 +13,7 @@ const navLinks = [
   { name: "DevFest 2026", href: "#about" },
   { name: "Paquetes", href: "#paquetes" },
   { name: "Speakers", href: "#speakers" },
+  { name: "Agenda", href: "#agenda" },
   { name: "Sponsors", href: "#sponsors" },
   { name: "Organizers", href: "#organizers" },
 ]
@@ -120,9 +121,14 @@ const accessToken = Astro.cookies.get("sb-access-token")?.value
     menuOverlay?.classList.toggle("h-auto")
   }
 
-  logo?.addEventListener("click", () => {
+  function closeMenuIfOpen() {
     if (mobileMenu?.classList.contains("hidden")) return
     toggleMenu()
+  }
+
+  logo?.addEventListener("click", closeMenuIfOpen)
+  mobileMenu?.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", closeMenuIfOpen)
   })
   menuToggle?.addEventListener("click", () => toggleMenu())
   menuOverlay?.addEventListener("click", () => toggleMenu())
