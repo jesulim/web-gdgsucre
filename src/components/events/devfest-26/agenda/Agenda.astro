@@ -1,4 +1,6 @@
 ---
+import ClosingBrace from "@/assets/events/devfest-26/Vector-10.svg"
+import GreaterThan from "@/assets/events/devfest-26/Vector-20.svg"
 import { type AgendaSlot, resolveAgendaSlotColors } from "./agenda"
 
 interface Props {
@@ -14,6 +16,24 @@ const { slots = [], title = "Agenda del Evento" } = Astro.props
   aria-labelledby="agenda-title"
   class="relative isolate overflow-hidden bg-df-black px-4 py-10 text-white md:py-16"
 >
+  <div
+    class="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+    aria-hidden="true"
+  >
+    <div class="absolute -right-20 -top-10 size-52 rounded-full bg-yellow-500/20 blur-[80px] md:-right-28 md:top-4 md:size-80"></div>
+    <div class="absolute -right-24 top-1/2 size-56 -translate-y-1/2 rounded-full bg-blue-500/20 blur-[90px] md:-right-32 md:size-96"></div>
+    <div class="absolute -bottom-12 -left-20 size-56 rounded-full bg-red-500/25 blur-[85px] md:-bottom-16 md:-left-28 md:size-88"></div>
+
+    <ClosingBrace
+      aria-hidden="true"
+      class="absolute -left-8 top-24 hidden h-80 w-auto opacity-70 lg:block"
+    />
+    <GreaterThan
+      aria-hidden="true"
+      class="absolute -right-8 bottom-20 hidden h-64 w-auto opacity-70 lg:block"
+    />
+  </div>
+
   <div class="relative z-10 mx-auto max-w-5xl">
     <h2 id="agenda-title" class="mb-4 text-3xl font-bold tracking-tight md:mb-8 md:text-5xl">
       {title}

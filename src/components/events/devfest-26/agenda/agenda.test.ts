@@ -171,4 +171,39 @@ describe("DevFest 26 Agenda.astro component rendering", () => {
     expect(html).toContain("Cronograma Oficial")
     expect(html).not.toContain("Agenda del Evento")
   })
+
+  it("renders an isolated, non-interactive, screen-reader-hidden backdrop with static orbs and desktop-only SVG shapes", async () => {
+    const html = await container.renderToString(AgendaComponent, {
+      props: { slots: DEVFEST_26_AGENDA_SLOTS },
+    })
+
+    const sectionTagMatch = html.match(/<section\b[^>]*>/)
+    expect(sectionTagMatch?.[0]).toContain("relative")
+    expect(sectionTagMatch?.[0]).toContain("isolate")
+    expect(sectionTagMatch?.[0]).toContain("overflow-hidden")
+
+    const backdropMatch = html.match(
+      /<div\b[^>]*aria-hidden="true"[^>]*>([\s\S]*?)<\/div>\s*<div\b[^>]*relative z-10/
+    )
+    expect(backdropMatch).not.toBeNull()
+
+    const backdropOpenTag = backdropMatch?.[0].match(/<div\b[^>]*>/)?.[0] ?? ""
+    expect(backdropOpenTag).toContain("pointer-events-none")
+    expect(backdropOpenTag).toContain("-z-10")
+    expect(backdropOpenTag).toContain("overflow-hidden")
+
+    const backdropInner = backdropMatch?.[1] ?? ""
+    expect(backdropInner).toContain("bg-yellow-")
+    expect(backdropInner).toContain("bg-blue-")
+    expect(backdropInner).toContain("bg-red-")
+    expect(backdropInner).toContain("blur-")
+    expect(backdropInner).not.toContain("animate-blob")
+
+    const svgs = [...backdropInner.matchAll(/<svg\b([^>]*)>/g)]
+    expect(svgs).toHaveLength(2)
+    for (const [, attrs] of svgs) {
+      expect(attrs).toContain("hidden")
+      expect(attrs).toContain("lg:block")
+    }
+  })
 })
