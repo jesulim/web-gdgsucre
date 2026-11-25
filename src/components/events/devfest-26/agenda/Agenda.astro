@@ -1,0 +1,63 @@
+---
+import { type AgendaSlot, resolveAgendaSlotColors } from "./agenda"
+
+interface Props {
+  slots?: AgendaSlot[]
+  title?: string
+}
+
+const { slots = [], title = "Agenda del Evento" } = Astro.props
+---
+
+<section
+  id="agenda"
+  aria-labelledby="agenda-title"
+  class="relative isolate overflow-hidden bg-df-black px-4 py-10 text-white md:py-16"
+>
+  <div class="relative z-10 mx-auto max-w-5xl">
+    <h2 id="agenda-title" class="mb-4 text-3xl font-bold tracking-tight md:mb-8 md:text-5xl">
+      {title}
+    </h2>
+
+    {slots.length > 0 ? (
+      <ol class="flex flex-col gap-3 md:gap-0 md:divide-y md:divide-white/10 md:rounded-3xl md:border md:border-white/15 md:bg-white/3">
+        {slots.map(slot => {
+          const { speakerName, speakerClass, titleClass } = resolveAgendaSlotColors(slot)
+
+          return (
+            <li class="flex flex-col gap-1.5 rounded-2xl border border-white/15 bg-white/3 p-4 md:flex-row md:items-baseline md:gap-8 md:rounded-none md:border-0 md:bg-transparent md:px-8 md:py-5">
+              <span class="shrink-0 font-monospace text-sm text-white/70 md:w-36 md:text-base">
+                {slot.time}
+              </span>
+
+              <div class="flex min-w-0 flex-col gap-1 md:block">
+                {speakerName && (
+                  <span
+                    class:list={[
+                      "order-2 text-sm font-medium md:inline md:text-base",
+                      speakerClass,
+                    ]}
+                  >
+                    {speakerName}<span class="hidden text-white/60 md:inline" aria-hidden="true">{" - "}</span>
+                  </span>
+                )}
+                <span
+                  class:list={[
+                    "order-1 text-base font-medium md:inline md:font-normal",
+                    titleClass,
+                  ]}
+                >
+                  {slot.title}
+                </span>
+              </div>
+            </li>
+          )
+        })}
+      </ol>
+    ) : (
+      <div class="rounded-3xl border border-white/15 bg-white/3 px-6 py-12 text-center text-white/70">
+        <p class="text-base md:text-lg">Agenda por confirmar</p>
+      </div>
+    )}
+  </div>
+</section>

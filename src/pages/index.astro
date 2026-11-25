@@ -1,5 +1,7 @@
 ---
 import About from "@/components/events/devfest-26/About.astro"
+import Agenda from "@/components/events/devfest-26/agenda/Agenda.astro"
+import { DEVFEST_26_AGENDA_SLOTS } from "@/components/events/devfest-26/agenda/agendaData"
 import Footer from "@/components/events/devfest-26/Footer.astro"
 import Header from "@/components/events/devfest-26/Header.astro"
 import Hero from "@/components/events/devfest-26/Hero.astro"
@@ -24,6 +26,7 @@ import BaseLayout from "@/layout/BaseLayout.astro"
     <About />
     <PackageSection />
     <Speakers />
+    <Agenda slots={DEVFEST_26_AGENDA_SLOTS} />
     <Sponsors />
     <Organizers />
   </main>
