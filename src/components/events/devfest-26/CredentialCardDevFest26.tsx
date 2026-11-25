@@ -72,7 +72,6 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
           lastName,
           role,
           avatarUrl: finalAvatar,
-          qrUrl,
           bgImageUrl: innerGradient,
           layout: {
             ...SHARE_LAYOUT,
@@ -81,7 +80,8 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
         },
         {
           title: `Credencial de ${firstName} ${lastName} - GDG Sucre`,
-          text: `¡Ya estoy registrado para el DevFest Sucre 2026! Genera la tuya aquí 🎉`,
+          text: "Estoy participando del DevFest Sucre 2026, ingresa a https://gdgsucre.com 🚀",
+          url: null,
           filename: `credencial-${(firstName ?? "").toLowerCase().replace(/\s+/g, "-")}.png`,
         }
       )

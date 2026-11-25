@@ -1,6 +1,7 @@
 interface ShareOptions {
   title?: string
   text?: string
+  url?: string | null
   filename?: string
 }
 
@@ -9,7 +10,7 @@ export interface CredentialData {
   lastName: string
   role: string
   avatarUrl: string
-  qrUrl: string
+  qrUrl?: string
   bgImageUrl: string
   layout?: Partial<CredentialLayout>
 }
@@ -133,7 +134,7 @@ async function renderCredentialCanvas(data: CredentialData): Promise<HTMLCanvasE
   const [bgResult, avatarResult, qrResult] = await Promise.allSettled([
     loadImage(data.bgImageUrl),
     loadImage(data.avatarUrl),
-    loadImage(data.qrUrl),
+    data.qrUrl ? loadImage(data.qrUrl) : Promise.resolve(null),
   ])
 
   roundedRectPath(ctx, 0, 0, W, H, RADIUS)
@@ -243,26 +244,28 @@ async function renderCredentialCanvas(data: CredentialData): Promise<HTMLCanvasE
   }
   ctx.fillText(data.role, W / 2, roleCenterY)
 
-  const qrCenterY = H * layout.qrCenterY
-  const qrBoxSize = layout.qrBoxSize * SCALE
-  const qrPadding = 8 * SCALE
-  const qrCornerR = 12 * SCALE
-  const qrX = W / 2 - qrBoxSize / 2
-  const qrY = qrCenterY - qrBoxSize / 2
+  if (data.qrUrl) {
+    const qrCenterY = H * layout.qrCenterY
+    const qrBoxSize = layout.qrBoxSize * SCALE
+    const qrPadding = 8 * SCALE
+    const qrCornerR = 12 * SCALE
+    const qrX = W / 2 - qrBoxSize / 2
+    const qrY = qrCenterY - qrBoxSize / 2
 
-  ctx.save()
-  ctx.shadowColor = "rgba(0, 0, 0, 0.1)"
-  ctx.shadowBlur = 6 * SCALE
-  ctx.shadowOffsetX = 0
-  ctx.shadowOffsetY = 4 * SCALE
-  roundedRectPath(ctx, qrX, qrY, qrBoxSize, qrBoxSize, qrCornerR)
-  ctx.fillStyle = "#ffffff"
-  ctx.fill()
-  ctx.restore()
+    ctx.save()
+    ctx.shadowColor = "rgba(0, 0, 0, 0.1)"
+    ctx.shadowBlur = 6 * SCALE
+    ctx.shadowOffsetX = 0
+    ctx.shadowOffsetY = 4 * SCALE
+    roundedRectPath(ctx, qrX, qrY, qrBoxSize, qrBoxSize, qrCornerR)
+    ctx.fillStyle = "#ffffff"
+    ctx.fill()
+    ctx.restore()
 
-  if (qrResult.status === "fulfilled") {
-    const qrImgSize = qrBoxSize - qrPadding * 2
-    ctx.drawImage(qrResult.value, qrX + qrPadding, qrY + qrPadding, qrImgSize, qrImgSize)
+    if (qrResult.status === "fulfilled" && qrResult.value) {
+      const qrImgSize = qrBoxSize - qrPadding * 2
+      ctx.drawImage(qrResult.value, qrX + qrPadding, qrY + qrPadding, qrImgSize, qrImgSize)
+    }
   }
 
   return canvas
@@ -275,6 +278,7 @@ export async function shareOrDownloadCredential(
   const {
     title = "Mi Credencial GDG Sucre",
     text = "¡Ya me registré en GDG Sucre! Genera tu credencial aquí 🎉",
+    url = window.location.href,
     filename = "credencial-gdgsucre.png",
   } = options
 
@@ -295,7 +299,7 @@ export async function shareOrDownloadCredential(
       await navigator.share({
         title,
         text,
-        url: window.location.href,
+        ...(url ? { url } : {}),
         files: [file],
       })
       return { success: true, action: "shared" }
