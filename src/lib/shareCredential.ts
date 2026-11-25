@@ -15,6 +15,15 @@ export interface CredentialData {
   layout?: Partial<CredentialLayout>
 }
 
+export interface BgPillRelocation {
+  srcX: number
+  srcY: number
+  srcW: number
+  srcH: number
+  destCenterY: number
+  eraseColor?: string
+}
+
 export interface CredentialLayout {
   baseWidth: number
   baseHeight: number
@@ -33,6 +42,7 @@ export interface CredentialLayout {
   roleColor: string | null
   qrCenterY: number
   qrBoxSize: number
+  relocateBgPill?: BgPillRelocation | null
 }
 
 const DEFAULT_LAYOUT: CredentialLayout = {
@@ -53,6 +63,7 @@ const DEFAULT_LAYOUT: CredentialLayout = {
   roleColor: null,
   qrCenterY: 0.71,
   qrBoxSize: 128,
+  relocateBgPill: null,
 }
 
 const SCALE = 2
@@ -102,6 +113,14 @@ function roundedRectPath(
   ctx.closePath()
 }
 
+function pillPath(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number) {
+  const r = h / 2
+  ctx.beginPath()
+  ctx.arc(x + r, y + r, r, Math.PI / 2, (Math.PI * 3) / 2)
+  ctx.arc(x + w - r, y + r, r, -Math.PI / 2, Math.PI / 2)
+  ctx.closePath()
+}
+
 function wrapText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string[] {
   const words = text.split(" ")
   const lines: string[] = []
@@ -141,7 +160,31 @@ async function renderCredentialCanvas(data: CredentialData): Promise<HTMLCanvasE
   ctx.clip()
 
   if (bgResult.status === "fulfilled") {
-    ctx.drawImage(bgResult.value, 0, 0, W, H)
+    const bgImg = bgResult.value
+    ctx.drawImage(bgImg, 0, 0, W, H)
+
+    if (layout.relocateBgPill) {
+      const { srcX, srcY, srcW, srcH, destCenterY, eraseColor = "#000000" } = layout.relocateBgPill
+      const pad = 3 * SCALE
+      const dw = srcW * W
+      const dh = srcH * H
+      const dx = srcX * W
+      const dy = destCenterY * H - dh / 2
+
+      ctx.fillStyle = eraseColor
+      ctx.fillRect(dx - pad, srcY * H - pad, dw + pad * 2, dh + pad * 2)
+
+      const sx = srcX * bgImg.naturalWidth
+      const sy = srcY * bgImg.naturalHeight
+      const sw = srcW * bgImg.naturalWidth
+      const sh = srcH * bgImg.naturalHeight
+
+      ctx.save()
+      pillPath(ctx, dx, dy, dw, dh)
+      ctx.clip()
+      ctx.drawImage(bgImg, sx, sy, sw, sh, dx, dy, dw, dh)
+      ctx.restore()
+    }
   } else {
     ctx.fillStyle = "#ffffff"
     ctx.fillRect(0, 0, W, H)
