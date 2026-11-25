@@ -36,8 +36,12 @@ export const SpeakerCard = ({ area, img, name, bio, index }: SpeakersCardProps) 
           className="group w-full cursor-pointer text-left focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-white/50 rounded-2xl"
           aria-label={`Ver detalles de ${name}`}
         >
-          <Atropos className="atropos-banner w-full h-full" rotateTouch="scroll-y" shadow={false}>
-            <div className="flex h-full mx-1 flex-col gap-4 rounded-2xl border bg-linear-to-b from-white/20 to-white/5 p-4 md:p-6 transition-colors group-hover:border-white/30">
+          <Atropos
+            className="atropos-banner w-full h-full p-1"
+            rotateTouch="scroll-y"
+            shadow={false}
+          >
+            <div className="flex h-full flex-col gap-4 rounded-2xl border bg-linear-to-b from-white/20 to-white/5 p-4 md:p-6 transition-colors group-hover:border-white/30">
               <span
                 className={`mx-auto px-2 w-fit rounded-full border text-sm sm:text-base text-center font-medium bg-black ${areaStyle}`}
               >

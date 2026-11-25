@@ -68,6 +68,7 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
     try {
       await shareOrDownloadCredential(
         {
+          name,
           firstName,
           lastName,
           role,
@@ -82,7 +83,7 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
         {
           title: `Credencial de ${firstName} ${lastName} - GDG Sucre`,
           text: `¡Ya estoy registrado para el DevFest Sucre 2026! Genera la tuya aquí 🎉`,
-          filename: `credencial-${(firstName ?? "").toLowerCase().replace(/\s+/g, "-")}.png`,
+          filename: `credencial-${(name ?? "").toLowerCase().replace(/\s+/g, "-")}.png`,
         }
       )
     } catch (err) {

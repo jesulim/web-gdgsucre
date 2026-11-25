@@ -43,15 +43,12 @@ const packages = [
 <section
   id="paquetes"
   aria-labelledby="packages-title"
-  class="relative isolate overflow-hidden bg-df-black px-5 py-8 text-white sm:px-8 md:py-16"
+  class="relative isolate overflow-hidden px-5 py-12 text-white sm:px-8 md:py-16"
 >
-  <div
-    class="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
-    aria-hidden="true"
-  >
-    <div class="absolute -right-32 top-8 size-64 rounded-full bg-blue-500/20 blur-[100px] md:size-96 md:top-20 md:-right-40"></div>
+  <div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
+    <div class="absolute -right-32 top-32 size-48 rounded-full bg-blue-500/20 blur-[100px] md:size-72 md:top-32 md:-right-32"></div>
     <div class="absolute bottom-[35%] -left-32 size-72 rounded-full bg-green-500/15 blur-[75px] md:size-100"></div>
-    <div class="absolute -right-32 bottom-28 size-64 rounded-full bg-blue-500/20 blur-[100px] md:size-96"></div>
+    <div class="absolute -right-32 bottom-28 size-64 rounded-full bg-blue-500/20 blur-[80px] md:size-64 md:bottom-32"></div>
 
     <Vector class="absolute left-20 bottom-[40%] hidden size-50 opacity-70 lg:block" />
     <Equis class="absolute bottom-50 -right-80 hidden size-150 opacity-60 lg:block" />
@@ -77,9 +74,10 @@ const packages = [
       </div>
 
       <div class="flex flex-col gap-16">
-        {packages.map((item) => (
+        {packages.map(item => (
           <article
-            class="relative grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-start gap-x-3 gap-y-3 pl-24 min-h-76 md:min-h-32 md:grid-cols-[88px_130px_170px_minmax(0,1fr)_90px] md:gap-x-5 md:pl-0 xl:min-h-36 xl:grid-cols-[110px_140px_190px_minmax(0,1fr)_100px] xl:gap-x-7",
+            class="relative grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-start gap-x-3 gap-y-3 pl-24 min-h-76 md:min-h-32 md:grid-cols-[88px_130px_170px_minmax(0,1fr)_90px] md:gap-x-5 md:pl-0 xl:min-h-36 xl:grid-cols-[110px_140px_190px_minmax(0,1fr)_100px] xl:gap-x-7"
+            ,
           >
             <div
               class:list={[
@@ -95,17 +93,8 @@ const packages = [
             </div>
 
             <div class="min-w-0 md:col-start-2 md:row-start-1">
-              <p
-                class:list={[
-                  "mb-1 text-sm tracking-[0.25em]",
-                  item.titleColor,
-                ]}
-              >
-                PAQUETE
-              </p>
-              <h3 class="text-2xl font-bold leading-tight sm:text-3xl">
-                {item.name}
-              </h3>
+              <p class:list={["mb-1 text-sm tracking-[0.25em]", item.titleColor]}>PAQUETE</p>
+              <h3 class="text-2xl font-bold leading-tight sm:text-3xl">{item.name}</h3>
             </div>
 
             <p
@@ -136,9 +125,7 @@ const packages = [
                 <li
                   class:list={[
                     "inline-flex min-h-8 items-center rounded-full bg-white/10 px-4 py-2 text-sm text-white",
-                    index > 0 &&
-                      item.number !== "01" &&
-                      "border border-white bg-transparent",
+                    index > 0 && item.number !== "01" && "border border-white bg-transparent",
                   ]}
                 >
                   {label}

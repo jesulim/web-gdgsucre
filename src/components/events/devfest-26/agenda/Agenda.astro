@@ -14,21 +14,18 @@ const { slots = [], title = "Agenda del Evento" } = Astro.props
 <section
   id="agenda"
   aria-labelledby="agenda-title"
-  class="relative isolate scroll-mt-24 overflow-hidden bg-df-black px-4 py-10 text-white md:py-16"
+  class="overflow-y-visible overflow-x-hidden relative isolate scroll-mt-24 px-4 py-12 text-white md:py-16"
 >
-  <div
-    class="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
-    aria-hidden="true"
-  >
-    <div class="absolute inset-0 orb-edge-fade">
-      <div class="absolute -right-20 top-8 size-52 rounded-full bg-yellow-500/20 blur-[80px] md:-right-28 md:top-14 md:size-80"></div>
-      <div class="absolute -right-24 top-1/2 size-56 -translate-y-1/2 rounded-full bg-blue-500/20 blur-[90px] md:-right-32 md:size-96"></div>
-      <div class="absolute bottom-8 -left-20 size-56 rounded-full bg-red-500/25 blur-[85px] md:bottom-14 md:-left-28 md:size-88"></div>
+  <div class="pointer-events-none absolute inset-0 -z-10 overflow-visible" aria-hidden="true">
+    <div class="absolute inset-0">
+      <div class="absolute -right-4 top-28 size-28 rounded-full bg-green-500/30 md:-right-28 blur-3xl md:size-52 md:top-32"></div>
+      <div class="absolute -right-12 top-2/3 size-56 -translate-y-1/2 rounded-full bg-blue-500/20 blur-[90px] md:-right-32 md:size-80"></div>
+      <div class="absolute bottom-20 -left-4 size-24 rounded-full bg-red-500/30 blur-3xl md:bottom-16 md:-left-28 md:size-64"></div>
     </div>
 
     <ClosingBrace
       aria-hidden="true"
-      class="absolute -left-8 top-24 hidden h-80 w-auto opacity-70 lg:block"
+      class="absolute -left-8 top-32 hidden h-80 w-auto opacity-70 lg:block"
     />
     <GreaterThan
       aria-hidden="true"
@@ -47,25 +44,25 @@ const { slots = [], title = "Agenda del Evento" } = Astro.props
           const { speakerName, speakerClass, titleClass } = resolveAgendaSlotColors(slot)
 
           return (
-            <li class="flex flex-col gap-1.5 rounded-2xl border border-white/15 bg-white/3 p-4 md:flex-row md:items-baseline md:gap-8 md:rounded-none md:border-0 md:bg-transparent md:px-8 md:py-5">
-              <span class="shrink-0 font-monospace text-sm text-white/70 md:w-36 md:text-base">
+            <li class="flex flex-col gap-1.5 rounded-2xl border border-white/15 bg-white/3 p-4 md:flex-row md:items-baseline md:gap-8 md:rounded-none md:border-0 md:bg-transparent md:px-8 md:py-4">
+              <span class="shrink-0 font-monospace text-sm text-white/80 md:w-36 md:text-base">
                 {slot.time}
               </span>
 
               <div class="flex min-w-0 flex-col gap-1 md:block">
                 {speakerName && (
                   <span
-                    class:list={[
-                      "order-2 text-sm font-medium md:inline md:text-base",
-                      speakerClass,
-                    ]}
+                    class:list={["order-2 text-sm font-medium md:inline md:text-lg", speakerClass]}
                   >
-                    {speakerName}<span class="hidden text-white/60 md:inline" aria-hidden="true">{" - "}</span>
+                    {speakerName}
+                    <span class="hidden text-white/60 md:inline" aria-hidden="true">
+                      {" - "}
+                    </span>
                   </span>
                 )}
                 <span
                   class:list={[
-                    "order-1 text-base font-medium md:inline md:font-normal",
+                    "order-1 text-base font-medium md:inline md:font-normal md:text-lg",
                     titleClass,
                   ]}
                 >
