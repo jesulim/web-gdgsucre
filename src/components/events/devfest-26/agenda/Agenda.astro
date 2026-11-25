@@ -20,9 +20,11 @@ const { slots = [], title = "Agenda del Evento" } = Astro.props
     class="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
     aria-hidden="true"
   >
-    <div class="absolute -right-20 -top-10 size-52 rounded-full bg-yellow-500/20 blur-[80px] md:-right-28 md:top-4 md:size-80"></div>
-    <div class="absolute -right-24 top-1/2 size-56 -translate-y-1/2 rounded-full bg-blue-500/20 blur-[90px] md:-right-32 md:size-96"></div>
-    <div class="absolute -bottom-12 -left-20 size-56 rounded-full bg-red-500/25 blur-[85px] md:-bottom-16 md:-left-28 md:size-88"></div>
+    <div class="absolute inset-0 orb-edge-fade">
+      <div class="absolute -right-20 top-8 size-52 rounded-full bg-yellow-500/20 blur-[80px] md:-right-28 md:top-14 md:size-80"></div>
+      <div class="absolute -right-24 top-1/2 size-56 -translate-y-1/2 rounded-full bg-blue-500/20 blur-[90px] md:-right-32 md:size-96"></div>
+      <div class="absolute bottom-8 -left-20 size-56 rounded-full bg-red-500/25 blur-[85px] md:bottom-14 md:-left-28 md:size-88"></div>
+    </div>
 
     <ClosingBrace
       aria-hidden="true"

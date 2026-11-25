@@ -207,4 +207,27 @@ describe("DevFest 26 Agenda.astro component rendering", () => {
       expect(attrs).toContain("lg:block")
     }
   })
+
+  it("masks the ambient orb layer against vertical edge clipping without masking decorative SVGs", async () => {
+    const html = await container.renderToString(AgendaComponent, {
+      props: { slots: DEVFEST_26_AGENDA_SLOTS },
+    })
+
+    const backdropMatch = html.match(
+      /<div\b[^>]*aria-hidden="true"[^>]*>([\s\S]*?)<\/div>\s*<div\b[^>]*relative z-10/
+    )
+    const backdropInner = backdropMatch?.[1] ?? ""
+
+    const orbLayerMatch = backdropInner.match(
+      /<div\b[^>]*class="[^"]*\borb-edge-fade\b[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<svg\b/
+    )
+    expect(orbLayerMatch).not.toBeNull()
+
+    const orbLayerInner = orbLayerMatch?.[1] ?? ""
+    expect(orbLayerInner).toContain("bg-yellow-")
+    expect(orbLayerInner).toContain("bg-blue-")
+    expect(orbLayerInner).toContain("bg-red-")
+    expect(orbLayerInner).not.toContain("<svg")
+    expect(orbLayerInner).not.toMatch(/\b(?:\w+:)?-(?:top|bottom)-/)
+  })
 })

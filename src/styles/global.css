@@ -111,6 +111,17 @@
   );
 }
 
+/* Desvanece verticalmente los orbes ambientales antes de los bordes de sección */
+@utility orb-edge-fade {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black min(7rem, 22%),
+    black calc(100% - min(7rem, 22%)),
+    transparent
+  );
+}
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
