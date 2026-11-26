@@ -65,16 +65,9 @@ const speakerAccents = [
       Speakers
     </h2>
 
-    <ol class="max-w-4xl">
+    <ul class="max-w-4xl" role="list">
       {speakers.map(({ role, img, name, title }, index) => (
-        <li class="group relative grid grid-cols-[1.75rem_0.75rem_minmax(0,1fr)] gap-x-2.5 pb-7 last:pb-0 sm:grid-cols-[2rem_0.75rem_minmax(0,1fr)] sm:gap-x-4 md:pb-9">
-          <span
-            aria-hidden="true"
-            class:list={["pt-[1.0625rem] font-monospace text-sm sm:pt-[1.3125rem] tabular-nums", speakerAccents[index]]}
-          >
-            {String(index + 1).padStart(2, "0")}
-          </span>
-
+        <li class="group relative grid grid-cols-[0.75rem_minmax(0,1fr)] gap-x-3 pb-7 last:pb-0 sm:gap-x-4 md:pb-9">
           <span aria-hidden="true" class="relative flex justify-center pt-5 sm:pt-6">
             <span class="absolute inset-x-1/2 top-6 -bottom-13 w-px bg-white/25 group-last:hidden sm:top-7 md:-bottom-16"></span>
             <span class:list={["relative size-3 rounded-full border-2 bg-df-black", speakerAccents[index]]}></span>
@@ -103,6 +96,6 @@ const speakerAccents = [
           </div>
         </li>
       ))}
-    </ol>
+    </ul>
   </div>
 </section>
