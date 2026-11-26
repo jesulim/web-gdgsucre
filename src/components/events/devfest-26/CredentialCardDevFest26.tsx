@@ -25,20 +25,25 @@ const AVATAR_RING_GRADIENT = `conic-gradient(${AVATAR_RING_STOPS.map(
 const SHARE_LAYOUT: Partial<CredentialLayout> = {
   baseWidth: 360,
   baseHeight: 540,
-  nameCenterY: 0.4534,
+  nameCenterY: 0.6284,
   nameMaxWidth: 0.83,
   nameFontSize: 20,
   nameColor: "#ffffff",
-  avatarCenterY: 0.2552,
+  avatarCenterY: 0.4302,
   avatarDiameter: 0.3704,
   avatarRingWidth: 2,
   avatarRingStops: AVATAR_RING_STOPS,
-  roleCenterY: 0.562,
+  roleCenterY: 0.737,
   roleFontSize: 20,
   roleFontWeight: "500",
   roleColor: "#ffffff",
-  qrCenterY: 0.8037,
-  qrBoxSize: 166,
+  relocateBgPill: {
+    srcX: 119 / 540,
+    srcY: 423 / 810,
+    srcW: 302 / 540,
+    srcH: 65 / 810,
+    destCenterY: 0.737,
+  },
 }
 
 const CredentialCardComponent: React.FC<CredentialCardProps> = ({
@@ -73,7 +78,6 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
           lastName,
           role,
           avatarUrl: finalAvatar,
-          qrUrl,
           bgImageUrl: innerGradient,
           layout: {
             ...SHARE_LAYOUT,
@@ -82,8 +86,9 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
         },
         {
           title: `Credencial de ${firstName} ${lastName} - GDG Sucre`,
-          text: `¡Ya estoy registrado para el DevFest Sucre 2026! Genera la tuya aquí 🎉`,
-          filename: `credencial-${(name ?? "").toLowerCase().replace(/\s+/g, "-")}.png`,
+          text: "Estoy participando del DevFest Sucre 2026, ingresa a https://gdgsucre.com 🚀",
+          url: null,
+          filename: `credencial-${(firstName ?? "").toLowerCase().replace(/\s+/g, "-")}.png`,
         }
       )
     } catch (err) {
