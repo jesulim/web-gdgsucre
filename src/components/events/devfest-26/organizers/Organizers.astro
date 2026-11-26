@@ -14,7 +14,7 @@ const organizers = (await getOrganizers(supabase, "devfest-26")) ?? []
   <div class="absolute -right-12 top-20 -z-10 size-40 rounded-full bg-yellow-500/25 blur-3xl md:right-16 md:size-56 md:top-20"></div>
 
   <div class="mx-auto flex max-w-6xl flex-col gap-8 md:gap-10">
-    <h2 class="text-3xl font-bold tracking-tight md:text-5xl md:mb-8">Organizers</h2>
+    <h2 class="text-3xl mx-4 font-bold tracking-tight md:text-5xl md:mb-8">Organizers</h2>
 
     {organizers.length > 0 ? (
       <div class="relative">
