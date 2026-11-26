@@ -52,12 +52,7 @@ export const SpeakerCard = ({ area, img, name, bio, index }: SpeakersCardProps) 
                 className={`mx-auto w-32 md:w-40 rounded-full bg-linear-to-r ${gradient} p-1`}
                 data-atropos-offset="3"
               >
-                <img
-                  src={img}
-                  alt={name}
-                  className="size rounded-full object-cover"
-                  loading="lazy"
-                />
+                <img src={img} alt={name} className="rounded-full object-cover" loading="lazy" />
               </div>
 
               <h3
@@ -78,13 +73,12 @@ export const SpeakerCard = ({ area, img, name, bio, index }: SpeakersCardProps) 
         </button>
       </DialogTrigger>
 
-      <DialogContent className="speaker-modal bg-white text-neutral-900 border-neutral-200 sm:max-w-md">
-        <DialogHeader className="text-left">
-          <DialogTitle className="text-xl font-bold text-neutral-900 sm:text-2xl">
-            {name}
-          </DialogTitle>
+      <DialogContent className="speaker-modal bg-black text-white border-neutral-200 sm:max-w-md">
+        <DialogHeader className="text-left flex flex-row items-center gap-4">
+          <img src={img} alt={name} className="size-8 rounded-full" loading="lazy" />
+          <DialogTitle className="text-xl font-bold  sm:text-2xl">{name}</DialogTitle>
         </DialogHeader>
-        <DialogDescription className="text-neutral-700 text-sm sm:text-base leading-relaxed whitespace-pre-line">
+        <DialogDescription className=" text-sm sm:text-base leading-relaxed whitespace-pre-line">
           {bio}
         </DialogDescription>
       </DialogContent>
