@@ -26,16 +26,17 @@ export function ResetRaffleDialog({
           className="raffle-reset"
           disabled={disabled}
           aria-label="Reiniciar sorteo"
-          title="Reiniciar sorteo"
         >
-          <RotateCcw size={19} aria-hidden="true" />
+          <RotateCcw size={18} aria-hidden="true" />
+          <span>Reiniciar</span>
         </button>
       </AlertDialogTrigger>
-      <AlertDialogContent className="rounded-sm">
+      <AlertDialogContent className="raffle-dialog">
         <AlertDialogHeader>
           <AlertDialogTitle>¿Reiniciar el sorteo?</AlertDialogTitle>
           <AlertDialogDescription>
-            Se borrarán los ganadores y descartados de esta sesión.
+            Se borrará el historial de esta sesión. Las personas confirmadas o excluidas volverán al
+            grupo del sorteo.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
