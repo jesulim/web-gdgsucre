@@ -1,7 +1,9 @@
 ---
-import ClosingBrace from "@/assets/events/devfest-26/Vector-10.svg"
-import GreaterThan from "@/assets/events/devfest-26/Vector-20.svg"
-import { type AgendaSlot, resolveAgendaSlotColors } from "./agenda"
+import { Image } from "astro:assets"
+import { Coffee, Flag, Handshake, ScanLine, Sparkles } from "lucide-react"
+
+import type { AgendaSlot } from "./agenda"
+import { resolveAgendaSlotColors } from "./agenda"
 
 interface Props {
   slots?: AgendaSlot[]
@@ -9,74 +11,98 @@ interface Props {
 }
 
 const { slots = [], title = "Agenda del Evento" } = Astro.props
+
+const activityIcons = {
+  "check-in": ScanLine,
+  opening: Sparkles,
+  sponsors: Handshake,
+  break: Coffee,
+  closing: Flag,
+} satisfies Record<NonNullable<AgendaSlot["activity"]>, typeof Coffee>
 ---
 
 <section
   id="agenda"
   aria-labelledby="agenda-title"
-  class="overflow-y-visible overflow-x-hidden relative isolate scroll-mt-24 px-4 py-12 text-white md:py-16"
+  class="scroll-mt-24 bg-df-black px-4 py-12 text-white md:py-16"
 >
-  <div class="pointer-events-none absolute inset-0 -z-10 overflow-visible" aria-hidden="true">
-    <div class="absolute inset-0">
-      <div class="absolute -right-4 top-28 size-28 rounded-full bg-green-500/30 md:-right-28 blur-3xl md:size-52 md:top-32"></div>
-      <div class="absolute -right-12 top-2/3 size-56 -translate-y-1/2 rounded-full bg-blue-500/20 blur-[90px] md:-right-32 md:size-80"></div>
-      <div class="absolute bottom-20 -left-4 size-24 rounded-full bg-red-500/30 blur-3xl md:bottom-16 md:-left-28 md:size-64"></div>
+  <div class="mx-auto max-w-5xl">
+    <div id="speakers" class="scroll-mt-24">
+      <h2 id="agenda-title" class="mb-6 text-3xl font-bold tracking-tight md:mb-9 md:text-5xl">
+        {title}
+      </h2>
     </div>
 
-    <ClosingBrace
-      aria-hidden="true"
-      class="absolute -left-8 top-32 hidden h-80 w-auto opacity-70 lg:block"
-    />
-    <GreaterThan
-      aria-hidden="true"
-      class="absolute -right-8 bottom-20 hidden h-64 w-auto opacity-70 lg:block"
-    />
-  </div>
-
-  <div class="relative z-10 mx-auto max-w-5xl">
-    <h2 id="agenda-title" class="mb-4 text-3xl font-bold tracking-tight md:mb-8 md:text-5xl">
-      {title}
-    </h2>
-
     {slots.length > 0 ? (
-      <ol class="flex flex-col gap-3 md:gap-0 md:divide-y md:divide-white/10 md:rounded-3xl md:border md:border-white/15 md:bg-white/3">
+      <ol class="[--time-width:3.1rem] sm:[--time-width:5.5rem]" role="list">
         {slots.map(slot => {
           const { speakerName, speakerClass, titleClass } = resolveAgendaSlotColors(slot)
+          const Icon = slot.activity && activityIcons[slot.activity]
+          const [starts, ends] = slot.time.split(" - ")
 
           return (
-            <li class="flex flex-col gap-1.5 rounded-2xl border border-white/15 bg-white/3 p-4 md:flex-row md:items-baseline md:gap-8 md:rounded-none md:border-0 md:bg-transparent md:px-8 md:py-4">
-              <span class="shrink-0 font-monospace text-sm text-white/80 md:w-36 md:text-base">
-                {slot.time}
-              </span>
-
-              <div class="flex min-w-0 flex-col gap-1 md:block">
-                {speakerName && (
-                  <span
-                    class:list={["order-2 text-sm font-medium md:inline md:text-lg", speakerClass]}
-                  >
-                    {speakerName}
-                    <span class="hidden text-white/60 md:inline" aria-hidden="true">
-                      {" - "}
-                    </span>
+            <li class="group grid grid-cols-[var(--time-width)_1.5rem_minmax(0,1fr)] gap-x-2.5 sm:gap-x-5">
+              <div class="pt-4 font-monospace tabular-nums sm:pt-5">
+                <span class="block text-sm font-semibold leading-tight sm:text-base">
+                  {ends ? <time datetime={starts}>{starts}</time> : slot.time}
+                </span>
+                {ends && (
+                  <span class="mt-1 block text-[0.6875rem] leading-tight whitespace-nowrap text-white/65 sm:text-xs">
+                    <span aria-hidden="true">–</span><span class="sr-only">hasta </span>{" "}<time datetime={ends}>{ends}</time>
                   </span>
                 )}
-                <span
-                  class:list={[
-                    "order-1 text-base font-medium md:inline md:font-normal md:text-lg",
-                    titleClass,
-                  ]}
-                >
-                  {slot.title}
+              </div>
+
+              <span
+                aria-hidden="true"
+                class:list={[
+                  "relative flex justify-center pt-3.5 sm:pt-4.5",
+                  speakerClass ?? titleClass,
+                ]}
+              >
+                <span class="absolute inset-x-1/2 top-6 -bottom-6 w-px bg-white/15 group-last:hidden sm:top-7 sm:-bottom-7"></span>
+                <span class="relative grid size-6 place-items-center rounded-full bg-df-black">
+                  {Icon ? (
+                    <Icon size={17} strokeWidth={1.75} />
+                  ) : (
+                    <span class="size-2.5 rounded-full border-2 border-current"></span>
+                  )}
                 </span>
+              </span>
+
+              <div class:list={[
+                "min-w-0 border-b border-white/10 py-4 group-last:border-b-0 sm:py-5",
+                speakerName && "md:grid md:grid-cols-[minmax(0,1fr)_12rem] md:items-center md:gap-x-6",
+              ]}>
+                <h3 class:list={[
+                  "wrap-break-word leading-snug",
+                  speakerName
+                    ? "text-base font-semibold md:text-xl"
+                    : "text-sm font-medium text-white/85 md:text-base",
+                ]}>
+                  {slot.title}
+                </h3>
+                {speakerName && (
+                  <div class="mt-2.5 flex min-w-0 items-center gap-2.5 md:mt-0">
+                    {slot.speakerImage && (
+                      <Image
+                        src={slot.speakerImage}
+                        alt=""
+                        width={96}
+                        height={96}
+                        class="size-9 shrink-0 rounded-full border border-white/20 object-cover md:size-12"
+                      />
+                    )}
+                    <p class="text-sm font-medium leading-snug text-white/85 md:text-base">{speakerName}</p>
+                  </div>
+                )}
               </div>
             </li>
           )
         })}
       </ol>
     ) : (
-      <div class="rounded-3xl border border-white/15 bg-white/3 px-6 py-12 text-center text-white/70">
-        <p class="text-base md:text-lg">Agenda por confirmar</p>
-      </div>
+      <p class="border-y border-white/15 px-6 py-8 text-center text-white/70">Agenda por confirmar</p>
     )}
   </div>
 </section>
