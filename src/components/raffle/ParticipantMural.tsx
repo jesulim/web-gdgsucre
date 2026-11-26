@@ -1,8 +1,8 @@
 import type { CSSProperties } from "react"
 import type { RaffleParticipant } from "@/lib/services/raffleService"
 
-// A window onto the pool, not the pool used to draw. Small screens crop to three rows.
-const visibleTiles = 30
+// This is only the display limit. CSS keeps three rows below desktop widths.
+const visibleTiles = 40
 
 export function ParticipantMural({
   people,
