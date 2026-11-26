@@ -1,3 +1,5 @@
+import type { ImageMetadata } from "astro"
+
 export enum AgendaColor {
   White = "white",
   Blue = "blue",
@@ -10,6 +12,8 @@ export interface AgendaSlot {
   time: string
   title: string
   speaker?: string
+  speakerImage?: ImageMetadata
+  activity?: "check-in" | "opening" | "sponsors" | "break" | "closing"
   color?: AgendaColor
 }
 
