@@ -254,22 +254,56 @@
   --columns: 10;
   display: grid;
   grid-template-columns: repeat(min(var(--tile-count), var(--columns)), minmax(0, 1fr));
-  border-block-start: 2px solid var(--color-off-white);
-  border-inline-start: 2px solid var(--color-off-white);
+  gap: 2px;
+  isolation: isolate;
 }
 
 .raffle-mural span {
+  --tile: var(--color-blue-500);
+  position: relative;
   display: grid;
   place-items: center;
+  overflow: hidden;
   min-width: 0;
-  height: clamp(3.75rem, 7.2cqi, 6.5rem);
-  border-block-end: 2px solid var(--color-off-white);
-  border-inline-end: 2px solid var(--color-off-white);
-  background: var(--background);
-  color: var(--foreground);
-  font-size: clamp(1.25rem, 3cqi, 2.75rem);
+  height: clamp(4rem, 8.5cqi, 7.25rem);
+  background-color: var(--tile);
+  color: var(--color-black);
+  font-size: clamp(1.25rem, 3.25cqi, 3rem);
   font-weight: 500;
+  letter-spacing: -0.06em;
   line-height: 1;
+}
+
+.raffle-mural span:nth-child(4n + 2) {
+  --tile: var(--color-yellow-pastel);
+  border-radius: 5rem 5rem 0 0;
+}
+
+.raffle-mural span:nth-child(4n + 3) {
+  --tile: var(--color-red-pastel);
+  border-radius: 0 0 0 5rem;
+}
+
+.raffle-mural span:nth-child(4n) {
+  --tile: var(--color-green-pastel);
+}
+
+.raffle-mural span:nth-child(7n + 1) {
+  --tile: var(--color-blue-pastel);
+  border-radius: 0 5rem 5rem 0;
+}
+
+.raffle-mural span:nth-child(9n + 5) {
+  --tile: var(--color-yellow-halftone);
+  border-radius: 50%;
+}
+
+.raffle-mural span:nth-child(11n + 3) {
+  --tile: var(--color-green-500);
+}
+
+.raffle-mural span:nth-child(13n + 6) {
+  --tile: var(--color-red-500);
 }
 
 @media (width < 64rem) {
