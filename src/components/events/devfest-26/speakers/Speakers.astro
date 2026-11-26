@@ -11,28 +11,28 @@ import { SpeakerCard } from "./SpeakerCard"
 
 const speakers = [
   {
-    area: "AI On-Device",
     img: yuryImg.src,
     name: "Yury Camacho",
-    bio: "Ingeniero de Sistemas por la Universidad Mayor de San Simón de Cochabamba, Bolivia. Cuenta con experiencia en desarrollo móvil desde 2010, trabajando con plataformas como Symbian, BlackBerry, iOS y Android. También fue uno de los Google Glass Explorers.Es organizador de GDG Cochabamba y disfruta compartir conocimientos mediante charlas, talleres y mentorías. Actualmente se desempeña como Android Technical Lead en el equipo de Payments de Ualá, y ha trabajado en empresas como Globant, OLX y Rappi, además de desempeñarse como consultor independiente.",
+    bio: "Ingeniero de Sistemas por la Universidad Mayor de San Simón de Cochabamba, Bolivia. Cuenta con experiencia en desarrollo móvil desde 2010, trabajando con plataformas como Symbian, BlackBerry, iOS y Android. También fue uno de los Google Glass Explorers. Es organizador de GDG Cochabamba y disfruta compartir conocimientos mediante charlas, talleres y mentorías. Actualmente se desempeña como Android Technical Lead en el equipo de Payments de Ualá, y ha trabajado en empresas como Globant, OLX y Rappi, además de desempeñarse como consultor independiente.",
+    country: "🇦🇷🇧🇴 Argentina/Bolivia",
   },
   {
-    area: "Real-time AI",
     img: brianImg.src,
     name: "Brian Castillo",
     bio: "Fundó y fue CTO de Wibo, startup con sede en Santiago de Chile, dedicada a mejorar la experiencia de compra en sitios web optimizando la eficiencia de los procesos de venta para generar engagement con los usuarios. Anteriormente, fundó y fue CTO de Horses Developer, fábrica de software en Lima, Perú, donde lideró y participó en proyectos móviles para clientes de Latinoamérica. Cuenta con más de 9 años de experiencia en tecnologías móviles, lo que lo llevó a involucrarse en las comunidades de Google Developer Groups (GDG). Actualmente, lidera y organiza los eventos del capítulo de GDG Lima, Perú.",
+    country: "🇵🇪 Perú",
   },
   {
-    area: "AI Engineering",
     img: sergioImg.src,
     name: "Sergio Ochoa",
     bio: "Ingeniero de Sistemas y desarrollador de software especializado en Java, sistemas empresariales y modernización de aplicaciones legadas. Con experiencia como instructor y expositor tecnológico, actualmente explora AI Harnesses, agentes de programación y metodologías de ingeniería asistida por IA para construir soluciones verificables y sostenibles.",
+    country: "🇧🇴 Bolivia",
   },
   {
-    area: "Authentication",
     img: davidImg.src,
     name: "David Rios",
     bio: "Senior Mobile Developer especializado en Flutter desde 2018, con experiencia construyendo apps para empresas internacionales en sectores como fintech y pagos digitales. Instructor de Flutter y organizador de comunidades tech en Bolivia como Flutter La Paz y GDG La Paz. Speaker en eventos como DevFest y FlutterConf Latam. Me apasiona compartir conocimiento y hacer crecer la comunidad.",
+    country: "🇧🇴 Bolivia",
   },
 ]
 ---
@@ -44,16 +44,16 @@ const speakers = [
       <div class="absolute bottom-16 right-0 size-32 rounded-full bg-red-500/30 blur-[45px] sm:size-40 md:bottom-24 md:right-8 md:size-40 lg:size-48 lg:blur-[55px]"></div>
     </div>
 
-    <div class="absolute top-1/5 left-4 hidden lg:block">
+    <div class="absolute top-1/5 left-4 hidden xl:block">
       <BracketOpen />
     </div>
 
-    <div class="absolute bottom-4 right-8 hidden lg:block xl:right-20">
+    <div class="absolute bottom-4 right-8 hidden xl:block xl:right-20">
       <Semicolon />
     </div>
   </div>
 
-  <div class="mx-auto max-w-5xl">
+  <div class="mx-auto max-w-6xl">
     <h2 class="text-3xl font-bold tracking-tight md:text-5xl mb-4 md:mb-8">Speakers</h2>
 
     <div class="grid gap-4 grid-cols-2 justify-items-center md:grid-cols-4">

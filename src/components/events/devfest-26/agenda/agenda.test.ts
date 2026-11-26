@@ -1,9 +1,9 @@
 import { describe, expect, it } from "bun:test"
-import { AgendaColor, type AgendaSlot, resolveAgendaSlotColors } from "./agenda"
+import { AgendaColor, resolveAgendaSlotColors } from "./agenda"
 
 describe("DevFest 26 Agenda color resolution", () => {
   it("styles title in white by default when speaker is omitted", () => {
-    const slot: AgendaSlot = {
+    const slot = {
       time: "08:45 - 09:00",
       title: "Inauguración del Evento y palabras conmemorativas",
     }
@@ -36,7 +36,7 @@ describe("DevFest 26 Agenda color resolution", () => {
   })
 
   it("styles speaker in yellow by default and keeps title white when speaker is present", () => {
-    const slot: AgendaSlot = {
+    const slot = {
       time: "09:00 - 09:45",
       speaker: "Sergio Ochoa",
       title: "AI Harnesses: más allá del prompting, ingeniería de software con agentes de IA",

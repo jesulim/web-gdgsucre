@@ -38,9 +38,9 @@ const accessToken = Astro.cookies.get("sb-access-token")?.value
   {showNav && (
     <nav
       id="mobile-menu"
-      class="hidden absolute w-full top-full left-0 md:static md:flex md:items-center md:w-fit"
+      class="hidden absolute w-full top-full left-0 xl:static xl:flex xl:items-center xl:w-fit"
     >
-      <ul class="flex flex-col m-2 p-4 gap-4 font-light border border-white/40 rounded-xl md:border-0 md:p-0 md:flex-row md:h-full md:items-center">
+      <ul class="flex flex-col m-2 p-4 gap-4 font-light border border-white/40 rounded-xl xl:border-0 xl:p-0 xl:flex-row xl:h-full xl:items-center xl:gap-3">
         {navLinks.map(link => (
           <li>
             <a
@@ -67,7 +67,7 @@ const accessToken = Astro.cookies.get("sb-access-token")?.value
     ) : (
       <a
         href="/api/auth/signin"
-        class="border-2 border-white/20 bg-white/20 rounded-full px-4 py-2 hover:bg-white/30 transition-colors"
+        class="shrink-0 border-2 border-white/20 bg-white/20 rounded-full px-4 py-2 hover:bg-white/30 transition-colors"
       >
         Inicia sesión
       </a>
@@ -76,7 +76,7 @@ const accessToken = Astro.cookies.get("sb-access-token")?.value
 
   {showNav && (
     <div class="flex items-center gap-3 pl-4">
-      <button id="menu-toggle" type="button" class="rounded md:hidden" aria-label="Abrir menú">
+      <button id="menu-toggle" type="button" class="rounded xl:hidden" aria-label="Abrir menú">
         <svg
           role="img"
           aria-labelledby="menu-toggle"

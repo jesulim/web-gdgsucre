@@ -9,24 +9,16 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 
-const areaStyles = [
-  "border-blue-500 text-blue-500",
-  "border-yellow-500 text-yellow-500",
-  "border-red-500 text-red-500",
-  "border-green-500 text-green-500",
-]
-
 export interface SpeakersCardProps {
-  area: string
+  index: number
   img: string
   name: string
   bio: string
-  index: number
+  country: string
 }
 
-export const SpeakerCard = ({ area, img, name, bio, index }: SpeakersCardProps) => {
+export const SpeakerCard = ({ index, img, name, bio, country }: SpeakersCardProps) => {
   const gradient = index % 2 === 0 ? "from-blue-500 to-red-500" : "from-yellow-500 to-green-500"
-  const areaStyle = areaStyles[index % areaStyles.length]
 
   return (
     <Dialog>
@@ -42,14 +34,8 @@ export const SpeakerCard = ({ area, img, name, bio, index }: SpeakersCardProps) 
             shadow={false}
           >
             <div className="flex h-full flex-col gap-4 rounded-2xl border bg-linear-to-b from-white/20 to-white/5 p-4 md:p-6 transition-colors group-hover:border-white/30">
-              <span
-                className={`mx-auto px-2 w-fit rounded-full border text-sm sm:text-base text-center font-medium bg-black ${areaStyle}`}
-              >
-                {area}
-              </span>
-
               <div
-                className={`mx-auto w-32 md:w-40 rounded-full bg-linear-to-r ${gradient} p-1`}
+                className={`mx-auto w-32 lg:w-40 rounded-full bg-linear-to-r ${gradient} p-1`}
                 data-atropos-offset="3"
               >
                 <img src={img} alt={name} className="rounded-full object-cover" loading="lazy" />
@@ -62,8 +48,14 @@ export const SpeakerCard = ({ area, img, name, bio, index }: SpeakersCardProps) 
                 {name}
               </h3>
 
+              <span
+                className={"-mt-2 mx-auto w-full text-sm sm:text-base text-center sm:text-left"}
+              >
+                {country}
+              </span>
+
               <p
-                className="hidden text-md text-white/80 sm:line-clamp-1 md:line-clamp-5 font-monospace"
+                className="hidden text-md text-white/80 sm:line-clamp-2 md:line-clamp-5 font-monospace"
                 data-atropos-offset="1"
               >
                 {bio}
@@ -73,12 +65,12 @@ export const SpeakerCard = ({ area, img, name, bio, index }: SpeakersCardProps) 
         </button>
       </DialogTrigger>
 
-      <DialogContent className="speaker-modal bg-black text-white border-neutral-200 sm:max-w-md">
+      <DialogContent className="bg-black text-white border-neutral-200 sm:max-w-md">
         <DialogHeader className="text-left flex flex-row items-center gap-4">
           <img src={img} alt={name} className="size-8 rounded-full" loading="lazy" />
-          <DialogTitle className="text-xl font-bold  sm:text-2xl">{name}</DialogTitle>
+          <DialogTitle className="text-xl font-bold sm:text-2xl">{name}</DialogTitle>
         </DialogHeader>
-        <DialogDescription className=" text-sm sm:text-base leading-relaxed whitespace-pre-line">
+        <DialogDescription className="text-sm sm:text-base leading-relaxed whitespace-pre-line">
           {bio}
         </DialogDescription>
       </DialogContent>

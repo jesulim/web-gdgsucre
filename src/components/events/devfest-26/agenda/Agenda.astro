@@ -1,14 +1,64 @@
 ---
+import { Image } from "astro:assets"
+import { Coffee, Flag, Hand, Handshake, MicVocal, ScanLine } from "lucide-react"
+
 import ClosingBrace from "@/assets/events/devfest-26/Vector-10.svg"
 import GreaterThan from "@/assets/events/devfest-26/Vector-20.svg"
-import { type AgendaSlot, resolveAgendaSlotColors } from "./agenda"
+import brianImg from "@/assets/speakers/brian-castillo.webp"
+import davidImg from "@/assets/speakers/david-rios.webp"
+import sergioImg from "@/assets/speakers/sergio-ochoa.webp"
+import yuryImg from "@/assets/speakers/yury-camacho.webp"
 
-interface Props {
-  slots?: AgendaSlot[]
-  title?: string
-}
+import { AgendaColor, type AgendaSlot, resolveAgendaSlotColors } from "./agenda"
 
-const { slots = [], title = "Agenda del Evento" } = Astro.props
+const title = "Agenda del Evento"
+
+const slots: AgendaSlot[] = [
+  { icon: ScanLine, time: "08:00 - 09:00", title: "Acreditación", color: AgendaColor.Green },
+  { icon: Hand, time: "09:00 - 09:15", title: "Inauguración", color: AgendaColor.White },
+  {
+    icon: MicVocal,
+    time: "09:15 - 10:00",
+    speaker: "Sergio Ochoa",
+    speakerPhoto: sergioImg,
+    title: "AI Harnesses: Más allá del prompting, ingeniería de software con agentes de IA",
+    color: AgendaColor.Yellow,
+  },
+  { icon: Handshake, time: "10:00 - 10:15", title: "Dinámicas", color: AgendaColor.Blue },
+  {
+    icon: MicVocal,
+    time: "10:15 - 11:15",
+    speaker: "Brian Castillo",
+    speakerPhoto: brianImg,
+    title: "Build Your Own Jarvis: Real-Time AI with Gemini Live API & Firebase",
+    color: AgendaColor.Yellow,
+  },
+  {
+    icon: Coffee,
+    time: "11:15 - 11:45",
+    title: "Refrigerio + Networking",
+    color: AgendaColor.Blue,
+  },
+  {
+    icon: MicVocal,
+    time: "11:45 - 12:20",
+    speaker: "Yury Camacho",
+    speakerPhoto: yuryImg,
+    title:
+      "There Are No Strings on Me: Autonomous Mobile Agents with Direct Silicon Control (AI On-Device)",
+    color: AgendaColor.Yellow,
+  },
+  { icon: Handshake, time: "12:20 - 12:35", title: "Dinámicas", color: AgendaColor.Blue },
+  {
+    icon: MicVocal,
+    time: "12:35 - 13:20",
+    speaker: "David Rios",
+    speakerPhoto: davidImg,
+    title: 'Login sin contraseña: El fin del "olvidé mi clave"',
+    color: AgendaColor.Yellow,
+  },
+  { icon: Flag, time: "13:20 - 13:45", title: "Cierre del Evento", color: AgendaColor.Red },
+]
 ---
 
 <section
@@ -33,50 +83,67 @@ const { slots = [], title = "Agenda del Evento" } = Astro.props
     />
   </div>
 
-  <div class="relative z-10 mx-auto max-w-5xl">
+  <div class="relative z-10 mx-auto max-w-6xl">
     <h2 id="agenda-title" class="mb-4 text-3xl font-bold tracking-tight md:mb-8 md:text-5xl">
       {title}
     </h2>
+    <ol class="flex flex-col rounded-3xl border border-white/15 bg-white/3">
+      {slots.map((slot, index) => {
+        const { speakerName, speakerClass, titleClass } = resolveAgendaSlotColors(slot)
+        const Icon = slot.icon
 
-    {slots.length > 0 ? (
-      <ol class="flex flex-col gap-3 md:gap-0 md:divide-y md:divide-white/10 md:rounded-3xl md:border md:border-white/15 md:bg-white/3">
-        {slots.map(slot => {
-          const { speakerName, speakerClass, titleClass } = resolveAgendaSlotColors(slot)
+        return (
+          <li class="flex gap-4 p-4 md:px-8">
+            <div class="relative flex flex-col items-center self-stretch mt-1">
+              <span class:list={[titleClass, speakerClass]}>
+                <Icon size={17} strokeWidth={1.75} />
+              </span>
 
-          return (
-            <li class="flex flex-col gap-1.5 rounded-2xl border border-white/15 bg-white/3 p-4 md:flex-row md:items-baseline md:gap-8 md:rounded-none md:border-0 md:bg-transparent md:px-8 md:py-4">
+              {index < slots.length - 1 && (
+                <span
+                  aria-hidden="true"
+                  class="absolute left-1/2 top-6 -bottom-6 w-px -translate-x-1/2 bg-white/20"
+                />
+              )}
+            </div>
+
+            <div class="flex flex-col gap-1.5 md:flex-1 md:flex-row md:items-baseline md:gap-4">
               <span class="shrink-0 font-monospace text-sm text-white/80 md:w-36 md:text-base">
                 {slot.time}
               </span>
-
-              <div class="flex min-w-0 flex-col gap-1 md:block">
-                {speakerName && (
-                  <span
-                    class:list={["order-2 text-sm font-medium md:inline md:text-lg", speakerClass]}
-                  >
-                    {speakerName}
-                    <span class="hidden text-white/60 md:inline" aria-hidden="true">
-                      {" - "}
-                    </span>
-                  </span>
-                )}
-                <span
+              <div class="flex flex-col gap-2">
+                <p
                   class:list={[
-                    "order-1 text-base font-medium md:inline md:font-normal md:text-lg",
+                    "block w-full text-base font-medium md:inline md:font-normal md:text-lg",
                     titleClass,
                   ]}
                 >
                   {slot.title}
-                </span>
+                </p>
+                {speakerName && (
+                  <div class="flex items-center gap-3">
+                    {slot.speakerPhoto && (
+                      <Image
+                        src={slot.speakerPhoto}
+                        alt=""
+                        width={40}
+                        height={40}
+                        class="hidden size-10 shrink-0 rounded-full object-cover md:block"
+                        loading="lazy"
+                      />
+                    )}
+                    <span
+                      class:list={["block text-sm font-medium md:inline md:text-lg", speakerClass]}
+                    >
+                      {speakerName}
+                    </span>
+                  </div>
+                )}
               </div>
-            </li>
-          )
-        })}
-      </ol>
-    ) : (
-      <div class="rounded-3xl border border-white/15 bg-white/3 px-6 py-12 text-center text-white/70">
-        <p class="text-base md:text-lg">Agenda por confirmar</p>
-      </div>
-    )}
+            </div>
+          </li>
+        )
+      })}
+    </ol>
   </div>
 </section>

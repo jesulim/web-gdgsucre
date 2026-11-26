@@ -1,3 +1,6 @@
+import type { ImageMetadata } from "astro"
+import type { LucideIcon } from "lucide-react"
+
 export enum AgendaColor {
   White = "white",
   Blue = "blue",
@@ -7,9 +10,11 @@ export enum AgendaColor {
 }
 
 export interface AgendaSlot {
+  icon: LucideIcon
   time: string
   title: string
   speaker?: string
+  speakerPhoto?: ImageMetadata
   color?: AgendaColor
 }
 
@@ -32,7 +37,9 @@ const AGENDA_COLOR_CLASSES: Record<AgendaColor, string> = {
  * the slot color (default Yellow) styles the speaker and the title stays white;
  * when no speaker is present, the slot color (default White) styles the title.
  */
-export function resolveAgendaSlotColors(slot: AgendaSlot): ResolvedAgendaSlotColors {
+export function resolveAgendaSlotColors(
+  slot: Pick<AgendaSlot, "speaker" | "color">
+): ResolvedAgendaSlotColors {
   const speakerName = slot.speaker?.trim()
 
   if (speakerName) {
