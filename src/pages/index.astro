@@ -8,10 +8,11 @@ import Hero from "@/components/events/devfest-26/Hero.astro"
 import Organizers from "@/components/events/devfest-26/organizers/Organizers.astro"
 import PackageSection from "@/components/events/devfest-26/PackageSection.astro"
 import Sponsors from "@/components/events/devfest-26/Sponsors.astro"
-import Speakers from "@/components/events/devfest-26/speakers/Speakers.astro"
+
 
 import BaseLayout from "@/layout/BaseLayout.astro"
 ---
+
 
 <BaseLayout
   theme="dark"
@@ -21,15 +22,16 @@ import BaseLayout from "@/layout/BaseLayout.astro"
 >
   <Header />
 
+
   <main class="flex-1 bg-df-black">
     <Hero />
     <About />
     <PackageSection />
-    <Speakers />
     <Agenda slots={DEVFEST_26_AGENDA_SLOTS} />
     <Sponsors />
     <Organizers />
   </main>
+
 
   <Footer />
 </BaseLayout>
