@@ -48,14 +48,9 @@ const speakerAccents = [
 <section
   id="speakers"
   aria-labelledby="speakers-title"
-  class="relative isolate scroll-mt-24 overflow-clip px-4 py-8 text-white md:py-12"
+  class="relative isolate scroll-mt-24 overflow-clip px-4 py-10 text-white md:py-14"
 >
   <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
-    <div class="absolute inset-0">
-      <div class="absolute top-32 -left-4 size-40 rounded-full bg-yellow-500/30 blur-[45px] animation-delay-4000 sm:size-40 md:bottom-[40%] md:left-[6%] md:size-44 lg:size-56 lg:blur-[65px]"></div>
-      <div class="absolute bottom-16 right-0 size-32 rounded-full bg-red-500/30 blur-[45px] sm:size-40 md:bottom-24 md:right-8 md:size-40 lg:size-48 lg:blur-[55px]"></div>
-    </div>
-
     <div class="absolute top-1/5 left-4 hidden lg:block">
       <BracketOpen />
     </div>
@@ -70,19 +65,19 @@ const speakerAccents = [
       Speakers
     </h2>
 
-    <ol class="max-w-3xl">
+    <ol class="max-w-4xl">
       {speakers.map(({ role, img, name, title }, index) => (
-        <li class="group relative grid grid-cols-[1.5rem_0.75rem_minmax(0,1fr)] gap-x-2 pb-6 last:pb-0 sm:grid-cols-[2rem_0.75rem_minmax(0,1fr)] sm:gap-x-4 md:pb-8">
+        <li class="group relative grid grid-cols-[1.75rem_0.75rem_minmax(0,1fr)] gap-x-2.5 pb-7 last:pb-0 sm:grid-cols-[2rem_0.75rem_minmax(0,1fr)] sm:gap-x-4 md:pb-9">
           <span
             aria-hidden="true"
-            class:list={["pt-3.5 font-monospace text-xs tabular-nums", speakerAccents[index]]}
+            class:list={["pt-[1.0625rem] font-monospace text-sm sm:pt-[1.3125rem] tabular-nums", speakerAccents[index]]}
           >
             {String(index + 1).padStart(2, "0")}
           </span>
 
-          <span aria-hidden="true" class="relative flex justify-center pt-4">
-            <span class="absolute inset-x-1/2 top-5 -bottom-11 w-px bg-white/20 group-last:hidden md:-bottom-13"></span>
-            <span class:list={["relative size-2.5 rounded-full border-2 bg-df-black", speakerAccents[index]]}></span>
+          <span aria-hidden="true" class="relative flex justify-center pt-5 sm:pt-6">
+            <span class="absolute inset-x-1/2 top-6 -bottom-13 w-px bg-white/25 group-last:hidden sm:top-7 md:-bottom-16"></span>
+            <span class:list={["relative size-3 rounded-full border-2 bg-df-black", speakerAccents[index]]}></span>
           </span>
 
           <div class="min-w-0">
@@ -90,19 +85,19 @@ const speakerAccents = [
               <Image
                 src={img}
                 alt=""
-                width={64}
-                height={64}
-                class="size-11 shrink-0 rounded-full border border-white/20 object-cover sm:size-12"
+                width={96}
+                height={96}
+                class="size-13 shrink-0 rounded-full border border-white/20 object-cover sm:size-15"
               />
               <div class="min-w-0">
-                <h3 class="font-semibold leading-tight sm:text-lg">{name}</h3>
-                <p class:list={["mt-0.5 text-xs font-medium sm:text-sm", speakerAccents[index]]}>
+                <h3 class="text-lg font-semibold leading-tight sm:text-xl">{name}</h3>
+                <p class:list={["mt-1 text-sm font-medium sm:text-base", speakerAccents[index]]}>
                   {role}
                 </p>
               </div>
             </div>
 
-            <p class="mt-2.5 wrap-break-word text-base font-medium leading-snug text-white sm:text-xl">
+            <p class="mt-3 wrap-break-word text-lg font-medium leading-snug text-white sm:text-2xl">
               {title}
             </p>
           </div>
