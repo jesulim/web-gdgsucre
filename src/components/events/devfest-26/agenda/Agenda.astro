@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets"
-import { Coffee, Flag, Handshake, ScanLine, Sparkles } from "lucide-react"
+import { Coffee, Flag, Hand, Handshake, ScanLine } from "lucide-react"
 
 import type { AgendaSlot } from "./agenda"
 import { resolveAgendaSlotColors } from "./agenda"
@@ -14,7 +14,7 @@ const { slots = [], title = "Agenda del Evento" } = Astro.props
 
 const activityIcons = {
   "check-in": ScanLine,
-  opening: Sparkles,
+  opening: Hand,
   sponsors: Handshake,
   break: Coffee,
   closing: Flag,
@@ -41,8 +41,8 @@ const activityIcons = {
           const [starts, ends] = slot.time.split(" - ")
 
           return (
-            <li class="group grid grid-cols-[var(--time-width)_1.5rem_minmax(0,1fr)] gap-x-3 sm:gap-x-6">
-              <div class="flex flex-col gap-1.5 pt-5 font-monospace tabular-nums sm:flex-row sm:items-baseline sm:gap-2 sm:pt-6">
+            <li class="group grid grid-cols-[var(--time-width)_1.5rem_minmax(0,1fr)] gap-x-3 sm:gap-x-6 lg:grid-cols-[minmax(0,1fr)_var(--time-width)_1.5rem_minmax(0,1.45fr)]">
+              <div class="flex flex-col gap-1.5 pt-5 font-monospace tabular-nums sm:flex-row sm:items-baseline sm:gap-2 sm:pt-6 lg:col-start-2 lg:row-start-1 lg:justify-end">
                 <span class="block text-base font-semibold leading-tight">
                   {ends ? <time datetime={starts}>{starts}</time> : slot.time}
                 </span>
@@ -56,7 +56,7 @@ const activityIcons = {
               <span
                 aria-hidden="true"
                 class:list={[
-                  "relative flex justify-center pt-4 sm:pt-5",
+                  "relative flex justify-center pt-4 sm:pt-5 lg:col-start-3 lg:row-start-1",
                   speakerClass ?? titleClass,
                 ]}
               >
@@ -72,7 +72,8 @@ const activityIcons = {
 
               <div class:list={[
                 "min-w-0 py-5 sm:py-6",
-                speakerName && "md:grid md:grid-cols-[minmax(0,1fr)_12rem] md:items-center md:gap-x-6",
+                "lg:row-start-1",
+                speakerName ? "lg:col-start-4" : "lg:col-start-1 lg:text-right",
               ]}>
                 <h3 class:list={[
                   "wrap-break-word leading-snug",
@@ -83,7 +84,7 @@ const activityIcons = {
                   {slot.title}
                 </h3>
                 {speakerName && (
-                  <div class="mt-2.5 flex min-w-0 items-center gap-2.5 md:mt-0">
+                  <div class="mt-2.5 flex min-w-0 items-center gap-2.5">
                     {slot.speakerImage && (
                       <Image
                         src={slot.speakerImage}
