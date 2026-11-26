@@ -234,11 +234,16 @@ export default function RandomWinner({ events }: { events: EventOption[] }) {
             </button>
             {stage.phase === "selected" && (
               <>
+                <button
+                  type="button"
+                  className="raffle-secondary"
+                  disabled={!canDraw}
+                  onClick={draw}
+                >
+                  Devolver al grupo y sortear
+                </button>
                 <button type="button" className="raffle-link" onClick={() => resolve("excluded")}>
                   Excluir de esta ronda
-                </button>
-                <button type="button" className="raffle-link" disabled={!canDraw} onClick={draw}>
-                  Devolver al grupo y sortear
                 </button>
               </>
             )}

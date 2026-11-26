@@ -1,5 +1,5 @@
 .raffle {
-  max-width: 84rem;
+  max-width: 80rem;
   margin-inline: auto;
   padding: clamp(1rem, 3vw, 2rem);
   color: var(--foreground);
@@ -44,13 +44,21 @@
 }
 
 .raffle-section-label {
-  margin-bottom: 0.25rem;
-  font-size: clamp(1rem, 1.4vw, 1.25rem);
-  font-weight: 500;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-family: var(--font-monospace), monospace;
+  font-size: 0.875rem;
+  text-transform: uppercase;
 }
 
 .raffle-section-label span {
-  color: var(--color-blue-500);
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.25rem;
+  background: var(--color-yellow-500);
+  font-size: 0;
 }
 
 .raffle-event {
@@ -108,7 +116,6 @@
   );
   max-height: min(22rem, var(--radix-select-content-available-height));
   border: 1px solid var(--border);
-  border-radius: 0.75rem;
   background: var(--background);
   color: var(--foreground);
   box-shadow: 0 6px 20px rgb(0 0 0 / 0.08);
@@ -127,7 +134,6 @@
   gap: 0.75rem;
   min-height: 2.75rem;
   padding: 0.4rem 0.75rem;
-  border-radius: 0.5rem;
   font-size: 0.875rem;
   cursor: pointer;
   overflow-wrap: anywhere;
@@ -172,7 +178,6 @@
 
 .raffle-role-label {
   padding: 0.25rem 0.6rem;
-  border-radius: 2rem;
   color: var(--muted-foreground);
 }
 
@@ -234,7 +239,6 @@
   width: 2.75rem;
   justify-content: center;
   border: 1px solid var(--border);
-  border-radius: 50%;
 }
 
 .raffle-reset:hover:not(:disabled) {
@@ -250,56 +254,28 @@
   --columns: 10;
   display: grid;
   grid-template-columns: repeat(min(var(--tile-count), var(--columns)), minmax(0, 1fr));
-  gap: 2px;
-  isolation: isolate;
+  border-block-start: 2px solid var(--color-off-white);
+  border-inline-start: 2px solid var(--color-off-white);
 }
 
 .raffle-mural span {
-  --tile: var(--color-blue-500);
-  position: relative;
   display: grid;
   place-items: center;
-  overflow: hidden;
   min-width: 0;
-  height: clamp(4rem, 8.5cqi, 7.25rem);
-  background-color: var(--tile);
-  color: var(--color-black);
-  font-size: clamp(1.25rem, 3.25cqi, 3rem);
+  height: clamp(3.75rem, 7.2cqi, 6.5rem);
+  border-block-end: 2px solid var(--color-off-white);
+  border-inline-end: 2px solid var(--color-off-white);
+  background: var(--background);
+  color: var(--foreground);
+  font-size: clamp(1.25rem, 3cqi, 2.75rem);
   font-weight: 500;
-  letter-spacing: -0.06em;
   line-height: 1;
 }
 
-.raffle-mural span:nth-child(4n + 2) {
-  --tile: var(--color-yellow-pastel);
-  border-radius: 5rem 5rem 0 0;
-}
-
-.raffle-mural span:nth-child(4n + 3) {
-  --tile: var(--color-red-pastel);
-  border-radius: 0 0 0 5rem;
-}
-
-.raffle-mural span:nth-child(4n) {
-  --tile: var(--color-green-pastel);
-}
-
-.raffle-mural span:nth-child(7n + 1) {
-  --tile: var(--color-blue-pastel);
-  border-radius: 0 5rem 5rem 0;
-}
-
-.raffle-mural span:nth-child(9n + 5) {
-  --tile: var(--color-yellow-halftone);
-  border-radius: 50%;
-}
-
-.raffle-mural span:nth-child(11n + 3) {
-  --tile: var(--color-green-500);
-}
-
-.raffle-mural span:nth-child(13n + 6) {
-  --tile: var(--color-red-500);
+@media (width < 64rem) {
+  .raffle-mural span:nth-child(n + 31) {
+    display: none;
+  }
 }
 
 .raffle-mural[data-drawing="true"] span {
@@ -327,6 +303,7 @@
   display: grid;
   align-items: center;
   min-height: clamp(14rem, 26cqi, 22rem);
+  border: 2px solid var(--color-off-white);
   padding: clamp(1.25rem, 4.5cqi, 4rem);
   background: var(--color-off-white);
   color: var(--color-black);
@@ -343,39 +320,6 @@
 
 .raffle-poster[data-phase="excluded"] {
   background: var(--color-blue-pastel);
-  overflow: hidden;
-}
-
-.raffle-poster[data-phase="excluded"]::after {
-  content: "";
-  pointer-events: none;
-  position: absolute;
-  bottom: -2.5rem;
-  right: 0;
-  width: clamp(8rem, 24%, 18rem);
-  aspect-ratio: 3;
-  border: 2px solid var(--color-blue-600);
-  border-radius: 50%;
-  box-shadow:
-    0 0 0 0.7rem var(--color-blue-pastel),
-    0 0 0 calc(0.7rem + 2px) var(--color-blue-600);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .raffle-poster[data-phase="excluded"]::after {
-    animation: raffle-ripple 900ms ease-out both;
-  }
-}
-
-@keyframes raffle-ripple {
-  from {
-    transform: scale(0.55);
-    opacity: 0.85;
-  }
-  to {
-    transform: scale(1.45);
-    opacity: 0;
-  }
 }
 
 .raffle-caption {
@@ -389,10 +333,9 @@
 
 .raffle-caption::before {
   content: "";
-  width: 0.75em;
-  height: 0.75em;
+  width: 0.75rem;
+  height: 0.25rem;
   background: var(--color-blue-600);
-  border-radius: 50%;
 }
 
 .raffle-poster[data-phase="confirmed"] .raffle-caption::before {
@@ -412,7 +355,8 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-self: end;
-  transform: skewY(-12deg);
+  width: min(100%, 5rem);
+  justify-self: end;
 }
 
 .raffle-print i {
@@ -422,11 +366,9 @@
 
 .raffle-print i:nth-child(2) {
   background: var(--color-red-500);
-  border-radius: 0 100% 0 0;
 }
 .raffle-print i:nth-child(3) {
   background: var(--color-yellow-halftone);
-  border-radius: 0 0 0 100%;
 }
 .raffle-print i:nth-child(4) {
   background: var(--color-green-500);
@@ -440,7 +382,7 @@
 }
 
 .raffle-controls {
-  align-items: baseline;
+  align-items: center;
   flex-wrap: wrap;
   padding-block: clamp(1rem, 2.5vw, 2rem);
 }
@@ -450,21 +392,36 @@
   flex-wrap: wrap;
 }
 
-.raffle-primary {
+.raffle-primary,
+.raffle-secondary {
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
   min-height: 3rem;
   padding: 0.75rem 1.25rem;
-  border-radius: 3rem;
-  background: var(--color-black);
-  color: var(--color-white);
+  border: 2px solid transparent;
   font-weight: 500;
+  text-align: start;
+}
+
+.raffle-primary {
+  background: #174ea6;
+  color: var(--color-white);
+}
+
+.raffle-secondary {
+  border-color: var(--foreground);
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.raffle-secondary:hover:not(:disabled) {
+  background: var(--muted);
 }
 
 .raffle-primary:hover:not(:disabled) {
-  background: #174ea6;
+  background: #123d83;
 }
 
 .raffle-tool,
@@ -493,7 +450,6 @@
   min-height: 2.75rem;
   padding-inline: 0.75rem;
   border: 1px solid var(--border);
-  border-radius: 0.25rem;
   background: var(--background);
   color: var(--foreground);
 }
@@ -580,9 +536,9 @@
   }
   .raffle-actions {
     width: 100%;
-    gap: 0 1rem;
+    gap: 0.5rem 1rem;
   }
-  .raffle-actions .raffle-primary {
+  .raffle-actions :is(.raffle-primary, .raffle-secondary) {
     width: 100%;
   }
   .raffle-controls {
