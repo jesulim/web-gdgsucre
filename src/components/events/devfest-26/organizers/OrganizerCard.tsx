@@ -31,7 +31,7 @@ export const OrganizerCard = ({ img, full_name }: Props) => {
         </div>
       )}
 
-      <h3 className="text-xl font-bold text-white sm:text-2xl">{full_name}</h3>
+      <h3 className="text-xl font-medium text-white sm:text-2xl">{full_name}</h3>
     </article>
   )
 }

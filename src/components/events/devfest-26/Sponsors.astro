@@ -1,16 +1,37 @@
 ---
 import { Image } from "astro:assets"
+
 import Vector from "@/assets/events/devfest-26/Vector-10.svg"
 import Numeral from "@/assets/events/devfest-26/Vector-25.svg"
 import TenMinds from "@/assets/sponsors/10minds.webp"
 import Cba from "@/assets/sponsors/cba.webp"
 import Cca from "@/assets/sponsors/cca2.webp"
+import JalaUDark from "@/assets/sponsors/jalau_dark.webp"
 import Nible from "@/assets/sponsors/logo-nible-light.webp"
 import Napp from "@/assets/sponsors/napp-dark.webp"
 import Nova from "@/assets/sponsors/nova.webp"
 import Vaquita from "@/assets/sponsors/vaquita-logo.webp"
 
 const sponsors = [
+  {
+    name: "Cca",
+    image: Cca,
+    className: "max-w-52",
+    href: "https://sucre.cca.edu.bo/",
+  },
+  {
+    name: "Vaquita",
+    image: Vaquita,
+    className: "max-w-56",
+    href: "https://vaquita.fi/",
+  },
+  {
+    name: "Nible",
+    image: Nible,
+    className: "max-w-52",
+    href: "https://nible.pro/",
+  },
+  { name: "Nova Computers", image: Nova, className: "max-w-52" },
   {
     name: "Fundación NAPP",
     image: Napp,
@@ -23,37 +44,13 @@ const sponsors = [
     className: "max-w-52",
     href: "https://10minds.org/",
   },
-  {
-    name: "Vaquita",
-    image: Vaquita,
-    className: "max-w-56",
-    href: "https://www.instagram.com/vaquitaprotocol",
-  },
+  { name: "Jala University", image: JalaUDark },
   { name: "Cba", image: Cba, className: "max-w-52" },
-  {
-    name: "Nible",
-    image: Nible,
-    className: "max-w-52",
-    href: "https://www.instagram.com/nible.pro/",
-  },
-  {
-    name: "Cca",
-    image: Cca,
-    className: "max-w-52",
-    href: "https://sucre.cca.edu.bo/",
-  },
-  { name: "Nova Computers", image: Nova, className: "max-w-52" },
 ]
 ---
 
-<section
-  id="sponsors"
-  class="relative isolate overflow-hidden bg-df-black px-4 py-10 text-white md:py-20"
->
-  <div
-    class="pointer-events-none absolute inset-0 overflow-hidden"
-    aria-hidden="true"
-  >
+<section id="sponsors" class="relative isolate overflow-hidden p-4 text-white md:py-20">
+  <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
     <div class="absolute -left-20 top-48 size-40 rounded-full bg-blue-500/25 blur-[70px] md:size-80"></div>
     <div class="absolute -right-20 bottom-20 size-48 rounded-full bg-green-500/20 blur-[75px] md:size-96"></div>
 
@@ -61,14 +58,12 @@ const sponsors = [
     <Vector class="absolute bottom-5 -right-50 hidden size-120 opacity-60 lg:block" />
   </div>
 
-  <div class="relative z-10 mx-auto max-w-5xl">
-    <h2 class="text-3xl font-bold tracking-tight md:text-5xl mb-4 md:mb-8">
-      Sponsors
-    </h2>
+  <div class="relative z-10 mx-auto max-w-6xl">
+    <h2 class="text-3xl font-bold tracking-tight md:text-5xl mb-4 md:mb-8">Sponsors</h2>
 
-    <div class="sponsors-border relative mx-auto max-w-5xl rounded-4xl p-px lg:shadow-[0_0_70px_rgba(66,133,244,0.12)]">
+    <div class="sponsors-border relative mx-auto rounded-4xl">
       <div class="grid grid-cols-2 lg:grid-cols-4 items-center gap-6 rounded-[calc(2rem-1px)] px-3 py-6 sm:min-h-64 sm:gap-5 sm:px-6 sm:py-10 md:px-10 md:py-10">
-        {sponsors.map((sponsor) => (
+        {sponsors.map(sponsor => (
           <div class="flex min-w-0 min-h-24 items-center justify-center rounded-2xl px-2 py-2 sm:min-h-36 sm:px-2 sm:py-2">
             <a
               href={sponsor.href}

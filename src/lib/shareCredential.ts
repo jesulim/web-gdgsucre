@@ -6,6 +6,7 @@ interface ShareOptions {
 }
 
 export interface CredentialData {
+  name: string | undefined
   firstName: string
   lastName: string
   role: string
@@ -201,7 +202,7 @@ async function renderCredentialCanvas(data: CredentialData): Promise<HTMLCanvasE
   ctx.textBaseline = "middle"
   ctx.fillStyle = layout.nameColor
 
-  const nameText = `${data.firstName} ${data.lastName}`
+  const nameText = data.name || `${data.firstName} ${data.lastName}`
   const nameLines = wrapText(ctx, nameText, nameMaxWidth)
   const nameLineHeight = nameFontSize * 1.25
   const nameTotalHeight = nameLines.length * nameLineHeight

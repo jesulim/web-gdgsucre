@@ -73,6 +73,7 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
     try {
       await shareOrDownloadCredential(
         {
+          name,
           firstName,
           lastName,
           role,

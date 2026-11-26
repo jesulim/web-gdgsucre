@@ -31,12 +31,7 @@ if (registration?.status === "confirmed") {
   return Astro.redirect(`/registro/${eventSlug}/confirmado`)
 }
 
-const rawFormFields = await getFormFieldsByEvent(supabase, event?.id)
-const formFields = rawFormFields.map(field =>
-  eventSlug === "devfest-26" && field.name === "package"
-    ? { ...field, image_url: "/events/devfest-26/packages.webp" }
-    : field
-)
+const formFields = await getFormFieldsByEvent(supabase, event?.id)
 ---
 
 <BaseLayout theme="dark">
