@@ -9,7 +9,7 @@ import { createUserClient } from "@/lib/supabase"
 export type AuthContext = APIContext & {
   auth: {
     supabase: SupabaseClient
-    profile: NonNullable<Awaited<ReturnType<typeof getProfile>>>
+    profile?: Awaited<ReturnType<typeof getProfile>>
   }
 }
 
@@ -68,11 +68,11 @@ async function readJsonBody(request: Request) {
 export function withAuth(handler: AuthHandler): APIRoute {
   return async context => {
     const supabase = await createUserClient(context.cookies)
-    const profile = await getProfile(supabase)
+    const { data } = await supabase.auth.getClaims(context.cookies.get("sb-access-token")?.value)
 
-    if (!profile) return Response.json({ error: "No autenticado" }, { status: 401 })
+    if (!data?.claims) return Response.json({ error: "No autenticado" }, { status: 401 })
 
-    return handler({ ...context, auth: { supabase, profile } })
+    return handler({ ...context, auth: { supabase } })
   }
 }
 
