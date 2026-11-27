@@ -63,7 +63,9 @@ const accessToken = Astro.cookies.get("sb-access-token")?.value
 
   <div class="ml-2">
     {accessToken ? (
-      <Avatar eventSlug={eventSlug} />
+      <Avatar server:defer eventSlug={eventSlug}>
+        <div class="size-12 bg-muted rounded-full" slot="fallback" />
+      </Avatar>
     ) : (
       <a
         href="/api/auth/signin"

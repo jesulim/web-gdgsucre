@@ -1,19 +1,22 @@
 import { QueryClient, useQuery } from "@tanstack/react-query"
 import { ArrowRight, Check, Waves } from "lucide-react"
 import { useEffect, useMemo, useRef, useState } from "react"
+
 import type { RaffleParticipant } from "@/lib/services/raffleService"
+import "@/styles/raffle.css"
+
+import { ParticipantMural } from "./ParticipantMural"
+import { RaffleRecords } from "./RaffleRecords"
+import { RaffleSettings } from "./RaffleSettings"
 import { ResetRaffleDialog } from "./ResetRaffleDialog"
-import { ParticipantMural } from "./raffle/ParticipantMural"
-import { RaffleRecords } from "./raffle/RaffleRecords"
-import { RaffleSettings } from "./raffle/RaffleSettings"
+
 import {
   type EventOption,
   participantName,
   participantPackage,
   type RoundEntry,
   type Selection,
-} from "./raffle/round"
-import "./sorteo.css"
+} from "./round"
 
 type Stage =
   | { phase: "ready" | "drawing" }
@@ -189,12 +192,12 @@ export default function RandomWinner({ events }: { events: EventOption[] }) {
               <p className="raffle-caption">{posterLabels[stage.phase]}</p>
               <h2>{participantName(stage.person)}</h2>
             </div>
-            <div className="raffle-print" aria-hidden="true">
-              <i />
-              <i />
-              <i />
-              <i />
-            </div>
+            <img
+              aria-label="GDG logo"
+              className="animate-[bounce_1.6s_infinite]"
+              src="/favicon.svg"
+              width={200}
+            />
           </div>
         ) : canDraw || stage.phase === "drawing" ? (
           <ParticipantMural people={pool} drawing={stage.phase === "drawing"} />
