@@ -1,8 +1,8 @@
 import type { CSSProperties } from "react"
 import type { RaffleParticipant } from "@/lib/services/raffleService"
 
-// This is only the display limit. CSS keeps three rows below desktop widths.
-const visibleTiles = 40
+// Only the mural is capped; the draw still uses the full eligible pool.
+const visibleTiles = 84
 
 export function ParticipantMural({
   people,
