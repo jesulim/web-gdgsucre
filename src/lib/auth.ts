@@ -65,6 +65,17 @@ async function readJsonBody(request: Request) {
     .catch(() => null)
 }
 
+export function withAuth(handler: AuthHandler): APIRoute {
+  return async context => {
+    const supabase = await createUserClient(context.cookies)
+    const profile = await getProfile(supabase)
+
+    if (!profile) return Response.json({ error: "No autenticado" }, { status: 401 })
+
+    return handler({ ...context, auth: { supabase, profile } })
+  }
+}
+
 export function withAdmin(handler: AuthHandler): APIRoute {
   return async context => {
     const supabase = await createUserClient(context.cookies)

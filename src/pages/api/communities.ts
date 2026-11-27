@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro"
 
-import { withAdmin } from "@/lib/auth"
+import { withAdmin, withAuth } from "@/lib/auth"
 import {
   createCommunity,
   deleteCommunity,
@@ -42,7 +42,7 @@ export const GET: APIRoute = async ({ url }) => {
   }
 }
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST = withAuth(async ({ request }) => {
   try {
     const body = await request.json().catch(() => null)
     const parsed = createCommunitySchema.safeParse(body)
@@ -78,7 +78,7 @@ export const POST: APIRoute = async ({ request }) => {
       status: 500,
     })
   }
-}
+})
 
 export const PUT = withAdmin(async ({ request }) => {
   try {

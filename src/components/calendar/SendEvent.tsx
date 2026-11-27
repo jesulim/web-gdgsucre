@@ -87,6 +87,8 @@ interface SendEventProps {
 }
 
 async function readErrorMessage(response: Response) {
+  if (response.status === 401) return "Tu sesión expiró. Vuelve a iniciar sesión."
+
   const contentType = response.headers.get("content-type") ?? ""
   if (contentType.includes("application/json")) {
     const body = await response.json().catch(() => null)
@@ -96,7 +98,8 @@ async function readErrorMessage(response: Response) {
   return text || "Ocurrió un error inesperado. Intenta de nuevo."
 }
 
-function SendEventForm({ isLoggedIn }: SendEventProps) {
+function SendEventForm({ isLoggedIn: initialIsLoggedIn }: SendEventProps) {
+  const [isLoggedIn, setIsLoggedIn] = useState(initialIsLoggedIn)
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [selectedCommunity, setSelectedCommunity] = useState<Community | null>(null)
@@ -143,6 +146,11 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
     form.setValue("community_id", NEW_COMMUNITY_ID, { shouldValidate: true })
   }
 
+  async function showError(response: Response) {
+    if (response.status === 401) setIsLoggedIn(false)
+    toast.error(await readErrorMessage(response))
+  }
+
   async function onSubmit(values: CalendarEventFormValues) {
     setLoading(true)
     try {
@@ -168,7 +176,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
         })
 
         if (!communityRes.ok) {
-          toast.error(await readErrorMessage(communityRes))
+          await showError(communityRes)
           return
         }
 
@@ -193,7 +201,7 @@ function SendEventForm({ isLoggedIn }: SendEventProps) {
       })
 
       if (!eventRes.ok) {
-        toast.error(await readErrorMessage(eventRes))
+        await showError(eventRes)
         return
       }
 
