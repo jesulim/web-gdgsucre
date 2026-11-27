@@ -551,6 +551,14 @@
   background: #123d83;
 }
 
+.raffle-stage:has(> .raffle-poster[data-phase="selected"]) .raffle-primary {
+  background: #137333;
+}
+
+.raffle-stage:has(> .raffle-poster[data-phase="selected"]) .raffle-primary:hover:not(:disabled) {
+  background: #0d652d;
+}
+
 .raffle-tool,
 .raffle-link,
 .raffle-note {
