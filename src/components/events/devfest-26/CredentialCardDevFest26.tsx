@@ -152,12 +152,19 @@ const CredentialCardComponent: React.FC<CredentialCardProps> = ({
         </div>
       </div>
 
-      <div className="mt-6 flex justify-center">
+      <div className="mt-6 md:mt-12 flex gap-4 justify-center">
+        <a
+          href="/perfil"
+          className="border-2 font-semibold text-sm sm:text-base px-4 py-2 rounded-full hover:bg-white/20 transition-all"
+        >
+          Editar perfil
+        </a>
+
         <button
           type="button"
           onClick={handleShare}
           disabled={isSharing}
-          className="flex items-center gap-2.5 bg-white text-black font-semibold text-sm sm:text-base px-6 py-3 rounded-full border border-gray-300 hover:bg-gray-100 active:scale-95 transition-all shadow-md cursor-pointer disabled:opacity-50"
+          className="flex items-center gap-2.5 bg-white text-black font-semibold text-sm sm:text-base px-4 py-2 rounded-full border  hover:bg-gray-100 transition-all"
         >
           {isSharing ? (
             <Loader2 className="w-5 h-5 animate-spin text-gray-600" />
