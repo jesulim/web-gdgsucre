@@ -1,0 +1,721 @@
+.raffle {
+  max-width: 80rem;
+  margin-inline: auto;
+  padding: clamp(1rem, 3vw, 2rem);
+  color: var(--foreground);
+}
+
+.raffle :is(button, a):focus-visible,
+.raffle-dialog :is(button, input, select):focus-visible {
+  outline: 3px solid var(--color-blue-600);
+  outline-offset: 3px;
+}
+
+:is(.raffle, .raffle-dialog) button:not(:disabled) {
+  cursor: pointer;
+}
+
+:is(.raffle, .raffle-dialog) button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.raffle-context,
+.raffle-controls,
+.raffle-actions,
+.raffle-tools {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem 1rem;
+}
+
+.raffle-context,
+.raffle-controls {
+  justify-content: space-between;
+}
+
+.raffle-context {
+  align-items: flex-start;
+  padding-block: 0 clamp(1rem, 2.5vw, 2rem);
+}
+
+.raffle-setup {
+  min-width: 0;
+}
+
+.raffle-section-label {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-family: var(--font-monospace), monospace;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+}
+
+.raffle-section-label span {
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.25rem;
+  background: var(--color-yellow-500);
+  font-size: 0;
+}
+
+.raffle-event {
+  width: fit-content;
+  max-width: 100%;
+  min-height: 2.75rem;
+  font-size: clamp(2rem, 4.6vw, 4.15rem);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.055em;
+  overflow-wrap: anywhere;
+}
+
+.raffle-select-trigger {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: inherit;
+  max-width: 100%;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: start;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  touch-action: manipulation;
+}
+
+.raffle .raffle-select-trigger:focus-visible {
+  outline: none;
+}
+
+.raffle-select-trigger:where(:focus-visible:not([data-restored-focus])) svg {
+  outline: 1px dashed currentColor;
+  outline-offset: 2px;
+}
+
+.raffle-package-trigger {
+  min-width: 0;
+  min-height: 2.75rem;
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+.raffle-select-trigger:where([data-state="open"]) svg {
+  transform: rotate(180deg);
+}
+
+.raffle-event-menu {
+  z-index: 50;
+  overflow: hidden;
+  width: min(
+    clamp(15rem, var(--radix-select-trigger-width), 28rem),
+    var(--radix-select-content-available-width)
+  );
+  max-height: min(22rem, var(--radix-select-content-available-height));
+  border: 1px solid var(--border);
+  background: var(--background);
+  color: var(--foreground);
+  box-shadow: 0 6px 20px rgb(0 0 0 / 0.08);
+}
+
+.raffle-event-options {
+  max-height: inherit;
+  padding: 0.25rem;
+  overscroll-behavior: contain;
+}
+
+.raffle-event-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: 2.75rem;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+}
+
+.raffle-event-menu [data-state="checked"] {
+  font-weight: 600;
+}
+
+.raffle-event-menu [data-highlighted] {
+  outline: none;
+  background: var(--color-blue-pastel);
+  color: var(--color-black);
+}
+
+.raffle-filters,
+.raffle-roles,
+.raffle-payment {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  font-size: 0.875rem;
+}
+
+.raffle-filters {
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+  margin-top: 0.65rem;
+}
+
+.raffle-roles {
+  flex-wrap: wrap;
+  gap: 0.125rem;
+}
+
+.raffle-roles label {
+  display: grid;
+  align-items: center;
+  min-height: 2.75rem;
+  cursor: pointer;
+}
+
+.raffle-role-label {
+  padding: 0.25rem 0.6rem;
+  color: var(--muted-foreground);
+}
+
+.raffle-roles input:checked + .raffle-role-label {
+  background: var(--foreground);
+  color: var(--background);
+  font-weight: 500;
+}
+
+.raffle-roles input:focus-visible + .raffle-role-label {
+  outline: 2px solid var(--foreground);
+  outline-offset: 2px;
+}
+
+.raffle-roles label:hover input:enabled:not(:checked) + .raffle-role-label {
+  background: var(--muted);
+}
+
+.raffle-payment {
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  cursor: pointer;
+}
+
+.raffle-payment input {
+  accent-color: var(--color-blue-600);
+}
+
+.raffle-filters:disabled label {
+  cursor: not-allowed;
+}
+
+.raffle-filters:disabled {
+  opacity: 0.6;
+}
+
+.raffle-tool,
+.raffle-reset,
+.raffle-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  font-size: 1rem;
+}
+
+.raffle-tool svg {
+  flex-shrink: 0;
+}
+
+.raffle :is(.raffle-tool, .raffle-link):hover:not(:disabled) {
+  color: var(--foreground);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.raffle-reset {
+  flex: none;
+  min-width: 2.75rem;
+  justify-content: center;
+  padding-inline: 0.75rem;
+  background: var(--muted);
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+.raffle-reset:hover:not(:disabled) {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.raffle-reset svg {
+  flex-shrink: 0;
+}
+
+.raffle-stage {
+  container-type: inline-size;
+}
+
+.raffle-mural {
+  --columns: 5;
+  --tile-height: clamp(2.75rem, 13cqi, 4.5rem);
+  --initial-size: clamp(1.25rem, 4cqi, 1.75rem);
+  display: grid;
+  grid-template-columns: repeat(min(var(--tile-count), var(--columns)), minmax(0, 1fr));
+  gap: 2px;
+  isolation: isolate;
+}
+
+.raffle-mural span {
+  --tile: var(--color-blue-500);
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  min-width: 0;
+  height: var(--tile-height);
+  background-color: var(--tile);
+  color: var(--color-black);
+  font-size: var(--initial-size);
+  font-weight: 500;
+  letter-spacing: -0.06em;
+  line-height: 1;
+}
+
+.raffle-mural span:nth-child(4n + 2) {
+  --tile: var(--color-yellow-pastel);
+  border-radius: 5rem 5rem 0 0;
+}
+
+.raffle-mural span:nth-child(4n + 3) {
+  --tile: var(--color-red-pastel);
+  border-radius: 0 0 0 5rem;
+}
+
+.raffle-mural span:nth-child(4n) {
+  --tile: var(--color-green-pastel);
+}
+
+.raffle-mural span:nth-child(7n + 1) {
+  --tile: var(--color-blue-pastel);
+  border-radius: 0 5rem 5rem 0;
+}
+
+.raffle-mural span:nth-child(9n + 5) {
+  --tile: var(--color-yellow-halftone);
+  border-radius: 50%;
+}
+
+.raffle-mural span:nth-child(11n + 3) {
+  --tile: var(--color-green-500);
+}
+
+.raffle-mural span:nth-child(13n + 6) {
+  --tile: var(--color-red-500);
+}
+
+/* Keep complete rows at each width. Short screens trade a row for visible controls. */
+.raffle-mural span:nth-child(n + 16) {
+  display: none;
+}
+
+@media (width < 23.5rem) and (height >= 42.5rem) {
+  .raffle-mural span:nth-child(-n + 20) {
+    display: grid;
+  }
+}
+
+@media (width >= 23.5rem) {
+  .raffle-mural {
+    --columns: 6;
+    --tile-height: clamp(2.75rem, 12cqi, 4.25rem);
+  }
+  .raffle-mural span:nth-child(-n + 18) {
+    display: grid;
+  }
+}
+
+@media (width >= 23.5rem) and (height >= 42.5rem) {
+  .raffle-mural span:nth-child(-n + 24) {
+    display: grid;
+  }
+}
+
+@media (width >= 36rem) {
+  .raffle-mural {
+    --columns: 8;
+    --tile-height: clamp(3rem, 8.5cqi, min(5rem, 10dvh));
+    --initial-size: clamp(1.5rem, 3.5cqi, 2.5rem);
+  }
+  .raffle-mural span:nth-child(-n + 32) {
+    display: grid;
+  }
+}
+
+@media (width >= 48rem) {
+  .raffle-mural {
+    --columns: 10;
+    --tile-height: clamp(3rem, 7cqi, min(5.25rem, 10dvh));
+  }
+  .raffle-mural span:nth-child(-n + 40) {
+    display: grid;
+  }
+}
+
+@media (width >= 64rem) {
+  .raffle-mural {
+    --columns: 12;
+    --tile-height: clamp(3rem, 7cqi, min(5.5rem, 10dvh));
+  }
+  .raffle-mural span:nth-child(-n + 48) {
+    display: grid;
+  }
+}
+
+@media (width >= 85rem) and (height >= 48rem) {
+  .raffle-mural {
+    --columns: 14;
+    --tile-height: clamp(3.5rem, 6.5cqi, 5rem);
+  }
+  .raffle-mural span:nth-child(-n + 56) {
+    display: grid;
+  }
+}
+
+@media (width >= 85rem) and (height >= 54rem) {
+  .raffle-mural span:nth-child(-n + 70) {
+    display: grid;
+  }
+}
+
+@media (width >= 85rem) and (height >= 64rem) {
+  .raffle-mural span:nth-child(-n + 84) {
+    display: grid;
+  }
+}
+
+@media (36rem <= width < 48rem) and (height < 37.5rem) {
+  .raffle-mural span:nth-child(n + 25) {
+    display: none;
+  }
+}
+
+@media (48rem <= width < 64rem) and (height < 37.5rem) {
+  .raffle-mural span:nth-child(n + 31) {
+    display: none;
+  }
+}
+
+@media (width >= 64rem) and (height < 37.5rem) {
+  .raffle-mural span:nth-child(n + 37) {
+    display: none;
+  }
+}
+
+.raffle-mural[data-drawing="true"] span {
+  animation: raffle-imprint 850ms ease-in-out both;
+}
+
+@keyframes raffle-imprint {
+  50% {
+    opacity: 0.62;
+    transform: scale(0.97);
+  }
+}
+
+.raffle-poster,
+.raffle-empty {
+  position: relative;
+  display: grid;
+  align-items: center;
+  min-height: clamp(14rem, 26cqi, 22rem);
+  border: 2px solid var(--color-off-white);
+  padding: clamp(1.25rem, 4.5cqi, 4rem);
+  background: var(--color-off-white);
+  color: var(--color-black);
+}
+
+.raffle-poster {
+  grid-template-columns: minmax(0, 1fr) minmax(3rem, 12%);
+  gap: 4%;
+}
+
+.raffle-poster[data-phase="confirmed"] {
+  background: var(--color-green-pastel);
+}
+
+.raffle-poster[data-phase="excluded"] {
+  background: var(--color-blue-pastel);
+}
+
+.raffle-caption {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: clamp(0.75rem, 2cqi, 1.5rem);
+  font-family: var(--font-monospace), monospace;
+  font-size: clamp(0.75rem, 1.1cqi, 1rem);
+  animation: caret 1s infinite;
+}
+
+.raffle-caption::after {
+  content: "";
+  width: 0.75rem;
+  height: 0.25rem;
+  background: var(--color-blue-600);
+}
+
+.raffle-poster[data-phase="confirmed"] .raffle-caption::after {
+  background: #137333;
+}
+
+.raffle-poster h2 {
+  font-size: clamp(2.5rem, 7.8cqi, 6.75rem);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.06em;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+.raffle-empty {
+  align-content: center;
+  justify-items: start;
+  font-size: clamp(1.25rem, 2.4cqi, 2rem);
+  letter-spacing: -0.03em;
+}
+
+.raffle-controls {
+  align-items: center;
+  flex-wrap: wrap;
+  padding-block: clamp(1rem, 2.5vw, 2rem);
+}
+
+.raffle-tools,
+.raffle-actions {
+  flex-wrap: wrap;
+}
+
+.raffle-primary,
+.raffle-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  min-height: 3rem;
+  padding: 0.75rem 1.25rem;
+  border: 2px solid transparent;
+  font-weight: 500;
+  text-align: start;
+}
+
+.raffle-primary {
+  background: var(--color-blue-500);
+  border-radius: 0.25rem;
+  color: var(--color-white);
+}
+
+.raffle-secondary {
+  border-color: var(--foreground);
+  background: var(--background);
+  color: var(--foreground);
+  border-radius: 0.25rem;
+}
+
+.raffle-secondary:hover:not(:disabled) {
+  background: var(--muted);
+}
+
+.raffle-primary:hover:not(:disabled) {
+  background: var(--color-blue-700);
+}
+
+.raffle-stage:has(> .raffle-poster[data-phase="selected"]) .raffle-primary {
+  background: var(--color-green-500);
+}
+
+.raffle-stage:has(> .raffle-poster[data-phase="selected"]) .raffle-primary:hover:not(:disabled) {
+  background: var(--color-green-700);
+}
+
+.raffle-tool,
+.raffle-link,
+.raffle-note {
+  color: var(--muted-foreground);
+}
+
+.raffle-link {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.raffle-dialog:is([data-slot="dialog-content"], [data-slot="alert-dialog-content"]) {
+  max-height: 85dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--border);
+  background: var(--background);
+  gap: 1.25rem;
+  border-radius: 0;
+  box-shadow: none;
+  padding: clamp(1.25rem, 4vw, 1.75rem);
+}
+
+.raffle-dialog :is([data-slot="dialog-title"], [data-slot="alert-dialog-title"]) {
+  font-size: 1.375rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.raffle-dialog [data-slot="dialog-title"] {
+  padding-inline-end: 2rem;
+}
+
+.raffle-dialog [data-slot="dialog-close"] {
+  top: 0.625rem;
+  right: 0.625rem;
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  border-radius: 0;
+  background: transparent;
+  color: var(--foreground);
+  opacity: 1;
+}
+
+.raffle-dialog [data-slot="dialog-close"]:hover {
+  background: var(--muted);
+}
+
+.raffle-dialog [data-slot="alert-dialog-header"] {
+  text-align: start;
+}
+
+.raffle-dialog [data-slot="alert-dialog-footer"] {
+  padding-block-start: 0.5rem;
+}
+
+.raffle-dialog [data-slot="alert-dialog-footer"] button {
+  min-height: 2.75rem;
+  border: 1px solid transparent;
+  border-radius: 0;
+  background: var(--muted);
+  color: var(--foreground);
+  box-shadow: none;
+}
+
+.raffle-dialog [data-slot="alert-dialog-footer"] button:hover:not(:disabled) {
+  background: var(--accent);
+  border-radius: 0.25rem;
+}
+
+.raffle-dialog [data-slot="alert-dialog-footer"] button:last-child {
+  background: var(--color-red-600);
+  color: var(--color-white);
+  border-radius: 0.25rem;
+}
+
+.raffle-dialog [data-slot="alert-dialog-footer"] button:last-child:hover:not(:disabled) {
+  background: var(--color-red-700);
+}
+
+.raffle-search {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  min-width: 0;
+  min-height: 2.75rem;
+  padding-inline: 0.75rem;
+  border: 1px solid var(--border);
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.raffle-search input {
+  min-width: 0;
+  width: 100%;
+}
+
+.raffle-dialog .raffle-search input:focus {
+  outline: none;
+}
+
+.raffle-search:focus-within {
+  border-color: var(--muted-foreground);
+  outline: 1px solid var(--muted-foreground);
+  outline-offset: -2px;
+}
+
+.raffle-list {
+  max-height: 50dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.raffle-list li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 0.75rem;
+  border-bottom: 1px solid var(--border);
+  overflow-wrap: anywhere;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 3rem;
+}
+
+.raffle-list small {
+  color: var(--muted-foreground);
+  text-align: end;
+}
+
+.raffle-history small[data-outcome="confirmed"] {
+  color: #137333;
+}
+
+@media (max-width: 36rem) {
+  .raffle-context {
+    position: relative;
+    display: block;
+  }
+  .raffle-context .raffle-reset {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  .raffle-reset span {
+    display: none;
+  }
+  .raffle-event {
+    max-width: calc(100% - 3rem);
+  }
+  .raffle-poster {
+    grid-template-columns: minmax(0, 1fr);
+    align-content: center;
+  }
+  .raffle-print {
+    display: none;
+  }
+  .raffle-actions {
+    width: 100%;
+    gap: 0.5rem 1rem;
+  }
+  .raffle-actions :is(.raffle-primary, .raffle-secondary) {
+    width: 100%;
+  }
+  .raffle-controls {
+    row-gap: 0.25rem;
+  }
+  .raffle-tools {
+    gap: 0 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .raffle-mural[data-drawing="true"] span {
+    animation: none;
+  }
+}

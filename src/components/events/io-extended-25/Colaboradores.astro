@@ -40,29 +40,27 @@ const loopColaboradores = [...colaboradores, ...colaboradores]
     <div class="pointer-events-none absolute inset-y-0 left-0 w-12 fade-edge"></div>
     <div class="pointer-events-none absolute inset-y-0 right-0 w-12 fade-edge fade-right"></div>
     <div class="marquee-track" role="list" aria-live="off">
-      {
-        loopColaboradores.map((colaborador, index) => (
-          <div role="listitem" class="colaborador-item">
-            <Image
-              src={colaborador.src}
-              alt={colaborador.alt}
-              widths={[160, 180, 200, 300]}
-              sizes="(max-width: 480px) 150px, (max-width: 768px) 160px, (max-width: 1024px) 200px, 300px"
-              height={colaborador.height}
-              loading="lazy"
-              decoding="async"
-              class="colaborador-logo w-48 md:w-72"
-            />
-          </div>
-        ))
-      }
+      {loopColaboradores.map((colaborador, index) => (
+        <div role="listitem" class="colaborador-item">
+          <Image
+            src={colaborador.src}
+            alt={colaborador.alt}
+            widths={[160, 180, 200, 300]}
+            sizes="(max-width: 480px) 150px, (max-width: 768px) 160px, (max-width: 1024px) 200px, 300px"
+            height={colaborador.height}
+            loading="lazy"
+            decoding="async"
+            class="colaborador-logo w-48 md:w-72"
+          />
+        </div>
+      ))}
     </div>
   </div>
 </section>
 
 <style>
   .colaboradores-section {
-    background-image: url("/src/assets/events/io-extended-25/sponsors/fondo-sponsors.webp");
+    background-image: url("/events/io-extended-25/fondo-sponsors.webp");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

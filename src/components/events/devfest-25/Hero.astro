@@ -39,6 +39,33 @@ const initialTime = targetDate.getTime() - Date.now()
 const mapsUrl = "https://maps.app.goo.gl/3PS7ysYJDmMUvNpg6"
 ---
 
+<style>
+  /* ANIMACION 1: Efecto de latido suave con resplandor */
+  @keyframes soft-pulse {
+    0%,
+    100% {
+      transform: scale(1);
+      filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.6))
+        drop-shadow(0 0 12px rgba(255, 255, 255, 0.4));
+    }
+    40% {
+      transform: scale(1.08);
+      filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.95))
+        drop-shadow(0 0 22px rgba(255, 255, 255, 0.7));
+    }
+    70% {
+      transform: scale(1.04);
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.85))
+        drop-shadow(0 0 18px rgba(255, 255, 255, 0.6));
+    }
+  }
+
+  .animate-soft-pulse {
+    animation: soft-pulse 2.2s ease-in-out infinite;
+    transform-origin: center;
+  }
+</style>
+
 <div class="w-full pt-32 py-8 flex flex-col gap-8 md:gap-8 items-center bg-[#232323] text-white">
   <div class="w-72 md:w-96 lg:w-2xl">
     <DevFest25Logo />
@@ -49,9 +76,7 @@ const mapsUrl = "https://maps.app.goo.gl/3PS7ysYJDmMUvNpg6"
     más importante de la región.
   </p>
 
-  <div
-    class="text-xl bg-linear-to-b from-red-500 to-red-700 flex items-center justify-center px-8 md:px-14 py-3 md:py-3.5 rounded-full text-white font-semibold hover:bg-red-500 transition-colors"
-  >
+  <div class="text-xl bg-linear-to-b from-red-500 to-red-700 flex items-center justify-center px-8 md:px-14 py-3 md:py-3.5 rounded-full text-white font-semibold hover:bg-red-500 transition-colors">
     <CTALink server:defer eventSlug="devfest-25">
       <span slot="fallback">Regístrate ahora</span>
     </CTALink>
@@ -70,9 +95,7 @@ const mapsUrl = "https://maps.app.goo.gl/3PS7ysYJDmMUvNpg6"
       <div class="w-8 h-8 md:w-12 md:h-12 shrink-0 animate-soft-pulse">
         <CalendarIcon class="fill-current" />
       </div>
-      <div
-        class="flex flex-col justify-center text-base md:text-2xl text-center md:whitespace-pre font-medium"
-      >
+      <div class="flex flex-col justify-center text-base md:text-2xl text-center md:whitespace-pre font-medium">
         <p class="block mb-0">Sábado, 15 de Noviembre</p>
         <p class="block">8:00 Hrs</p>
       </div>
@@ -91,9 +114,7 @@ const mapsUrl = "https://maps.app.goo.gl/3PS7ysYJDmMUvNpg6"
       <div class="w-8 h-8 md:w-12 md:h-12 shrink-0 animate-soft-pulse">
         <LocationIcon class="fill-current" />
       </div>
-      <div
-        class="flex flex-col justify-center leading-[1.2] text-[16px] md:text-[24px] text-center md:whitespace-pre font-medium"
-      >
+      <div class="flex flex-col justify-center leading-[1.2] text-[16px] md:text-[24px] text-center md:whitespace-pre font-medium">
         <p class="block mb-0">Facultad de Ciencias</p>
         <p class="block">y Tecnología</p>
       </div>

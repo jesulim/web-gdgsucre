@@ -30,34 +30,30 @@ const duplicatedSponsors = [...sponsors, ...sponsors, ...sponsors] // Triple par
 
   <!-- Carrusel -->
   <div class="w-full overflow-hidden">
-    <div
-      class="flex items-center animate-marquee hover:animate-none transition-all duration-1000 ease-linear"
-    >
-      {
-        duplicatedSponsors.map((sponsor, index) => (
-          <div class="shrink-0 mx-3 md:mx-10 transform mobile-sponsor">
-            <div class="flex items-center justify-center h-20 md:h-auto">
-              <Image
-                src={sponsor.src}
-                alt={sponsor.alt}
-                widths={[160, 180, 200, 300]}
-                sizes="(max-width: 480px) 160px, (max-width: 768px) 180px, (max-width: 1024px) 200px, 300px"
-                height={sponsor.height}
-                loading="lazy"
-                decoding="async"
-                class="object-contain transition-all duration-300 mobile-logo lg:px-4"
-              />
-            </div>
+    <div class="flex items-center animate-marquee hover:animate-none transition-all duration-1000 ease-linear">
+      {duplicatedSponsors.map((sponsor, index) => (
+        <div class="shrink-0 mx-3 md:mx-10 transform mobile-sponsor">
+          <div class="flex items-center justify-center h-20 md:h-auto">
+            <Image
+              src={sponsor.src}
+              alt={sponsor.alt}
+              widths={[160, 180, 200, 300]}
+              sizes="(max-width: 480px) 160px, (max-width: 768px) 180px, (max-width: 1024px) 200px, 300px"
+              height={sponsor.height}
+              loading="lazy"
+              decoding="async"
+              class="object-contain transition-all duration-300 mobile-logo lg:px-4"
+            />
           </div>
-        ))
-      }
+        </div>
+      ))}
     </div>
   </div>
 </section>
 
 <style>
   .sponsor-section {
-    background-image: url("/src/assets/events/io-extended-25/sponsors/fondo-sponsors.webp");
+    background-image: url("/events/io-extended-25/fondo-sponsors.webp");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

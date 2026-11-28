@@ -1,0 +1,23 @@
+---
+import { Image } from "astro:assets"
+
+import LogoHorizontalBlack from "@/assets/logos/LogoHorizontalBlack.png"
+
+import Avatar from "../Avatar.astro"
+---
+
+<header class="border-b-2 px-4 sm:px-8">
+  <div class="mx-auto flex max-w-7xl items-center justify-between py-1">
+    <a href="/" aria-label="GDG Sucre, inicio">
+      <Image
+        src={LogoHorizontalBlack}
+        alt="GDG Sucre"
+        width={640}
+        class="h-auto w-40 sm:w-64 dark:invert"
+      />
+    </a>
+    <Avatar server:defer>
+      <div class="size-12 bg-muted rounded-full" slot="fallback" />
+    </Avatar>
+  </div>
+</header>
