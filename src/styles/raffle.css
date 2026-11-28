@@ -528,7 +528,7 @@
 }
 
 .raffle-primary:hover:not(:disabled) {
-  background: var();
+  background: var(--color-blue-700);
 }
 
 .raffle-stage:has(> .raffle-poster[data-phase="selected"]) .raffle-primary {
